@@ -1,0 +1,341 @@
+{
+  "nodes": [
+    {
+      "parameters": {
+        "amount": 3
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        11056,
+        1296
+      ],
+      "id": "c1d2dc00-6184-4b2c-9389-2541423194ee",
+      "name": "Wait 3sec",
+      "webhookId": "5ab0d727-8e39-4935-8a8b-90236cba851b"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        10608,
+        1296
+      ],
+      "id": "840acd3c-cb1c-4410-8c7d-86f0bfcd266a",
+      "name": "Wait 5sec",
+      "webhookId": "99dc56b2-5b9f-4fea-96e3-6b56a59e7011"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        10160,
+        1296
+      ],
+      "id": "53598e3b-2628-4f38-bd2e-b3d00c967e19",
+      "name": "LoopOverIdeas"
+    },
+    {
+      "parameters": {
+        "resource": "boardItem",
+        "boardId": "5091782832",
+        "groupId": "topics",
+        "name": "=Idea #{{ $json.post_number }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.mondayCom",
+      "typeVersion": 1,
+      "position": [
+        10384,
+        1296
+      ],
+      "id": "1d8f0068-e4de-4ce7-a4dc-6b5f78be3828",
+      "name": "CREATE IDEA",
+      "credentials": {
+        "mondayComApi": {
+          "id": "8UGDd7onyWkB2kL7",
+          "name": "Itzana Guests"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.monday.com/v2",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "mondayComApi",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "API-Version",
+              "value": "2023-10"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{\nJSON.stringify({\n  \"query\": \"mutation ($boardId: ID!, $itemId: ID!, $columnValues: JSON!) { change_multiple_column_values (board_id: $boardId, item_id: $itemId, column_values: $columnValues) { id } }\",\n  \"variables\": {\n    \"boardId\": \"5091782832\",\n    \"itemId\": $('CREATE IDEA').item.json.id,\n    \"columnValues\": JSON.stringify({\n      \"text_mm0naenv\": $(\"LoopOverIdeas\").item.json.title,\n      \"text_mm0nbqek\": $(\"LoopOverIdeas\").item.json.pilar,\n      \"color_mm0nhgf3\": { \"label\": $(\"LoopOverIdeas\").item.json.ideal_social_network.substring(0,1).toUpperCase() + $(\"LoopOverIdeas\").item.json.ideal_social_network.substring(1).toLowerCase().trim() },\n      \"long_text_mm0nz89v\": { \"text\": $(\"LoopOverIdeas\").item.json.caption },\n      \"long_text_mm0n4qha\": { \"text\": $(\"LoopOverIdeas\").item.json.visual_creative },\n      \"text_mm0nye82\": $(\"LoopOverIdeas\").item.json.estimated_impact,\n      \"text_mm0n6t5w\": $(\"LoopOverIdeas\").item.json.cta\n    })\n  }\n})\n}}",
+        "options": {
+          "redirect": {
+            "redirect": {}
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        10832,
+        1296
+      ],
+      "id": "89ec69f3-ffcc-4ded-b1cf-7268374dc416",
+      "name": "UPDATE IDEA",
+      "executeOnce": false,
+      "credentials": {
+        "mondayComApi": {
+          "id": "8UGDd7onyWkB2kL7",
+          "name": "Itzana Guests"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {}
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        8912,
+        1296
+      ],
+      "id": "368b52da-8c3b-49f1-b11d-8fcaa0f73c48",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "documentURL": "https://docs.google.com/document/d/1O4z6WdPEvsq8YQxezbmy3eZFE2RRus_2mp4K_mx1_rs/edit?usp=drive_link"
+      },
+      "type": "n8n-nodes-base.googleDocs",
+      "typeVersion": 2,
+      "position": [
+        9136,
+        1296
+      ],
+      "id": "ec793d01-c08a-45e6-a39f-8f59e931159d",
+      "name": "KB",
+      "credentials": {
+        "googleDocsOAuth2Api": {
+          "id": "ZAcCU3R17YPMSNP3",
+          "name": "Google Docs account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": "sonar-pro",
+        "messages": {
+          "message": [
+            {
+              "content": "=Eres un experto en Strategy & Content Viral para agencias de IA.\n\nContexto RedTec: {{ $json.content }}\n\nTarea: Busca las 10 noticias o tendencias más potentes de este mes sobre IA aplicada a empresas (CRM, automatización, agentes).\nPara cada tendencia, genera 3 ángulos de post distintos (Educativo, Polémico, Tutorial) para completar un calendario de 30 días.\n\nFormato de salida: Devuélveme una lista numerada donde cada item incluya la fuente de la noticia y los 3 ángulos propuestos."
+            }
+          ]
+        },
+        "options": {},
+        "requestOptions": {}
+      },
+      "type": "n8n-nodes-base.perplexity",
+      "typeVersion": 1,
+      "position": [
+        9360,
+        1296
+      ],
+      "id": "15f332b3-6b3e-4ea5-a741-d1d6b3bbba0a",
+      "name": "Perplexity Web Search",
+      "credentials": {
+        "perplexityApi": {
+          "id": "vjfRok6qwbep4djO",
+          "name": "Perplexity account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Actúa como un Director Creativo y Estratega de Contenido senior para RedTec (Partner de IA y Automatizaciones). \n\n### CONTEXTO DE LA EMPRESA (Knowledge Base):\n{{ $('KB').item.json.content }}\n\n### TENDENCIAS Y NOTICIAS ENCONTRADAS POR PERPLEXITY:\n{{ $('Perplexity Web Search').item.json }}\n\n### TAREA:\nGenera 30 ideas de posts de ALTO VALOR (10 Facebook, 10 Instagram, 10 LinkedIn). No redactes contenido genérico; usa las noticias de Perplexity para crear contenido de autoridad que demuestre el ROI de RedTec.\n\n### PILARES DE CONTENIDO (Distribuye equitativamente):\n- Autoridad (Análisis de noticias/tendencias de IA).\n- ROI/Prueba Social (Casos de uso sobre ahorro de tiempo/dinero).\n- Educativo (Mini-tutoriales o consejos prácticos de automatización).\n- Humanización (Beneficios de la IA para la calidad de vida y bienestar).\n\n### ESTRATEGIA DE HOOKS:\nUsa variaciones de ganchos basados en: Negatividad Inversa, Resultado Primero o Curiosidad Específica.\n\n### ESTRUCTURA POR IDEA:\nPara cada idea, sigue ESTRICTAMENTE esta estructura:\n1. post_number: (Número del 1 al 30)\n2. title: Un gancho/título magnético basado en la estrategia de hooks.\n3. pilar: (Autoridad, ROI, Educativo o Humanización).\n4. ideal_social_network: (facebook, instagram o linkedin).\n5. target_audience: A quién va dirigido (ej: CEOs, COOs, Directores Comerciales).\n6. caption: Cuerpo persuasivo usando la estructura AIDA (Atención, Interés, Deseo, Acción) con emojis.\n7. visual_creative: Instrucciones detalladas de diseño (Ej: Guion para Reel de 5s, Slides de carrusel para LinkedIn, o Imagen minimalista de alto impacto).\n8. estimated_impact: Un dato de ahorro o impacto esperado (Ej: \"Potencial de ahorro: 20h/semana\" o \"Reducción de error manual: 90%\").\n9. cta: Llamada a la acción clara y relevante.\n\n### FORMATO DE SALIDA:\nEntrega EXCLUSIVAMENTE un bloque de código JSON (Array de objetos) dentro de una propiedad \"posts\". No añadas explicaciones fuera del JSON.\n\nEjemplo:\n{\n  \"posts\": [\n    {\n      \"post_number\": 1,\n      \"title\": \"...\",\n      \"pilar\": \"ROI\",\n      \"ideal_social_network\": \"linkedin\",\n      ... \n    }\n  ]\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.4,
+      "position": [
+        9584,
+        1296
+      ],
+      "id": "e9a51d2c-190a-40e3-99e6-5f55bdf3cb64",
+      "name": "Basic LLM Chain"
+    },
+    {
+      "parameters": {
+        "model": "gpt-4o-mini",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1,
+      "position": [
+        9656,
+        1520
+      ],
+      "id": "08e7f13f-1d89-4d09-9ca8-d1f7306bc478",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "N77GbsiuskkMfcXm",
+          "name": "Holdmin"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Código actualizado para el nodo PARSE RESPONSE\nconst input = $input.first().json;\nconst rawOutput = input.text || input.output || \"\";\n\nif (!rawOutput) {\n  return [{ json: { error: \"No se recibió texto de la IA\" } }];\n}\n\n// 1. Limpiar bloques de código markdown y espacios\nlet cleanText = rawOutput.trim();\nif (cleanText.includes(\"```\")) {\n  cleanText = cleanText.replace(/```json/g, \"\").replace(/```/g, \"\").trim();\n}\n\n// 2. Extraer el objeto JSON (por si hay texto extra alrededor)\nconst startBrace = cleanText.indexOf('{');\nconst startBracket = cleanText.indexOf('[');\nlet startIndex = -1;\n\nif (startBrace !== -1 && (startBracket === -1 || startBrace < startBracket)) startIndex = startBrace;\nelse if (startBracket !== -1) startIndex = startBracket;\n\nif (startIndex !== -1) {\n  const lastBrace = cleanText.lastIndexOf('}');\n  const lastBracket = cleanText.lastIndexOf(']');\n  const endIndex = Math.max(lastBrace, lastBracket);\n  cleanText = cleanText.substring(startIndex, endIndex + 1);\n}\n\ntry {\n  const parsed = JSON.parse(cleanText);\n  // Si viene envuelto en una propiedad \"posts\", la extraemos\n  const posts = parsed.posts || (Array.isArray(parsed) ? parsed : [parsed]);\n  return posts.map(post => ({ json: post }));\n} catch (e) {\n  return [{ json: { error: \"Error de parseo\", detail: e.message, original: rawOutput } }];\n}"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        9936,
+        1296
+      ],
+      "id": "09a4ecbe-60c1-4529-b37c-916de7a70fed",
+      "name": "PARSE RESPONSE"
+    }
+  ],
+  "connections": {
+    "Wait 3sec": {
+      "main": [
+        []
+      ]
+    },
+    "Wait 5sec": {
+      "main": [
+        [
+          {
+            "node": "UPDATE IDEA",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "LoopOverIdeas": {
+      "main": [
+        [],
+        [
+          {
+            "node": "CREATE IDEA",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "CREATE IDEA": {
+      "main": [
+        [
+          {
+            "node": "Wait 5sec",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "UPDATE IDEA": {
+      "main": [
+        [
+          {
+            "node": "Wait 3sec",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "KB",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "KB": {
+      "main": [
+        [
+          {
+            "node": "Perplexity Web Search",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Perplexity Web Search": {
+      "main": [
+        [
+          {
+            "node": "Basic LLM Chain",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Basic LLM Chain": {
+      "main": [
+        [
+          {
+            "node": "PARSE RESPONSE",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Basic LLM Chain",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "PARSE RESPONSE": {
+      "main": [
+        [
+          {
+            "node": "LoopOverIdeas",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "d4ab02fb1ef8b6ca2c1c5c1f280ee696b0514d7d92cee5fb0da1784dbe393998"
+  }
+}
