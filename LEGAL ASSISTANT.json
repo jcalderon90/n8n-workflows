@@ -1,0 +1,225 @@
+{
+  "name": "LEGAL ASSISTANT",
+  "nodes": [
+    {
+      "parameters": {
+        "trigger": [
+          "app_mention"
+        ],
+        "watchWorkspace": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.slackTrigger",
+      "typeVersion": 1,
+      "position": [
+        -480,
+        -32
+      ],
+      "id": "61213d4b-e427-4ac2-bed3-910903a2a55b",
+      "name": "Slack Trigger",
+      "webhookId": "87216cc1-133c-418f-8cc6-d8481be7ba0f",
+      "credentials": {
+        "slackApi": {
+          "id": "6LuCIFSik2LBjhwo",
+          "name": "VICTORIA"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "f510b001-d806-4c54-8b5d-5f853795548e",
+              "name": "message",
+              "value": "={{ $json.blocks[0].elements[0].elements[1].text }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -224,
+        -32
+      ],
+      "id": "dc9d350b-1544-4783-bed9-8a96901987b4",
+      "name": "TEXT MESSAGE"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.message }}",
+        "options": {
+          "systemMessage": "Eres Victoria, una asistente legal potenciada con la última tecnología de IA que existe actualmente.\nPerteneces a la firma de abogados Varela Law Firm.\nTu respuesta debe ser agradable visualmente y bien estructurada para un canal de Slack. "
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3,
+      "position": [
+        -16,
+        -32
+      ],
+      "id": "12b135ef-a891-49d1-99f3-3840c4d5262f",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4o-mini",
+          "mode": "list",
+          "cachedResultName": "gpt-4o-mini"
+        },
+        "builtInTools": {
+          "webSearch": {
+            "searchContextSize": "medium",
+            "country": "US"
+          }
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        -16,
+        176
+      ],
+      "id": "2580d29c-0804-4519-b4a0-f1fc9a9d2ea5",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "lopdnXZa5QlttiNa",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "c03b04e0-f202-4e0c-bbf9-a491a35587dd",
+              "name": "response",
+              "value": "={{ $json.output }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        336,
+        -32
+      ],
+      "id": "65ba91a2-bede-46af-bbe3-c4fa19142e50",
+      "name": "RESPONSE"
+    },
+    {
+      "parameters": {
+        "select": "channel",
+        "channelId": {
+          "__rl": true,
+          "value": "C0A2VJK1PCJ",
+          "mode": "list",
+          "cachedResultName": "help"
+        },
+        "text": "=<@{{ $('Slack Trigger').item.json.user }}> {{ $json.response }}",
+        "otherOptions": {
+          "includeLinkToWorkflow": false,
+          "mrkdwn": false,
+          "unfurl_links": false,
+          "unfurl_media": false
+        }
+      },
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 2.3,
+      "position": [
+        592,
+        -32
+      ],
+      "id": "62aaf6fc-4bcd-42da-a45e-eddc523e83eb",
+      "name": "Send a message",
+      "webhookId": "64f3b871-2c80-4220-9976-ce56d22fe383",
+      "credentials": {
+        "slackApi": {
+          "id": "6LuCIFSik2LBjhwo",
+          "name": "VICTORIA"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Slack Trigger": {
+      "main": [
+        [
+          {
+            "node": "TEXT MESSAGE",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "TEXT MESSAGE": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "RESPONSE",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "RESPONSE": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "b3925e9e-0c4a-434a-a0ea-fe0e140de201",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "1605e0956f411c02ecc29f05b035dcb95746e902cd54a42b69d92da41bbef671"
+  },
+  "id": "28ht2R9CAbZHXlgX",
+  "tags": []
+}

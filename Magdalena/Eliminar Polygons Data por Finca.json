@@ -1,0 +1,242 @@
+{
+  "name": "Eliminar Polygons Data por Finca",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        80
+      ],
+      "id": "e5e01b3d-23a5-43d1-88e6-7c7438945c46",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "fe01bb21-99bc-4e0a-bafe-077361cdc381",
+              "name": "finca",
+              "value": "Sanjon Xoluta",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        224,
+        80
+      ],
+      "id": "0ccfee45-8176-4e13-9dfc-08b9ada8f0a2",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "collection": "Polygons",
+        "options": {},
+        "query": "={\"finca\":\"{{ $json.finca }}\"}"
+      },
+      "type": "n8n-nodes-base.mongoDb",
+      "typeVersion": 1.2,
+      "position": [
+        448,
+        80
+      ],
+      "id": "2e9a7a1a-d416-4b9d-8bf9-ccd1f3f8ea1f",
+      "name": "Find documents",
+      "credentials": {
+        "mongoDb": {
+          "id": "oCCgJ1QnJPbirSub",
+          "name": "Magdalena"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        672,
+        80
+      ],
+      "id": "d5e28a43-ae28-45fc-96ec-fa9d55c5d94c",
+      "name": "Loop Over Items"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "805aefb1-bfd2-4982-8399-fb8769d79709",
+              "name": "ID",
+              "value": "={{ String($json._id) }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        896,
+        96
+      ],
+      "id": "014a924c-7f9c-4f6c-8d14-99d7a65ac783",
+      "name": "Edit Fields1"
+    },
+    {
+      "parameters": {
+        "operation": "delete",
+        "collection": "Polygons_Data",
+        "query": "={\"id_poligono\":\"{{ $json.ID }}\"}"
+      },
+      "type": "n8n-nodes-base.mongoDb",
+      "typeVersion": 1.2,
+      "position": [
+        1120,
+        80
+      ],
+      "id": "cbac9c21-3fa6-4946-8a6b-feeb45ff8c6f",
+      "name": "Delete documents",
+      "credentials": {
+        "mongoDb": {
+          "id": "oCCgJ1QnJPbirSub",
+          "name": "Magdalena"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "ed240d54-7f4f-4143-b06d-693a48f6ebbf",
+              "leftValue": "={{ $json.deletedCount }}",
+              "rightValue": "={{ Number(0) }}",
+              "operator": {
+                "type": "number",
+                "operation": "notEquals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        1328,
+        80
+      ],
+      "id": "08dc5351-55ef-4abb-b857-292ba7acc9d5",
+      "name": "If No hay registros"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Find documents",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Find documents": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Edit Fields1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields1": {
+      "main": [
+        [
+          {
+            "node": "Delete documents",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Delete documents": {
+      "main": [
+        [
+          {
+            "node": "If No hay registros",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If No hay registros": {
+      "main": [
+        [],
+        []
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "d3d134ab-27a6-4280-ad22-ac7260609945",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "d4ab02fb1ef8b6ca2c1c5c1f280ee696b0514d7d92cee5fb0da1784dbe393998"
+  },
+  "id": "zS7mgRvGIyu2iDpV",
+  "tags": []
+}

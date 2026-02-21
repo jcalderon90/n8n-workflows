@@ -1,0 +1,199 @@
+{
+  "name": "Recuerdo de Pago",
+  "nodes": [
+    {
+      "parameters": {
+        "keepOnlySet": true,
+        "values": {
+          "string": [
+            {
+              "name": "dia_actual",
+              "value": "={{ $now.day }}"
+            },
+            {
+              "name": "ultimo_dia_mes",
+              "value": "={{ $now.endOf('month').day }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "name": "Calcular último día del mes",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 2,
+      "position": [
+        -352,
+        -256
+      ],
+      "id": "3d6988e4-d7e6-46ae-9960-397540ab6bc8"
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "triggerAtHour": 21
+            }
+          ]
+        }
+      },
+      "name": "Cada día a medianoche",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1,
+      "position": [
+        -576,
+        -256
+      ],
+      "id": "dc94ec24-6b4f-4311-a2da-8a1c6aef2035"
+    },
+    {
+      "parameters": {
+        "sendTo": "mvarela@varela.law",
+        "subject": "AVISO DE PAGO!",
+        "message": "={{ $json.html }}",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        320,
+        -256
+      ],
+      "id": "712023ed-56ba-433d-9f99-b6ca76c6621d",
+      "name": "Send a message",
+      "webhookId": "2cf75dbe-1de0-4a55-a233-47a626647098",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "JeoA3ck6F9AaFBSc",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "html": "<!DOCTYPE html>\n<html lang=\"es\">\n<head>\n  <meta charset=\"UTF-8\">\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n  <title>Recordatorio de Pago {{ $now.format('yyyy-MM-dd') }}</title>\n  <style>\n    body {\n      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;\n      background-color: #f7f9fc;\n      margin: 0;\n      padding: 0;\n      color: #333;\n    }\n    .container {\n      max-width: 600px;\n      margin: 40px auto;\n      background: #ffffff;\n      border-radius: 12px;\n      box-shadow: 0 4px 12px rgba(0,0,0,0.05);\n      overflow: hidden;\n    }\n    .header {\n      background: linear-gradient(135deg, #1e5799, #207cca);\n      color: white;\n      padding: 30px 20px;\n      text-align: center;\n    }\n    .header h1 {\n      margin: 0;\n      font-size: 26px;\n      font-weight: 600;\n    }\n    .content {\n      padding: 30px;\n      line-height: 1.6;\n    }\n    .content p {\n      margin: 0 0 16px;\n    }\n    .highlight {\n      background-color: #fff8e1;\n      border-left: 4px solid #ffc107;\n      padding: 16px;\n      margin: 24px 0;\n      border-radius: 0 4px 4px 0;\n    }\n    .footer {\n      background-color: #f1f3f4;\n      padding: 20px;\n      text-align: center;\n      font-size: 14px;\n      color: #666;\n      border-top: 1px solid #e0e0e0;\n    }\n    .btn {\n      display: inline-block;\n      background-color: #207cca;\n      color: white !important;\n      text-decoration: none;\n      padding: 12px 24px;\n      border-radius: 6px;\n      font-weight: 600;\n      margin: 16px 0;\n      text-align: center;\n    }\n    .btn:hover {\n      background-color: #1a69b8;\n    }\n    @media (max-width: 600px) {\n      .container {\n        margin: 10px;\n      }\n      .header h1 {\n        font-size: 22px;\n      }\n      .content {\n        padding: 20px;\n      }\n    }\n  </style>\n</head>\n<body>\n  <div class=\"container\">\n    <div class=\"header\">\n      <h1>📅 Recordatorio de Pago de Servicio</h1>\n    </div>\n    <div class=\"content\">\n      <p>Estimado <strong>Mario</strong>,</p>\n\n      <p>Esperamos que se encuentre muy bien. Le escribimos para recordarle amablemente que tiene el pago de este mes pendiente con nosotros.</p>\n\n      <div class=\"highlight\">\n        <strong>📄 Detalles del pago pendiente:</strong><br>\n        <strong>Vía de pago:</strong> ZELLE <br>\n        <strong>Monto adeudado:</strong> <strong style=\"color: #d32f2f;\">80 USD</strong>\n        <strong>A la cuenta:</strong> <strong style=\"color: #d32f2f;\">jcarrasco96@outlook.com</strong><br>\n        <em>Este monto corresponde al acuerdo establecido por tener 3 o más automatizaciones activas y funcionando.</em>\n      </div>\n\n      <p>Le agradeceríamos mucho efectuar este este pago antes de concluir el mes para evitar interrupciones en el servicio</p>\n      <br>\n      <br>\n      <p>Al realizar el pago suba la captura del mismo al grupo de Whatsapp o simplemente haga click en el botón de abajo y envíela</p>\n\n      <p style=\"text-align: center;\">\n        <a href=\"https://n8n.srv957125.hstgr.cloud/form/eca4e401-1b1f-49dd-a1b1-8d60ec509074\" class=\"btn\">👉 Realizar Pago Ahora</a>\n      </p>\n\n      <p>Si ya realizó el pago, por favor ignore este mensaje o contáctenos para confirmar la recepción.</p>\n\n      <p>¡Gracias por su confianza y pronta atención!</p>\n\n      <p>Atentamente,<br>\n        <strong>Jorge Calderón</strong><br>\n        <em>Ingeniero Informático</em>\n      </p>\n    </div>\n    <div class=\"footer\">\n      <p>© {{$now.year}}.\n    </div>\n  </div>\n</body>\n</html>"
+      },
+      "type": "n8n-nodes-base.html",
+      "typeVersion": 1.2,
+      "position": [
+        96,
+        -256
+      ],
+      "id": "7bb0bb0b-4fbf-4832-8001-0cc2217b8b51",
+      "name": "HTML"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "cd3f33cb-986b-4594-9997-28ee52bc610b",
+              "leftValue": "={{ $json.ultimo_dia_mes - 2 }}",
+              "rightValue": "={{ $json.dia_actual }}",
+              "operator": {
+                "type": "number",
+                "operation": "equals"
+              }
+            },
+            {
+              "id": "a139ac72-ed11-4a18-8bc0-de864b0715cd",
+              "leftValue": "={{ $json.ultimo_dia_mes - 1 }}",
+              "rightValue": "={{ $json.dia_actual }}",
+              "operator": {
+                "type": "number",
+                "operation": "equals"
+              }
+            },
+            {
+              "id": "68ae9e2b-9df3-40de-96a1-981a43298e32",
+              "leftValue": "={{ $json.ultimo_dia_mes }}",
+              "rightValue": "={{ $json.dia_actual }}",
+              "operator": {
+                "type": "number",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "or"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.2,
+      "position": [
+        -128,
+        -256
+      ],
+      "id": "d2aa9db7-2ed2-4716-a168-312a62e5babf",
+      "name": "Filter If Dia Antes"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Calcular último día del mes": {
+      "main": [
+        [
+          {
+            "node": "Filter If Dia Antes",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Cada día a medianoche": {
+      "main": [
+        [
+          {
+            "node": "Calcular último día del mes",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTML": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter If Dia Antes": {
+      "main": [
+        [
+          {
+            "node": "HTML",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "callerPolicy": "workflowsFromSameOwner",
+    "errorWorkflow": "JwKJlNBWYU75uE23"
+  },
+  "versionId": "c3d59e30-fa73-4828-85f9-460196ca4047",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "1605e0956f411c02ecc29f05b035dcb95746e902cd54a42b69d92da41bbef671"
+  },
+  "id": "JwKJlNBWYU75uE23",
+  "tags": []
+}

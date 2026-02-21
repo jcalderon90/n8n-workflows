@@ -1,0 +1,183 @@
+{
+  "name": "Pagos Form",
+  "nodes": [
+    {
+      "parameters": {
+        "formTitle": "Recibo de Pago",
+        "formDescription": "Aquí subirá la captura de pantalla de la transferencia",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "Captura",
+              "fieldType": "file",
+              "requiredField": true
+            }
+          ]
+        },
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.3,
+      "position": [
+        -176,
+        -32
+      ],
+      "id": "2a9c1d58-d776-44ae-880d-36f2b5b9af52",
+      "name": "On form submission",
+      "webhookId": "eca4e401-1b1f-49dd-a1b1-8d60ec509074"
+    },
+    {
+      "parameters": {
+        "resource": "image",
+        "operation": "analyze",
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-4o",
+          "mode": "list",
+          "cachedResultName": "GPT-4O"
+        },
+        "text": "=Analiza la imagen. Si muestra una confirmación de pago exitosa —con check verde, texto como \"Payment sent\" o \"Success\", monto visible, y nombre del destinatario— responde únicamente:\n  > SI\n  En cualquier otro caso, responde:\n  > NO\n  Sin explicaciones, solo \"SI\" o \"NO\".",
+        "inputType": "base64",
+        "binaryPropertyName": "Captura",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        32,
+        -32
+      ],
+      "id": "5284c4a0-2c21-4cac-8d90-16ca3d067078",
+      "name": "Analyze image",
+      "credentials": {
+        "openAiApi": {
+          "id": "lopdnXZa5QlttiNa",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "e5023f80-6702-479d-8e14-b5b80ad0adac",
+              "leftValue": "={{ $json.content }}",
+              "rightValue": "SI",
+              "operator": {
+                "type": "string",
+                "operation": "contains"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        240,
+        -32
+      ],
+      "id": "cba5c33f-0654-4a47-ab51-6e6fcdcc1d67",
+      "name": "If Confirmado"
+    },
+    {
+      "parameters": {
+        "operation": "completion",
+        "completionTitle": "Gracias, se ha confirmado su pago!",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.form",
+      "typeVersion": 2.3,
+      "position": [
+        448,
+        -128
+      ],
+      "id": "e47b575d-044b-4009-b1b0-2e442ed5d3d9",
+      "name": "Form",
+      "webhookId": "029178e0-5a7d-46f8-b6b0-aebca80700b9"
+    },
+    {
+      "parameters": {
+        "operation": "completion",
+        "completionTitle": "Su pago NO ha sido confirmado.",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.form",
+      "typeVersion": 2.3,
+      "position": [
+        448,
+        64
+      ],
+      "id": "815c6db2-2340-4c7c-8ab8-dfd9784154fe",
+      "name": "Form1",
+      "webhookId": "e9eec6fa-6abd-4813-9ae7-40b27912f292"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "On form submission": {
+      "main": [
+        [
+          {
+            "node": "Analyze image",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Analyze image": {
+      "main": [
+        [
+          {
+            "node": "If Confirmado",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If Confirmado": {
+      "main": [
+        [
+          {
+            "node": "Form",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Form1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "callerPolicy": "workflowsFromSameOwner",
+    "errorWorkflow": "LBRWnjAwvB2HJ7uT"
+  },
+  "versionId": "e773f23c-db75-434e-81f8-a4f4ab707701",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "1605e0956f411c02ecc29f05b035dcb95746e902cd54a42b69d92da41bbef671"
+  },
+  "id": "LBRWnjAwvB2HJ7uT",
+  "tags": []
+}

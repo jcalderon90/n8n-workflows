@@ -1,0 +1,642 @@
+{
+  "name": "INGRESA CONECEPTO DETALLE FACTURA",
+  "nodes": [
+    {
+      "parameters": {
+        "workflowInputs": {
+          "values": [
+            {
+              "name": "res_id",
+              "type": "number"
+            },
+            {
+              "name": "id",
+              "type": "number"
+            },
+            {
+              "name": "id_orden_compra",
+              "type": "number"
+            }
+          ]
+        }
+      },
+      "id": "c648db6d-9602-4b6c-9979-7f9a9b8b7657",
+      "typeVersion": 1.1,
+      "name": "Start",
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "position": [
+        3360,
+        128
+      ]
+    },
+    {
+      "parameters": {
+        "resource": "custom",
+        "customResource": "account.move",
+        "operation": "get",
+        "customResourceId": "={{ $json.res_id }}",
+        "options": {
+          "fieldsList": [
+            "project_id"
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.odoo",
+      "typeVersion": 1,
+      "position": [
+        3808,
+        128
+      ],
+      "id": "9d7b2c97-bd7b-4d0e-81ff-ee3914e642ab",
+      "name": "GET ID PROYECTO",
+      "credentials": {
+        "odooApi": {
+          "id": "L54C0wh51BqmebUj",
+          "name": "Odoo Mundo Verde Prod"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "custom",
+        "customResource": "purchase.order",
+        "operation": "get",
+        "customResourceId": "={{ $('DATA').item.json.id_orden_compra }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.odoo",
+      "typeVersion": 1,
+      "position": [
+        4032,
+        128
+      ],
+      "id": "ca602a34-852c-4361-8b68-55e0b9eb7b25",
+      "name": "ORDEN COMPRA",
+      "credentials": {
+        "odooApi": {
+          "id": "L54C0wh51BqmebUj",
+          "name": "Odoo Mundo Verde Prod"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "custom",
+        "customResource": "account.move.line",
+        "operation": "getAll",
+        "returnAll": true,
+        "options": {},
+        "filterRequest": {
+          "filter": [
+            {
+              "fieldName": "move_id",
+              "value": "={{ $('FACTURA').item.json.id }}"
+            },
+            {
+              "fieldName": "product_id",
+              "operator": "notEqual",
+              "value": "={{ Boolean(false) }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.odoo",
+      "typeVersion": 1,
+      "position": [
+        5376,
+        48
+      ],
+      "id": "b1840e4b-493f-43cf-b3ef-d8fc644f84ea",
+      "name": "DETALLE DE FACTURA",
+      "credentials": {
+        "odooApi": {
+          "id": "L54C0wh51BqmebUj",
+          "name": "Odoo Mundo Verde Prod"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "EhwYWvGG08HvhjAm",
+          "mode": "list",
+          "cachedResultUrl": "/workflow/EhwYWvGG08HvhjAm",
+          "cachedResultName": "INGRESA CONCEPTO DETALLE FACTURA 2"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "lista_detalle_factura": "={{ $json.lista_detalle_factura }}",
+            "id_solicitud_servicio": "={{ $json.id_solicitud_servicio }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "lista_detalle_factura",
+              "displayName": "lista_detalle_factura",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "array",
+              "removed": false
+            },
+            {
+              "id": "id_solicitud_servicio",
+              "displayName": "id_solicitud_servicio",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "number",
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.2,
+      "position": [
+        6272,
+        224
+      ],
+      "name": "Call INGRESA CONCEPTO DETALLE FACTURA 2",
+      "id": "947b0156-8636-4ea0-9c28-cc8d4b902a6d"
+    },
+    {
+      "parameters": {
+        "resource": "custom",
+        "customResource": "purchase.order.line",
+        "operation": "getAll",
+        "returnAll": true,
+        "options": {},
+        "filterRequest": {
+          "filter": [
+            {
+              "fieldName": "order_id",
+              "value": "={{ $json.id }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.odoo",
+      "typeVersion": 1,
+      "position": [
+        4256,
+        128
+      ],
+      "id": "76e60bfe-a7c1-434f-8f18-c25a46441922",
+      "name": "DETALLES ORDEN COMPRA",
+      "credentials": {
+        "odooApi": {
+          "id": "L54C0wh51BqmebUj",
+          "name": "Odoo Mundo Verde Prod"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "37e0eb9d-5b71-40ae-bb64-121fd8a908b6",
+              "leftValue": "={{ $json.bim_req_line_id[0] }}",
+              "rightValue": 0,
+              "operator": {
+                "type": "number",
+                "operation": "exists",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        4928,
+        48
+      ],
+      "id": "bf74f0f7-e0da-440d-8fb4-b375dbf2f43b",
+      "name": "If MATERIAL"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        4704,
+        128
+      ],
+      "id": "fefb7204-d898-48b6-8bf5-76b10ee3e7e2",
+      "name": "Loop Over Items1"
+    },
+    {
+      "parameters": {
+        "resource": "custom",
+        "customResource": "bim.product.purchase",
+        "operation": "get",
+        "customResourceId": "=",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.odoo",
+      "typeVersion": 1,
+      "position": [
+        5152,
+        -48
+      ],
+      "id": "929173dc-bae6-4e5d-b2bd-e796f179d667",
+      "name": "SOLICITUD SERVCIO -> MATERIALES",
+      "credentials": {
+        "odooApi": {
+          "id": "L54C0wh51BqmebUj",
+          "name": "Odoo Mundo Verde Prod"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "80d8f74a-5ba4-45b9-beee-5e3bc3cce043",
+              "name": "res_id",
+              "value": "={{ $json.res_id }}",
+              "type": "string"
+            },
+            {
+              "id": "1b32b6a8-2ba7-4ae9-9b0b-2aca365347a5",
+              "name": "id",
+              "value": "={{ $json.id }}",
+              "type": "string"
+            },
+            {
+              "id": "c81de62b-aee4-469a-906b-7ac8e1a9c304",
+              "name": "id_orden_compra",
+              "value": "={{ $json.id_orden_compra }}",
+              "type": "number"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        3584,
+        128
+      ],
+      "id": "6c718d2c-e68b-4872-88a0-a8968f65f601",
+      "name": "DATA"
+    },
+    {
+      "parameters": {
+        "resource": "custom",
+        "customResource": "account.move",
+        "operation": "get",
+        "customResourceId": "={{ $('DATA').item.json.res_id }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.odoo",
+      "typeVersion": 1,
+      "position": [
+        4480,
+        128
+      ],
+      "id": "c9f99ecd-1493-429e-b1fd-c732976e3eb7",
+      "name": "FACTURA",
+      "credentials": {
+        "odooApi": {
+          "id": "L54C0wh51BqmebUj",
+          "name": "Odoo Mundo Verde Prod"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "chooseBranch",
+        "output": "empty"
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        5824,
+        144
+      ],
+      "id": "94c2979e-ec7a-43a4-8450-ffd2cab9fcfa",
+      "name": "Merge"
+    },
+    {
+      "parameters": {
+        "resource": "custom",
+        "customResource": "bim.purchase.services",
+        "operation": "get",
+        "customResourceId": "={{ $('ORDEN COMPRA').item.json.bim_service_id[0] }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.odoo",
+      "typeVersion": 1,
+      "position": [
+        5152,
+        144
+      ],
+      "id": "cc294d80-c449-45a9-9a92-a8271ec6b757",
+      "name": "SOLICITUD SERVCIO",
+      "credentials": {
+        "odooApi": {
+          "id": "L54C0wh51BqmebUj",
+          "name": "Odoo Mundo Verde Prod"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "b044ed4d-f314-4586-8bad-80038c5871b9",
+              "name": "id",
+              "value": "={{ $json.id }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        5600,
+        240
+      ],
+      "id": "1355273c-fab7-468d-aff7-4899f8071e31",
+      "name": "ID_SOLICITUD_SERVICIO"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "7c2dd189-371b-49db-b090-e807b6235dfc",
+              "name": "lista_detalle_factura",
+              "value": "={{ $('Aggregate').item.json.lista_detalle_factura }}",
+              "type": "array"
+            },
+            {
+              "id": "fdc377fa-2cec-42a1-8026-4521607b71b7",
+              "name": "id_solicitud_servicio",
+              "value": "={{ $('ID_SOLICITUD_SERVICIO').item.json.id }}",
+              "type": "number"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        6048,
+        144
+      ],
+      "id": "450382be-53d8-44ff-a0a3-1f44924f6f70",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "aggregate": "aggregateAllItemData",
+        "destinationFieldName": "lista_detalle_factura",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        5600,
+        48
+      ],
+      "id": "e04329be-1c5a-4a0e-a8ba-dffbe923145a",
+      "name": "Aggregate"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Start": {
+      "main": [
+        [
+          {
+            "node": "DATA",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "GET ID PROYECTO": {
+      "main": [
+        [
+          {
+            "node": "ORDEN COMPRA",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "ORDEN COMPRA": {
+      "main": [
+        [
+          {
+            "node": "DETALLES ORDEN COMPRA",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "DETALLE DE FACTURA": {
+      "main": [
+        [
+          {
+            "node": "Aggregate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Call INGRESA CONCEPTO DETALLE FACTURA 2": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "DETALLES ORDEN COMPRA": {
+      "main": [
+        [
+          {
+            "node": "FACTURA",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If MATERIAL": {
+      "main": [
+        [
+          {
+            "node": "SOLICITUD SERVCIO -> MATERIALES",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "SOLICITUD SERVCIO",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items1": {
+      "main": [
+        [],
+        [
+          {
+            "node": "If MATERIAL",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "SOLICITUD SERVCIO -> MATERIALES": {
+      "main": [
+        []
+      ]
+    },
+    "DATA": {
+      "main": [
+        [
+          {
+            "node": "GET ID PROYECTO",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "FACTURA": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "SOLICITUD SERVCIO": {
+      "main": [
+        [
+          {
+            "node": "ID_SOLICITUD_SERVICIO",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "DETALLE DE FACTURA",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "ID_SOLICITUD_SERVICIO": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Aggregate": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Call INGRESA CONCEPTO DETALLE FACTURA 2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": false,
+    "timeSavedMode": "fixed",
+    "callerPolicy": "workflowsFromSameOwner",
+    "errorWorkflow": "wv2-6zOqoyZTlgKRvmnxr"
+  },
+  "versionId": "1027b70e-8992-49e3-aaed-2c50a8600721",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "d4ab02fb1ef8b6ca2c1c5c1f280ee696b0514d7d92cee5fb0da1784dbe393998"
+  },
+  "id": "metMtC8lCjihYXw2",
+  "tags": [
+    {
+      "updatedAt": "2026-01-08T01:09:04.954Z",
+      "createdAt": "2026-01-08T01:09:04.954Z",
+      "id": "5STmV35Tlrs8TpZT",
+      "name": "✅COMPLETED"
+    }
+  ]
+}

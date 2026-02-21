@@ -1,0 +1,892 @@
+{
+  "name": "TRACKING INCOMING PAYMENTS",
+  "nodes": [
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            }
+          ]
+        },
+        "simple": false,
+        "filters": {
+          "q": "subject:\"FW: You received money with Zelle\"",
+          "readStatus": "unread",
+          "sender": "mvarela@varela.law"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmailTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        -528,
+        -144
+      ],
+      "id": "53377420-fa0c-4854-9cf2-4a3e988042ce",
+      "name": "Gmail Trigger",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "JeoA3ck6F9AaFBSc",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "html": "{{ $json.html }}"
+      },
+      "type": "n8n-nodes-base.html",
+      "typeVersion": 1.2,
+      "position": [
+        -304,
+        -304
+      ],
+      "id": "3b60a879-c119-4928-a66f-4cb15f188b3c",
+      "name": "HTML"
+    },
+    {
+      "parameters": {
+        "jsCode": "const text = $json.text;\n\n// 1. Extraer nombre del remitente (solo el nombre real, sin \"payment\")\nlet senderName = null;\nconst lines = text.split('\\n');\nfor (const line of lines) {\n  const match = line.match(/([A-Z][A-Za-z\\s.,'-]+?)\\s+sent you money/i);\n  if (match) {\n    senderName = match[1].trim();\n    break;\n  }\n}\n\n// 2. Monto\nlet amount = null;\nconst amountMatch = text.match(/Amount\\s+\\$(\\d+\\.\\d{2})/);\nif (amountMatch) {\n  amount = `$${amountMatch[1]}`;\n}\n\n// 3. Fecha\nlet sentDate = null;\nconst dateMatch = text.match(/Sent on\\s+([A-Za-z]+\\s+\\d{1,2},\\s+\\d{4})/);\nif (dateMatch) {\n  sentDate = dateMatch[1];\n}\n\n// 4. Número de transacción\nlet transactionNumber = null;\nconst txnMatch = text.match(/Transaction number\\s+(\\d+)/);\nif (txnMatch) {\n  transactionNumber = txnMatch[1];\n}\n\n// 5. Memo (CORREGIDO: extrae desde la misma línea)\nlet memo = null;\nconst memoMatch = text.match(/Memo\\s+(.+)/i);\nif (memoMatch) {\n  memo = memoMatch[1].trim();\n}\n\n// Devolver resultado\nreturn [{\n  json: {\n    extracted: {\n      senderName,\n      amount,\n      sentDate,\n      transactionNumber,\n      memo\n    }\n  }\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -272,
+        80
+      ],
+      "id": "b4824e03-6a2f-4985-80b3-63a4e10b7158",
+      "name": "Code in JavaScript"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1j_2va73Riv9_gmkVbDAKkGq9u661ZldS9BaaAkTNHYQ",
+          "mode": "list",
+          "cachedResultName": "Inconming Mail Payments ",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1j_2va73Riv9_gmkVbDAKkGq9u661ZldS9BaaAkTNHYQ/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1j_2va73Riv9_gmkVbDAKkGq9u661ZldS9BaaAkTNHYQ/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Sender Name": "={{ $json.extracted.senderName }}",
+            "Amount": "={{ $json.extracted.amount }}",
+            "Sent Date": "={{ $json.extracted.sentDate }}",
+            "Memo": "={{ $json.extracted.memo }}",
+            "ID": "={{ $('Gmail Trigger').item.json.id }}",
+            "Transaction No.": "={{ $json.extracted.transactionNumber }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Sender Name",
+              "displayName": "Sender Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Amount",
+              "displayName": "Amount",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Sent Date",
+              "displayName": "Sent Date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Transaction No.",
+              "displayName": "Transaction No.",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Memo",
+              "displayName": "Memo",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "ID",
+              "displayName": "ID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -32,
+        80
+      ],
+      "id": "189e3121-249c-4bf0-af5e-6baaa4b81468",
+      "name": "Append row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "Iut1j2vQOyWRXKrg",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4o-mini",
+          "mode": "list",
+          "cachedResultName": "gpt-4o-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        384,
+        64
+      ],
+      "id": "5a24b45d-74d2-4ff0-86d4-7c2be1f5146a",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "lopdnXZa5QlttiNa",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "search",
+        "base": {
+          "__rl": true,
+          "value": "app6Nt3Hdoj9E6sZ8",
+          "mode": "list",
+          "cachedResultName": "Legal Case Tracking and Billing",
+          "cachedResultUrl": "https://airtable.com/app6Nt3Hdoj9E6sZ8"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tblBo5fgVq3boQyhr",
+          "mode": "list",
+          "cachedResultName": "Cases",
+          "cachedResultUrl": "https://airtable.com/app6Nt3Hdoj9E6sZ8/tblBo5fgVq3boQyhr"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtableTool",
+      "typeVersion": 2.1,
+      "position": [
+        512,
+        64
+      ],
+      "id": "91f211a8-55b0-4ecc-a35d-0985463f1eec",
+      "name": "find_case",
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "6wPFco9G7xyqhPzg",
+          "name": "Airtable Personal Access Token account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json['Sender Name'] }}",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "=Eres un agente automatizado que concilia pagos con casos legales en Airtable.\n\nSe te dará:\n- El nombre del remitente del pago: \"{{ $json['Sender Name'] }}\"\n- Acceso a una herramienta llamada \"find_case\" que devuelve todos los casos disponibles en la base de datos.\n\nTu tarea:\n1. Usa la herramienta \"find_case\" para obtener la lista de casos.\n2. Revisa **cada campo de cada caso** (como \"Case Name\", \"Description\", etc.) en busca de una coincidencia **explícita** con el nombre del remitente.\n   - Se considera coincidencia si el nombre completo o al menos uno de los apellidos (por ejemplo, \"ELLIS\" o \"PAPIN\") aparece **literalmente en algún campo del caso**.\n   - No asumas coincidencias por contexto, tipo de caso, fechas, montos ni frases genéricas.\n3. Si encuentras **al menos un caso que cumpla esta condición**, devuelve:\n   {\n     \"founded\": true,\n     \"data\": { /* el caso completo tal como lo devolvió la herramienta */ }\n   }\n4. Si **ningún caso contiene el nombre o apellidos del remitente**, devuelve:\n   {\n     \"founded\": false,\n     \"data\": {}\n   }\n\nReglas estrictas:\n- Tu respuesta debe coincidir **exactamente** con el formato JSON esperado.\n- No añadas texto, explicaciones, bloques de código ni saltos de línea.\n- Confía solo en lo que la herramienta te devuelve. Si no hay coincidencia textual clara, founded = false."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        448,
+        -160
+      ],
+      "id": "c79a624b-4440-4889-ac19-0da381af3a4f",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "schemaType": "manual",
+        "inputSchema": "{\n  \"type\": \"object\",\n  \"properties\": {\n    \"founded\": {\n      \"type\": \"boolean\"\n    },\n    \"data\": {\n      \"type\": \"object\",\n      \"properties\": {\n        \"id\": { \"type\": \"string\" },\n        \"createdTime\": { \"type\": \"string\", \"format\": \"date-time\" },\n        \"Case Name\": { \"type\": \"string\" },\n        \"Description\": { \"type\": \"string\" },\n        \"Contract URL\": { \"type\": \"string\", \"format\": \"uri\" },\n        \"Case #\": { \"type\": \"string\" },\n        \"Date\": { \"type\": \"string\" },\n        \"Billing\": { \"type\": \"string\" },\n        \"Staff\": {\n          \"type\": \"array\",\n          \"items\": { \"type\": \"string\" }\n        },\n        \"Related Contacts\": {\n          \"type\": \"array\",\n          \"items\": { \"type\": \"string\" }\n        },\n        \"Status\": { \"type\": \"string\" },\n        \"Case Type (T)\": { \"type\": \"string\" },\n        \"Advance Fee\": { \"type\": \"string\" },\n        \"Lawyers' Fees per hour\": { \"type\": \"string\" },\n        \"Paralegal Fees per hour\": { \"type\": \"string\" },\n        \"Assistants Hourly Fees per hour\": { \"type\": \"string\" },\n        \"Minimum Cancellation rate\": { \"type\": \"string\" }\n      },\n      \"required\": [\"id\", \"createdTime\", \"Case Name\"],\n      \"additionalProperties\": true\n    }\n  },\n  \"required\": [\"founded\", \"data\"]\n}",
+        "autoFix": true
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        640,
+        64
+      ],
+      "id": "46901dcc-104b-4b2a-97c0-af17e94426d8",
+      "name": "Structured Output Parser"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "670dee8a-3a93-4768-865b-878a6ee9e197",
+              "leftValue": "={{ $json.response.founded }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        1232,
+        -160
+      ],
+      "id": "927ef0b5-7dc9-4034-b289-02affa4665cc",
+      "name": "If Founded"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        1456,
+        -64
+      ],
+      "id": "4a045b97-17bb-43b1-a734-d14a4e191f34",
+      "name": "No Operation, do nothing"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "0bff7629-4989-4816-ac84-9d3bc329ce5a",
+              "name": "response",
+              "value": "={{ $json.output }}",
+              "type": "object"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1008,
+        -160
+      ],
+      "id": "34c39928-bb75-4d72-91f7-0d730897f985",
+      "name": "RESPONSE"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4o-mini",
+          "mode": "list",
+          "cachedResultName": "gpt-4o-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        720,
+        272
+      ],
+      "id": "e5807d92-48f0-4979-a842-7b9ada9756b7",
+      "name": "OpenAI Chat Model1",
+      "credentials": {
+        "openAiApi": {
+          "id": "lopdnXZa5QlttiNa",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "base": {
+          "__rl": true,
+          "value": "app6Nt3Hdoj9E6sZ8",
+          "mode": "list",
+          "cachedResultName": "Legal Case Tracking and Billing",
+          "cachedResultUrl": "https://airtable.com/app6Nt3Hdoj9E6sZ8"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tblBo5fgVq3boQyhr",
+          "mode": "list",
+          "cachedResultName": "Cases",
+          "cachedResultUrl": "https://airtable.com/app6Nt3Hdoj9E6sZ8/tblBo5fgVq3boQyhr"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "id": "={{ $json.response.data.id }}",
+            "Billing": "={{ \n  Number($('Append row in sheet').item.json.Amount.replace(/\\$/g, ''))\n}}",
+            "Case #": "={{ $('RESPONSE').item.json.response.data[\"Case #\"] }}"
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": true,
+              "removed": false
+            },
+            {
+              "id": "Case Name",
+              "displayName": "Case Name",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Status",
+              "displayName": "Status",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "options",
+              "options": [
+                {
+                  "name": "Further Action Needed",
+                  "value": "Further Action Needed"
+                },
+                {
+                  "name": "Processing",
+                  "value": "Processing"
+                },
+                {
+                  "name": "Disposition Date Set",
+                  "value": "Disposition Date Set"
+                },
+                {
+                  "name": "Hearing Date Set",
+                  "value": "Hearing Date Set"
+                },
+                {
+                  "name": "Trial Date Pending",
+                  "value": "Trial Date Pending"
+                },
+                {
+                  "name": "Trial Date Set",
+                  "value": "Trial Date Set"
+                },
+                {
+                  "name": "Closed",
+                  "value": "Closed"
+                },
+                {
+                  "name": "NEW CASE",
+                  "value": "NEW CASE"
+                }
+              ],
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Case #",
+              "displayName": "Case #",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Case Type (T)",
+              "displayName": "Case Type (T)",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Advance Fee",
+              "displayName": "Advance Fee",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Lawyers' Fees per hour",
+              "displayName": "Lawyers' Fees per hour",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Paralegal Fees per hour",
+              "displayName": "Paralegal Fees per hour",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Assistants Hourly Fees per hour",
+              "displayName": "Assistants Hourly Fees per hour",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Minimum Cancellation rate",
+              "displayName": "Minimum Cancellation rate",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Billing",
+              "displayName": "Billing",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Date",
+              "displayName": "Date",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "dateTime",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Description",
+              "displayName": "Description",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Contract URL",
+              "displayName": "Contract URL",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Staff",
+              "displayName": "Staff",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "array",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Related Contacts",
+              "displayName": "Related Contacts",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "array",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "language",
+              "displayName": "language",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.1,
+      "position": [
+        1456,
+        -256
+      ],
+      "id": "2ef1e13d-d671-42bc-af7d-051cdd5aeff3",
+      "name": "Update Billing en Airtable",
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "6wPFco9G7xyqhPzg",
+          "name": "Airtable Personal Access Token account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const text = $json.text;\n\n// 1. Extraer nombre del remitente (solo el nombre real, sin \"payment\")\nlet senderName = null;\nconst lines = text.split('\\n');\nfor (const line of lines) {\n  const match = line.match(/([A-Z][A-Za-z\\s.,'-]+?)\\s+sent you money/i);\n  if (match) {\n    senderName = match[1].trim();\n    break;\n  }\n}\n\n// 2. Monto\nlet amount = null;\nconst amountMatch = text.match(/Amount\\s+\\$(\\d+\\.\\d{2})/);\nif (amountMatch) {\n  amount = `$${amountMatch[1]}`;\n}\n\n// 3. Fecha\nlet sentDate = null;\nconst dateMatch = text.match(/Sent on\\s+([A-Za-z]+\\s+\\d{1,2},\\s+\\d{4})/);\nif (dateMatch) {\n  sentDate = dateMatch[1];\n}\n\n// 4. Número de transacción\nlet transactionNumber = null;\nconst txnMatch = text.match(/Transaction number\\s+(\\d+)/);\nif (txnMatch) {\n  transactionNumber = txnMatch[1];\n}\n\n// 5. Memo (CORREGIDO: extrae desde la misma línea)\nlet memo = null;\nconst memoMatch = text.match(/Memo\\s+(.+)/i);\nif (memoMatch) {\n  memo = memoMatch[1].trim();\n}\n\n// Devolver resultado\nreturn [{\n  json: {\n    extracted: {\n      senderName,\n      amount,\n      sentDate,\n      transactionNumber,\n      memo\n    }\n  }\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -288,
+        -112
+      ],
+      "id": "39bdab14-0358-4032-bbb3-f34c85e1bfa8",
+      "name": "Code in JavaScript1"
+    },
+    {
+      "parameters": {
+        "operation": "create",
+        "base": {
+          "__rl": true,
+          "value": "app6Nt3Hdoj9E6sZ8",
+          "mode": "list",
+          "cachedResultName": "Legal Case Tracking and Billing",
+          "cachedResultUrl": "https://airtable.com/app6Nt3Hdoj9E6sZ8"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tblTyWbKiqqDI6vJK",
+          "mode": "list",
+          "cachedResultName": "Zelle Payments",
+          "cachedResultUrl": "https://airtable.com/app6Nt3Hdoj9E6sZ8/tblTyWbKiqqDI6vJK"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Sent Date": "={{ new Date($json.extracted.sentDate) }}",
+            "Sender Name": "={{ $json.extracted.senderName }}",
+            "Amount": "={{ $json.extracted.amount }}",
+            "Transaction Number": "={{ $json.extracted.transactionNumber }}",
+            "Memo": "={{ $json.extracted.memo }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Sender Name",
+              "displayName": "Sender Name",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Amount",
+              "displayName": "Amount",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Sent Date",
+              "displayName": "Sent Date",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "dateTime",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Transaction Number",
+              "displayName": "Transaction Number",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Memo",
+              "displayName": "Memo",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.1,
+      "position": [
+        -80,
+        -112
+      ],
+      "id": "2cc6de54-043e-4a71-ae2e-2a1949143683",
+      "name": "Create a record",
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "6wPFco9G7xyqhPzg",
+          "name": "Airtable Personal Access Token account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Gmail Trigger": {
+      "main": [
+        [
+          {
+            "node": "HTML",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Code in JavaScript1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append row in sheet": {
+      "main": [
+        []
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "find_case": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "RESPONSE",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If Founded": {
+      "main": [
+        [
+          {
+            "node": "Update Billing en Airtable",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "No Operation, do nothing",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "RESPONSE": {
+      "main": [
+        [
+          {
+            "node": "If Founded",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Structured Output Parser",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript1": {
+      "main": [
+        [
+          {
+            "node": "Create a record",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "callerPolicy": "workflowsFromSameOwner",
+    "errorWorkflow": "PKDHhNX52b35FNo0"
+  },
+  "versionId": "24f08f81-156d-459f-ba0e-84390b0a732f",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "1605e0956f411c02ecc29f05b035dcb95746e902cd54a42b69d92da41bbef671"
+  },
+  "id": "PKDHhNX52b35FNo0",
+  "tags": []
+}

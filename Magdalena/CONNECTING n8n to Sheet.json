@@ -1,0 +1,341 @@
+{
+  "name": "CONNECTING n8n to Sheet",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -256,
+        -16
+      ],
+      "id": "7c05fb96-8695-4b6d-8909-ee6814965f0f",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "collection": "Polygons",
+        "options": {
+          "limit": 10
+        }
+      },
+      "type": "n8n-nodes-base.mongoDb",
+      "typeVersion": 1.2,
+      "position": [
+        -48,
+        -16
+      ],
+      "id": "70a2f72a-5556-443c-9112-20fe57937136",
+      "name": "Find Polygons",
+      "credentials": {
+        "mongoDb": {
+          "id": "oCCgJ1QnJPbirSub",
+          "name": "Magdalena"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        160,
+        -16
+      ],
+      "id": "c244f804-32a3-482f-9f76-0e16be6f9c78",
+      "name": "Loop Over Items"
+    },
+    {
+      "parameters": {
+        "jsCode": "const items = $input.all();\nconst preparedItems = [];\n\nitems.forEach(item => {\n  const doc = item.json;\n\n  // Función auxiliar para extraer valores de campos anidados como $numberInt, $numberDouble\n  const extractValue = (obj, fallback = null) => {\n    if (obj && typeof obj === 'object') {\n      if (obj.$numberInt !== undefined) return parseInt(obj.$numberInt);\n      if (obj.$numberDouble !== undefined) return parseFloat(obj.$numberDouble);\n    }\n    return obj || fallback;\n  };\n\n  const prepared = {\n    ID: doc._id ? doc._id.toString() : null, // Extrae el _id de MongoDB y conviértelo a string\n    admin: doc.admin || null,\n    empresa: doc.empresa || null,\n    n_sector: extractValue(doc.n_sector) || null,\n    n_lote: extractValue(doc.n_lote) || null,\n    n_finca: extractValue(doc.n_finca) || null,\n    finca: doc.finca || null,\n    region: doc.region || null,\n    pante: extractValue(doc.pante) || null,\n    categoria: doc.categoria || null,\n    lote: doc.lote || null,\n    area: extractValue(doc.area) || null,\n    renovacion: doc.renovacion ? new Date(doc.renovacion).toISOString() : null,\n    revisado: doc.revisado ? new Date(doc.revisado).toISOString() : null,\n    long_forma: extractValue(doc.long_forma) || null,\n    area_forma: extractValue(doc.area_forma) || null,\n    coordenadas: JSON.stringify(doc.coordenadas) || null,\n    supervisor_ids: JSON.stringify(doc.supervisor_ids) || null,\n  };\n\n  preparedItems.push(prepared);\n});\n\n// Devuelve cada objeto como un item con .json para que Google Sheets lo lea bien\nreturn preparedItems.map(item => ({ json: item }));"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        384,
+        0
+      ],
+      "id": "ef3968ec-d0a5-42eb-b79c-77529b58ad86",
+      "name": "Prepare Data"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1acrBaQ75xi9dzOkwwRteZYD81Hl43aGjC39wVq81L9g",
+          "mode": "list",
+          "cachedResultName": "Magdalena Data from MongoDB",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1acrBaQ75xi9dzOkwwRteZYD81Hl43aGjC39wVq81L9g/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Hoja 1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1acrBaQ75xi9dzOkwwRteZYD81Hl43aGjC39wVq81L9g/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "autoMapInputData",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "ID",
+              "displayName": "ID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "admin",
+              "displayName": "admin",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "empresa",
+              "displayName": "empresa",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "n_sector",
+              "displayName": "n_sector",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "n_lote",
+              "displayName": "n_lote",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "n_finca",
+              "displayName": "n_finca",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "finca",
+              "displayName": "finca",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "region",
+              "displayName": "region",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "pante",
+              "displayName": "pante",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "categoria",
+              "displayName": "categoria",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "lote",
+              "displayName": "lote",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "area",
+              "displayName": "area",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "renovacion",
+              "displayName": "renovacion",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "revisado",
+              "displayName": "revisado",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "long_forma",
+              "displayName": "long_forma",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "area_forma",
+              "displayName": "area_forma",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "coordenadas",
+              "displayName": "coordenadas",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "supervisor_ids",
+              "displayName": "supervisor_ids",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {
+          "useAppend": false
+        }
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        592,
+        0
+      ],
+      "id": "85cec8e1-c418-4b44-bdf7-a5f027997ed4",
+      "name": "Append row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "l6u1eR7itnWxgdGe",
+          "name": "Jorge Garoo"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "Find Polygons",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Find Polygons": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Prepare Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prepare Data": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append row in sheet": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "c6b51b86-3a9a-41bf-86be-2b5d31b9f20d",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "d4ab02fb1ef8b6ca2c1c5c1f280ee696b0514d7d92cee5fb0da1784dbe393998"
+  },
+  "id": "5ECvB7KjwKZ2FApT",
+  "tags": []
+}

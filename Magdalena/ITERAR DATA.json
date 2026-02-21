@@ -1,0 +1,1928 @@
+{
+  "name": "ITERAR DATA",
+  "nodes": [
+    {
+      "parameters": {
+        "jsCode": "const initial_ndvi = Number(\n  $(\"Find Last Record\").first().json.ndvi.bands.B0.stats.mean,\n);\nconst initial_ndWi = Number(\n  $(\"Find Last Record\").first().json.ndwi.bands.B0.stats.mean,\n);\n\nconst end_ndvi = Number(\n  $(\"PARAMETROS Y OUTPUT NDVI\").first().json.DATA.ndvi.bands.B0.stats.mean,\n);\nconst end_ndwi = Number(\n  $(\"PARAMETROS Y OUTPUT NDWI\").first().json.DATA.ndwi.bands.B0.stats.mean,\n);\n\nconst initial_date = new Date($input.first().json.rango_toma.from);\nconst end_date = new Date();\n\nconst diferencia_ndwi = end_ndwi - initial_ndWi;\n\nconst diferencia_ndvi = end_ndvi - initial_ndvi;\nconst velocidad_ndvi = (end_ndvi - initial_ndvi) / 5;\nconst aceleracion_ndvi = (velocidad_ndvi - Number($('Find Last Record').first().json.ndvi_metricas.velocidad)) / 5;\n\nreturn [{\n  diferencia_ndwi,\n  diferencia_ndvi,\n  velocidad_ndvi,\n  aceleracion_ndvi,\n}];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        144,
+        -736
+      ],
+      "id": "c847af0f-b273-4118-96fb-a7ee74ff683a",
+      "name": "CALCULATE V, A, DIFF"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "5938de21-33fa-4f5a-9251-8b1f44afe151",
+              "name": "id_poligono",
+              "value": "={{ $('Start').item.json.polygon_id }}",
+              "type": "string"
+            },
+            {
+              "id": "f0933f3b-6a14-44fb-a10b-22cffbf12144",
+              "name": "fecha_toma",
+              "value": "={{$now.minus(2, 'days').toFormat(\"dd-MM-yyyy\")}}",
+              "type": "string"
+            },
+            {
+              "id": "abb6bc60-abbd-4678-a9af-37cbd43e938f",
+              "name": "rango_toma",
+              "value": "={{ (() => {\n  const fromDate = new Date($('Start').item.json.Date_Range.from);\n  const toDate = new Date($('Start').item.json.Date_Range.to);\n\n  const format = (d) => `${String(d.getDate()).padStart(2, '0')}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getFullYear())}`;\n\n  return {\n    from: format(fromDate),\n    to: format(toDate)\n  };\n})() }}",
+              "type": "object"
+            },
+            {
+              "id": "7f329671-7fdd-48c3-aed4-565dcf4bf61a",
+              "name": "intervalo_toma",
+              "value": "={{ $('Start').item.json.Interval }}",
+              "type": "string"
+            },
+            {
+              "id": "c1b80026-cbbc-43ef-b9ca-457b818ae73c",
+              "name": "ndvi",
+              "value": "={{ $('PARAMETROS Y OUTPUT NDVI').item.json.DATA.ndvi }}",
+              "type": "object"
+            },
+            {
+              "id": "0f703752-218c-41b6-90f6-6f8acb95aa5d",
+              "name": "ndwi",
+              "value": "={{ $('PARAMETROS Y OUTPUT NDWI').item.json.DATA.ndwi }}",
+              "type": "object"
+            },
+            {
+              "id": "d98bc2ec-5c75-48ee-839a-7b2b6aac2c9a",
+              "name": "img_ndvi",
+              "value": "={{ $('NDVI IMAGE STRUCTURE').item.json.public_url }}",
+              "type": "string"
+            },
+            {
+              "id": "0e563923-5b31-4ba0-8988-ad98f22e0ad5",
+              "name": "img_ndwi",
+              "value": "={{ $('NDWI IMAGE STRUCTURE').item.json.public_url }}",
+              "type": "string"
+            },
+            {
+              "id": "035d791b-c6f9-4995-b58f-09811dbfbadc",
+              "name": "ndvi_metricas",
+              "value": "={{ \n{\n  \"diferencia\": $json.diferencia_ndvi,\n  \"velocidad\": $json.velocidad_ndvi,\n  \"aceleracion\": $json.aceleracion_ndvi,\n}\n}}",
+              "type": "object"
+            },
+            {
+              "id": "cb0cbb08-3309-4a51-87c2-5e5458f1d585",
+              "name": "ndwi_metricas",
+              "value": "={{ \n{\n  \"diferencia\": $json.diferencia_ndwi\n}\n}}",
+              "type": "object"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1888,
+        656
+      ],
+      "id": "9d5f22cf-ac20-49ea-8e67-f3e0de6cecc3",
+      "name": "DATA TO SAVE"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://services.sentinel-hub.com/api/v1/process",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{ $('Start').item.json.access_token }}"
+            },
+            {
+              "name": "Accept",
+              "value": "image/jpeg"
+            }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "multipart-form-data",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "request",
+              "value": "={\n  \"input\": {\n    \"bounds\": {\n      \"properties\": {\n        \"crs\": \"http://www.opengis.net/def/crs/OGC/1.3/CRS84\"\n      },\n      \"geometry\": {\n        \"type\": \"Polygon\",\n        \"coordinates\": {{ $('Start').item.json.cordinates }}\n      }\n    },\n    \"data\": [\n      {\n        \"type\": \"sentinel-2-l2a\",\n        \"dataFilter\": {\n          \"timeRange\": {\n            \"from\": \"{{ $json.DATE_RANGE.FROM }}\",\n            \"to\": \"{{ $json.DATE_RANGE.TO }}\"\n          }\n        }\n      }\n    ]\n  },\n  \"output\": {\n    \"width\": 512,\n    \"height\": 512,\n    \"responses\": [\n      {\n        \"identifier\": \"default\",\n        \"format\": {\n          \"type\": \"image/jpeg\",\n          \"quality\": 80\n        }\n      }\n    ]\n  }\n}"
+            },
+            {
+              "name": "evalscript",
+              "value": "=function setup() {\n  return {\n    input: [{\n      bands:[\"B04\", \"B08\"],\n    }],\n    output: {\n      id: \"default\",\n      bands: 3,\n    }\n  }\n}\n\nfunction evaluatePixel(sample) {\n    let ndvi = (sample.B08 - sample.B04) / (sample.B08 + sample.B04)\n\n    if (ndvi<-0.5) return [0.05,0.05,0.05]\n    else if (ndvi<-0.2) return [0.75,0.75,0.75]\n    else if (ndvi<-0.1) return [0.86,0.86,0.86]\n    else if (ndvi<0) return [0.92,0.92,0.92]\n    else if (ndvi<0.025) return [1,0.98,0.8]\n    else if (ndvi<0.05) return [0.93,0.91,0.71]\n    else if (ndvi<0.075) return [0.87,0.85,0.61]\n    else if (ndvi<0.1) return [0.8,0.78,0.51]\n    else if (ndvi<0.125) return [0.74,0.72,0.42]\n    else if (ndvi<0.15) return [0.69,0.76,0.38]\n    else if (ndvi<0.175) return [0.64,0.8,0.35]\n    else if (ndvi<0.2) return [0.57,0.75,0.32]\n    else if (ndvi<0.25) return [0.5,0.7,0.28]\n    else if (ndvi<0.3) return [0.44,0.64,0.25]\n    else if (ndvi<0.35) return [0.38,0.59,0.21]\n    else if (ndvi<0.4) return [0.31,0.54,0.18]\n    else if (ndvi<0.45) return [0.25,0.49,0.14]\n    else if (ndvi<0.5) return [0.19,0.43,0.11]\n    else if (ndvi<0.55) return [0.13,0.38,0.07]\n    else if (ndvi<0.6) return [0.06,0.33,0.04]\n    else return [0,0.27,0]\n}"
+            }
+          ]
+        },
+        "options": {
+          "response": {
+            "response": {
+              "fullResponse": true,
+              "responseFormat": "file"
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -1552,
+        -208
+      ],
+      "id": "9ae2fab0-6079-471b-80d1-2772386d0073",
+      "name": "GET IMAGE_NDVI",
+      "retryOnFail": true
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "a9fad34c-230c-4794-a99d-191a637c22bb",
+              "name": "DATE_RANGE",
+              "value": "={\n  \"FROM\":\"{{ $('Start').item.json.Date_Range.from }}\",\n  \"TO\":\"{{ $('Start').item.json.Date_Range.to }}\"\n}",
+              "type": "object"
+            },
+            {
+              "id": "8b003fa7-2542-4055-8446-cf8505b45bce",
+              "name": "DATA",
+              "value": "={{ $json.outputs }}",
+              "type": "object"
+            },
+            {
+              "id": "c4bb84f6-64d6-404c-bbf1-b56c0054a84c",
+              "name": "POLYGON_ID",
+              "value": "={{ $('Start').item.json.polygon_id }}",
+              "type": "string"
+            },
+            {
+              "id": "62246742-cac1-4024-b59d-eeabcc7421c8",
+              "name": "POLYGON_CORDINATES",
+              "value": "={{ $('Start').item.json.cordinates }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -1776,
+        -208
+      ],
+      "id": "5bf4cf90-feb6-454a-9112-f8bae97991c6",
+      "name": "PARAMETROS Y OUTPUT NDVI"
+    },
+    {
+      "parameters": {
+        "collection": "Polygons_Data",
+        "options": {
+          "limit": 1,
+          "sort": "{ \"_id\": -1 }"
+        },
+        "query": "={\"id_poligono\":\"{{ $('Start').item.json.polygon_id }}\"}"
+      },
+      "type": "n8n-nodes-base.mongoDb",
+      "typeVersion": 1.2,
+      "position": [
+        -496,
+        -672
+      ],
+      "id": "b2de20b0-93a6-4930-aaed-8dd41ebe854a",
+      "name": "Find Last Record",
+      "alwaysOutputData": true,
+      "retryOnFail": false,
+      "credentials": {
+        "mongoDb": {
+          "id": "oCCgJ1QnJPbirSub",
+          "name": "Magdalena"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "a6c6d314-7f68-4e1b-b259-8f86917da62c",
+              "leftValue": "={{ $json._id.toString() }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "exists",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -272,
+        -672
+      ],
+      "id": "24032e94-25c0-4673-a4a5-f3672b962599",
+      "name": "If EXISTS"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "5938de21-33fa-4f5a-9251-8b1f44afe151",
+              "name": "id_poligono",
+              "value": "={{ $('Start').item.json.polygon_id }}",
+              "type": "string"
+            },
+            {
+              "id": "f0933f3b-6a14-44fb-a10b-22cffbf12144",
+              "name": "fecha_toma",
+              "value": "={{$now.minus(2, 'days').toFormat(\"dd-MM-yyyy\")}}",
+              "type": "string"
+            },
+            {
+              "id": "abb6bc60-abbd-4678-a9af-37cbd43e938f",
+              "name": "rango_toma",
+              "value": "={{ (() => {\n  const fromDate = new Date($('Start').item.json.Date_Range.from);\n  const toDate = new Date($('Start').item.json.Date_Range.to);\n\n  const format = (d) => `${String(d.getDate()).padStart(2, '0')}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getFullYear())}`;\n\n  return {\n    from: format(fromDate),\n    to: format(toDate)\n  };\n})() }}",
+              "type": "object"
+            },
+            {
+              "id": "7f329671-7fdd-48c3-aed4-565dcf4bf61a",
+              "name": "intervalo_toma",
+              "value": "={{ $('Start').item.json.Interval }}",
+              "type": "string"
+            },
+            {
+              "id": "c1b80026-cbbc-43ef-b9ca-457b818ae73c",
+              "name": "ndvi",
+              "value": "={{ $('PARAMETROS Y OUTPUT NDVI').item.json.DATA.ndvi }}",
+              "type": "object"
+            },
+            {
+              "id": "0f703752-218c-41b6-90f6-6f8acb95aa5d",
+              "name": "ndwi",
+              "value": "={{ $('PARAMETROS Y OUTPUT NDWI').item.json.DATA.ndwi }}",
+              "type": "object"
+            },
+            {
+              "id": "d98bc2ec-5c75-48ee-839a-7b2b6aac2c9a",
+              "name": "img_ndvi",
+              "value": "={{ $('NDVI IMAGE STRUCTURE').item.json.public_url }}",
+              "type": "string"
+            },
+            {
+              "id": "0e563923-5b31-4ba0-8988-ad98f22e0ad5",
+              "name": "img_ndwi",
+              "value": "={{ $('NDWI IMAGE STRUCTURE').item.json.public_url }}",
+              "type": "string"
+            },
+            {
+              "id": "035d791b-c6f9-4995-b58f-09811dbfbadc",
+              "name": "ndvi_metricas",
+              "value": "={{\n{\n  \"diferencia\": 0,\n  \"velocidad\": 0,\n  \"aceleracion\": 0,\n}\n}}",
+              "type": "object"
+            },
+            {
+              "id": "cb0cbb08-3309-4a51-87c2-5e5458f1d585",
+              "name": "ndwi_metricas",
+              "value": "={{\n{\n  \"diferencia\": 0\n}\n}}",
+              "type": "object"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1888,
+        848
+      ],
+      "id": "827be8d6-5f32-4c36-a1da-9b6defccf586",
+      "name": "DATA TO SAVE1"
+    },
+    {
+      "parameters": {
+        "operation": "insert",
+        "collection": "Polygons_Data",
+        "fields": "id_poligono,fecha_toma,rango_toma,intervalo_toma,ndvi,ndwi,img_ndvi,img_ndwi,ndvi_metricas,ndwi_metricas",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.mongoDb",
+      "typeVersion": 1.2,
+      "position": [
+        2400,
+        752
+      ],
+      "id": "6c9c674f-583d-4ce1-ac55-ad1212cc88d3",
+      "name": "Insert documents",
+      "credentials": {
+        "mongoDb": {
+          "id": "oCCgJ1QnJPbirSub",
+          "name": "Magdalena"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "chooseBranch",
+        "output": "empty"
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        -624,
+        192
+      ],
+      "id": "aa62a3ed-cacd-4b2e-90f8-aacde934aecc",
+      "name": "Merge"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        -2016,
+        560
+      ],
+      "id": "81f60b69-2e65-40e1-b6c6-49a5fb0cd5c1",
+      "name": "Loop Over NDWI Items"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://services.sentinel-hub.com/api/v1/process",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{ $('Start').item.json.access_token }}"
+            },
+            {
+              "name": "Accept",
+              "value": "image/jpeg"
+            }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "multipart-form-data",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "request",
+              "value": "={\n  \"input\": {\n    \"bounds\": {\n      \"properties\": {\n        \"crs\": \"http://www.opengis.net/def/crs/OGC/1.3/CRS84\"\n      },\n      \"geometry\": {\n        \"type\": \"Polygon\",\n        \"coordinates\": {{ $('Start').item.json.cordinates }}\n      }\n    },\n    \"data\": [\n      {\n        \"type\": \"sentinel-2-l2a\",\n        \"dataFilter\": {\n          \"timeRange\": {\n            \"from\": \"{{ $json.DATE_RANGE.FROM }}\",\n            \"to\": \"{{ $json.DATE_RANGE.TO }}\"\n          }\n        }\n      }\n    ]\n  },\n  \"output\": {\n    \"width\": 512,\n    \"height\": 512,\n    \"responses\": [\n      {\n        \"identifier\": \"default\",\n        \"format\": {\n          \"type\": \"image/jpeg\",\n          \"quality\": 80\n        }\n      }\n    ]\n  }\n}"
+            },
+            {
+              "name": "evalscript",
+              "value": "=// NDWI\nfunction setup() {\n  return {\n    input: [{\n      bands: [\"B03\", \"B08\"],   // Cambiamos a Verde y NIR\n    }],\n    output: {\n      id: \"default\",\n      bands: 3,\n    }\n  }\n}\n\nfunction evaluatePixel(sample) {\n    let ndwi = (sample.B03 - sample.B08) / (sample.B03 + sample.B08)\n\n    if (ndwi < -0.2) return [0.2, 0.2, 0.2]   // seco\n    else if (ndwi < 0) return [0.5, 0.5, 0.5]\n    else if (ndwi < 0.2) return [0.7, 0.9, 0.7]\n    else return [0, 0.4, 1]                   // agua clara\n}"
+            }
+          ]
+        },
+        "options": {
+          "response": {
+            "response": {
+              "fullResponse": true,
+              "responseFormat": "file"
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -1536,
+        576
+      ],
+      "id": "ea88b762-6544-4805-bc35-dbdfdaa36b55",
+      "name": "GET IMAGE_NDWI",
+      "retryOnFail": true
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "a9fad34c-230c-4794-a99d-191a637c22bb",
+              "name": "DATE_RANGE",
+              "value": "={\n  \"FROM\":\"{{ $json.interval.from }}\",\n  \"TO\":\"{{ $json.interval.to }}\"\n}",
+              "type": "object"
+            },
+            {
+              "id": "8b003fa7-2542-4055-8446-cf8505b45bce",
+              "name": "DATA",
+              "value": "={{ $json.outputs }}",
+              "type": "object"
+            },
+            {
+              "id": "c4bb84f6-64d6-404c-bbf1-b56c0054a84c",
+              "name": "POLYGON_ID",
+              "value": "={{ $('Start').item.json.polygon_id }}",
+              "type": "string"
+            },
+            {
+              "id": "62246742-cac1-4024-b59d-eeabcc7421c8",
+              "name": "POLYGON_CORDINATES",
+              "value": "={{ $('Start').item.json.cordinates }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -1760,
+        576
+      ],
+      "id": "e300240c-a355-4d34-834b-ba580452c4de",
+      "name": "PARAMETROS Y OUTPUT NDWI"
+    },
+    {
+      "parameters": {
+        "workflowInputs": {
+          "values": [
+            {
+              "name": "polygon_id",
+              "type": "any"
+            },
+            {
+              "name": "Date_Range",
+              "type": "any"
+            },
+            {
+              "name": "Interval",
+              "type": "any"
+            },
+            {
+              "name": "access_token",
+              "type": "any"
+            },
+            {
+              "name": "cordinates",
+              "type": "any"
+            },
+            {
+              "name": "NDVI_DATA",
+              "type": "array"
+            },
+            {
+              "name": "NDWI_DATA",
+              "type": "array"
+            }
+          ]
+        }
+      },
+      "id": "2d856291-fefa-493a-bd5c-a0a26043705e",
+      "typeVersion": 1.1,
+      "name": "Start",
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "position": [
+        -2928,
+        224
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "b7861ada-eeb3-4c78-90a7-1af9777e1787",
+              "name": "data",
+              "value": "={{ $json.NDVI_DATA }}",
+              "type": "array"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -2448,
+        -128
+      ],
+      "id": "69543b36-299e-4f6d-af06-b1dc28a877c4",
+      "name": "NDVI ARRAY"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "b7861ada-eeb3-4c78-90a7-1af9777e1787",
+              "name": "datas",
+              "value": "={{ $json.NDWI_DATA }}",
+              "type": "array"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -2464,
+        576
+      ],
+      "id": "6953c8a9-f388-4d37-a2d9-90b08b595047",
+      "name": "NDWI ARRAY"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        -2000,
+        -128
+      ],
+      "id": "62c9c8d6-2a10-4ad9-adaa-443bc69c745b",
+      "name": "Loop Over Items"
+    },
+    {
+      "parameters": {
+        "jsCode": "return $input.all().map(item => item.json.data).flat();"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -2224,
+        -128
+      ],
+      "id": "57850aa3-1b34-4e09-a0ef-11e20a08f9bc",
+      "name": "Code"
+    },
+    {
+      "parameters": {
+        "jsCode": "return $input.all().map(item => item.json.datas).flat();"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -2240,
+        576
+      ],
+      "id": "09997ab2-bcad-4e0a-b52c-8299f4ba0c68",
+      "name": "Code1"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "ab302444-432e-47e2-9834-b1b0eebeaeae",
+              "leftValue": "={{ $json.diferencia_ndvi }}",
+              "rightValue": "={{ Number(0) }}",
+              "operator": {
+                "type": "number",
+                "operation": "lt"
+              }
+            }
+          ],
+          "combinator": "or"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        368,
+        -672
+      ],
+      "id": "18d74d21-64b8-4f52-aa5d-51c31bf9dcbb",
+      "name": "If CRITIC"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "5938de21-33fa-4f5a-9251-8b1f44afe151",
+              "name": "id_poligono",
+              "value": "={{ $('Start').item.json.polygon_id }}",
+              "type": "string"
+            },
+            {
+              "id": "f0933f3b-6a14-44fb-a10b-22cffbf12144",
+              "name": "fecha_toma",
+              "value": "={{$now.minus(2, 'days').toFormat(\"dd-MM-yyyy\")}}",
+              "type": "string"
+            },
+            {
+              "id": "7f329671-7fdd-48c3-aed4-565dcf4bf61a",
+              "name": "intervalo_toma",
+              "value": "={{ $('Start').item.json.Interval }}",
+              "type": "string"
+            },
+            {
+              "id": "c1b80026-cbbc-43ef-b9ca-457b818ae73c",
+              "name": "ndvi",
+              "value": "={{ $('PARAMETROS Y OUTPUT NDVI').item.json.DATA.ndvi }}",
+              "type": "object"
+            },
+            {
+              "id": "0f703752-218c-41b6-90f6-6f8acb95aa5d",
+              "name": "ndwi",
+              "value": "={{ $('PARAMETROS Y OUTPUT NDWI').item.json.DATA.ndwi }}",
+              "type": "object"
+            },
+            {
+              "id": "d98bc2ec-5c75-48ee-839a-7b2b6aac2c9a",
+              "name": "img_ndvi",
+              "value": "={{ $('NDVI IMAGE STRUCTURE').item.json.public_url }}",
+              "type": "string"
+            },
+            {
+              "id": "0e563923-5b31-4ba0-8988-ad98f22e0ad5",
+              "name": "img_ndwi",
+              "value": "={{ $('NDWI IMAGE STRUCTURE').item.json.public_url }}",
+              "type": "string"
+            },
+            {
+              "id": "035d791b-c6f9-4995-b58f-09811dbfbadc",
+              "name": "ndvi_metricas",
+              "value": "={{ \n{\n  \"diferencia\": $('CALCULATE V, A, DIFF').item.json.diferencia_ndvi,\n  \"velocidad\": $('CALCULATE V, A, DIFF').item.json.velocidad_ndvi,\n  \"aceleracion\": $('CALCULATE V, A, DIFF').item.json.aceleracion_ndvi,\n}\n}}",
+              "type": "object"
+            },
+            {
+              "id": "cb0cbb08-3309-4a51-87c2-5e5458f1d585",
+              "name": "ndwi_metricas",
+              "value": "={{ \n{\n  \"diferencia\": $('CALCULATE V, A, DIFF').item.json.diferencia_ndwi\n}\n}}",
+              "type": "object"
+            },
+            {
+              "id": "8900e582-d140-495d-86bc-fdf9f3bb02c7",
+              "name": "revisado",
+              "value": false,
+              "type": "boolean"
+            },
+            {
+              "id": "f74d7c1e-3799-42c3-990c-9ef329699856",
+              "name": "nubosidad",
+              "value": false,
+              "type": "boolean"
+            },
+            {
+              "id": "902eb595-2fe8-4984-bc63-c17bee1a34ed",
+              "name": "basecolor_url",
+              "value": "={{ $('BASECOLOR IMAGE STRUCTURE').item.json.public_url }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        2656,
+        -336
+      ],
+      "id": "9ae7fe0e-3d12-4c3a-a811-767f02f77598",
+      "name": "DATA TO SAVE CRITIC"
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "combineBy": "combineByPosition",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        -1104,
+        -208
+      ],
+      "id": "0b570d9c-c761-44aa-b483-8021be096456",
+      "name": "Merge2"
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "combineBy": "combineByPosition",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        -1088,
+        592
+      ],
+      "id": "59479b1a-97e3-4948-86d7-2727b99574ce",
+      "name": "Merge3"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://bucket-magdalenas-garoo.koyeb.app/generate-upload-url",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "x-api-key",
+              "value": "N156e2SC1OLycr8PKNfdlrjni7DLHf1TBV41OIykz35Pq6fNTH"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "=\n{ \"filename\": \"/{{$today.toString()}}/range-{{$('PARAMETROS Y OUTPUT NDWI').item.json.DATE_RANGE.FROM}}-{{$('PARAMETROS Y OUTPUT NDWI').item.json.DATE_RANGE.TO}}/int-{{$('Loop Over NDWI Items').item.json.interval.from}}-{{$('Loop Over NDWI Items').item.json.interval.to}}/ndwi-{{$binary.data.fileName}}-{{$now.toString()}}.jpeg\" }\n",
+        "options": {
+          "response": {
+            "response": {}
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -1312,
+        848
+      ],
+      "id": "24aeca3a-e34e-43fe-b0d0-a642eae51872",
+      "name": "NDWI IMAGE STRUCTURE",
+      "retryOnFail": true
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://bucket-magdalenas-garoo.koyeb.app/generate-upload-url",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "x-api-key",
+              "value": "N156e2SC1OLycr8PKNfdlrjni7DLHf1TBV41OIykz35Pq6fNTH"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "=\n{ \"filename\": \"{{$today.toString()}}/range-{{$('PARAMETROS Y OUTPUT NDVI').item.json.DATE_RANGE.FROM}}-{{$('PARAMETROS Y OUTPUT NDVI').item.json.DATE_RANGE.TO}}/int-{{$('Loop Over Items').item.json.interval.from}}-{{$('Loop Over Items').item.json.interval.to}}/ndvi-{{$binary.data.fileName}}-{{$now.toString()}}.jpeg\" }\n",
+        "options": {
+          "response": {
+            "response": {}
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -1312,
+        0
+      ],
+      "id": "9c6d55ab-cac4-4636-8ab1-ab936be4faa9",
+      "name": "NDVI IMAGE STRUCTURE",
+      "retryOnFail": true
+    },
+    {
+      "parameters": {
+        "method": "PUT",
+        "url": "={{ $json.upload_url }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "image/jpeg"
+            }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "binaryData",
+        "inputDataFieldName": "data",
+        "options": {
+          "response": {
+            "response": {
+              "fullResponse": true
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -880,
+        -208
+      ],
+      "id": "3b347d10-6fad-4db2-910a-0dac521dc0e3",
+      "name": "UPLOAD NDVI IMAGE",
+      "retryOnFail": true
+    },
+    {
+      "parameters": {
+        "method": "PUT",
+        "url": "={{ $json.upload_url }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "image/jpeg"
+            }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "binaryData",
+        "inputDataFieldName": "data",
+        "options": {
+          "response": {
+            "response": {
+              "fullResponse": true
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -864,
+        592
+      ],
+      "id": "f99c3c68-5ac0-40cc-af82-1bab19c074a0",
+      "name": "UPLOAD NDWI IMAGE",
+      "retryOnFail": true
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json }}",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "=name: AnalizadorAgronomicoCritico\ndescription: >\n  Eres un agente especialista en agronomía y teledetección para diagnóstico\n  de polígonos en estado crítico. Tu función es diagnosticar la causa principal\n  y generar una recomendación de acción inmediata prioritaria.\ncontext: >\n  EL POLÍGONO ANALIZADO YA SE ENCUENTRA EN ESTADO CRÍTICO. \n  NO confirmes el estado, diagnostica el \"por qué\" y el \"qué hacer\".\n  DEBES generar EXCLUSIVAMENTE un objeto JSON con la estructura exacta especificada.\ninstructions:\n  - Analiza las métricas proporcionadas (diferencia, velocidad, aceleración)\n  - Diagnostica la causa principal basado en los valores críticos\n  - Genera UNA recomendación accionable y prioritaria\n  - PRODUCE ÚNICAMENTE el objeto JSON sin texto adicional\n  - USA números reales (no strings) para los valores numéricos en el análisis\n  - MANTÉN el orden exacto de los campos requeridos\n  - DEVUELVE la estructura EXACTA: objeto JSON con {\"principal_cause\":\"causa principal\",\"principal_recomendation\":\"recomendacion principal\"}\nanalysis_parameters:\n  ndvi_critical: diferencia < -0.2\n  ndwi_critical: diferencia < -0.2\n  high_velocity: velocidad > 0.1\n  high_acceleration: aceleracion > 0.05\ndiagnostic_rules:\n  - rule: \"ndvi.diferencia < -0.2 AND ndwi.diferencia < -0.2\"\n    cause: \"Déficit hídrico severo\"\n    recommendation: \"Implementar riego de emergencia y evaluar sistema de drenaje\"\n  - rule: \"ndvi.diferencia < -0.2 AND ndwi.diferencia > -0.1\"\n    cause: \"Estrés no hídrico (plagas, enfermedades o nutrición)\"\n    recommendation: \"Realizar muestreo inmediato para identificar plagas o deficiencias nutricionales\"\n  - rule: \"ndvi.velocidad > 0.1 AND ndvi.aceleracion > 0.05\"\n    cause: \"Progresión acelerada del deterioro\"\n    recommendation: \"Aplicar tratamiento de emergencia y aumentar frecuencia de monitoreo\"\n  - rule: \"ndvi.diferencia >= -0.2 AND ndwi.diferencia >= -0.2\"\n    cause: \"Estado crítico por factores combinados o error de medición\"\n    recommendation: \"Realizar verificación de campo urgente y revisar equipos de medición\""
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        2912,
+        -336
+      ],
+      "id": "27d9e085-d86d-4fde-b627-05ab56e7facb",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4o-mini",
+          "mode": "list",
+          "cachedResultName": "gpt-4o-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        2880,
+        -112
+      ],
+      "id": "72d6a365-c5b7-4315-8a96-c933887b145b",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "g0eaXSZocJ0Qp8eF",
+          "name": "Magdalena"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{\n\t\"causa\": \"Posible causa principal\",\n\t\"recomendacion\": \"Recomedacion principal\"\n}",
+        "autoFix": true
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        3008,
+        -112
+      ],
+      "id": "9b40d497-25a9-46ed-a2e4-1d23c651658d",
+      "name": "Structured Output Parser"
+    },
+    {
+      "parameters": {
+        "mode": "raw",
+        "jsonOutput": "={{ \nObject.assign({}, $('DATA TO SAVE CRITIC').item.json, $json)\n}}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        3968,
+        -336
+      ],
+      "id": "580081a1-08f9-4537-bc80-93fa3ddb4387",
+      "name": "DATA+ANALYSIS"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "ff7acaae-1247-444f-a304-3ef5f7438b2e",
+              "name": "analisis",
+              "value": "={{ $json.output }}",
+              "type": "object"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        3744,
+        -336
+      ],
+      "id": "8d89d3c9-4d7f-4ee1-a7ca-2cbb5e81a29a",
+      "name": "RECOMENDATION"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4o-mini",
+          "mode": "list",
+          "cachedResultName": "gpt-4o-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        3088,
+        96
+      ],
+      "id": "61f36e7d-c94d-4f93-82ad-27e2dd59d41c",
+      "name": "OpenAI Chat Model1",
+      "credentials": {
+        "openAiApi": {
+          "id": "LtzIKoi61tZvaeua",
+          "name": "Vectorizer Agent - Knowledge Bases"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://services.sentinel-hub.com/api/v1/process",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{ $('Start').item.json.access_token }}"
+            },
+            {
+              "name": "Accept",
+              "value": "image/jpeg"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"input\": {\n    \"bounds\": {\n      \"properties\": {\n        \"crs\": \"http://www.opengis.net/def/crs/OGC/1.3/CRS84\"\n      },\n      \"geometry\": {\n        \"type\": \"Polygon\",\n        \"coordinates\": {{ $('Start').item.json.cordinates }}\n      }\n    },\n    \"data\": [\n      {\n        \"type\": \"sentinel-2-l2a\",\n        \"dataFilter\": {\n          \"timeRange\": {\n            \"from\": \"{{ $('Start').item.json.Date_Range.from }}\",\n            \"to\": \"{{ $('Start').item.json.Date_Range.to }}\"\n          },\n          \"maxCloudCoverage\": 40,\n          \"mosaickingOrder\": \"leastCC\"\n        }\n      }\n    ]\n  },\n  \"output\": {\n    \"width\": 512,\n    \"height\": 512,\n    \"responses\": [\n      {\n        \"identifier\": \"default\",\n        \"format\": {\n          \"type\": \"image/jpeg\",\n          \"quality\": 90\n        }\n      }\n    ]\n  },\n  \"evalscript\": \"//VERSION=3\\nfunction setup(){return {input:[{bands:[\\\"B04\\\",\\\"B03\\\",\\\"B02\\\"],units:\\\"REFLECTANCE\\\"}],output:{bands:3}}}\\nfunction evaluatePixel(s){return [s.B04*2.5,s.B03*2.5,s.B02*2.5];}\"\n}",
+        "options": {
+          "response": {
+            "response": {
+              "fullResponse": true,
+              "responseFormat": "file",
+              "outputPropertyName": "image"
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        816,
+        -672
+      ],
+      "id": "5ab98f58-6644-4131-b701-64b4cb8127f8",
+      "name": "GET IMAGE_BASECOLOR",
+      "retryOnFail": false
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://services.sentinel-hub.com/api/v1/statistics",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{ $('Start').item.json.access_token }}"
+            },
+            {
+              "name": "Accept",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"input\": {\n    \"bounds\": {\n      \"properties\": {\n        \"crs\": \"http://www.opengis.net/def/crs/OGC/1.3/CRS84\"\n      },\n      \"geometry\": {\n        \"type\": \"Polygon\",\n        \"coordinates\": {{ $('Start').item.json.cordinates }}\n      }\n    },\n    \"data\": [\n      {\n        \"type\": \"sentinel-2-l2a\",\n        \"dataFilter\": {\n          \"timeRange\": {\n            \"from\": \"2025-09-15T00:00:00Z\",\n            \"to\": \"2025-09-20T23:59:59Z\"\n          },\n          \"mosaickingOrder\": \"leastCC\"\n        }\n      }\n    ]\n  },\n  \"aggregation\": {\n    \"timeRange\": {\n      \"from\": \"{{ $('Start').item.json.Date_Range.from }}\",\n      \"to\": \"{{ $('Start').item.json.Date_Range.to }}\"\n    },\n    \"aggregationInterval\": {\n      \"of\": \"P5D\"\n    },\n    \"resx\": 10,\n    \"resy\": 10,\n    \"evalscript\": \"//VERSION=3\\nfunction setup(){\\n  return {\\n    input: [{ bands: [\\\"CLM\\\", \\\"dataMask\\\"] }],\\n    output: [\\n      { id: \\\"data\\\", bands: 1 },\\n      { id: \\\"dataMask\\\", bands: 1 }\\n    ]\\n  };\\n}\\nfunction evaluatePixel(s){\\n  return {\\n    data: [s.CLM],        // 1 = nublado, 0 = despejado\\n    dataMask: [s.dataMask]\\n  };\\n}\\n\"\n  },\n  \"calculations\": {\n    \"default\": {}\n  }\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        592,
+        -672
+      ],
+      "id": "aaab7f71-9bdf-469c-8fe8-589bbdf0c08d",
+      "name": "NUBOSIDAD",
+      "retryOnFail": true
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "e4787ee1-cc9f-4f78-9c98-f95ddea43d66",
+              "leftValue": "={{ $('NUBOSIDAD').item.json.data[0].outputs.data.bands.B0.stats.mean }}",
+              "rightValue": "={{ Number(0.2) }}",
+              "operator": {
+                "type": "number",
+                "operation": "gt"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        1792,
+        -464
+      ],
+      "id": "39358d2c-69f0-45b8-9520-d1010cd0ca97",
+      "name": "If Nubosidad"
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "combineBy": "combineByPosition",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        1264,
+        -672
+      ],
+      "id": "d53cc73b-19ce-4626-a9d5-110602bfe32f",
+      "name": "Merge4"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://bucket-magdalenas-garoo.koyeb.app/generate-upload-url",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "x-api-key",
+              "value": "N156e2SC1OLycr8PKNfdlrjni7DLHf1TBV41OIykz35Pq6fNTH"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "=\n{ \"filename\": \"/{{$today.toString()}}/range-{{$('PARAMETROS Y OUTPUT NDWI').item.json.DATE_RANGE.FROM}}-{{$('PARAMETROS Y OUTPUT NDWI').item.json.DATE_RANGE.TO}}/int-{{$('Loop Over NDWI Items').item.json.interval.from}}-{{$('Loop Over NDWI Items').item.json.interval.to}}/basecolor-{{$('GET IMAGE_BASECOLOR').item.binary.image.fileName}}-{{$now.toString()}}.jpeg\" }\n",
+        "options": {
+          "response": {
+            "response": {}
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1040,
+        -384
+      ],
+      "id": "d5d2354c-e58d-4b0d-875a-514782474dfb",
+      "name": "BASECOLOR IMAGE STRUCTURE",
+      "retryOnFail": true
+    },
+    {
+      "parameters": {
+        "method": "PUT",
+        "url": "={{ $json.upload_url }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "image/jpeg"
+            }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "binaryData",
+        "inputDataFieldName": "image",
+        "options": {
+          "response": {
+            "response": {
+              "fullResponse": true
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1488,
+        -672
+      ],
+      "id": "57ae3b14-33e5-40a4-b685-fd3aa76f049e",
+      "name": "UPLOAD BASECOLOR IMAGE",
+      "retryOnFail": true
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "5938de21-33fa-4f5a-9251-8b1f44afe151",
+              "name": "id_poligono",
+              "value": "={{ $('Start').item.json.polygon_id }}",
+              "type": "string"
+            },
+            {
+              "id": "f0933f3b-6a14-44fb-a10b-22cffbf12144",
+              "name": "fecha_toma",
+              "value": "={{$now.minus(2, 'days').toFormat(\"dd-MM-yyyy\")}}",
+              "type": "string"
+            },
+            {
+              "id": "7f329671-7fdd-48c3-aed4-565dcf4bf61a",
+              "name": "intervalo_toma",
+              "value": "={{ $('Start').item.json.Interval }}",
+              "type": "string"
+            },
+            {
+              "id": "c1b80026-cbbc-43ef-b9ca-457b818ae73c",
+              "name": "ndvi",
+              "value": "={{ $('PARAMETROS Y OUTPUT NDVI').item.json.DATA.ndvi }}",
+              "type": "object"
+            },
+            {
+              "id": "0f703752-218c-41b6-90f6-6f8acb95aa5d",
+              "name": "ndwi",
+              "value": "={{ $('PARAMETROS Y OUTPUT NDWI').item.json.DATA.ndwi }}",
+              "type": "object"
+            },
+            {
+              "id": "d98bc2ec-5c75-48ee-839a-7b2b6aac2c9a",
+              "name": "img_ndvi",
+              "value": "={{ $('NDVI IMAGE STRUCTURE').item.json.public_url }}",
+              "type": "string"
+            },
+            {
+              "id": "0e563923-5b31-4ba0-8988-ad98f22e0ad5",
+              "name": "img_ndwi",
+              "value": "={{ $('NDWI IMAGE STRUCTURE').item.json.public_url }}",
+              "type": "string"
+            },
+            {
+              "id": "035d791b-c6f9-4995-b58f-09811dbfbadc",
+              "name": "ndvi_metricas",
+              "value": "={{ \n{\n  \"diferencia\": $('CALCULATE V, A, DIFF').item.json.diferencia_ndvi,\n  \"velocidad\": $('CALCULATE V, A, DIFF').item.json.velocidad_ndvi,\n  \"aceleracion\": $('CALCULATE V, A, DIFF').item.json.aceleracion_ndvi,\n}\n}}",
+              "type": "object"
+            },
+            {
+              "id": "cb0cbb08-3309-4a51-87c2-5e5458f1d585",
+              "name": "ndwi_metricas",
+              "value": "={{ \n{\n  \"diferencia\": $('CALCULATE V, A, DIFF').item.json.diferencia_ndwi\n}\n}}",
+              "type": "object"
+            },
+            {
+              "id": "8900e582-d140-495d-86bc-fdf9f3bb02c7",
+              "name": "revisado",
+              "value": false,
+              "type": "boolean"
+            },
+            {
+              "id": "f74d7c1e-3799-42c3-990c-9ef329699856",
+              "name": "nubosidad",
+              "value": true,
+              "type": "boolean"
+            },
+            {
+              "id": "902eb595-2fe8-4984-bc63-c17bee1a34ed",
+              "name": "basecolor_url",
+              "value": "={{ $('BASECOLOR IMAGE STRUCTURE').item.json.public_url }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        2656,
+        -640
+      ],
+      "id": "b0cbcaba-3521-40d6-ba4f-7c0ec61b221c",
+      "name": "DATA TO SAVE CRITIC1"
+    },
+    {
+      "parameters": {
+        "operation": "insert",
+        "collection": "Critic_State_Polygons",
+        "fields": "id_poligono,fecha_toma,intervalo_toma,ndvi,ndwi,img_ndvi,img_ndwi,ndvi_metricas,ndwi_metricas,revisado,nubosidad,basecolor_url",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.mongoDb",
+      "typeVersion": 1.2,
+      "position": [
+        2880,
+        -640
+      ],
+      "id": "98e59eb9-3d15-4806-ab39-0cd234924732",
+      "name": "Insert Poligono Critico - Nubosidad",
+      "credentials": {
+        "mongoDb": {
+          "id": "oCCgJ1QnJPbirSub",
+          "name": "Magdalena"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "insert",
+        "collection": "Critic_State_Polygons",
+        "fields": "id_poligono,fecha_toma,intervalo_toma,ndvi,ndwi,img_ndvi,img_ndwi,ndvi_metricas,ndwi_metricas,revisado,nubosidad,basecolor_url,analisis",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.mongoDb",
+      "typeVersion": 1.2,
+      "position": [
+        4192,
+        -336
+      ],
+      "id": "84eb837e-27b0-4093-baf0-a4a776197636",
+      "name": "Insert Poligono Critico",
+      "credentials": {
+        "mongoDb": {
+          "id": "oCCgJ1QnJPbirSub",
+          "name": "Magdalena"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        4688,
+        1088
+      ],
+      "id": "6cbecd8a-1ad5-4f78-8a34-0b99907e5887",
+      "name": "No Operation, do nothing"
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "5K2yxX10ttjh9iAk",
+          "mode": "list",
+          "cachedResultUrl": "/workflow/5K2yxX10ttjh9iAk",
+          "cachedResultName": "Send Critical Notification"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "analisis": "={{ $('RECOMENDATION').item.json.analisis }}",
+            "critic_polygon": "={{ $('Insert Poligono Critico').item.json }}"
+          },
+          "matchingColumns": [
+            "polygon_id"
+          ],
+          "schema": [
+            {
+              "id": "critic_polygon",
+              "displayName": "critic_polygon",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "analisis",
+              "displayName": "analisis",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.2,
+      "position": [
+        4528,
+        160
+      ],
+      "name": "Call Send Critical Notification",
+      "id": "d5142085-896e-436c-aca3-b4377398aeb0"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "DATA TO SAVE": {
+      "main": [
+        [
+          {
+            "node": "Insert documents",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "GET IMAGE_NDVI": {
+      "main": [
+        [
+          {
+            "node": "NDVI IMAGE STRUCTURE",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Merge2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "GET IMAGE_NDWI": {
+      "main": [
+        [
+          {
+            "node": "Merge3",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "NDWI IMAGE STRUCTURE",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over NDWI Items": {
+      "main": [
+        [],
+        [
+          {
+            "node": "PARAMETROS Y OUTPUT NDWI",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "PARAMETROS Y OUTPUT NDWI": {
+      "main": [
+        [
+          {
+            "node": "GET IMAGE_NDWI",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "PARAMETROS Y OUTPUT NDVI": {
+      "main": [
+        [
+          {
+            "node": "GET IMAGE_NDVI",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "Find Last Record",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Insert documents": {
+      "main": [
+        [
+          {
+            "node": "No Operation, do nothing",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Find Last Record": {
+      "main": [
+        [
+          {
+            "node": "If EXISTS",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If EXISTS": {
+      "main": [
+        [
+          {
+            "node": "CALCULATE V, A, DIFF",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "DATA TO SAVE1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "CALCULATE V, A, DIFF": {
+      "main": [
+        [
+          {
+            "node": "DATA TO SAVE",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "If CRITIC",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "DATA TO SAVE1": {
+      "main": [
+        [
+          {
+            "node": "Insert documents",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Start": {
+      "main": [
+        [
+          {
+            "node": "NDVI ARRAY",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "NDWI ARRAY",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "NDVI ARRAY": {
+      "main": [
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "NDWI ARRAY": {
+      "main": [
+        [
+          {
+            "node": "Code1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items": {
+      "main": [
+        [],
+        [
+          {
+            "node": "PARAMETROS Y OUTPUT NDVI",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code1": {
+      "main": [
+        [
+          {
+            "node": "Loop Over NDWI Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If CRITIC": {
+      "main": [
+        [
+          {
+            "node": "NUBOSIDAD",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "DATA TO SAVE CRITIC": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge2": {
+      "main": [
+        [
+          {
+            "node": "UPLOAD NDVI IMAGE",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge3": {
+      "main": [
+        [
+          {
+            "node": "UPLOAD NDWI IMAGE",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "NDWI IMAGE STRUCTURE": {
+      "main": [
+        [
+          {
+            "node": "Merge3",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "NDVI IMAGE STRUCTURE": {
+      "main": [
+        [
+          {
+            "node": "Merge2",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "UPLOAD NDVI IMAGE": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "UPLOAD NDWI IMAGE": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "RECOMENDATION",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "DATA+ANALYSIS": {
+      "main": [
+        [
+          {
+            "node": "Insert Poligono Critico",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "RECOMENDATION": {
+      "main": [
+        [
+          {
+            "node": "DATA+ANALYSIS",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Structured Output Parser",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "NUBOSIDAD": {
+      "main": [
+        [
+          {
+            "node": "GET IMAGE_BASECOLOR",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If Nubosidad": {
+      "main": [
+        [
+          {
+            "node": "DATA TO SAVE CRITIC1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "DATA TO SAVE CRITIC",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge4": {
+      "main": [
+        [
+          {
+            "node": "UPLOAD BASECOLOR IMAGE",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "GET IMAGE_BASECOLOR": {
+      "main": [
+        [
+          {
+            "node": "Merge4",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "BASECOLOR IMAGE STRUCTURE",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "BASECOLOR IMAGE STRUCTURE": {
+      "main": [
+        [
+          {
+            "node": "Merge4",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "UPLOAD BASECOLOR IMAGE": {
+      "main": [
+        [
+          {
+            "node": "If Nubosidad",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Insert Poligono Critico": {
+      "main": [
+        [
+          {
+            "node": "Call Send Critical Notification",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "DATA TO SAVE CRITIC1": {
+      "main": [
+        [
+          {
+            "node": "Insert Poligono Critico - Nubosidad",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Insert Poligono Critico - Nubosidad": {
+      "main": [
+        [
+          {
+            "node": "No Operation, do nothing",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "No Operation, do nothing": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Loop Over NDWI Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Call Send Critical Notification": {
+      "main": [
+        [
+          {
+            "node": "No Operation, do nothing",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "timezone": "America/Guatemala",
+    "callerPolicy": "workflowsFromSameOwner",
+    "availableInMCP": false,
+    "errorWorkflow": "utrGBJjkIGauT5uw"
+  },
+  "versionId": "75824cca-e27e-4140-9693-2e77cad40a4a",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "d4ab02fb1ef8b6ca2c1c5c1f280ee696b0514d7d92cee5fb0da1784dbe393998"
+  },
+  "id": "fHXE9nP5msFovvFz",
+  "tags": [
+    {
+      "updatedAt": "2025-09-01T16:22:03.233Z",
+      "createdAt": "2025-09-01T16:22:03.233Z",
+      "id": "gROeDXsIw8PaI9x1",
+      "name": "FUNCIONAL"
+    },
+    {
+      "updatedAt": "2025-09-01T16:26:59.242Z",
+      "createdAt": "2025-09-01T16:26:59.242Z",
+      "id": "nhXlFKezuUDtk9fi",
+      "name": "AUTOMATICO"
+    }
+  ]
+}

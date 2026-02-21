@@ -1,0 +1,461 @@
+{
+  "name": "COACH INMOBILIARIO",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {}
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        -672,
+        112
+      ],
+      "id": "4e41dd34-5c31-4b7d-8326-f6937a4a7463",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "collection": "users_test",
+        "options": {},
+        "query": "={\n  \"last_interaction\": {\n    \"$lt\": \"{{ $now.minus({ minutes: 15 }).toISO() }}\"\n  }\n}"
+      },
+      "type": "n8n-nodes-base.mongoDb",
+      "typeVersion": 1.2,
+      "position": [
+        -448,
+        112
+      ],
+      "id": "206e5223-4569-4b50-a363-59df1901cfd9",
+      "name": "Find documents",
+      "credentials": {
+        "mongoDb": {
+          "id": "al8RU2TlqRrXROGb",
+          "name": "Spectrum - Parque Vista Verde"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "collection": "chat_histories_lead_test",
+        "options": {},
+        "query": "={\"sessionId\": \"user:{{ $('Loop Over Users').item.json.user_id }}\"}"
+      },
+      "type": "n8n-nodes-base.mongoDb",
+      "typeVersion": 1.2,
+      "position": [
+        0,
+        16
+      ],
+      "id": "f4f2563a-7458-46ef-b55f-bde5ecabc50b",
+      "name": "Find Chat Histories Lead",
+      "alwaysOutputData": true,
+      "credentials": {
+        "mongoDb": {
+          "id": "al8RU2TlqRrXROGb",
+          "name": "Spectrum - Parque Vista Verde"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "collection": "chat_histories_test",
+        "options": {},
+        "query": "={\"sessionId\": \"user:{{ $('Loop Over Users').item.json.user_id }}\"}"
+      },
+      "type": "n8n-nodes-base.mongoDb",
+      "typeVersion": 1.2,
+      "position": [
+        0,
+        208
+      ],
+      "id": "d37d4241-ffca-4c05-8295-05fd7de91ba4",
+      "name": "Find Chat Histories",
+      "alwaysOutputData": true,
+      "credentials": {
+        "mongoDb": {
+          "id": "al8RU2TlqRrXROGb",
+          "name": "Spectrum - Parque Vista Verde"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        -224,
+        112
+      ],
+      "id": "5b001bd2-f7a0-4bf8-ba5c-8d24a5c6c090",
+      "name": "Loop Over Users"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Conversación del Agente con el cliente:\n{{ $json.lead_messages }}.\n{{ $json.user_messages }}",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "=Rol: Eres un Sales Coach inmobiliario para el desarrollo \"Parque Vista Verde\". Tu objetivo es analizar la conversación adjunta y generar una estrategia táctica para el vendedor.\n\nReglas de Oro:\n\nNo inventes datos. Si falta información, usa estrictamente el valor \"DATO_FALTANTE\".\n\nDetección de Intención: Si el cliente ya solicitó una cita o mostró intención clara de visita, marca modo_cierre: true.\n\nSé directo y práctico. Los argumentos deben estar listos para ser usados en un chat de ventas.\n\nConversación a analizar:\n{{ $json.lead_messages }}\n{{ $json.user_messages }}"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        704,
+        112
+      ],
+      "id": "79fb1e0f-654c-4687-be5b-3fcade9cf3c0",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "ad37ff15-8600-45b7-b912-b284a9e0157d",
+              "name": "lead_messages",
+              "value": "={{ $('Find Chat Histories Lead').item.json.messages || \"\" }}",
+              "type": "string"
+            },
+            {
+              "id": "2ec7f63b-931b-4b46-aaa9-001b6c2e93b4",
+              "name": "user_messages",
+              "value": "={{ $('Find Chat Histories').item.json.messages || \"\" }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        448,
+        112
+      ],
+      "id": "a1111a84-9659-49f4-9d01-213dc503b23d",
+      "name": "Messages",
+      "executeOnce": false
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "combineBy": "combineAll",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        224,
+        112
+      ],
+      "id": "ee765a60-61e1-4bb7-8d46-7968b16b59ff",
+      "name": "Merge"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4.1-mini",
+          "mode": "list",
+          "cachedResultName": "gpt-4.1-mini"
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        672,
+        336
+      ],
+      "id": "60b56d24-353a-479f-a215-d7287b533e21",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "mwtQQFLfYjj6JZcg",
+          "name": "Spectrum - Parque Verde"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "schemaType": "manual",
+        "inputSchema": "{\n  \"$schema\": \"http://json-schema.org/draft-07/schema#\",\n  \"type\": \"object\",\n  \"properties\": {\n    \"analisis_prospecto\": {\n      \"type\": \"object\",\n      \"properties\": {\n        \"necesidades\": { \"type\": \"string\", \"description\": \"Resumen de lo que busca el cliente (m2, recámaras, etc).\" },\n        \"presupuesto\": { \"type\": \"string\", \"description\": \"Monto o capacidad financiera mencionada.\" },\n        \"timeline\": { \"type\": \"string\", \"description\": \"Fecha estimada de compra o urgencia.\" },\n        \"motivacion\": { \"type\": \"string\", \"description\": \"Razón de la compra: inversión o vivienda propia.\" },\n        \"objeciones_detectadas\": { \"type\": \"array\", \"items\": { \"type\": \"string\" } },\n        \"comparables_mencionados\": { \"type\": \"array\", \"items\": { \"type\": \"string\" }, \"description\": \"Otros proyectos o zonas mencionadas.\" },\n        \"decisores\": { \"type\": \"string\", \"description\": \"Quién toma la decisión final.\" },\n        \"canal_comunicacion_preferido\": { \"type\": \"string\" }\n      },\n      \"required\": [\"necesidades\", \"presupuesto\", \"timeline\", \"motivacion\", \"objeciones_detectadas\", \"decisores\"]\n    },\n    \"estrategia_venta\": {\n      \"type\": \"object\",\n      \"properties\": {\n        \"modo_cierre\": { \"type\": \"boolean\", \"description\": \"True si el cliente ya pidió cita o está listo para reservar.\" },\n        \"preguntas_para_calificar\": { \"type\": \"array\", \"items\": { \"type\": \"string\" }, \"description\": \"Preguntas para obtener los DATOS_FALTANTES.\" },\n        \"argumentos_clave\": { \"type\": \"array\", \"items\": { \"type\": \"string\" }, \"description\": \"Basados en beneficios de Parque Vista Verde.\" },\n        \"guion_sugerido_corto\": { \"type\": \"string\", \"description\": \"Mensaje directo para enviar al cliente.\" },\n        \"proximos_pasos\": { \"type\": \"string\", \"description\": \"Acción inmediata sugerida para el vendedor.\" }\n      },\n      \"required\": [\"modo_cierre\", \"preguntas_para_calificar\", \"argumentos_clave\", \"guion_sugerido_corto\"]\n    },\n    \"datos_faltantes_criticos\": {\n      \"type\": \"array\",\n      \"items\": { \"type\": \"string\" },\n      \"description\": \"Lista de campos que el vendedor debe investigar urgentemente.\"\n    }\n  },\n  \"required\": [\"analisis_prospecto\", \"estrategia_venta\", \"datos_faltantes_criticos\"]\n}",
+        "autoFix": true
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        800,
+        336
+      ],
+      "id": "dae1c3c6-f171-49f4-8c65-89b242d233c1",
+      "name": "Structured Output Parser"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4.1-mini",
+          "mode": "list",
+          "cachedResultName": "gpt-4.1-mini"
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        880,
+        544
+      ],
+      "id": "48287415-05e1-48b1-b73b-2ee0ddc7e205",
+      "name": "OpenAI Chat Model1",
+      "credentials": {
+        "openAiApi": {
+          "id": "mwtQQFLfYjj6JZcg",
+          "name": "Spectrum - Parque Verde"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const leadMsgs = $input.first().json.lead_messages;\nconst userMsgs = $input.first().json.user_messages;\n\nfunction clean(raw) {\n  if (!raw || raw === \"[]\") return [];\n  \n  // Parseamos si es string, si ya es objeto lo usamos directo\n  const parsed = typeof raw === 'string' ? JSON.parse(raw) : raw;\n\n  return parsed.map(m => {\n    let content = m.data?.content || \"\";\n    \n    // Si el contenido es el JSON de la IA, extraemos solo la respuesta\n    if (m.type === 'ai' && content.includes('{\"')) {\n      try {\n        const inner = JSON.parse(content);\n        content = inner.response || content;\n      } catch (e) {}\n    }\n\n    const label = m.type === 'human' ? 'Lead' : 'Agente';\n    return `${label}: ${content}`;\n  });\n}\n\n// Unimos ambos arrays y luego los convertimos en un solo texto\nconst fullChat = [...clean(leadMsgs), ...clean(userMsgs)].join('\\n');\n\nreturn {\n  historial_limpio: fullChat || \"Sin conversación\"\n};"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -672,
+        -320
+      ],
+      "id": "a3289f4d-6eaf-4ec8-86b9-ec6d25e5fe71",
+      "name": "Clean Conversation",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "29811091-f623-46a3-920e-a37d4484e9f2",
+              "name": "_id",
+              "value": "={{ $('Loop Over Users').item.json._id.toJsonString().replace(/^\"(.*)\"$/, '$1') }}",
+              "type": "string"
+            },
+            {
+              "id": "fd8c37c0-b8b9-4e6d-8514-43839e17ca8e",
+              "name": "conversation_analysis",
+              "value": "={{ $json.output }}",
+              "type": "object"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1168,
+        112
+      ],
+      "id": "2bf643c0-557d-4c42-8ebc-56ff92b63371",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "collection": "users_test",
+        "updateKey": "_id",
+        "fields": "conversation_analysis",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.mongoDb",
+      "typeVersion": 1.2,
+      "position": [
+        1392,
+        112
+      ],
+      "id": "48b71240-55e1-4177-91d2-59e943db5178",
+      "name": "Update User Conversation Analysis",
+      "credentials": {
+        "mongoDb": {
+          "id": "al8RU2TlqRrXROGb",
+          "name": "Spectrum - Parque Vista Verde"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Find documents",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Find documents": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Users",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Users": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Find Chat Histories Lead",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Find Chat Histories",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Find Chat Histories Lead": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Find Chat Histories": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "Messages",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Messages": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Structured Output Parser",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Update User Conversation Analysis",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update User Conversation Analysis": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Users",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "2d2fe5cf-1759-4eaa-9884-84ba4e9df376",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "d4ab02fb1ef8b6ca2c1c5c1f280ee696b0514d7d92cee5fb0da1784dbe393998"
+  },
+  "id": "XZCWfL7yTIkq2Waq",
+  "tags": []
+}

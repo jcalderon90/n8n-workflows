@@ -1,0 +1,700 @@
+{
+  "name": "Meta Campañas",
+  "nodes": [
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4o-mini",
+          "mode": "list",
+          "cachedResultName": "gpt-4o-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        -544,
+        -224
+      ],
+      "id": "f305d688-25a2-42e2-89da-3e6eb0dcb1e2",
+      "name": "OpenAI Chat Model1",
+      "credentials": {
+        "openAiApi": {
+          "id": "e9nSh7v9YLxKMAuB",
+          "name": "Meta Campaigns"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpBearerAuth",
+        "url": "=https://graph.facebook.com/v19.0/act_{{ $('FORM DATA').item.json.ad_account_id }}/campaigns",
+        "options": {},
+        "queryParametersUi": {
+          "parameter": [
+            {
+              "name": "effective_status[]",
+              "value": "ACTIVE"
+            },
+            {
+              "name": "fields",
+              "value": "id,name,daily_budget"
+            },
+            {
+              "name": "date_preset",
+              "value": "last_7d"
+            }
+          ]
+        }
+      },
+      "id": "5d915b29-66da-4477-8032-f9bfec909a8b",
+      "name": "Get Active Campaigns",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 2,
+      "position": [
+        -1424,
+        -32
+      ],
+      "credentials": {
+        "httpBearerAuth": {
+          "id": "USdxeFZzKpNXnK6c",
+          "name": "Meta Bearer Auth account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpBearerAuth",
+        "url": "=https://graph.facebook.com/v19.0/{{ $('Loop Over Campaigns').item.json.id }}/insights",
+        "options": {},
+        "queryParametersUi": {
+          "parameter": [
+            {
+              "name": "breakdowns",
+              "value": "age,gender"
+            },
+            {
+              "name": "fields",
+              "value": "impressions,clicks,spend"
+            },
+            {
+              "name": "date_preset",
+              "value": "={{ $('FORM DATA').item.json.time_range.trim() }}"
+            }
+          ]
+        }
+      },
+      "id": "adbcc494-eafe-4cc2-81d4-3875d5562157",
+      "name": "Get Audience Demographics",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 2,
+      "position": [
+        48,
+        -32
+      ],
+      "credentials": {
+        "httpBearerAuth": {
+          "id": "USdxeFZzKpNXnK6c",
+          "name": "Meta Bearer Auth account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpBearerAuth",
+        "url": "=https://graph.facebook.com/v19.0/{{ $('Loop Over Campaigns').item.json.id }}/insights",
+        "options": {},
+        "queryParametersUi": {
+          "parameter": [
+            {
+              "name": "breakdowns",
+              "value": "country"
+            },
+            {
+              "name": "fields",
+              "value": "impressions,clicks,spend"
+            },
+            {
+              "name": "date_preset",
+              "value": "={{ $('FORM DATA').item.json.time_range.trim() }}"
+            }
+          ]
+        }
+      },
+      "id": "147aad17-de0d-4c94-bc28-8c882f334819",
+      "name": "Get Geographic Data",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 2,
+      "position": [
+        496,
+        -32
+      ],
+      "credentials": {
+        "httpBearerAuth": {
+          "id": "USdxeFZzKpNXnK6c",
+          "name": "Meta Bearer Auth account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "289ea2e2-ce30-4937-8431-1b3662e3b523",
+      "name": "Loop Over Campaigns",
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        -976,
+        -32
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "return $input.all().map(item => item.json.data).flat();"
+      },
+      "id": "18d97310-bd6c-4a38-8c05-285f3a0d803d",
+      "name": "Flatten Campaigns",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -1200,
+        -32
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "75bb0922-a35c-4978-82fe-ac1b819d579d",
+              "name": "metricas",
+              "value": "={{ $('Metrics Summary').item.json.campaign_summary }}",
+              "type": "object"
+            },
+            {
+              "id": "ac14a916-34bc-453f-8282-c2e23e7b1397",
+              "name": "demograficas",
+              "value": "={{ $('Demographic Summary').item.json }}",
+              "type": "object"
+            },
+            {
+              "id": "1a04e550-0c73-423b-b914-1b48517c0db6",
+              "name": "geograficas",
+              "value": "={{ $('Geographic Summary').item.json.geographic_analysis }}",
+              "type": "object"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        944,
+        48
+      ],
+      "id": "ff1b18f0-ed2b-4f89-a265-3a859683c4c3",
+      "name": "Campaign Data"
+    },
+    {
+      "parameters": {
+        "jsCode": "const email = $('FORM DATA').first().json.email_data;\n\nreturn {\n  campaigns: $input.all(),\n  email: email\n}"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -752,
+        -352
+      ],
+      "id": "1ddd04da-a223-4525-b1c2-9ecb86ed2254",
+      "name": "Code"
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $('Code').item.json.email }}",
+        "subject": "={{ $json.response.correo.subject }}",
+        "message": "={{ $json.response.correo.html_body }}",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        48,
+        -352
+      ],
+      "id": "286afd5e-beee-4f23-840c-41c29d2492e2",
+      "name": "Send a message",
+      "webhookId": "1752c1d5-6e7b-4f7d-a404-06ca596d932d",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "H8Qx7NlrthXmHUiy",
+          "name": "Soporte Garoo"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "formTitle": "Formulario de Prueba",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "Meta Account ID",
+              "placeholder": "374998040192307",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Email to receive data",
+              "fieldType": "email",
+              "placeholder": "user@mail.com",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Temporalidad",
+              "fieldType": "dropdown",
+              "fieldOptions": {
+                "values": [
+                  {
+                    "option": "Last 7 Days"
+                  },
+                  {
+                    "option": "Last 14 Days"
+                  },
+                  {
+                    "option": "Last 28 Days"
+                  }
+                ]
+              },
+              "requiredField": true
+            }
+          ]
+        },
+        "options": {
+          "appendAttribution": false,
+          "respondWithOptions": {
+            "values": {
+              "formSubmittedText": "Los datos solicitados podra verlos en el correo que ingresó una vez el sistema termine de procesarlos. Normalemente toma unos 20 a 30 segundos "
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.2,
+      "position": [
+        -1872,
+        -32
+      ],
+      "id": "c428489d-02ca-4973-9d0c-859bd338189f",
+      "name": "On form submission",
+      "webhookId": "843b93b0-615b-40a0-9fbe-18eb3fd5cd7f"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "f11a4835-148e-4ec9-8d7e-b92fa2fd6343",
+              "name": "response",
+              "value": "={{ $json.output }}",
+              "type": "object"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -176,
+        -352
+      ],
+      "id": "5690e025-48e3-404b-a3cb-53a6768de7bb",
+      "name": "Agent Response"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.campaigns }}",
+        "options": {
+          "systemMessage": "=# 📝 Prompt: Analista de Marketing de IA para Meta Ads\n\nEres un analista de marketing especializado en Meta Ads (Facebook e Instagram). Recibirás datos de campañas, incluyendo métricas de rendimiento y características de la audiencia.\n\nTu única salida debe ser una **cadena de texto en formato JSON** con esta estructura exacta:\n\n{\"correo\":{\"subject\":\"Asunto del correo\",\"html_body\":\"Contenido del informe en formato HTML, listo para insertar en un campo de mensaje de correo\"},\"web\":\"Versión del informe optimizada para mostrar en una interfaz web (texto con formato simple)\"}\n\n---\n\n## ✅ Instrucciones\n\n1. **Analiza el rendimiento de cada campaña** usando benchmarks de la industria y umbrales del negocio.\n2. **Evalúa la efectividad del targeting de audiencia**.\n3. **Genera dos versiones del informe**:\n   - `correo`: debe incluir:\n     - `\"subject\"`: Asunto profesional.\n     - `\"html_body\"`: cuerpo del correo en **HTML válido**, con formato limpio, tablas, estilos básicos y listo para insertar en un editor de correo.\n   - `web`: versión más clara y visual, ideal para mostrar en una app o dashboard (usa saltos de línea, emojis, negritas, etc.).\n\n---\n\n## 📧 Formato del Correo (HTML dentro de \"html_body\")\n\nEl campo `html_body` debe contener un documento HTML completo o fragmento estilizado, que incluya:\n\n- Asunto: \"Weekly Meta Ads Performance Report – {business_name}\"\n- Saludo: \"Hi Team,\"\n- Tabla clara con métricas clave.\n- Secciones con encabezados: 📊 Summary, 🧑‍🤝‍🧑 Audience Analysis, 🩺 Diagnosis, 💡 Recommendations.\n- Benchmarks de referencia.\n- Estilos CSS integrados (minimalistas) para mejorar la legibilidad.\n- Destacado de métricas clave (ej. ROAS alto/bajo).\n- Cierre profesional.\n\n---\n\n## 🌐 Formato Web (dentro de \"web\")\n\nVersión más escaneable para interfaces web. Usa:\n\n- Saltos de línea (`\\n`)\n- Emojis para secciones\n- Negritas con `**`\n- Listas con `-`\n- Lenguaje claro y conciso\n\nEjemplo:\n\"📊 *Campaign Summary*\\n\\n- **Mensajes junio**: ROAS 2.78 (strong)\\n- **Tráfico - mayo**: ROAS 0.74 (low)\\n\\n💡 *Recommendations*: Shift budget to top performers\"\n\n---\n\n### 🧠 Variables de Entrada\n\n#### 🏢 Negocio\n- {business_name}\n- {roas_threshold} (ej. 3.0)\n- {target_cpa} (ej. $25)\n- {primary_kpi} (ej. ROAS)\n\n#### 📦 Por campaña (repetir)\n- {campaign_name}\n- {daily_spend} = spend\n- {cpm}\n- {ctr}\n- {cpc}\n- {conversions} = valor de \"purchase\" o \"omni_purchase\" en action_values\n- {cost_per_conversion} = spend / conversions\n- {roas} = purchase_roas.value\n- {age_range}: agrupado por campaña (ej. 25-34, 35-44)\n- {gender_split}: % mujeres/hombres basado en datos demográficos\n- {locations}: país (ej. GT → Guatemala)\n- {audience_type}: inferido (ej. si alta concentración en mujeres 25-44 → interest o custom)\n- {device_types}: no disponible → omitir o indicar \"n/a\"\n- {platform}: no disponible → inferir o indicar \"n/a\"\n\n---\n\n### 📌 Reglas Finales\n\n- **Única salida**: cadena JSON con estructura exacta: `{\"correo\":{\"subject\":\"...\",\"html_body\":\"...\"},\"web\":\"...\"}`\n- Todo el contenido debe estar en **inglés profesional**.\n- El `html_body` debe ser **HTML válido** y listo para pegar en un editor de correo (como en la imagen).\n- La versión `web` debe ser legible en una interfaz simple (sin HTML).\n- Soporta múltiples campañas: solo procesa las que tengan `metricas` no nulas.\n- No agregues texto antes ni después del JSON.\n- Usa benchmarks:\n  - CTR > 1.0% (Instagram), >0.8% (Facebook) = bueno\n  - ROAS > {roas_threshold} = fuerte; < 2.0 = necesita optimización\n  - CPC < $1.00 = competitivo"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        -528,
+        -448
+      ],
+      "id": "ef4e2526-219f-4e4d-802e-2647d3648bd8",
+      "name": "Marketing Analyst"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "a1e4bc01-fa97-4e7b-a727-fd49d17e0f70",
+              "name": "ad_account_id",
+              "value": "={{ $json['Meta Account ID'].trim() }}",
+              "type": "string"
+            },
+            {
+              "id": "760fb941-a449-42a0-a471-821bd15b0497",
+              "name": "email_data",
+              "value": "={{ $json['Email to receive data'].trim() }}",
+              "type": "string"
+            },
+            {
+              "id": "9dc60cbc-e5bb-4c28-9a00-5f778ec0883d",
+              "name": "time_range",
+              "value": "={{ $json.Temporalidad==='Last 7 Days'?'last_7d':$json.Temporalidad==='Last 14 Days'?'last_14d':'last_28d' }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -1648,
+        -32
+      ],
+      "id": "35c821c1-3063-49f7-bdb6-4cc44dc88af8",
+      "name": "FORM DATA"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Análisis Demográfico Completo con Porcentajes (Versión Corregida)\nconst demographicData = $input.all()[0].json.data;\n\n// 1. Cálculos base\nlet totals = {\n  impressions: 0,\n  clicks: 0,\n  spend: 0\n};\n\n// 2. Análisis por Género\nlet genderAnalysis = {\n  female: { impressions: 0, clicks: 0, spend: 0 },\n  male: { impressions: 0, clicks: 0, spend: 0 },\n  unknown: { impressions: 0, clicks: 0, spend: 0 }\n};\n\n// 3. Análisis por Edad\nlet ageAnalysis = {};\n\n// Procesar datos\ndemographicData.forEach(item => {\n  const imp = parseInt(item.impressions);\n  const clk = parseInt(item.clicks);\n  const spd = parseFloat(item.spend);\n  \n  // Totales generales\n  totals.impressions += imp;\n  totals.clicks += clk;\n  totals.spend += spd;\n  \n  // Por género\n  genderAnalysis[item.gender].impressions += imp;\n  genderAnalysis[item.gender].clicks += clk;\n  genderAnalysis[item.gender].spend += spd;\n  \n  // Por edad\n  if (!ageAnalysis[item.age]) {\n    ageAnalysis[item.age] = {\n      impressions: 0,\n      clicks: 0,\n      spend: 0,\n      genders: {}\n    };\n  }\n  \n  ageAnalysis[item.age].impressions += imp;\n  ageAnalysis[item.age].clicks += clk;\n  ageAnalysis[item.age].spend += spd;\n});\n\n// 4. Función para calcular métricas (CORREGIDA)\nfunction calculateMetrics(base, totalImpressions, totalClicks, totalSpend) {\n  return {\n    absolute: base,\n    percentage: totalImpressions > 0 ? (base.impressions / totalImpressions) * 100 : 0,\n    ctr: base.impressions > 0 ? (base.clicks / base.impressions) * 100 : 0,\n    cpm: base.impressions > 0 ? (base.spend / base.impressions) * 1000 : 0,\n    cpc: base.clicks > 0 ? base.spend / base.clicks : 0\n  };\n}\n\n// Aplicar a géneros (CORREGIDO)\nObject.keys(genderAnalysis).forEach(gender => {\n  genderAnalysis[gender] = calculateMetrics(\n    genderAnalysis[gender], \n    totals.impressions,\n    totals.clicks,\n    totals.spend\n  );\n});\n\n// Aplicar a edades (CORREGIDO)\nObject.keys(ageAnalysis).forEach(age => {\n  ageAnalysis[age] = {\n    ...calculateMetrics(\n      {\n        impressions: ageAnalysis[age].impressions,\n        clicks: ageAnalysis[age].clicks,\n        spend: ageAnalysis[age].spend\n      },\n      totals.impressions,\n      totals.clicks,\n      totals.spend\n    ),\n    genders: {}\n  };\n});\n\n// 5. Hallazgos clave (CORREGIDO)\nlet keyFindings = {\n  topGenderByImpressions: Object.entries(genderAnalysis)\n    .filter(([k]) => k !== 'unknown')\n    .sort((a, b) => b[1].absolute.impressions - a[1].absolute.impressions)[0],\n  topAgeGroupByImpressions: Object.entries(ageAnalysis)\n    .sort((a, b) => b[1].absolute.impressions - a[1].absolute.impressions)[0],\n  mostEfficientGender: Object.entries(genderAnalysis)\n    .filter(([k]) => k !== 'unknown')\n    .sort((a, b) => a[1].cpc - b[1].cpc)[0],\n  mostEngagedAgeGroup: Object.entries(ageAnalysis)\n    .sort((a, b) => b[1].ctr - a[1].ctr)[0]\n};\n\n// 6. Estructura final (CORREGIDA)\nreturn {\n  date_range: {\n    start: demographicData[0]?.date_start || 'N/A',\n    end: demographicData[0]?.date_stop || 'N/A'\n  },\n  totals: {\n    ...totals,\n    ctr: totals.impressions > 0 ? (totals.clicks / totals.impressions) * 100 : 0,\n    cpm: totals.impressions > 0 ? (totals.spend / totals.impressions) * 1000 : 0,\n    cpc: totals.clicks > 0 ? totals.spend / totals.clicks : 0\n  },\n  gender_analysis: genderAnalysis,\n  age_analysis: ageAnalysis,\n  performance_insights: {\n    impression_share: {\n      female: genderAnalysis.female.percentage,\n      male: genderAnalysis.male.percentage,\n      top_age_group: ageAnalysis[keyFindings.topAgeGroupByImpressions[0]].percentage\n    },\n    best_performers: {\n      highest_reach: {\n        group: `${keyFindings.topGenderByImpressions[0]} (${keyFindings.topGenderByImpressions[1].percentage.toFixed(1)}%)`,\n        ctr: keyFindings.topGenderByImpressions[1].ctr.toFixed(2)\n      },\n      most_efficient: {\n        group: `${keyFindings.mostEfficientGender[0]} (CPC $${keyFindings.mostEfficientGender[1].cpc.toFixed(2)})`,\n        cpm: keyFindings.mostEfficientGender[1].cpm.toFixed(2)\n      },\n      best_engagement: {\n        group: `${keyFindings.mostEngagedAgeGroup[0]} (CTR ${keyFindings.mostEngagedAgeGroup[1].ctr.toFixed(2)}%)`,\n        impression_share: keyFindings.mostEngagedAgeGroup[1].percentage.toFixed(1)\n      }\n    }\n  }\n};"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        272,
+        -32
+      ],
+      "id": "4faee306-3663-4478-93fc-9a22b23be453",
+      "name": "Demographic Summary"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Procesamiento Avanzado de Métricas de Campaña\nconst campaignData = $input.all()[0].json.data[0];\n\n// 1. Procesamiento de métricas financieras\nconst spend = parseFloat(campaignData.spend);\nconst purchaseValue = campaignData.action_values\n  .find(a => ['purchase', 'omni_purchase'].includes(a.action_type))?.value || 0;\nconst roasData = campaignData.purchase_roas?.[0]?.value || 0;\n\n// 2. Cálculo de métricas avanzadas\nconst metrics = {\n  financial: {\n    spend: spend,\n    revenue: parseFloat(purchaseValue),\n    roas: parseFloat(roasData),\n    profit: parseFloat(purchaseValue) - spend,\n    profitability: ((parseFloat(purchaseValue) - spend) / spend) * 100\n  },\n  engagement: {\n    cpm: parseFloat(campaignData.cpm),\n    ctr: parseFloat(campaignData.ctr),\n    cpc: parseFloat(campaignData.cpc),\n    engagement_rate: (parseFloat(campaignData.ctr) / 10) // Estimación\n  },\n  conversions: {\n    purchase: extractActionValue(campaignData, ['purchase', 'omni_purchase']),\n    add_to_cart: extractActionValue(campaignData, ['add_to_cart', 'omni_add_to_cart']),\n    checkout: extractActionValue(campaignData, ['initiate_checkout', 'omni_initiated_checkout']),\n    content_view: extractActionValue(campaignData, ['view_content', 'omni_view_content'])\n  },\n  efficiency: {\n    cost_per_purchase: findBestCPA(campaignData, ['purchase', 'omni_purchase']),\n    cost_per_add_to_cart: findBestCPA(campaignData, ['add_to_cart', 'omni_add_to_cart']),\n    cost_per_checkout: findBestCPA(campaignData, ['initiate_checkout', 'omni_initiated_checkout']),\n    cost_per_view: findBestCPA(campaignData, ['view_content', 'omni_view_content'])\n  }\n};\n\n// 3. Análisis comparativo\nconst benchmarks = {\n  ctr: 1.5, // Benchmark de industria\n  roas: 3.0, // Objetivo de negocio\n  cpc: 1.20 // Precio objetivo\n};\n\nconst performance = {\n  score: calculatePerformanceScore(metrics, benchmarks),\n  insights: {\n    ctr_status: metrics.engagement.ctr > benchmarks.ctr ? \"above\" : \"below\",\n    roas_status: metrics.financial.roas > benchmarks.roas ? \"above\" : \"below\",\n    efficiency_status: metrics.efficiency.cost_per_purchase < (spend / 10) ? \"efficient\" : \"inefficient\" // 10% del spend\n  }\n};\n\n// 4. Estructura final mejorada\nreturn {\n  campaign_summary: {\n    metadata: {\n      name: campaignData.campaign_name,\n      date_range: `${campaignData.date_start} to ${campaignData.date_stop}`,\n      days_running: dateDiff(campaignData.date_start, campaignData.date_stop)\n    },\n    key_metrics: metrics,\n    performance_analysis: performance,\n    benchmarks: benchmarks,\n    raw_data: { // Datos crudos para referencia\n      all_action_values: groupActions(campaignData.action_values),\n      all_cost_metrics: groupCosts(campaignData.cost_per_action_type)\n    }\n  }\n};\n\n// Funciones auxiliares\nfunction extractActionValue(data, actionTypes) {\n  const action = data.action_values.find(a => actionTypes.includes(a.action_type));\n  return {\n    value: action ? parseFloat(action.value) : 0,\n    events: data.action_values.filter(a => actionTypes.includes(a.action_type)).length\n  };\n}\n\nfunction findBestCPA(data, actionTypes) {\n  const relevantActions = data.cost_per_action_type\n    .filter(a => actionTypes.includes(a.action_type))\n    .map(a => parseFloat(a.value));\n    \n  return relevantActions.length > 0 ? Math.min(...relevantActions) : 0;\n}\n\nfunction calculatePerformanceScore(metrics, benchmarks) {\n  const weights = {\n    roas: 0.4,\n    ctr: 0.3,\n    cpc: 0.2,\n    profitability: 0.1\n  };\n  \n  const scores = {\n    roas: metrics.financial.roas >= benchmarks.roas ? 1 : metrics.financial.roas / benchmarks.roas,\n    ctr: metrics.engagement.ctr >= benchmarks.ctr ? 1 : metrics.engagement.ctr / benchmarks.ctr,\n    cpc: metrics.engagement.cpc <= benchmarks.cpc ? 1 : benchmarks.cpc / metrics.engagement.cpc,\n    profitability: metrics.financial.profitability > 0 ? 1 : 0\n  };\n  \n  return Object.keys(weights).reduce((sum, key) => sum + (scores[key] * weights[key]), 0);\n}\n\nfunction dateDiff(start, end) {\n  const diff = new Date(end) - new Date(start);\n  return Math.floor(diff / (1000 * 60 * 60 * 24)) + 1;\n}\n\nfunction groupActions(actions) {\n  return actions.reduce((acc, action) => {\n    if (!acc[action.action_type]) {\n      acc[action.action_type] = parseFloat(action.value);\n    }\n    return acc;\n  }, {});\n}\n\nfunction groupCosts(costs) {\n  return costs.reduce((acc, cost) => {\n    if (!acc[cost.action_type] || parseFloat(cost.value) < acc[cost.action_type]) {\n      acc[cost.action_type] = parseFloat(cost.value);\n    }\n    return acc;\n  }, {});\n}"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -176,
+        -32
+      ],
+      "id": "0f2d1a3f-2e87-4d76-bf46-13233a48fa7f",
+      "name": "Metrics Summary"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Procesamiento de Datos Geográficos\nconst geoData = $input.all()[0].json.data;\n\n// 1. Normalización de datos básicos\nconst baseMetrics = geoData.map(item => ({\n  country: item.country,\n  country_name: getCountryName(item.country), // Función para convertir código a nombre\n  impressions: parseInt(item.impressions),\n  clicks: parseInt(item.clicks),\n  spend: parseFloat(item.spend),\n  date_range: `${item.date_start} - ${item.date_stop}`,\n  days: dateDiff(item.date_start, item.date_stop)\n}));\n\n// 2. Cálculo de métricas derivadas\nconst enhancedData = baseMetrics.map(item => ({\n  ...item,\n  ctr: (item.clicks / item.impressions) * 100,\n  cpm: (item.spend / item.impressions) * 1000,\n  cpc: item.clicks > 0 ? item.spend / item.clicks : 0,\n  impressions_per_day: item.impressions / item.days,\n  spend_per_day: item.spend / item.days\n}));\n\n// 3. Análisis comparativo (si hay múltiples países)\nconst totalImpressions = enhancedData.reduce((sum, item) => sum + item.impressions, 0);\nconst totalSpend = enhancedData.reduce((sum, item) => sum + item.spend, 0);\n\nconst withPercentages = enhancedData.map(item => ({\n  ...item,\n  impression_share: (item.impressions / totalImpressions) * 100,\n  spend_share: (item.spend / totalSpend) * 100,\n  efficiency_ratio: item.ctr / (item.cpc || 1) // Evitar división por cero\n}));\n\n// 4. Estructura final organizada\nreturn {\n  geographic_analysis: {\n    summary: {\n      total_countries: enhancedData.length,\n      date_range: enhancedData[0]?.date_range || 'N/A',\n      total_impressions: totalImpressions,\n      total_spend: totalSpend\n    },\n    countries: withPercentages.sort((a, b) => b.impressions - a.impressions),\n    performance_insights: {\n      best_performing: getTopPerformer(enhancedData, 'ctr'),\n      most_efficient: getTopPerformer(enhancedData, 'efficiency_ratio'),\n      highest_reach: getTopPerformer(enhancedData, 'impressions')\n    },\n    raw_data: geoData // Conservar datos originales\n  }\n};\n\n// Funciones auxiliares\nfunction getCountryName(code) {\n  const countries = {\n    GT: 'Guatemala',\n    MX: 'México',\n    // Añadir más países según necesidad\n  };\n  return countries[code] || code;\n}\n\nfunction dateDiff(start, end) {\n  const diff = new Date(end) - new Date(start);\n  return Math.floor(diff / (1000 * 60 * 60 * 24)) + 1;\n}\n\nfunction getTopPerformer(data, metric) {\n  if (data.length === 0) return null;\n  return data.reduce((top, current) => \n    current[metric] > top[metric] ? current : top\n  );\n}"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        720,
+        -32
+      ],
+      "id": "37be7db4-64b4-4597-99b8-12eddadc6282",
+      "name": "Geographic Summary"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "487e99c4-4f86-4fa7-8d11-c54bb601b433",
+              "leftValue": "={{ $json.data }}",
+              "rightValue": "",
+              "operator": {
+                "type": "array",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -464,
+        -32
+      ],
+      "id": "968395ab-3c7c-401d-b7bc-4b1c3b15c4e7",
+      "name": "IF DATA"
+    },
+    {
+      "parameters": {
+        "url": "=https://graph.facebook.com/v19.0/{{ $json.id }}/insights",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpBearerAuth",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "fields",
+              "value": "campaign_name,spend,cpm,ctr,cpc,conversions,cost_per_conversion,action_values,purchase_roas,cost_per_action_type"
+            },
+            {
+              "name": "level",
+              "value": "campaign"
+            },
+            {
+              "name": "date_preset",
+              "value": "={{ $('FORM DATA').item.json.time_range.trim() }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -752,
+        -96
+      ],
+      "id": "b1e46831-cf9e-4c70-9ce7-5b03bd022b64",
+      "name": "Get Campaign Metrics",
+      "credentials": {
+        "httpBearerAuth": {
+          "id": "USdxeFZzKpNXnK6c",
+          "name": "Meta Bearer Auth account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "OpenAI Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Marketing Analyst",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Active Campaigns": {
+      "main": [
+        [
+          {
+            "node": "Flatten Campaigns",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Audience Demographics": {
+      "main": [
+        [
+          {
+            "node": "Demographic Summary",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Geographic Data": {
+      "main": [
+        [
+          {
+            "node": "Geographic Summary",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Campaigns": {
+      "main": [
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Get Campaign Metrics",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Flatten Campaigns": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Campaigns",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Campaign Data": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Campaigns",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code": {
+      "main": [
+        [
+          {
+            "node": "Marketing Analyst",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "On form submission": {
+      "main": [
+        [
+          {
+            "node": "FORM DATA",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Agent Response": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Marketing Analyst": {
+      "main": [
+        [
+          {
+            "node": "Agent Response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "FORM DATA": {
+      "main": [
+        [
+          {
+            "node": "Get Active Campaigns",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Demographic Summary": {
+      "main": [
+        [
+          {
+            "node": "Get Geographic Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Metrics Summary": {
+      "main": [
+        [
+          {
+            "node": "Get Audience Demographics",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Geographic Summary": {
+      "main": [
+        [
+          {
+            "node": "Campaign Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "IF DATA": {
+      "main": [
+        [
+          {
+            "node": "Metrics Summary",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Loop Over Campaigns",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Campaign Metrics": {
+      "main": [
+        [
+          {
+            "node": "IF DATA",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "13ee0367-b928-4a15-8749-0a5670f0b060",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "d4ab02fb1ef8b6ca2c1c5c1f280ee696b0514d7d92cee5fb0da1784dbe393998"
+  },
+  "id": "xqztowsWlAEULn1l",
+  "tags": []
+}

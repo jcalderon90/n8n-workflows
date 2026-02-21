@@ -1,0 +1,681 @@
+{
+  "name": "YouTube Video Summarizer - RapidAPI",
+  "nodes": [
+    {
+      "parameters": {
+        "url": "https://youtube-video-summarizer-gpt-ai.p.rapidapi.com/api/v1/get-transcript-v2",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "video_id",
+              "value": "={{ $json.videoId }}"
+            },
+            {
+              "name": "platform",
+              "value": "youtube"
+            }
+          ]
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "x-rapidapi-host",
+              "value": "youtube-video-summarizer-gpt-ai.p.rapidapi.com"
+            },
+            {
+              "name": "x-rapidapi-key",
+              "value": "fc8dce51b6msh04a57ba303a2015p165df6jsnfd80c9cd3add"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -992,
+        -672
+      ],
+      "id": "aa74c9f8-5eab-4ebe-a2f0-13848b277955",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.final_transcript }}",
+        "options": {
+          "systemMessage": "=Eres un asistente experto en generar contenido educativo.  \nRecibirás como entrada la transcripción en texto de un video.  \n\nInstrucciones:\n1. Genera un **resumen amplio y preciso** de la transcripción en español.  \n2. Explica los conceptos de manera **clara y sencilla**, como si estuvieras enseñando a profesionales que están iniciando en el tema.  \n3. Incluye **ejemplos prácticos** que ayuden a comprender los conceptos.  \n4. Organiza la información de manera **didáctica y visualmente atractiva** para Google Docs:  \n   - Usa **títulos y subtítulos** para secciones principales.  \n   - Emplea **viñetas o listas numeradas** para pasos, conceptos o ejemplos.  \n   - Resalta palabras clave en **negrita** o **cursiva** según corresponda.  \n5. La salida debe ser **solo el texto**, sin JSON, sin campos ni comentarios, listo para pegar en Google Docs.\n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        352,
+        -976
+      ],
+      "id": "eb108476-5842-4907-996c-9db8bce32e49",
+      "name": "AI Study Agent"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.final_transcript }}",
+        "options": {
+          "systemMessage": "=Eres un asistente experto en crear guiones de video educativos.  \nRecibirás como entrada la transcripción en texto de un video.  \n\nInstrucciones:\n1. Crea un **guion paso a paso** para un video de YouTube basado en la transcripción.  \n2. Incluye **introducción, desarrollo y cierre**, con indicaciones claras sobre cómo presentar cada sección.  \n3. Organiza el contenido de manera **visual y atractiva** para Google Docs:  \n   - Usa **títulos y subtítulos** para cada sección del guion.  \n   - Emplea **viñetas o listas numeradas** para los pasos o puntos clave.  \n   - Resalta términos importantes en **negrita** para facilitar la lectura.  \n4. La salida debe ser **solo el guion**, en español, sin JSON ni campos adicionales, listo para pegar en Google Docs.\n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        352,
+        -480
+      ],
+      "id": "4133b640-d097-4b55-a7b5-6ee7e5d22fbd",
+      "name": "AI Script Agent"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "c02c5b41-7f8d-4da7-8b56-221208d038e6",
+              "name": "link",
+              "value": "={{ $json['Link to video'] }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -1440,
+        -672
+      ],
+      "id": "fa0df29a-a0de-435e-9244-540e4813ce11",
+      "name": "Edit Fields2"
+    },
+    {
+      "parameters": {
+        "jsCode": "// URL de ejemplo (puedes reemplazarla o recibirla de otro nodo)\nconst url = $input.first().json.link;\n\n// Expresión regular para capturar el ID del video\nconst pattern = /(?:youtu\\.be\\/|youtube\\.com\\/watch\\?v=)([^&\\n?#]+)/;\nconst match = url.match(pattern);\n\n// Si encuentra el ID, lo devuelve\nconst videoId = match ? match[1] : null;\n\nreturn [\n  {\n    json: {\n      url,\n      videoId\n    }\n  }\n];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -1216,
+        -672
+      ],
+      "id": "c78fd57e-b228-4e03-b87b-77594a44deec",
+      "name": "Code1"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "f0a17dec-870f-418e-aaa5-b84272181cd1",
+              "name": "transcripts",
+              "value": "={{ $('HTTP Request1').item.json.data.transcripts }}",
+              "type": "object"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -544,
+        -672
+      ],
+      "id": "ef32e54a-3215-45f1-a665-5c8fc5de07eb",
+      "name": "Edit Fields3"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ Object.keys($json.transcripts).includes(\"en_auto_auto\") }}",
+                    "rightValue": "en_auto",
+                    "operator": {
+                      "type": "boolean",
+                      "operation": "true",
+                      "singleValue": true
+                    },
+                    "id": "2138a1d5-afdb-4cdf-b372-99aa696e5eed"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "INGLES"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "09c00923-4777-42ed-a6c2-1047fcc3d1c8",
+                    "leftValue": "={{ Object.keys($json.transcripts).includes(\"es_auto_auto\") }}",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "boolean",
+                      "operation": "true",
+                      "singleValue": true
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "ESPAÑOL"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        -320,
+        -672
+      ],
+      "id": "aea231f4-6dac-45c9-91c1-337fd9649a93",
+      "name": "Switch1"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Initialize an empty string to hold the concatenated transcript\nlet combinedTranscript = \"\";\n\n// Safeguard against undefined paths and ensure required properties exist\nif (\n    $json &&\n    $json.transcripts &&\n    $json.transcripts.es_auto_auto && // Cambiado de en_auto_auto a es_auto_auto\n    $json.transcripts.es_auto_auto.custom\n) {\n    // Access the 'custom' array\n    const customArray = $json.transcripts.es_auto_auto.custom;\n\n    // Loop through the 'custom' array to extract and append the 'text' property\n    for (const item of customArray) {\n        if (item.text) {\n            combinedTranscript += item.text + \" \"; // Add a space between texts\n        }\n    }\n}\n\n// Return the combined transcript as a new field\nreturn {\n    json: {\n        combinedTranscript: combinedTranscript.trim() // Clean extra spaces\n    }\n};"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -96,
+        -576
+      ],
+      "id": "2ec58125-0f6f-43c1-87fd-720a7f58b153",
+      "name": "Code6",
+      "alwaysOutputData": false
+    },
+    {
+      "parameters": {
+        "jsCode": "// Initialize an empty string to hold the concatenated transcript\nlet combinedTranscript = \"\";\n\n// Safeguard against undefined paths and ensure required properties exist\nif (\n    $json &&\n    $json.transcripts &&\n    $json.transcripts.en_auto_auto && // Cambiado de en_auto_auto a en_auto_auto\n    $json.transcripts.en_auto_auto.custom\n) {\n    // Access the 'custom' array\n    const customArray = $json.transcripts.en_auto_auto.custom;\n\n    // Loop through the 'custom' array to extract and append the 'text' property\n    for (const item of customArray) {\n        if (item.text) {\n            combinedTranscript += item.text + \" \"; // Add a space between texts\n        }\n    }\n}\n\n// Return the combined transcript as a new field\nreturn {\n    json: {\n        combinedTranscript: combinedTranscript.trim() // Clean extra spaces\n    }\n};\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -96,
+        -768
+      ],
+      "id": "76dca916-0807-40d3-b13e-fd7f9b128f04",
+      "name": "Code7",
+      "alwaysOutputData": false
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "9d816cc9-e3d9-4492-9c03-072d4ae6f536",
+              "name": "final_transcript",
+              "value": "={{ $json.combinedTranscript }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        128,
+        -672
+      ],
+      "id": "472569c6-c556-4426-8ff5-d170626a88ac",
+      "name": "Edit Fields5"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4o-mini",
+          "mode": "list",
+          "cachedResultName": "gpt-4o-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        432,
+        -752
+      ],
+      "id": "e21ca5f6-ffe3-4daf-8f2f-b6c5f865c90b",
+      "name": "OpenAI Chat Model2",
+      "credentials": {
+        "openAiApi": {
+          "id": "LtzIKoi61tZvaeua",
+          "name": "Vectorizer Agent - Knowledge Bases"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "folder",
+        "name": "={{ $('HTTP Request1').item.json.data.videoInfo.name }}",
+        "driveId": {
+          "__rl": true,
+          "value": "My Drive",
+          "mode": "list",
+          "cachedResultName": "My Drive",
+          "cachedResultUrl": "https://drive.google.com/drive/my-drive"
+        },
+        "folderId": {
+          "__rl": true,
+          "value": "1yHQI1wDhnd55-8_X5qcXesr8EumvcWXV",
+          "mode": "list",
+          "cachedResultName": "RESUMENES DE VIDEOS",
+          "cachedResultUrl": "https://drive.google.com/drive/folders/1yHQI1wDhnd55-8_X5qcXesr8EumvcWXV"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        -768,
+        -672
+      ],
+      "id": "a756a52c-6491-46be-93ea-bf4420ea863d",
+      "name": "Create folder1",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "lwsELp5kIIpLgWoe",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4o-mini",
+          "mode": "list",
+          "cachedResultName": "gpt-4o-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        432,
+        -256
+      ],
+      "id": "c75ef731-460f-4a04-98b2-a97cf03232e1",
+      "name": "OpenAI Chat Model3",
+      "credentials": {
+        "openAiApi": {
+          "id": "LtzIKoi61tZvaeua",
+          "name": "Vectorizer Agent - Knowledge Bases"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "folderId": "={{ $('Create folder1').item.json.id }}",
+        "title": "=SCRIPT - {{ $('HTTP Request1').item.json.data.videoInfo.name }}"
+      },
+      "type": "n8n-nodes-base.googleDocs",
+      "typeVersion": 2,
+      "position": [
+        704,
+        -480
+      ],
+      "id": "da23f511-ceb7-4cf7-bb5f-cc0ca3e65960",
+      "name": "Script1",
+      "credentials": {
+        "googleDocsOAuth2Api": {
+          "id": "ZAcCU3R17YPMSNP3",
+          "name": "Google Docs account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "folderId": "={{ $('Create folder1').item.json.id }}",
+        "title": "=STUDY - {{ $('HTTP Request1').item.json.data.videoInfo.name }}"
+      },
+      "type": "n8n-nodes-base.googleDocs",
+      "typeVersion": 2,
+      "position": [
+        704,
+        -880
+      ],
+      "id": "02aaf498-5034-4c1b-9db3-7c44911a16e8",
+      "name": "Study1",
+      "credentials": {
+        "googleDocsOAuth2Api": {
+          "id": "ZAcCU3R17YPMSNP3",
+          "name": "Google Docs account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentURL": "={{ $json.id }}",
+        "actionsUi": {
+          "actionFields": [
+            {
+              "action": "insert",
+              "text": "={{ $('AI Script Agent').item.json.output }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.googleDocs",
+      "typeVersion": 2,
+      "position": [
+        928,
+        -480
+      ],
+      "id": "3982c41f-8ded-4996-a4d2-932cc6da5154",
+      "name": "Update a document2",
+      "credentials": {
+        "googleDocsOAuth2Api": {
+          "id": "ZAcCU3R17YPMSNP3",
+          "name": "Google Docs account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentURL": "={{ $json.id }}",
+        "actionsUi": {
+          "actionFields": [
+            {
+              "action": "insert",
+              "text": "={{ $('AI Study Agent').item.json.output }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.googleDocs",
+      "typeVersion": 2,
+      "position": [
+        928,
+        -880
+      ],
+      "id": "2aea3561-29f3-4a82-a8cd-e131de1bd809",
+      "name": "Update a document3",
+      "credentials": {
+        "googleDocsOAuth2Api": {
+          "id": "ZAcCU3R17YPMSNP3",
+          "name": "Google Docs account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "formTitle": "Video Summary Agent",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "Link to video",
+              "requiredField": true
+            }
+          ]
+        },
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.2,
+      "position": [
+        -1664,
+        -672
+      ],
+      "id": "00d3b010-fc9c-4a71-b45a-6cf2a3d0d1fd",
+      "name": "On form submission",
+      "webhookId": "74edb59f-4de1-45d6-bfd1-7cc2d934152f"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Create folder1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Study Agent": {
+      "main": [
+        [
+          {
+            "node": "Study1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Script Agent": {
+      "main": [
+        [
+          {
+            "node": "Script1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields2": {
+      "main": [
+        [
+          {
+            "node": "Code1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code1": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields3": {
+      "main": [
+        [
+          {
+            "node": "Switch1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch1": {
+      "main": [
+        [
+          {
+            "node": "Code7",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Code6",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code6": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields5",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code7": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields5",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields5": {
+      "main": [
+        [
+          {
+            "node": "AI Study Agent",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "AI Script Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model2": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Study Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create folder1": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields3",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        []
+      ]
+    },
+    "OpenAI Chat Model3": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Script Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Script1": {
+      "main": [
+        [
+          {
+            "node": "Update a document2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Study1": {
+      "main": [
+        [
+          {
+            "node": "Update a document3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "On form submission": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "callerPolicy": "workflowsFromSameOwner",
+    "availableInMCP": false,
+    "errorWorkflow": "utrGBJjkIGauT5uw"
+  },
+  "versionId": "58d69408-fd96-4213-9709-f2bc4f2efc39",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "d4ab02fb1ef8b6ca2c1c5c1f280ee696b0514d7d92cee5fb0da1784dbe393998"
+  },
+  "id": "uW4YVJ9j0dMum7xk",
+  "tags": [
+    {
+      "updatedAt": "2025-09-01T16:26:02.067Z",
+      "createdAt": "2025-09-01T16:24:18.355Z",
+      "id": "HF6FDHuL9dV9Y33x",
+      "name": "INTERV. HUMANA"
+    },
+    {
+      "updatedAt": "2025-09-01T16:22:03.233Z",
+      "createdAt": "2025-09-01T16:22:03.233Z",
+      "id": "gROeDXsIw8PaI9x1",
+      "name": "FUNCIONAL"
+    }
+  ]
+}

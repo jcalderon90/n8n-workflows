@@ -1,0 +1,171 @@
+{
+  "name": "ACTIVAR O DESACTIVAR",
+  "nodes": [
+    {
+      "parameters": {
+        "formTitle": "Activar Recuerdo de PAgo",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "ACTIVATE",
+              "fieldType": "radio",
+              "fieldOptions": {
+                "values": [
+                  {
+                    "option": "true"
+                  },
+                  {
+                    "option": "false"
+                  }
+                ]
+              },
+              "requiredField": true
+            }
+          ]
+        },
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.3,
+      "position": [
+        0,
+        -16
+      ],
+      "id": "fe1cdea1-e306-448c-904f-71962278917d",
+      "name": "On form submission",
+      "webhookId": "8be90423-0362-4536-9594-8ae50c0fef40"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "cdf7de42-0c15-4e6e-bff2-04b591705abb",
+              "leftValue": "={{ $json.ACTIVATE }}",
+              "rightValue": "true",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        224,
+        -16
+      ],
+      "id": "18fd231b-fd99-4049-b3c2-c28aee361534",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "operation": "activate",
+        "workflowId": {
+          "__rl": true,
+          "value": "JwKJlNBWYU75uE23",
+          "mode": "list",
+          "cachedResultName": "Recuerdo de Pago (#JwKJlNBWYU75uE23)"
+        },
+        "additionalFields": {},
+        "requestOptions": {}
+      },
+      "type": "n8n-nodes-base.n8n",
+      "typeVersion": 1,
+      "position": [
+        448,
+        -112
+      ],
+      "id": "1fe995d7-4b44-417a-bc2a-479e50a48876",
+      "name": "Activate a workflow",
+      "credentials": {
+        "n8nApi": {
+          "id": "3SLMjPlgPHyCSo2G",
+          "name": "n8n account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "deactivate",
+        "workflowId": {
+          "__rl": true,
+          "value": "JwKJlNBWYU75uE23",
+          "mode": "list",
+          "cachedResultName": "Recuerdo de Pago (#JwKJlNBWYU75uE23)"
+        },
+        "requestOptions": {}
+      },
+      "type": "n8n-nodes-base.n8n",
+      "typeVersion": 1,
+      "position": [
+        448,
+        80
+      ],
+      "id": "95d7f32e-aa99-4d91-bf27-1ec6b86c08ec",
+      "name": "Deactivate a workflow",
+      "credentials": {
+        "n8nApi": {
+          "id": "3SLMjPlgPHyCSo2G",
+          "name": "n8n account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "On form submission": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Activate a workflow",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Deactivate a workflow",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "75fbc899-f274-4b2d-b56c-dade7358207c",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "1605e0956f411c02ecc29f05b035dcb95746e902cd54a42b69d92da41bbef671"
+  },
+  "id": "cd5g35PI5gfCFNkA",
+  "tags": []
+}

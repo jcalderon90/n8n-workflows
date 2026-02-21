@@ -1,0 +1,97 @@
+{
+  "name": "Mundo Verde - ERROR HANDLER",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.errorTrigger",
+      "typeVersion": 1,
+      "position": [
+        -336,
+        -96
+      ],
+      "id": "bc514048-62fe-4df0-9759-51fa815ffea1",
+      "name": "Error Trigger"
+    },
+    {
+      "parameters": {
+        "html": "<!DOCTYPE html>\n<html>\n<head>\n  <meta charset=\"UTF-8\" />\n  <title>Error en flujo</title>\n  <style>\n    body {\n      margin: 0;\n      padding: 20px;\n      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;\n      background-color: #f9f9f9;\n      display: flex;\n      justify-content: center;\n      align-items: center;\n      min-height: 100vh;\n    }\n\n    .container {\n      background-color: #fff;\n      padding: 24px;\n      border-radius: 10px;\n      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);\n      max-width: 500px;\n      width: 100%;\n      text-align: left;\n    }\n\n    h1 {\n      color: #000;\n      font-size: 18px;\n      font-weight: 600;\n      margin: 0 0 12px 0;\n    }\n\n    h2 {\n      color: #666;\n      font-size: 14px;\n      font-weight: 600;\n      margin: 0 0 6px 0;\n    }\n\n    p {\n      color: #d32f2f; /* Rojo para errores (tomado de paleta Material Design) */\n      font-size: 14px;\n      line-height: 1.5;\n      margin: 0 0 16px 0;\n    }\n\n    a {\n      color: #1a73e8;\n      text-decoration: none;\n      font-size: 14px;\n      font-weight: 600;\n    }\n\n    a:hover {\n      text-decoration: underline;\n    }\n  </style>\n</head>\n<body>\n  <div class=\"container\">\n    <h1>Error en: <i>{{ $json.workflow.name }}</i></h1>\n    <h2>Mensaje de error:</h2>\n    <p>{{ $json.execution.error.message }}</p>\n    <a href=\"{{ $json.execution.url }}\" target=\"_blank\">Ir a la ejecución del flujo</a>\n  </div>\n</body>\n</html>"
+      },
+      "type": "n8n-nodes-base.html",
+      "typeVersion": 1.2,
+      "position": [
+        -112,
+        -96
+      ],
+      "id": "0b7ce7a1-555b-4cb9-99b5-92b1f24f050b",
+      "name": "HTML"
+    },
+    {
+      "parameters": {
+        "sendTo": "jorge.calderon@garooinc.com",
+        "subject": "=ERROR!!! en n8n",
+        "message": "={{ $json.html }}",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        112,
+        -96
+      ],
+      "id": "6d3bd534-5ea5-4cce-8121-01642562f8bc",
+      "name": "Send a message",
+      "webhookId": "a537293e-d3a6-40ca-a2ec-80d2e2881a8c",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "H8Qx7NlrthXmHUiy",
+          "name": "Soporte Garoo"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Error Trigger": {
+      "main": [
+        [
+          {
+            "node": "HTML",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTML": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": false
+  },
+  "versionId": "46e8d890-172a-45b3-8e44-f7140209491f",
+  "meta": {
+    "instanceId": "d4ab02fb1ef8b6ca2c1c5c1f280ee696b0514d7d92cee5fb0da1784dbe393998"
+  },
+  "id": "wv2-6zOqoyZTlgKRvmnxr",
+  "tags": [
+    {
+      "updatedAt": "2026-01-08T01:09:04.954Z",
+      "createdAt": "2026-01-08T01:09:04.954Z",
+      "id": "5STmV35Tlrs8TpZT",
+      "name": "✅COMPLETED"
+    }
+  ]
+}

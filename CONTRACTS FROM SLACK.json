@@ -1,0 +1,2041 @@
+{
+  "name": "CONTRACTS FROM SLACK",
+  "nodes": [
+    {
+      "parameters": {
+        "trigger": [
+          "app_mention"
+        ],
+        "channelId": {
+          "__rl": true,
+          "value": "C04EKGP3CTF",
+          "mode": "list",
+          "cachedResultName": "new-contracts"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.slackTrigger",
+      "typeVersion": 1,
+      "position": [
+        96,
+        736
+      ],
+      "id": "de81e313-a91c-4f62-af3f-0f71090b908c",
+      "name": "Slack Trigger",
+      "webhookId": "c752dfdd-3b6d-46af-8c9f-af8ffc956271",
+      "credentials": {
+        "slackApi": {
+          "id": "NUnlQbjg1g4uzTRw",
+          "name": "Slack Access Token Account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{\n  \"nombre_caso\":\"Javier Gallardo - Representación legal en Caso Civil (JP Court)\",\n  \"descripcion_caso\":\"Custodia de un menor. Derecho a visitas los fines de semana.\",\n  \"fecha_contrato\":\"11/8/2025\",\n  \"cliente_nombre\":\"Javier Gallardo\",\n  \"cliente_direccion\":\"N/A\",\n  \"cliente_telefono\":\"(346)779-1694\",\n  \"cliente_email\":\"Javiergallardo77035g@gmail.com\",\n  \"tipo_caso\":\"Civil\",\n  \"tipo_tarifa\":\"FF\",\n  \"tarifa_anticipo\":2000,\n  \"honorarios_abogados_hora\":0,\n  \"honorarios_paralegales_hora\":0,\n  \"honorarios_asistentes_hora\":\"N/A\",\n  \"tarifa_minima_cancelacion\":350,\n  \"contacto_nombre\":\"Hortencia Osorio\",\n  \"contacto_relacion\":\"N/A\",\n  \"contacto_direccion\":\"N/A\",\n  \"contacto_telefono\":\"(346)779-1694\",\n  \"contacto_email\":\"N/A\",\"idioma\":\"sp\"\n}",
+        "autoFix": true
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        2688,
+        1152
+      ],
+      "id": "1519ff95-2ac0-4e67-8885-a38d285c6573",
+      "name": "Structured Output Parser"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4.1-mini",
+          "mode": "list",
+          "cachedResultName": "gpt-4.1-mini"
+        },
+        "options": {
+          "responseFormat": "json_object"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        2560,
+        1152
+      ],
+      "id": "049b6c76-0a76-4a4a-8ce5-6a7ef00a745d",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "lopdnXZa5QlttiNa",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        1440,
+        928
+      ],
+      "id": "b48a4e9f-60a0-4b20-9423-960c08f3f5cf",
+      "name": "No Operation, do nothing"
+    },
+    {
+      "parameters": {
+        "jsCode": "const allText = [];\n\nfor (const item of $items()) {\n  if (item.json.listaDeTextos) {\n    for (const sub of item.json.listaDeTextos) {\n      if (sub.text) {\n        allText.push(sub.text);\n      }\n    }\n  }\n}\n\nreturn [\n  {\n    json: {\n      textoUnido: allText.join(\"\\n\\n\")\n    }\n  }\n];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2336,
+        928
+      ],
+      "id": "6ae14a08-a2ea-4d84-86fe-61d815b68053",
+      "name": "Code in JavaScript"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.textoUnido }}",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "=#==============================================================\n# Prompt para Extracción de Datos de Contratos Legales (PDF)\n# Versión: 1.7 (mejoras: manejo de términos técnicos legales y detección de idioma)\n# Objetivo: Extraer datos estructurados SIN inferencias (excepto en campos explícitamente permitidos).\n#==============================================================\n\nrol: |\n  Eres un asistente experto en procesamiento de contratos legales en formato PDF.\n  Tu tarea es:\n    - EXTRAER de forma literal todos los campos marcados como \"extracción\".\n    - GENERAR de forma objetiva y breve solo los campos \"nombre_caso\" y \"descripcion_caso\",\n      basándote exclusivamente en información explícita del documento (tipo de caso, nombres,\n      cláusulas clave). No inventes hechos, no asumas intenciones, no predigas resultados.\n    - NORMALIZAR los campos \"tipo_caso\" y \"tipo_tarifa\" según reglas definidas, solo si el texto lo permite.\n    - NO inferir ni suponer modalidades de pago o tipo de tarifa sin evidencia textual directa.\n\ncampos:\n  - nombre: nombre_caso\n    descripcion: |\n      Genera un nombre breve (máximo 8 palabras) en formato: \"Cliente - Caso\".\n      Usa el nombre completo del cliente (como aparece en \"cliente_nombre\") seguido de un guion y una descripción corta del tipo de caso.\n      La descripción debe estar basada en el tipo de caso normalizado (ej: \"Representación legal en Caso Civil\", \"Divorcio\", \"Defensa Penal\").\n      Ej: \"Jaime Gallardo - Representación legal en Caso Civil (JP Court)\" o \"María López - Custodia de menor\".\n      Si no hay suficiente información explícita sobre el cliente o el caso → \"N/A\".\n    ejemplo: \"Javier Gallardo - Representación legal en Caso Civil (JP Court)\"\n    ausente: \"N/A\"\n\n  - nombre: descripcion_caso\n    descripcion: |\n      Genera una descripción objetiva (máximo 120 caracteres) basada en cláusulas explícitas.\n      Incluye solo hechos visibles: tipo de caso, presencia de hijos, bienes, etc.\n      Ej: \"Custodia de un menor. Visitas los fines de semana.\"\n      Si no hay elementos suficientes para una descripción útil → \"N/A\".\n    ejemplo: \"Divorcio sin hijos. Reparto de bienes inmuebles.\"\n    ausente: \"N/A\"\n\n  - nombre: fecha_contrato\n    descripcion: Fecha de firma del cliente.\n    formato: \"M/D/YYYY (sin ceros iniciales)\"\n    ejemplo: \"7/9/2025\"\n    ausente: \"N/A\"\n\n  - nombre: cliente_nombre\n    descripcion: Nombre completo del cliente, tal como aparece.\n    ejemplo: \"Marco Hernandez\"\n    ausente: \"N/A\"\n\n  - nombre: cliente_direccion\n    descripcion: Dirección completa (calle, ciudad, estado, código postal).\n    ejemplo: \"2527 Woodtown Dr, Houston, TX 77038\"\n    ausente: \"N/A\"\n\n  - nombre: cliente_telefono\n    descripcion: Número en formato (XXX)XXX-XXXX.\n    ejemplo: \"(832)647-7330\"\n    ausente: \"N/A\"\n\n  - nombre: cliente_email\n    descripcion: Correo electrónico del cliente. Si no está o es inválido → N/A.\n    ejemplo: \"hmarco836@gmail.com\"\n    ausente: \"N/A\"\n\n  - nombre: tipo_caso\n    descripcion: |\n      Normaliza el propósito del contrato a una categoría estándar basada en texto explícito:\n        - Si menciona \"caso civil\", \"materia civil\", \"JP Court\", \"Justice of the Peace\", \"small claims\" → \"Civil\"\n        - Si menciona \"custodia\", \"divorcio\", \"pensión alimenticia\", \"visitas\", \"matrimonio\", \"separación legal\" → \"Familiar\"\n        - Si menciona \"delito\", \"acusación\", \"penal\", \"cárcel\", \"arraigo\", \"libertad condicional\" → \"Penal\"\n        - Si menciona \"despido\", \"salario\", \"contrato laboral\", \"indemnización laboral\", \"OSHA\", \"EEOC\" → \"Laboral\"\n        - Si menciona \"inmigración\", \"visa\", \"asilo\", \"deportación\", \"VAWA\", \"U visa\", \"T visa\", \"ajuste de estatus\", \"naturalización\", \"remoción\", \"cancelación de remoción\", \"USCIS\", \"EOIR\" → \"Inmigración\"\n        - Si no coincide con ninguna categoría, usa el texto original del propósito.\n        - Si el propósito está en blanco o no se puede determinar → \"N/A\"\n      Solo usa información explícita; no infieras categorías.\n    ejemplo: \"Inmigración\"\n    ausente: \"N/A\"\n\n  - nombre: tipo_tarifa\n    descripcion: |\n      Clasifica el modelo de pago basado en términos explícitos en el contrato:\n        - Si menciona \"hourly rate\", \"por hora\", \"tarifa por hora\", \"tasa horaria\" → \"Hourly\"\n        - Si menciona \"flat fee\", \"cuota fija\", \"monto fijo\", \"pago único\", \"fee total de [monto]\" → \"FF\"\n        - Si menciona \"contingency\", \"resultado\", \"éxito\", \"cobro condicional\", \"porcentaje del monto recuperado\" → \"Contingency\"\n        - Si hay múltiples modelos mencionados, usar el primero encontrado.\n        - Si no hay indicación clara de modelo de pago → \"N/A\"\n      No inferir. Solo clasificar si el texto contiene frases que claramente correspondan a una de estas categorías.\n    ejemplo: \"FF\"\n    ausente: \"N/A\"\n\n  - nombre: tarifa_anticipo\n    descripcion: Solo valor numérico. Eliminar símbolos como $ y ,.\n    ejemplo: 1500\n    ausente: 0\n\n  - nombre: honorarios_abogados_hora\n    descripcion: Tarifa por hora de abogados. Solo número.\n    ejemplo: 350\n    ausente: 0\n\n  - nombre: honorarios_paralegales_hora\n    descripcion: Tarifa por hora de paralegales. Solo número.\n    ejemplo: 150\n    ausente: 0\n\n  - nombre: honorarios_asistentes_hora\n    descripcion: Si es rango → \"75-120\". Si fijo → solo número.\n    ejemplo: \"75-120\"\n    ausente: \"N/A\"\n\n  - nombre: tarifa_minima_cancelacion\n    descripcion: Solo valor numérico. Eliminar $.\n    ejemplo: 350\n    ausente: 0\n\n  - nombre: contacto_nombre\n    descripcion: Nombre de contacto alternativo.\n    ejemplo: \"Elizabeth Navarro\"\n    ausente: \"N/A\"\n\n  - nombre: contacto_relacion\n    descripcion: Relación con el cliente (ej: Madre, Esposo).\n    ejemplo: \"Madre\"\n    ausente: \"N/A\"\n\n  - nombre: contacto_direccion\n    descripcion: |\n      Dirección completa del contacto alternativo (calle, ciudad, estado, código postal),\n      tal como aparece explícitamente en el documento.\n      Si no está presente → \"N/A\".\n    ejemplo: \"1420 Oak St, Austin, TX 78701\"\n    ausente: \"N/A\"\n\n  - nombre: contacto_telefono\n    descripcion: Formato (XXX)XXX-XXXX.\n    ejemplo: \"(713)632-4594\"\n    ausente: \"N/A\"\n\n  - nombre: contacto_email\n    descripcion: Correo del contacto. Si no está o es inválido → N/A.\n    ejemplo: \"elizabeth@example.com\"\n    ausente: \"N/A\"\n\n  - nombre: idioma\n    descripcion: |\n      Idioma principal del contrato.\n      Determina el idioma basado en el **contenido mayoritario de las cláusulas, títulos, párrafos y términos legales** (excluyendo nombres propios, direcciones, números de teléfono o correos electrónicos).\n        - Si el texto legal está predominantemente en español → \"sp\"\n        - Si el texto legal está predominantemente en inglés → \"en\"\n        - Si hay mezcla significativa o no se puede determinar con certeza → \"N/A\"\n      Valores permitidos: \"en\", \"sp\", \"N/A\".\n    ejemplo: \"sp\"\n    ausente: \"N/A\"\n\nreglas_generales:\n  - \"Para TODOS los campos EXCEPTO 'nombre_caso', 'descripcion_caso', 'tipo_caso' y 'tipo_tarifa': NO inferir, NO completar, NO interpretar. Solo extraer lo explícitamente escrito.\"\n  - \"Los campos 'nombre_caso' y 'descripcion_caso' pueden sintetizarse a partir de datos explícitos del documento, usando lenguaje neutral, objetivo y profesional.\"\n  - \"'tipo_caso' y 'tipo_tarifa' pueden normalizarse SOLO si el texto explícito contiene términos que claramente correspondan a las categorías definidas.\"\n  - \"NO incluir símbolos: $, ,, %, comillas adicionales en ningún campo.\"\n  - \"NO agregar encabezados, notas, explicaciones ni saltos de línea en la salida.\"\n  - \"Si un campo no está presente (y no es generable), usar 'N/A' para texto y 0 solo si aplica lógicamente a montos (ej: tarifas no mencionadas).\"\n  - \"Los datos extraídos deben coincidir EXACTAMENTE con lo visible en el documento o derivarse de reglas de normalización explícitas.\"\n  - \"**Nota sobre términos técnicos**: El reconocimiento de abreviaturas, siglas o denominaciones legales estandarizadas (como 'VAWA', 'JP Court', 'U visa', 'probate', 'USCIS', etc.) NO se considera inferencia, siempre que el término aparezca textualmente en el documento y corresponda inequívocamente a una categoría definida en este prompt. En tales casos, se aplica la normalización correspondiente.\"\n\nsalida_esperada:\n  formato: \"Cadena de texto en JSON válido (sin saltos de línea, con comillas dobles)\"\n  ejemplo: |\n    {\"nombre_caso\":\"Javier Gallardo - Representación legal en Caso Civil (JP Court)\",\"descripcion_caso\":\"Custodia de un menor. Derecho a visitas los fines de semana.\",\"fecha_contrato\":\"11/8/2025\",\"cliente_nombre\":\"Javier Gallardo\",\"cliente_direccion\":\"N/A\",\"cliente_telefono\":\"(346)779-1694\",\"cliente_email\":\"Javiergallardo77035g@gmail.com\",\"tipo_caso\":\"Civil\",\"tipo_tarifa\":\"FF\",\"tarifa_anticipo\":2000,\"honorarios_abogados_hora\":0,\"honorarios_paralegales_hora\":0,\"honorarios_asistentes_hora\":\"N/A\",\"tarifa_minima_cancelacion\":350,\"contacto_nombre\":\"Hortencia Osorio\",\"contacto_relacion\":\"N/A\",\"contacto_direccion\":\"N/A\",\"contacto_telefono\":\"(346)779-1694\",\"contacto_email\":\"N/A\",\"idioma\":\"sp\"}"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        2592,
+        928
+      ],
+      "id": "eafd4bf5-7ac5-4c12-9dce-fd2cfcbc0783",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "resource": "document",
+        "modelId": {
+          "__rl": true,
+          "value": "models/gemini-2.5-flash",
+          "mode": "list",
+          "cachedResultName": "models/gemini-2.5-flash"
+        },
+        "text": "=Extrae el texto de este documento PDF",
+        "inputType": "binary",
+        "simplify": false,
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.googleGemini",
+      "typeVersion": 1,
+      "position": [
+        1888,
+        832
+      ],
+      "id": "3e8e5056-1648-4fe5-87e8-d5b407d09066",
+      "name": "Analyze document",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "QJGU8vBYAxSuSPJc",
+          "name": "Varela Law Remote"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "099342ff-4b24-4fd7-bdc9-fc10d343ce09",
+              "leftValue": "={{ $json.mimetype }}",
+              "rightValue": "application/pdf",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        1216,
+        832
+      ],
+      "id": "cc1cc58e-38de-49ae-ade1-7a3306ce196b",
+      "name": "IF PDF"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "9c1f7727-57bc-4ae1-a552-061209457bc9",
+              "name": "listaDeTextos",
+              "value": "={{ $json.candidates[0].content.parts }}",
+              "type": "array"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        2112,
+        832
+      ],
+      "id": "4b688ee5-b680-42fb-8295-56d359f117bb",
+      "name": "Edit Fields2"
+    },
+    {
+      "parameters": {
+        "url": "={{ $json.url_descarga }}",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "slackOAuth2Api",
+        "options": {
+          "response": {
+            "response": {
+              "fullResponse": true,
+              "responseFormat": "file"
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [
+        1664,
+        736
+      ],
+      "id": "cf32143a-5a33-488a-b74f-220a26923bf9",
+      "name": "Download PDF",
+      "credentials": {
+        "httpBearerAuth": {
+          "id": "LiIQNsbT4fIC8cQ2",
+          "name": "Slack Contract-Bot Bearer Auth account"
+        },
+        "slackOAuth2Api": {
+          "id": "5bUVEWUx8gg0dMmT",
+          "name": "Contract-Bot API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "ba64ab60-2316-4932-80f0-732ee532270c",
+              "name": "url_descarga",
+              "value": "={{ $json.url_private_download }}",
+              "type": "string"
+            },
+            {
+              "id": "19af0aad-73cf-4b70-b3af-2550bd0e48e5",
+              "name": "id_usuario",
+              "value": "={{ $json.user }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1440,
+        736
+      ],
+      "id": "fda6b1c0-7105-41e8-8e9c-57b2e71b153a",
+      "name": "Lista de Archivos"
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "listaDeTextos",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        2336,
+        736
+      ],
+      "id": "e73a7ea8-6d24-4a5f-a7bf-24a22daa477b",
+      "name": "Split Out1"
+    },
+    {
+      "parameters": {
+        "operation": "pdf",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1.1,
+      "position": [
+        1888,
+        640
+      ],
+      "id": "199f83d5-9d8a-435d-ae94-1b53b90bdf75",
+      "name": "Extract from File"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1oweAcuD2n_pspkBdZG0HbgaTLkA_kxQp9whMH31mkZs",
+          "mode": "list",
+          "cachedResultName": "SLACK CONTRACTS",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1oweAcuD2n_pspkBdZG0HbgaTLkA_kxQp9whMH31mkZs/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1oweAcuD2n_pspkBdZG0HbgaTLkA_kxQp9whMH31mkZs/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Fecha Contrato": "={{ $('AGENT RESPONSE').item.json.response.fecha_contrato }}",
+            "Cliente Nombre": "={{ $('AGENT RESPONSE').item.json.response.cliente_nombre }}",
+            "Cliente Dirección": "={{ $('AGENT RESPONSE').item.json.response.cliente_direccion }}",
+            "Cliente Teléfono": "={{ $('AGENT RESPONSE').item.json.response.cliente_telefono }}",
+            "Cliente Email": "={{ $('AGENT RESPONSE').item.json.response.cliente_email }}",
+            "Tipo Caso": "={{ $('AGENT RESPONSE').item.json.response.tipo_caso }}",
+            "Anticipo": "={{ $('AGENT RESPONSE').item.json.response.tarifa_anticipo }}",
+            "Honorarios Abogados": "={{ $('AGENT RESPONSE').item.json.response.honorarios_abogados_hora }}",
+            "Honorarios Paralegales": "={{ $('AGENT RESPONSE').item.json.response.honorarios_paralegales_hora }}",
+            "Honorarios Asistentes": "={{ $('AGENT RESPONSE').item.json.response.honorarios_asistentes_hora }}",
+            "Tarifa Mínima Cancelación": "={{ $('AGENT RESPONSE').item.json.response.tarifa_minima_cancelacion }}",
+            "Contacto Nombre": "={{ $('AGENT RESPONSE').item.json.response.contacto_nombre }}",
+            "Contacto Relación": "={{ $('AGENT RESPONSE').item.json.response.contacto_relacion }}",
+            "Contacto Teléfono": "={{ $('AGENT RESPONSE').item.json.response.contacto_telefono }}",
+            "Contacto Email": "={{ $('AGENT RESPONSE').item.json.response.contacto_email }}",
+            "Idioma": "={{ $('AGENT RESPONSE').item.json.response.idioma }}",
+            "PDF URL": "={{ $('AGENT RESPONSE').item.json.pdf_url }}",
+            "Comments": "={{ $('AGENT RESPONSE').item.json.response.descripcion_caso }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Fecha Contrato",
+              "displayName": "Fecha Contrato",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Cliente Nombre",
+              "displayName": "Cliente Nombre",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Cliente Dirección",
+              "displayName": "Cliente Dirección",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Cliente Teléfono",
+              "displayName": "Cliente Teléfono",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Cliente Email",
+              "displayName": "Cliente Email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Tipo Caso",
+              "displayName": "Tipo Caso",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Anticipo",
+              "displayName": "Anticipo",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Honorarios Abogados",
+              "displayName": "Honorarios Abogados",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Honorarios Paralegales",
+              "displayName": "Honorarios Paralegales",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Honorarios Asistentes",
+              "displayName": "Honorarios Asistentes",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Tarifa Mínima Cancelación",
+              "displayName": "Tarifa Mínima Cancelación",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Contacto Nombre",
+              "displayName": "Contacto Nombre",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Contacto Relación",
+              "displayName": "Contacto Relación",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Contacto Teléfono",
+              "displayName": "Contacto Teléfono",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Contacto Email",
+              "displayName": "Contacto Email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Idioma",
+              "displayName": "Idioma",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "PDF URL",
+              "displayName": "PDF URL",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Comments",
+              "displayName": "Comments",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        4624,
+        1024
+      ],
+      "id": "f742d7d2-2795-41bd-80ed-a6c13c580853",
+      "name": "Append row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "Iut1j2vQOyWRXKrg",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "4a358a8b-258e-4ecb-832a-0e14b4f0c887",
+              "name": "response",
+              "value": "={{ $json.output }}",
+              "type": "object"
+            },
+            {
+              "id": "3a34c749-b333-405b-861a-d9702f8b32f7",
+              "name": "pdf_url",
+              "value": "={{ $('Get a file').item.json.permalink }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        3056,
+        928
+      ],
+      "id": "e9cd60e7-ed0b-4ebd-b4a7-b69266d283b9",
+      "name": "AGENT RESPONSE"
+    },
+    {
+      "parameters": {
+        "operation": "create",
+        "base": {
+          "__rl": true,
+          "value": "app6Nt3Hdoj9E6sZ8",
+          "mode": "list",
+          "cachedResultName": "Legal Case Tracking and Billing",
+          "cachedResultUrl": "https://airtable.com/app6Nt3Hdoj9E6sZ8"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tblQRKt0bLaVbBVsO",
+          "mode": "list",
+          "cachedResultName": "Contacts",
+          "cachedResultUrl": "https://airtable.com/app6Nt3Hdoj9E6sZ8/tblQRKt0bLaVbBVsO"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Contact Type": "Other",
+            "Name": "={{ $json.response.contacto_nombre }}",
+            "Email": "={{ $json.response.contacto_email }}",
+            "Phone Number": "={{ $json.response.contacto_telefono }}",
+            "Address": "={{ $json.response.contacto_direccion }}",
+            "Relation": "={{ $json.response.contacto_relacion }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Name",
+              "displayName": "Name",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Email",
+              "displayName": "Email",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Phone Number",
+              "displayName": "Phone Number",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Address",
+              "displayName": "Address",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Relation",
+              "displayName": "Relation",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Contact Type",
+              "displayName": "Contact Type",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "options",
+              "options": [
+                {
+                  "name": "Client",
+                  "value": "Client"
+                },
+                {
+                  "name": "Co-counsel",
+                  "value": "Co-counsel"
+                },
+                {
+                  "name": "Expert",
+                  "value": "Expert"
+                },
+                {
+                  "name": "Judge",
+                  "value": "Judge"
+                },
+                {
+                  "name": "Opposing Counsel",
+                  "value": "Opposing Counsel"
+                },
+                {
+                  "name": "Opposing Party",
+                  "value": "Opposing Party"
+                },
+                {
+                  "name": "Other",
+                  "value": "Other"
+                }
+              ],
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Cases",
+              "displayName": "Cases",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "array",
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.1,
+      "position": [
+        3504,
+        784
+      ],
+      "id": "b1c904a5-958a-4f63-af3b-32682f29f055",
+      "name": "Create Contact as Contact",
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "6wPFco9G7xyqhPzg",
+          "name": "Airtable Personal Access Token account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "a268522f-497c-4df6-97a2-7eec94887377",
+              "leftValue": "={{ $json.response.contacto_nombre }}",
+              "rightValue": "N/A",
+              "operator": {
+                "type": "string",
+                "operation": "notEquals"
+              }
+            },
+            {
+              "id": "9506639e-71fa-4563-aef0-817ef17de0e8",
+              "leftValue": "={{ $json.response.contacto_relacion }}",
+              "rightValue": "N/A",
+              "operator": {
+                "type": "string",
+                "operation": "notEquals"
+              }
+            },
+            {
+              "id": "688f40a9-3ac0-442d-9b6a-a9945e606100",
+              "leftValue": "={{ $json.response.contacto_telefono }}",
+              "rightValue": "N/A",
+              "operator": {
+                "type": "string",
+                "operation": "notEquals"
+              }
+            },
+            {
+              "id": "ccaf0590-1368-4a57-95c0-123b9324efa6",
+              "leftValue": "={{ $json.response.contacto_email }}",
+              "rightValue": "N/A",
+              "operator": {
+                "type": "string",
+                "operation": "notEquals"
+              }
+            }
+          ],
+          "combinator": "or"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        3280,
+        864
+      ],
+      "id": "79f53f2e-eb5b-4ed8-987d-25ea6efa8518",
+      "name": "If hay Contact"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "fd169caa-b3a5-43bb-a5fd-bb6fb0d5339e",
+              "name": "created_contact",
+              "value": "={{ $json }}",
+              "type": "object"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        3728,
+        784
+      ],
+      "id": "1f03cc21-93c6-4b1b-ab3b-a4b1aa7a4584",
+      "name": "Created Contact"
+    },
+    {
+      "parameters": {
+        "operation": "create",
+        "base": {
+          "__rl": true,
+          "value": "app6Nt3Hdoj9E6sZ8",
+          "mode": "list",
+          "cachedResultName": "Legal Case Tracking and Billing",
+          "cachedResultUrl": "https://airtable.com/app6Nt3Hdoj9E6sZ8"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tblQRKt0bLaVbBVsO",
+          "mode": "list",
+          "cachedResultName": "Contacts",
+          "cachedResultUrl": "https://airtable.com/app6Nt3Hdoj9E6sZ8/tblQRKt0bLaVbBVsO"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Contact Type": "Client",
+            "Name": "={{ $json.response.cliente_nombre }}",
+            "Email": "={{ $json.response.cliente_email }}",
+            "Phone Number": "={{ $json.response.cliente_telefono }}",
+            "Address": "={{ $json.response.cliente_direccion }}",
+            "Relation": "Client"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Name",
+              "displayName": "Name",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Email",
+              "displayName": "Email",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Phone Number",
+              "displayName": "Phone Number",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Address",
+              "displayName": "Address",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Relation",
+              "displayName": "Relation",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Contact Type",
+              "displayName": "Contact Type",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "options",
+              "options": [
+                {
+                  "name": "Client",
+                  "value": "Client"
+                },
+                {
+                  "name": "Co-counsel",
+                  "value": "Co-counsel"
+                },
+                {
+                  "name": "Expert",
+                  "value": "Expert"
+                },
+                {
+                  "name": "Judge",
+                  "value": "Judge"
+                },
+                {
+                  "name": "Opposing Counsel",
+                  "value": "Opposing Counsel"
+                },
+                {
+                  "name": "Opposing Party",
+                  "value": "Opposing Party"
+                },
+                {
+                  "name": "Other",
+                  "value": "Other"
+                }
+              ],
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Cases",
+              "displayName": "Cases",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "array",
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.1,
+      "position": [
+        3728,
+        1072
+      ],
+      "id": "b0d17e70-2537-4651-9356-c5a29348e922",
+      "name": "Create Client as Contact",
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "6wPFco9G7xyqhPzg",
+          "name": "Airtable Personal Access Token account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "combineBy": "combineAll",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        3952,
+        928
+      ],
+      "id": "9eedf76d-db7c-4943-8440-414a8a9b5bfd",
+      "name": "Merge"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "base": {
+          "__rl": true,
+          "value": "app6Nt3Hdoj9E6sZ8",
+          "mode": "list",
+          "cachedResultName": "Legal Case Tracking and Billing",
+          "cachedResultUrl": "https://airtable.com/app6Nt3Hdoj9E6sZ8"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tblQRKt0bLaVbBVsO",
+          "mode": "list",
+          "cachedResultName": "Contacts",
+          "cachedResultUrl": "https://airtable.com/app6Nt3Hdoj9E6sZ8/tblQRKt0bLaVbBVsO"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "id": "={{ $('Create Client as Contact').item.json.id }}",
+            "Cases": "={{ [$('Create Case').item.json.id] }}"
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": true,
+              "removed": false
+            },
+            {
+              "id": "Name",
+              "displayName": "Name",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Email",
+              "displayName": "Email",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Phone Number",
+              "displayName": "Phone Number",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Address",
+              "displayName": "Address",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Relation",
+              "displayName": "Relation",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Contact Type",
+              "displayName": "Contact Type",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "options",
+              "options": [
+                {
+                  "name": "Client",
+                  "value": "Client"
+                },
+                {
+                  "name": "Co-counsel",
+                  "value": "Co-counsel"
+                },
+                {
+                  "name": "Expert",
+                  "value": "Expert"
+                },
+                {
+                  "name": "Judge",
+                  "value": "Judge"
+                },
+                {
+                  "name": "Opposing Counsel",
+                  "value": "Opposing Counsel"
+                },
+                {
+                  "name": "Opposing Party",
+                  "value": "Opposing Party"
+                },
+                {
+                  "name": "Other",
+                  "value": "Other"
+                }
+              ],
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Cases",
+              "displayName": "Cases",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "array",
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {
+          "typecast": true
+        }
+      },
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.1,
+      "position": [
+        4400,
+        928
+      ],
+      "id": "9b56b95e-3c1a-4e47-b323-987ad5535631",
+      "name": "Update Contact",
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "6wPFco9G7xyqhPzg",
+          "name": "Airtable Personal Access Token account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "create",
+        "base": {
+          "__rl": true,
+          "value": "app6Nt3Hdoj9E6sZ8",
+          "mode": "list",
+          "cachedResultName": "Legal Case Tracking and Billing",
+          "cachedResultUrl": "https://airtable.com/app6Nt3Hdoj9E6sZ8"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tblBo5fgVq3boQyhr",
+          "mode": "list",
+          "cachedResultName": "Cases",
+          "cachedResultUrl": "https://airtable.com/app6Nt3Hdoj9E6sZ8/tblBo5fgVq3boQyhr"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Case Name": "={{ $('AGENT RESPONSE').item.json.response.nombre_caso }}",
+            "Status": "NEW CASE",
+            "Case Type (T)": "={{ $('AGENT RESPONSE').item.json.response.tipo_caso }}",
+            "Date": "={{ \n  $('AGENT RESPONSE').item.json.response.fecha_contrato === \"N/A\"\n    ? new Date($now.format('yyyy-MM-dd'))\n    : new Date($('AGENT RESPONSE').item.json.response.fecha_contrato)\n}}",
+            "Description": "={{ $('AGENT RESPONSE').item.json.response.descripcion_caso }}",
+            "Related Contacts": "={{ \n  $if($('Create Contact as Contact').isExecuted, [$('Create Contact as Contact').item.json.id], [])\n}}",
+            "Billing": 0,
+            "language": "={{ $('AGENT RESPONSE').item.json.response.idioma }}",
+            "Contract URL": "={{ $('AGENT RESPONSE').item.json.pdf_url }}",
+            "Exec ID": "={{ $execution.id }}",
+            "Retainer": "={{ $('AGENT RESPONSE').item.json.response.tarifa_anticipo }}",
+            "Atty Fee/Hr": "={{ $('AGENT RESPONSE').item.json.response.honorarios_abogados_hora.toString() }}",
+            "Para Fee/Hr": "={{ $('AGENT RESPONSE').item.json.response.honorarios_paralegales_hora.toString() }}",
+            "Asst Fee/Hr": "={{ String($('AGENT RESPONSE').item.json.response.honorarios_asistentes_hora) }}",
+            "Min Cancel Fee": "={{ $('AGENT RESPONSE').item.json.response.tarifa_minima_cancelacion.toString() }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Case Name",
+              "displayName": "Case Name",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Date",
+              "displayName": "Date",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "dateTime",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Status",
+              "displayName": "Status",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "options",
+              "options": [
+                {
+                  "name": "Further Action Needed",
+                  "value": "Further Action Needed"
+                },
+                {
+                  "name": "Processing",
+                  "value": "Processing"
+                },
+                {
+                  "name": "Disposition Date Set",
+                  "value": "Disposition Date Set"
+                },
+                {
+                  "name": "Hearing Date Set",
+                  "value": "Hearing Date Set"
+                },
+                {
+                  "name": "Trial Date Pending",
+                  "value": "Trial Date Pending"
+                },
+                {
+                  "name": "Trial Date Set",
+                  "value": "Trial Date Set"
+                },
+                {
+                  "name": "Closed",
+                  "value": "Closed"
+                },
+                {
+                  "name": "NEW CASE",
+                  "value": "NEW CASE"
+                }
+              ],
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Exec ID",
+              "displayName": "Exec ID",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Case Type (T)",
+              "displayName": "Case Type (T)",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Retainer",
+              "displayName": "Retainer",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Atty Fee/Hr",
+              "displayName": "Atty Fee/Hr",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Para Fee/Hr",
+              "displayName": "Para Fee/Hr",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Asst Fee/Hr",
+              "displayName": "Asst Fee/Hr",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Min Cancel Fee",
+              "displayName": "Min Cancel Fee",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Billing",
+              "displayName": "Billing",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Description",
+              "displayName": "Description",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Contract URL",
+              "displayName": "Contract URL",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Related Contacts",
+              "displayName": "Related Contacts",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "array",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "language",
+              "displayName": "language",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {
+          "typecast": true
+        }
+      },
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.1,
+      "position": [
+        4176,
+        928
+      ],
+      "id": "aa21d46b-6c90-4785-a330-dc9340d99818",
+      "name": "Create Case",
+      "alwaysOutputData": true,
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "6wPFco9G7xyqhPzg",
+          "name": "Airtable Personal Access Token account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "authentication": "oAuth2",
+        "resource": "file",
+        "operation": "get",
+        "fileId": "={{ $json.id }}"
+      },
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 2.3,
+      "position": [
+        992,
+        832
+      ],
+      "id": "12d881f6-c29c-44d6-b540-f9b73e55ba93",
+      "name": "Get a file",
+      "webhookId": "48e1c702-c4af-4d84-bc3a-9a8d19e440f3",
+      "credentials": {
+        "slackOAuth2Api": {
+          "id": "5bUVEWUx8gg0dMmT",
+          "name": "Contract-Bot API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "jcalderon900610@gmail.com",
+        "subject": "UN NEVO CONTRATO ESTA SIENDO PROCESADO!!!",
+        "emailType": "text",
+        "message": "REVISAR LA AUTOMATIZACION DE CONTRATOS",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        320,
+        640
+      ],
+      "id": "4662517b-1938-49f0-9197-1f5ac0920c43",
+      "name": "Send a message",
+      "webhookId": "58d5259f-4a08-4e3d-92fe-b535c3fe1393",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "JeoA3ck6F9AaFBSc",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4.1-mini"
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        2768,
+        1360
+      ],
+      "id": "d99935a1-e06e-4f1c-bd0f-cdea97d8edf1",
+      "name": "OpenAI Chat Model1",
+      "credentials": {
+        "openAiApi": {
+          "id": "lopdnXZa5QlttiNa",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "jcalderon900610@gmail.com",
+        "subject": "EL NUEVO CONTRATO SE PROCESO!!!",
+        "emailType": "text",
+        "message": "REVISAR LA AUTOMATIZACION DE CONTRATOS",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        4624,
+        832
+      ],
+      "id": "faf1e170-dcd2-4c51-b9fb-5a4c47adcc5c",
+      "name": "Send a message1",
+      "webhookId": "58d5259f-4a08-4e3d-92fe-b535c3fe1393",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "JeoA3ck6F9AaFBSc",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "authentication": "oAuth2",
+        "resource": "user",
+        "user": {
+          "__rl": true,
+          "value": "={{ $('Slack Trigger').item.json.user }}",
+          "mode": "id"
+        }
+      },
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 2.3,
+      "position": [
+        4848,
+        832
+      ],
+      "id": "3554ad88-b045-43f7-8525-3ecd232bb9bf",
+      "name": "Get information about a user2",
+      "webhookId": "b254513f-40bb-4f75-afb8-23768c40615e",
+      "credentials": {
+        "slackOAuth2Api": {
+          "id": "5bUVEWUx8gg0dMmT",
+          "name": "Contract-Bot API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "authentication": "oAuth2",
+        "select": "channel",
+        "channelId": {
+          "__rl": true,
+          "value": "C04EKGP3CTF",
+          "mode": "list",
+          "cachedResultName": "new-contracts"
+        },
+        "text": "=<@{{ $json.id }}> EL CONTRATO HA SIDO PROCESADO EXITOSAMENTE.",
+        "otherOptions": {
+          "includeLinkToWorkflow": false,
+          "link_names": false,
+          "mrkdwn": true,
+          "unfurl_links": false,
+          "unfurl_media": false
+        }
+      },
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 2.3,
+      "position": [
+        5072,
+        832
+      ],
+      "id": "b37e0d21-216a-4df0-8c48-68c715684380",
+      "name": "Send a message2",
+      "webhookId": "95abcd17-da75-40a1-809d-394fe866bf3b",
+      "credentials": {
+        "slackOAuth2Api": {
+          "id": "5bUVEWUx8gg0dMmT",
+          "name": "Contract-Bot API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "f7b528c4-2e35-4a31-8f7e-8b9cd4c03f24",
+              "name": "archivos",
+              "value": "={{ $json.files }}",
+              "type": "array"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        320,
+        832
+      ],
+      "id": "61ca3a4c-ffbc-4144-9d52-248a803bf034",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        768,
+        832
+      ],
+      "id": "9fdee3e8-7029-47fa-8d0f-a91839b5f72a",
+      "name": "Loop Over Items"
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "archivos",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        544,
+        832
+      ],
+      "id": "4b0cb77c-9c98-4548-8fa2-fd08d972e0f3",
+      "name": "Split Out"
+    }
+  ],
+  "pinData": {
+    "Slack Trigger": [
+      {
+        "json": {
+          "type": "app_mention",
+          "text": "2026-02-17 - German Herrera - Litigation Investigation <@U09JNS19V6W> <@U04BK6L9C72> <@U0A0ZMMDUFP> <@U0A52HC121Y> <@U09G324E8H2> Paid $750 - 2/17    will pay $750 on 2/28",
+          "files": [
+            {
+              "id": "F0AFJ0376MQ",
+              "created": 1771353939,
+              "timestamp": 1771353939,
+              "name": "2026-02-17 - German Herrera - contrato.pdf",
+              "title": "2026-02-17 - German Herrera - contrato.pdf",
+              "mimetype": "application/pdf",
+              "filetype": "pdf",
+              "pretty_type": "PDF",
+              "user": "U04Q7RN1ETD",
+              "user_team": "T04AXUXTDB6",
+              "editable": false,
+              "size": 343321,
+              "mode": "hosted",
+              "is_external": false,
+              "external_type": "",
+              "is_public": true,
+              "public_url_shared": false,
+              "display_as_bot": false,
+              "username": "",
+              "url_private": "https://files.slack.com/files-pri/T04AXUXTDB6-F0AFJ0376MQ/2026-02-17_-_german_herrera_-_contrato.pdf",
+              "url_private_download": "https://files.slack.com/files-pri/T04AXUXTDB6-F0AFJ0376MQ/download/2026-02-17_-_german_herrera_-_contrato.pdf",
+              "media_display_type": "unknown",
+              "thumb_pdf": "https://files.slack.com/files-tmb/T04AXUXTDB6-F0AFJ0376MQ-23ff5a05e2/2026-02-17_-_german_herrera_-_contrato_thumb_pdf.png",
+              "thumb_pdf_w": 935,
+              "thumb_pdf_h": 1210,
+              "permalink": "https://varelalawfirm.slack.com/files/U09G324E8H2/F0AFJ0376MQ/2026-02-17_-_german_herrera_-_contrato.pdf",
+              "permalink_public": "https://slack-files.com/T04AXUXTDB6-F0AFJ0376MQ-9d383c1376",
+              "is_starred": false,
+              "skipped_shares": true,
+              "has_rich_preview": false,
+              "file_access": "visible"
+            }
+          ],
+          "upload": false,
+          "user": "U04Q7RN1ETD",
+          "display_as_bot": false,
+          "blocks": [
+            {
+              "type": "rich_text",
+              "block_id": "5C1fl",
+              "elements": [
+                {
+                  "type": "rich_text_section",
+                  "elements": [
+                    {
+                      "type": "text",
+                      "text": "2026-02-17 - German Herrera - Litigation Investigation "
+                    },
+                    {
+                      "type": "user",
+                      "user_id": "U09JNS19V6W"
+                    },
+                    {
+                      "type": "text",
+                      "text": " "
+                    },
+                    {
+                      "type": "user",
+                      "user_id": "U04BK6L9C72"
+                    },
+                    {
+                      "type": "text",
+                      "text": " "
+                    },
+                    {
+                      "type": "user",
+                      "user_id": "U0A0ZMMDUFP"
+                    },
+                    {
+                      "type": "text",
+                      "text": " "
+                    },
+                    {
+                      "type": "user",
+                      "user_id": "U0A52HC121Y"
+                    },
+                    {
+                      "type": "text",
+                      "text": " "
+                    },
+                    {
+                      "type": "user",
+                      "user_id": "U09G324E8H2"
+                    },
+                    {
+                      "type": "text",
+                      "text": " Paid $750 - 2/17    will pay $750 on 2/28"
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "ts": "1771353973.165449",
+          "client_msg_id": "b1f36d4c-3906-4bef-9f12-2e2e0ed38367",
+          "channel": "C04EKGP3CTF",
+          "event_ts": "1771353973.165449"
+        },
+        "pairedItem": {
+          "item": 0
+        }
+      }
+    ]
+  },
+  "connections": {
+    "Slack Trigger": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "AGENT RESPONSE",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Analyze document": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "IF PDF": {
+      "main": [
+        [
+          {
+            "node": "Lista de Archivos",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "No Operation, do nothing",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields2": {
+      "main": [
+        [
+          {
+            "node": "Split Out1",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Download PDF": {
+      "main": [
+        [
+          {
+            "node": "Extract from File",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Analyze document",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Lista de Archivos": {
+      "main": [
+        [
+          {
+            "node": "Download PDF",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AGENT RESPONSE": {
+      "main": [
+        [
+          {
+            "node": "If hay Contact",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Create Client as Contact",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create Contact as Contact": {
+      "main": [
+        [
+          {
+            "node": "Created Contact",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If hay Contact": {
+      "main": [
+        [
+          {
+            "node": "Create Contact as Contact",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Created Contact": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create Client as Contact": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "Create Case",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update Contact": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Send a message1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create Case": {
+      "main": [
+        [
+          {
+            "node": "Update Contact",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get a file": {
+      "main": [
+        [
+          {
+            "node": "IF PDF",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Structured Output Parser",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send a message1": {
+      "main": [
+        [
+          {
+            "node": "Get information about a user2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get information about a user2": {
+      "main": [
+        [
+          {
+            "node": "Send a message2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Split Out",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Get a file",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split Out": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "callerPolicy": "workflowsFromSameOwner",
+    "errorWorkflow": "mwmapzwppW-NTV4NwOhSq",
+    "timeSavedMode": "fixed",
+    "availableInMCP": false
+  },
+  "versionId": "ac697078-1474-4702-bde3-a5afb23dd186",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "1605e0956f411c02ecc29f05b035dcb95746e902cd54a42b69d92da41bbef671"
+  },
+  "id": "jLgZaTceNMLtM9sh",
+  "tags": []
+}

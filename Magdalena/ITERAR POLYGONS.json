@@ -1,0 +1,812 @@
+{
+  "name": "ITERAR POLYGONS",
+  "nodes": [
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://services.sentinel-hub.com/auth/realms/main/protocol/openid-connect/token",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/x-www-form-urlencoded"
+            }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "form-urlencoded",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "grant_type",
+              "value": "client_credentials"
+            },
+            {
+              "name": "client_id",
+              "value": "bcbe12bf-300b-453e-bd0b-67a84908e7be"
+            },
+            {
+              "name": "client_secret",
+              "value": "383KrGiyBfQBP0k9mZ8ejPrTEFSZOIgl"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -6368,
+        -528
+      ],
+      "id": "2fda49b8-02d4-48eb-8e30-2b6cb7445756",
+      "name": "Access Token"
+    },
+    {
+      "parameters": {
+        "collection": "=Polygons",
+        "options": {},
+        "query": "{\"finca\":\"Malta\"}"
+      },
+      "type": "n8n-nodes-base.mongoDb",
+      "typeVersion": 1.2,
+      "position": [
+        -6144,
+        -528
+      ],
+      "id": "89ad4927-794a-442b-abc3-d9200c1bf8d2",
+      "name": "Find Polygons",
+      "credentials": {
+        "mongoDb": {
+          "id": "oCCgJ1QnJPbirSub",
+          "name": "Magdalena"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "5fb13466-1235-4494-aacd-bda6d28eb7cd",
+              "name": "cordinates",
+              "value": "={{ $json.coordenadas }}",
+              "type": "string"
+            },
+            {
+              "id": "9338cb1c-c0eb-4968-92ad-73b62b05bef6",
+              "name": "polygon_id",
+              "value": "={{ $json._id.toString() }}",
+              "type": "string"
+            },
+            {
+              "id": "1713caf7-bcf3-403b-927c-51b0412e9f5c",
+              "name": "Date_Range",
+              "value": "={\n  \"from\": \"{{$now.minus(7, 'days').toISO()}}\",\n  \"to\": \"{{$now.minus(2, 'days').toISO()}}\"\n}",
+              "type": "object"
+            },
+            {
+              "id": "561db7b5-a950-45ee-8658-6c1dc4d2dc1b",
+              "name": "Interval",
+              "value": "P5D",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -5696,
+        -432
+      ],
+      "id": "a91c0385-263b-48ca-9545-1688c7bdde14",
+      "name": "POLYGON"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://services.sentinel-hub.com/api/v1/statistics",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Accept",
+              "value": "application/json"
+            },
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{ $('Access Token').item.json.access_token }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"input\": {\n    \"bounds\": {\n      \"geometry\": {\n        \"type\": \"Polygon\",\n        \"coordinates\": {{ $('POLYGON').item.json.cordinates }}\n      }\n    },\n    \"data\": [\n      {\n        \"type\": \"sentinel-2-l2a\",\n        \"dataFilter\": {\n          \"mosaickingOrder\": \"leastCC\"\n        }\n      }\n    ]\n  },\n  \"aggregation\": {\n    \"timeRange\": {\n      \"from\": \"{{ $('POLYGON').item.json.Date_Range.from }}\",\n      \"to\": \"{{ $('POLYGON').item.json.Date_Range.to }}\"\n    },\n    \"aggregationInterval\": {\n      \"of\": \"{{ $json.Interval }}\"\n    },\n    \"evalscript\": \"//VERSION=3\\nfunction setup() {\\n  return {\\n    input: [{ bands: [\\\"B03\\\", \\\"B08\\\", \\\"dataMask\\\"] }],\\n    output: [\\n      { id: \\\"ndwi\\\", bands: 1 },\\n      { id: \\\"dataMask\\\", bands: 1 }\\n    ]\\n  }\\n}\\n\\nfunction evaluatePixel(s) {\\n  let ndwi = (s.B03 - s.B08) / (s.B03 + s.B08);\\n  return {\\n    ndwi: [ndwi],\\n    dataMask: [s.dataMask]\\n  }\\n}\",\n    \"width\": 512,\n    \"height\": 512,\n    \"calculations\": {\n      \"ndwi\": {\n        \"histograms\": {\n          \"default\": {\n            \"binCount\": 20,\n            \"lowEdge\": -1,\n            \"highEdge\": 1\n          }\n        },\n        \"statistics\": {\n          \"default\": {\n            \"percentiles\": [10, 25, 50, 75, 90]\n          }\n        }\n      }\n    }\n  }\n}\n",
+        "options": {
+          "response": {
+            "response": {
+              "fullResponse": true,
+              "responseFormat": "file"
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -5472,
+        -336
+      ],
+      "id": "95b59a01-fef0-413e-8ab2-0cdb541612a8",
+      "name": "GET NDWI STATISTICS",
+      "retryOnFail": true
+    },
+    {
+      "parameters": {
+        "operation": "fromJson",
+        "binaryPropertyName": "=data",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1,
+      "position": [
+        -5248,
+        -528
+      ],
+      "id": "597cb2b9-8d63-4d2b-96d5-c827b69142b9",
+      "name": "Extract NDVI"
+    },
+    {
+      "parameters": {
+        "operation": "fromJson",
+        "binaryPropertyName": "=data",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1,
+      "position": [
+        -5248,
+        -336
+      ],
+      "id": "b3ef8d36-1a98-41a5-8c98-96866987eead",
+      "name": "Extract NDWI"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        -5920,
+        -528
+      ],
+      "id": "6075cbf3-457a-4f88-be42-b309cc3fcc9a",
+      "name": "Loop Over Items"
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "fHXE9nP5msFovvFz",
+          "mode": "list",
+          "cachedResultUrl": "/workflow/fHXE9nP5msFovvFz",
+          "cachedResultName": "ITERAR DATA"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "polygon_id": "={{ $('POLYGON').item.json.polygon_id }}",
+            "Date_Range": "={{ $('POLYGON').item.json.Date_Range }}",
+            "Interval": "={{ $('POLYGON').item.json.Interval }}",
+            "access_token": "={{ $('Access Token').item.json.access_token }}",
+            "cordinates": "={{ $('POLYGON').item.json.cordinates }}",
+            "NDVI_DATA": "={{ $('Extract NDVI').item.json.data.data }}",
+            "NDWI_DATA": "={{ $('Extract NDWI').item.json.data.data }}"
+          },
+          "matchingColumns": [
+            "polygon_id",
+            "Date_Range",
+            "Interval",
+            "access_token",
+            "cordinates"
+          ],
+          "schema": [
+            {
+              "id": "polygon_id",
+              "displayName": "polygon_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Date_Range",
+              "displayName": "Date_Range",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Interval",
+              "displayName": "Interval",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "access_token",
+              "displayName": "access_token",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "cordinates",
+              "displayName": "cordinates",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "NDVI_DATA",
+              "displayName": "NDVI_DATA",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "array",
+              "removed": false
+            },
+            {
+              "id": "NDWI_DATA",
+              "displayName": "NDWI_DATA",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "array",
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.2,
+      "position": [
+        -4800,
+        -432
+      ],
+      "name": "Call ITERAR DATA",
+      "id": "a0b9c2fc-db2e-4239-81f4-02802e091b2a",
+      "retryOnFail": false
+    },
+    {
+      "parameters": {
+        "mode": "chooseBranch",
+        "output": "empty"
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        -5024,
+        -432
+      ],
+      "id": "ae962b8e-a7b3-4c7c-b25a-01ab4fb64428",
+      "name": "Merge"
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "7AZWO6ewXYtrtemY",
+          "mode": "list",
+          "cachedResultUrl": "/workflow/7AZWO6ewXYtrtemY",
+          "cachedResultName": "CRITICAL STATUS REPORT"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.2,
+      "position": [
+        -7264,
+        -1040
+      ],
+      "name": "Call CRITICAL STATUS REPORT",
+      "id": "7fba4e1e-bc99-4b07-a155-f7588998fe0b",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://services.sentinel-hub.com/api/v1/statistics",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Accept",
+              "value": "application/json"
+            },
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{ $('Access Token').item.json.access_token }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"input\": {\n    \"bounds\": {\n      \"geometry\": {\n        \"type\": \"Polygon\",\n        \"coordinates\": {{ $json.cordinates }}  \n      }\n    },\n    \"data\": [\n      {\n        \"type\": \"sentinel-2-l2a\",\n        \"dataFilter\": {\n          \"mosaickingOrder\": \"leastCC\"\n        }\n      }\n    ]\n  },\n  \"aggregation\": {\n    \"timeRange\": {\n      \"from\": \"{{ $json.Date_Range.from }}\",\n      \"to\": \"{{ $json.Date_Range.to }}\"\n    },\n    \"aggregationInterval\": {\n      \"of\": \"{{ $json.Interval }}\"\n    },\n    \"evalscript\": \"//VERSION=3\\nfunction setup() {\\n  return {\\n    input: [{ bands: [\\\"B04\\\", \\\"B08\\\", \\\"dataMask\\\"] }],\\n    output: [\\n      { id: \\\"ndvi\\\", bands: 1 },\\n      { id: \\\"dataMask\\\", bands: 1 }\\n    ]\\n  }\\n}\\n\\nfunction evaluatePixel(s) {\\n  let ndvi = (s.B08 - s.B04) / (s.B08 + s.B04);\\n  return {\\n    ndvi: [ndvi],\\n    dataMask: [s.dataMask]\\n  }\\n}\",\n    \"width\": 512,\n    \"height\": 512,\n    \"calculations\": {\n      \"ndvi\": {\n        \"histograms\": {\n          \"default\": {\n            \"binCount\": 20,\n            \"lowEdge\": -1,\n            \"highEdge\": 1\n          }\n        },\n        \"statistics\": {\n          \"default\": {\n            \"percentiles\": [10, 25, 50, 75, 90]\n          }\n        }\n      }\n    }\n  }\n}\n",
+        "options": {
+          "response": {
+            "response": {
+              "fullResponse": true,
+              "responseFormat": "file"
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -5472,
+        -528
+      ],
+      "id": "2d2aa6d9-d451-4f5e-b0af-5684d7d502de",
+      "name": "GET NDVI STATISTICS",
+      "retryOnFail": true
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        -5472,
+        -816
+      ],
+      "id": "757f59f2-dcff-495e-af35-dc1a9edab74e",
+      "name": "No Operation, do nothing"
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "triggerAtHour": 6
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -7264,
+        -432
+      ],
+      "id": "8078f9d0-9d74-4e9b-be8b-96c8ddf6078d",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "dataTableId": {
+          "__rl": true,
+          "value": "Ys5yZTgJoonUhLQ8",
+          "mode": "list",
+          "cachedResultName": "Variables Globales",
+          "cachedResultUrl": "/projects/eizHB99DRbzhVVCf/datatables/Ys5yZTgJoonUhLQ8"
+        },
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "magdalena_fecha_toma",
+              "keyValue": "={{ $today.minus(5, 'days').format('yyyy-MM-dd') }}"
+            }
+          ]
+        },
+        "returnAll": true
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1,
+      "position": [
+        -7040,
+        -432
+      ],
+      "id": "af7c2793-776e-43d9-89b6-84ec5baf8fe7",
+      "name": "Variable Global Fecha_Toma",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "4ea28cb2-2cff-4473-a1fb-20da048124a3",
+              "leftValue": "={{ $json.id }}",
+              "rightValue": "",
+              "operator": {
+                "type": "number",
+                "operation": "exists",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -6816,
+        -432
+      ],
+      "id": "7080e71c-7b2a-4db1-a7a6-67371f100750",
+      "name": "If han pasado 5 dias"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "dataTableId": {
+          "__rl": true,
+          "value": "Ys5yZTgJoonUhLQ8",
+          "mode": "list",
+          "cachedResultName": "Variables Globales",
+          "cachedResultUrl": "/projects/eizHB99DRbzhVVCf/datatables/Ys5yZTgJoonUhLQ8"
+        },
+        "filters": {
+          "conditions": [
+            {
+              "keyValue": "={{ $('Variable Global Fecha_Toma').item.json.id }}"
+            }
+          ]
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "magdalena_fecha_toma": "={{ $today.format('yyyy-MM-dd') }}"
+          },
+          "matchingColumns": [
+            "magdalena_fecha_toma"
+          ],
+          "schema": [
+            {
+              "id": "magdalena_fecha_toma",
+              "displayName": "magdalena_fecha_toma",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1,
+      "position": [
+        -5696,
+        -816
+      ],
+      "id": "8b2ef6d9-2186-4b38-9a20-322c298ca9f3",
+      "name": "Update Variable Global fecha_toma",
+      "executeOnce": true
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        -6592,
+        -336
+      ],
+      "id": "dcaa4fd5-16dd-4cf3-a71c-68cc758ca2f0",
+      "name": "No Operation, do nothing1"
+    },
+    {
+      "parameters": {
+        "sendTo": "jorge.menzel@garooinc.com",
+        "subject": "NOTIFICACION EXITO MAGDALENA!!!",
+        "emailType": "text",
+        "message": "=Se ha completado la automatización de la toma de datos para Magdalena exitosamente.\n\nGracias...",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        -5696,
+        -624
+      ],
+      "id": "15bfc304-20e0-4231-8108-6832697350f8",
+      "name": "Send notification 2 to Jorge Menzel",
+      "webhookId": "f6ca4af0-e2c2-4fcb-8d83-997d5ab1e661",
+      "executeOnce": true,
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "H8Qx7NlrthXmHUiy",
+          "name": "Soporte Garoo"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "jorge.menzel@garooinc.com",
+        "subject": "NOTIFICACION COMIENZO MAGDALENA!!!",
+        "emailType": "text",
+        "message": "=Se comenzó a hacer la toma de datos para el Agente Satelital de Magdalena. \nSe le notificará cuando se termine de ejecutar la automatización.\nGracias...",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        -6592,
+        -528
+      ],
+      "id": "179cca47-a0b4-4d67-8700-cd07626efcec",
+      "name": "Send notification 1 to Jorge Menzel",
+      "webhookId": "f6ca4af0-e2c2-4fcb-8d83-997d5ab1e661",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "H8Qx7NlrthXmHUiy",
+          "name": "Soporte Garoo"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Access Token": {
+      "main": [
+        [
+          {
+            "node": "Find Polygons",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Find Polygons": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "POLYGON": {
+      "main": [
+        [
+          {
+            "node": "GET NDWI STATISTICS",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "GET NDVI STATISTICS",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "GET NDWI STATISTICS": {
+      "main": [
+        [
+          {
+            "node": "Extract NDWI",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract NDVI": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract NDWI": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Loop Over Items": {
+      "main": [
+        [
+          {
+            "node": "Update Variable Global fecha_toma",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Send notification 2 to Jorge Menzel",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "POLYGON",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Call ITERAR DATA": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "Call ITERAR DATA",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "GET NDVI STATISTICS": {
+      "main": [
+        [
+          {
+            "node": "Extract NDVI",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Variable Global Fecha_Toma",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Variable Global Fecha_Toma": {
+      "main": [
+        [
+          {
+            "node": "If han pasado 5 dias",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If han pasado 5 dias": {
+      "main": [
+        [
+          {
+            "node": "Send notification 1 to Jorge Menzel",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "No Operation, do nothing1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update Variable Global fecha_toma": {
+      "main": [
+        [
+          {
+            "node": "No Operation, do nothing",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send notification 1 to Jorge Menzel": {
+      "main": [
+        [
+          {
+            "node": "Access Token",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "timezone": "America/Guatemala",
+    "callerPolicy": "workflowsFromSameOwner",
+    "availableInMCP": false,
+    "errorWorkflow": "utrGBJjkIGauT5uw"
+  },
+  "versionId": "831b66a7-c34a-44f0-96c6-ab2f63d49be8",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "d4ab02fb1ef8b6ca2c1c5c1f280ee696b0514d7d92cee5fb0da1784dbe393998"
+  },
+  "id": "pmNHuUwp0mVE8Hyp",
+  "tags": [
+    {
+      "updatedAt": "2025-09-01T16:22:03.233Z",
+      "createdAt": "2025-09-01T16:22:03.233Z",
+      "id": "gROeDXsIw8PaI9x1",
+      "name": "FUNCIONAL"
+    },
+    {
+      "updatedAt": "2025-09-01T16:26:59.242Z",
+      "createdAt": "2025-09-01T16:26:59.242Z",
+      "id": "nhXlFKezuUDtk9fi",
+      "name": "AUTOMATICO"
+    }
+  ]
+}

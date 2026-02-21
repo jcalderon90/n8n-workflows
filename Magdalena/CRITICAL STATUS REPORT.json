@@ -1,0 +1,423 @@
+{
+  "name": "CRITICAL STATUS REPORT",
+  "nodes": [
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "ffc4bdd4-ecaa-4af6-b7cf-b849f78ca7be",
+              "name": "_id",
+              "value": "={{ $json._id }}",
+              "type": "object"
+            },
+            {
+              "id": "edfb8046-018b-4102-a427-6518ac5db475",
+              "name": "finca",
+              "value": "={{ $json.finca }}",
+              "type": "string"
+            },
+            {
+              "id": "047afd52-941f-4613-bf7f-b46f7d93e7b5",
+              "name": "id_poligono",
+              "value": "={{ $('critic polygon').item.json.polygon.id_poligono }}",
+              "type": "string"
+            },
+            {
+              "id": "855e2e37-5583-436a-aacb-fb623741a03d",
+              "name": "ndvi",
+              "value": "={{ $('critic polygon').item.json.polygon.ndvi }}",
+              "type": "object"
+            },
+            {
+              "id": "ae073961-d112-4142-bb29-16a7c910fae0",
+              "name": "ndwi",
+              "value": "={{ $('critic polygon').item.json.polygon.ndwi }}",
+              "type": "object"
+            },
+            {
+              "id": "874ceb76-0934-4ce3-bc5a-614e3e7641ae",
+              "name": "ndvi_metricas",
+              "value": "={{ $('critic polygon').item.json.polygon.ndvi_metricas }}",
+              "type": "object"
+            },
+            {
+              "id": "1a4681a6-df2a-4def-ac4b-0477bcc46a27",
+              "name": "ndwi_metricas",
+              "value": "={{ $('critic polygon').item.json.polygon.ndwi_metricas }}",
+              "type": "object"
+            },
+            {
+              "id": "423789ff-89d9-42e4-a4f9-b09dc0c49f0b",
+              "name": "fecha_toma",
+              "value": "={{ $('critic polygon').item.json.polygon.fecha_toma }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -2624,
+        -224
+      ],
+      "id": "5cb6395a-e545-4490-97b4-c613f0306c98",
+      "name": "Data Relation"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "e9e4a77d-c585-475c-a33f-a9fb7c4d121a",
+              "name": "polygon",
+              "value": "={{ $('Loop Over Items1').item.json }}",
+              "type": "object"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -3136,
+        -288
+      ],
+      "id": "99697ef7-ef5e-4e29-acfd-57abe3abeaaa",
+      "name": "critic polygon"
+    },
+    {
+      "parameters": {
+        "collection": "Polygons",
+        "options": {},
+        "query": "={\"_id\":\"{{ $json.polygon.id_poligono }}\"}"
+      },
+      "type": "n8n-nodes-base.mongoDb",
+      "typeVersion": 1.2,
+      "position": [
+        -2912,
+        -288
+      ],
+      "id": "87f8d2b9-fed2-48e8-b2a0-e5c9f8e3210a",
+      "name": "Find Finca related",
+      "credentials": {
+        "mongoDb": {
+          "id": "oCCgJ1QnJPbirSub",
+          "name": "Magdalena"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "collection": "Critic_State_Polygons",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.mongoDb",
+      "typeVersion": 1.2,
+      "position": [
+        -3584,
+        -288
+      ],
+      "id": "6cb8afe5-e11a-4962-b5bd-6c33f9941d17",
+      "name": "Find documents",
+      "credentials": {
+        "mongoDb": {
+          "id": "oCCgJ1QnJPbirSub",
+          "name": "Magdalena"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        -3360,
+        -288
+      ],
+      "id": "34da36fc-ef70-4959-9706-054dbb82a5ea",
+      "name": "Loop Over Items1"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4-turbo",
+          "mode": "list",
+          "cachedResultName": "gpt-4-turbo"
+        },
+        "options": {
+          "temperature": 0.2
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        -2688,
+        -416
+      ],
+      "id": "4069e698-733d-4663-9846-0c0eb4262eb8",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "g0eaXSZocJ0Qp8eF",
+          "name": "Magdalena"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "jorge.calderon@garooinc.com",
+        "subject": "REPORTE DE ESTADO CRITICO!!!",
+        "message": "={{ $json.output }}",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        -2336,
+        -544
+      ],
+      "id": "de9d681e-6d38-4fe6-bade-a70f474d4d38",
+      "name": "Send a message",
+      "webhookId": "9c758dc8-c732-47a9-899e-1f5a71bfacdc",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "H8Qx7NlrthXmHUiy",
+          "name": "Soporte Garoo"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Extrae todos los datos de los items\nconst polygons = items.map(item => item.json);\n\n// Agrupa por finca\nconst farms = {};\npolygons.forEach(polygon => {\n  const farmName = polygon.finca || 'Sin finca';\n  if (!farms[farmName]) farms[farmName] = [];\n  farms[farmName].push(polygon);\n});\n\n// Construye un informe estructurado\nconst analysisReport = {\n  summary: {\n    total_polygons: polygons.length,\n    total_farms: Object.keys(farms).length,\n    farms: Object.keys(farms)\n  },\n  farms: Object.keys(farms).map(farmName => {\n    const farmPolygons = farms[farmName];\n    return {\n      finca: farmName,\n      polygon_count: farmPolygons.length,\n      polygons: farmPolygons.map(p => ({\n        id_poligono: p.id_poligono,\n        fecha_toma: p.fecha_toma,\n        ndvi: {\n          mean: p.ndvi?.bands?.B0?.stats?.mean,\n          min: p.ndvi?.bands?.B0?.stats?.min,\n          max: p.ndvi?.bands?.B0?.stats?.max,\n          stDev: p.ndvi?.bands?.B0?.stats?.stDev,\n          sampleCount: p.ndvi?.bands?.B0?.stats?.sampleCount,\n          noDataCount: p.ndvi?.bands?.B0?.stats?.noDataCount\n        },\n        ndwi: {\n          mean: p.ndwi?.bands?.B0?.stats?.mean,\n          min: p.ndwi?.bands?.B0?.stats?.min,\n          max: p.ndwi?.bands?.B0?.stats?.max,\n          stDev: p.ndwi?.bands?.B0?.stats?.stDev,\n          sampleCount: p.ndwi?.bands?.B0?.stats?.sampleCount,\n          noDataCount: p.ndwi?.bands?.B0?.stats?.noDataCount\n        },\n        ndvi_metricas: {\n          diferencia: p.ndvi_metricas?.diferencia,\n          velocidad: p.ndvi_metricas?.velocidad,\n          aceleracion: p.ndvi_metricas?.aceleracion\n        },\n        ndwi_metricas: {\n          diferencia: p.ndwi_metricas?.diferencia\n        }\n      }))\n    };\n  })\n};\n\n// Construye el texto paso a paso (evita errores de template)\nlet analysisText = `Resumen:\\n`;\nanalysisText += `- Total de polígonos: ${polygons.length}\\n`;\nanalysisText += `- Total de fincas: ${Object.keys(farms).length}\\n`;\nanalysisText += `- Fincas: ${Object.keys(farms).join(', ')}\\n\\n`;\nanalysisText += `Detalles por finca:\\n`;\n\nObject.keys(farms).forEach(farmName => {\n  const polys = farms[farmName];\n  analysisText += `\\nFinca: ${farmName} (${polys.length} polígonos)\\n`;\n  \n  polys.forEach(p => {\n    const ndviMean = (p.ndvi?.bands?.B0?.stats?.mean?.toFixed(4)) || 'N/A';\n    const ndviMin = (p.ndvi?.bands?.B0?.stats?.min?.toFixed(4)) || 'N/A';\n    const ndviMax = (p.ndvi?.bands?.B0?.stats?.max?.toFixed(4)) || 'N/A';\n    const ndviStDev = (p.ndvi?.bands?.B0?.stats?.stDev?.toFixed(4)) || 'N/A';\n    const ndviValid = ((p.ndvi?.bands?.B0?.stats?.sampleCount || 0) - (p.ndvi?.bands?.B0?.stats?.noDataCount || 0));\n    const ndviTotal = p.ndvi?.bands?.B0?.stats?.sampleCount || 'N/A';\n\n    const ndwiMean = (p.ndwi?.bands?.B0?.stats?.mean?.toFixed(4)) || 'N/A';\n    const ndwiMin = (p.ndwi?.bands?.B0?.stats?.min?.toFixed(4)) || 'N/A';\n    const ndwiMax = (p.ndwi?.bands?.B0?.stats?.max?.toFixed(4)) || 'N/A';\n    const ndwiStDev = (p.ndwi?.bands?.B0?.stats?.stDev?.toFixed(4)) || 'N/A';\n    const ndwiValid = ((p.ndwi?.bands?.B0?.stats?.sampleCount || 0) - (p.ndwi?.bands?.B0?.stats?.noDataCount || 0));\n    const ndwiTotal = p.ndwi?.bands?.B0?.stats?.sampleCount || 'N/A';\n\n    const ndviDiff = (p.ndvi_metricas?.diferencia?.toFixed(6)) || 'N/A';\n    const ndviVel = (p.ndvi_metricas?.velocidad?.toFixed(6)) || 'N/A';\n    const ndviAcc = (p.ndvi_metricas?.aceleracion?.toFixed(6)) || 'N/A';\n    const ndwiDiff = (p.ndwi_metricas?.diferencia?.toFixed(6)) || 'N/A';\n\n    analysisText += `\n  Polígono ID: ${p.id_poligono}\n    Fecha de toma: ${p.fecha_toma}\n    \n    NDVI:\n      - Media: ${ndviMean}\n      - Rango: ${ndviMin} → ${ndviMax}\n      - Desv. estándar: ${ndviStDev}\n      - Datos válidos: ${ndviValid} / ${ndviTotal}\n\n    NDWI:\n      - Media: ${ndwiMean}\n      - Rango: ${ndwiMin} → ${ndwiMax}\n      - Desv. estándar: ${ndwiStDev}\n      - Datos válidos: ${ndwiValid} / ${ndwiTotal}\n\n    Métricas temporales:\n      - Diferencia NDVI: ${ndviDiff}\n      - Velocidad NDVI: ${ndviVel}\n      - Aceleración NDVI: ${ndviAcc}\n      - Diferencia NDWI: ${ndwiDiff}\n`;\n  });\n});\n\n// Devuelve un solo item con el análisis agregado\nreturn [{\n  json: {\n    analysis_report: analysisReport,\n    analysis_text: analysisText\n  }\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -2912,
+        -544
+      ],
+      "id": "55353bda-984b-475b-a090-4de12d748e97",
+      "name": "Code"
+    },
+    {
+      "parameters": {
+        "mode": "chooseBranch"
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        -3136,
+        -544
+      ],
+      "id": "272998f9-a7a5-4a6f-9ca8-35207f947358",
+      "name": "Merge1"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.analysis_text }}",
+        "options": {
+          "systemMessage": "=name: \"consolidated_critical_polygons_report_v8\"\ndescription: \"Asistente especializado en generar un reporte HTML consolidado de polígonos críticos en caña de azúcar, basado en datos estructurados de análisis remoto\"\n\nsystem_prompt: |\n  Eres un experto en agronomía especializado en monitoreo de cultivos de caña de azúcar mediante sensores remotos. \n  Todos los polígonos recibidos están en estado crítico o bajo monitoreo por tendencias negativas.\n\n  IMPORTANTE:\n  - Procesar EXCLUSIVAMENTE los datos proporcionados en el campo `analysis_report.farms`\n  - NO inventar ni inferir datos ausentes fuera de los valores recibidos\n  - Si un valor es nulo o no está presente, mostrar \"N/A\"\n  - El reporte debe ser generado en un ÚNICO archivo HTML, listo para enviar por correo (Gmail)\n\n  ENTRADA ESPERADA:\n  {\n    \"analysis_report\": {\n      \"summary\": { ... },\n      \"farms\": [\n        {\n          \"finca\": \"Nombre\",\n          \"polygon_count\": N,\n          \"polygons\": [\n            {\n              \"id_poligono\": \"string\",\n              \"fecha_toma\": \"ISO 8601\",\n              \"ndvi\": { \"mean\": float, ... },\n              \"ndwi\": { \"mean\": float, ... },\n              \"ndvi_metricas\": { \"diferencia\": float, \"velocidad\": float, \"aceleracion\": float },\n              \"ndwi_metricas\": { \"diferencia\": float }\n            }\n          ]\n        }\n      ]\n    }\n  }\n\n  INSTRUCCIONES ESTRICTAS:\n  1. Generar UN SOLO reporte HTML con TODAS las fincas y polígonos\n  2. Usar únicamente los datos de `analysis_report.farms` (no usar `analysis_text`)\n  3. Agrupar por `finca` y mostrar cada polígono como fila en tabla\n  4. Calcular criticidad SOLO con `ndvi.mean` usando:\n       - Crisis extrema: NDVI < 0.4\n       - Crítico alto: 0.4 ≤ NDVI < 0.5\n       - Crítico moderado: 0.5 ≤ NDVI < 0.65\n       - Estable: NDVI ≥ 0.65\n  5. Escala de colores para criticidad (background-color):\n       - Crisis extrema: #8B0000 (rojo claro)\n       - Crítico alto: #FF8C00 (naranja claro)\n       - Crítico moderado: #FFD700 (amarillo claro)\n       - Estable: #228B22 (verde claro)\n  6. En cada fila de polígono incluir:\n       - ID del polígono\n       - NDVI (mean)\n       - NDWI (mean)\n       - Diferencia NDVI\n       - Fecha de toma (formato: YYYY-MM-DD)\n       - Nivel de criticidad (texto + color de celda según escala)\n       - Posible causa (según métricas)\n       - Recomendación (acción sugerida)\n  7. Mostrar resumen ejecutivo con:\n       - total_fincas\n       - total_polygons\n       - conteo por nivel de criticidad (tabla simple con colores de escala)\n  8. Generar recomendaciones generales basadas en tendencias:\n       - Diferencia, velocidad y aceleración NDVI\n       - Valores extremos de NDWI\n\n  POSIBLES CAUSAS Y RECOMENDACIONES POR POLÍGONO:\n  - NDVI < 0.4 y NDWI muy bajo (< 0): posible estrés hídrico → recomendar riego urgente o evaluación del sistema de riego.\n  - NDVI 0.4 – 0.5 con aceleración negativa: deterioro progresivo → recomendar monitoreo semanal y aplicación foliar preventiva.\n  - NDVI 0.5 – 0.65 con diferencia negativa: tendencia a declive → recomendar revisión nutricional y control de plagas.\n  - NDVI ≥ 0.65 pero NDWI negativo: vigor bueno pero riesgo hídrico → recomendar seguimiento hídrico.\n  - Valores atípicos o sin datos: mostrar \"N/A\" → recomendar verificación de sensor o nueva toma de datos.\n\n  ESTRUCTURA DEL REPORTE HTML:\n  1. Encabezado con título y fecha del reporte\n  2. Resumen ejecutivo (estadísticas clave + tabla de criticidad)\n  3. Una sección por cada finca:\n       - Nombre de la finca\n       - Número de polígonos\n       - Tabla con todos los polígonos (una fila por polígono, con columnas definidas arriba)\n  4. Recomendaciones generales basadas en:\n       - Porcentaje de polígonos con NDVI < 0.65\n       - Tendencias negativas\n       - Valores extremos de NDWI\n\n  REQUISITOS DE HTML:\n  - Estilos inline (solo style=\"\")\n  - Tablas anidadas: una por finca, con filas por polígono\n  - Diseño limpio, profesional, legible en móvil y escritorio\n  - Colores semánticos según escala definida\n  - Mostrar criticidad con texto + color de celda\n  - Solo código HTML (sin ```html, sin comentarios, sin scripts)\n  - Evitar tamaños fijos; usar width=\"100%\", max-width: 800px\n  - Fuentes seguras: Arial, sans-serif\n\n  GARANTÍAS:\n  - El reporte incluye TODAS las fincas presentes\n  - Cada polígono se muestra individualmente\n  - No se omite ni repite ningún dato\n  - Cada polígono tiene causa y recomendación\n  - El HTML es compatible con n8n + Gmail Node\n\noutput_format: \"text/html\"\n\nmetadata:\n  version: \"8.0\"\n  category: \"agriculture_monitoring\"\n  use_case: \"critical_polygons_html_report\"\n  response_type: \"single_comprehensive_html\"\n  data_source: \"remote_sensing_analysis\"\n  input_structure: \"analysis_report.farms[].polygons\"\n  optimized_for: \"n8n_gmail_node\"\n  compatibility: \"gmail_safe_html\"\n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        -2688,
+        -640
+      ],
+      "id": "4a8b45cd-d4f9-4886-a860-f7c06b7bfe9e",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "inputSource": "passthrough"
+      },
+      "id": "44b32872-43fc-4ec5-ad37-f3b7cdde223e",
+      "typeVersion": 1.1,
+      "name": "Start",
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "position": [
+        -3808,
+        -288
+      ]
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "report"
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        -2560,
+        -416
+      ],
+      "id": "7d31c71b-c71c-4e33-9352-fce6eb250d37",
+      "name": "Simple Memory"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Find documents": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items1": {
+      "main": [
+        [
+          {
+            "node": "Merge1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "critic polygon",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Data Relation": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "critic polygon": {
+      "main": [
+        [
+          {
+            "node": "Find Finca related",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Find Finca related": {
+      "main": [
+        [
+          {
+            "node": "Data Relation",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge1": {
+      "main": [
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Start": {
+      "main": [
+        [
+          {
+            "node": "Find documents",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "1d030744-f94b-4f6f-984a-12c7ae954610",
+  "meta": {
+    "instanceId": "d4ab02fb1ef8b6ca2c1c5c1f280ee696b0514d7d92cee5fb0da1784dbe393998"
+  },
+  "id": "7AZWO6ewXYtrtemY",
+  "tags": [
+    {
+      "updatedAt": "2025-09-01T16:22:03.233Z",
+      "createdAt": "2025-09-01T16:22:03.233Z",
+      "id": "gROeDXsIw8PaI9x1",
+      "name": "FUNCIONAL"
+    },
+    {
+      "updatedAt": "2025-09-01T16:26:59.242Z",
+      "createdAt": "2025-09-01T16:26:59.242Z",
+      "id": "nhXlFKezuUDtk9fi",
+      "name": "AUTOMATICO"
+    }
+  ]
+}

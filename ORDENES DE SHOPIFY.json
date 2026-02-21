@@ -1,0 +1,265 @@
+{
+  "name": "ORDENES DE SHOPIFY",
+  "nodes": [
+    {
+      "parameters": {
+        "authentication": "accessToken",
+        "operation": "getAll",
+        "returnAll": true,
+        "options": {
+          "createdAtMin": "={{(new Date(Date.now() - 24 * 60 * 60 * 1000)).toISOString()}}"
+        }
+      },
+      "name": "Shopify - Get Orders Today",
+      "type": "n8n-nodes-base.shopify",
+      "typeVersion": 1,
+      "position": [
+        224,
+        -48
+      ],
+      "id": "356da71e-5017-4685-b004-b3923feacfb5",
+      "alwaysOutputData": false,
+      "credentials": {
+        "shopifyAccessTokenApi": {
+          "id": "p9afeGci88yK7hNp",
+          "name": "Shopify Paez"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "functionCode": "// Obtener todas las órdenes que vienen del nodo Shopify (ya están filtradas por hoy)\nconst ordersToday = items.map(item => item.json);\n\nif (ordersToday.length === 0) {\n  return null; // No enviar si no hay órdenes\n}\n\n// Calcular resumen\nconst totalOrders = ordersToday.length;\nconst totalAmount = ordersToday.reduce((sum, order) => sum + parseFloat(order.total_price || 0), 0);\n\n// Crear objeto con datos del resumen\nconst summary = {\n  totalOrders,\n  totalAmount: totalAmount.toFixed(2),\n  orders: ordersToday.map(o => ({\n    id: o.id,\n    name: o.name,\n    total_price: o.total_price,\n    customer: o.customer ? `${o.customer.first_name} ${o.customer.last_name}` : 'N/A'\n  }))\n};\n\nreturn [ { json: summary } ]; // Devuelve un array con un objeto"
+      },
+      "name": "Function - Create Summary",
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [
+        448,
+        48
+      ],
+      "id": "230f42ee-d424-442b-80f8-09b8da67290a"
+    },
+    {
+      "parameters": {
+        "functionCode": "const summary = $input.all()[0].json;\n\nlet html = `\n<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n  <meta charset=\"UTF-8\">\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n  \n  <link rel=\"stylesheet\" href=\"https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css\"> \n  \n  <style>\n    body {\n      font-family: Arial, sans-serif;\n      line-height: 1.6;\n      margin: 20px;\n      color: #333;\n    }\n    h1, h2, h3 {\n      color: #007BFF;\n    }\n    .logo-container {\n      text-align: left;\n      margin-bottom: 20px;\n    }\n    .social-icon {\n      display: inline-block;\n      text-decoration: none;\n      color: #3b5998; /* Color de Facebook */\n      margin-right: 10px;\n      font-size: 30px; /* Tamaño del icono */\n    }\n\n    .social-icon:hover {\n      color: #1877f2; /* Cambio de color al hover */\n    }\n\n    .sr-only {\n      position: absolute;\n      width: 1px;\n      height: 1px;\n      padding: 0;\n      margin: -1px;\n      overflow: hidden;\n      clip: rect(0, 0, 0, 0);\n      white-space: nowrap;\n      border: 0;\n    }\n\n    .footer{\n    display: flex; \n    flex-direction: column;\n    justify-content: center; \n    align-items: center\n    }\n  </style>\n  \n</head>\n<body>\n  <!-- Logo Principal -->\n  <div class=\"logo-container\">\n    <img src=\"https://cdn.discordapp.com/attachments/1383618316765233254/1383619148478812180/logo_-_garoo_azul.png?ex=684f733f&is=684e21bf&hm=f6e8d84c280a7fd031c50446d7fff27ec5fe201d847c4929ee98a67dfb3331ef&\"  alt=\"Garoo AI Logo\" width=\"200\">\n  </div>\n\n  <!-- Resumen de Órdenes -->\n  <h1>Resumen de Órdenes de Hoy</h1>\n  <p><strong>Total de órdenes:</strong> ${summary.totalOrders}</p>\n  <p><strong>Total vendido:</strong> $${summary.totalAmount}</p>\n\n  <!-- Listado de Órdenes -->\n  <h2>Listado de órdenes:</h2>\n  <ul style=\"margin-bottom: 3em\">\n    ${summary.orders\n      .map(\n        (order) => `\n      <li>Orden #${order.name} - Cliente: ${order.customer} - Monto: $${order.total_price}</li>\n    `,\n      )\n      .join(\"\")}\n  </ul>\n \n  \n  \n  <div class=\"footer\">\n  \n  \t<!-- Pie de Página -->\n  <b style=\"color: #667; font-size: 0.9em\">Made with Garoo AI</b>\n\n  <!-- Logos de Redes Sociales -->\n\n  </div>\n\n</body>\n</html>\n`;\n\nreturn { json: { html } };\n"
+      },
+      "name": "Function - Generate Email Body",
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [
+        672,
+        48
+      ],
+      "id": "20780a32-e47e-4cbf-b3fb-731d44ebbb8b"
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "triggerAtMinute": 1
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        0,
+        -48
+      ],
+      "id": "2699a81f-482b-4103-ae02-5434bccaa79c",
+      "name": "Schedule Trigger1"
+    },
+    {
+      "parameters": {
+        "sendTo": "luis@paez.com, jorge.menzel@garooinc.com",
+        "subject": "=Resumen de órdenes del día - {{new Date().toISOString().split('T')[0]}}",
+        "message": "={{ $json.html }}",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        896,
+        -48
+      ],
+      "id": "4f664a3e-98c1-4bb2-9516-d1b76b2b8546",
+      "name": "Send a message",
+      "webhookId": "44fffd08-8f3f-4533-b58f-d38ba77c9360",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "H8Qx7NlrthXmHUiy",
+          "name": "Soporte Garoo"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1WhkPU9XildINRNm2xkPmDP9UL3N0beZ6XKAlouH47Xk",
+          "mode": "list",
+          "cachedResultName": "Paez Orders",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1WhkPU9XildINRNm2xkPmDP9UL3N0beZ6XKAlouH47Xk/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1WhkPU9XildINRNm2xkPmDP9UL3N0beZ6XKAlouH47Xk/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "ID": "={{ $json.order_number }}",
+            "Date": "={{ new Date($json.updated_at).toLocaleDateString(\"es-ES\") }}",
+            "Amount": "={{ $json.total_price }}",
+            "Name": "={{ $json.customer.first_name+\" \"+$json.customer.last_name }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Name",
+              "displayName": "Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Date",
+              "displayName": "Date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Amount",
+              "displayName": "Amount",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "ID",
+              "displayName": "ID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.6,
+      "position": [
+        448,
+        -144
+      ],
+      "id": "da9a84e7-ff02-4127-a11b-6c2c32a644f9",
+      "name": "Append row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "l6u1eR7itnWxgdGe",
+          "name": "Jorge Garoo"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "html": "{{ $json.html }}"
+      },
+      "type": "n8n-nodes-base.html",
+      "typeVersion": 1.2,
+      "position": [
+        896,
+        144
+      ],
+      "id": "bfc537b7-dc5c-41c6-b90d-4bd18716b1bf",
+      "name": "HTML"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Shopify - Get Orders Today": {
+      "main": [
+        [
+          {
+            "node": "Function - Create Summary",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Function - Create Summary": {
+      "main": [
+        [
+          {
+            "node": "Function - Generate Email Body",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Function - Generate Email Body": {
+      "main": [
+        [
+          {
+            "node": "HTML",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule Trigger1": {
+      "main": [
+        [
+          {
+            "node": "Shopify - Get Orders Today",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "b6cf12d2-d9c5-4155-b2b6-bbc55893ddfc",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "d4ab02fb1ef8b6ca2c1c5c1f280ee696b0514d7d92cee5fb0da1784dbe393998"
+  },
+  "id": "5eajvnya8iOxI1sH",
+  "tags": []
+}

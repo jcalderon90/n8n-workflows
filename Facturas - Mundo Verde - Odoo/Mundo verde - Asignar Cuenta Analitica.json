@@ -1,0 +1,451 @@
+{
+  "name": "Mundo verde - Asignar Cuenta Analitica",
+  "nodes": [
+    {
+      "parameters": {
+        "inputSource": "passthrough"
+      },
+      "id": "f13b728c-95d3-4626-97c9-7dba72ead9fe",
+      "typeVersion": 1.1,
+      "name": "Start",
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "position": [
+        3152,
+        -128
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "e4f4be93-24ae-48d6-b484-1ff29a774421",
+              "name": "res_id",
+              "value": "={{ $json.res_id }}",
+              "type": "number"
+            },
+            {
+              "id": "3a3d3bb4-e8f6-459e-ac77-97cd3d50bf67",
+              "name": "id",
+              "value": "={{ $json.id }}",
+              "type": "number"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        3376,
+        -128
+      ],
+      "id": "b23f07ac-c0e3-4370-bd7f-06c8131ce6ef",
+      "name": "DATA FROM PREVIOUS WORKFLOW"
+    },
+    {
+      "parameters": {
+        "resource": "custom",
+        "customResource": "bim.project",
+        "operation": "get",
+        "customResourceId": "={{ $json.project_id[0] }}",
+        "options": {
+          "fieldsList": [
+            "analytic_id"
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.odoo",
+      "typeVersion": 1,
+      "position": [
+        3824,
+        -128
+      ],
+      "id": "1831f112-256a-49a2-8f76-ef7f33348b80",
+      "name": "GET CUENTA ANALITICA",
+      "credentials": {
+        "odooApi": {
+          "id": "L54C0wh51BqmebUj",
+          "name": "Odoo Mundo Verde Prod"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "custom",
+        "customResource": "account.move",
+        "operation": "get",
+        "customResourceId": "={{ $json.res_id }}",
+        "options": {
+          "fieldsList": [
+            "project_id"
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.odoo",
+      "typeVersion": 1,
+      "position": [
+        3600,
+        -128
+      ],
+      "id": "a702c9e9-e604-42e8-ac1a-f025c99a5dc5",
+      "name": "GET ID PROYECTO",
+      "credentials": {
+        "odooApi": {
+          "id": "L54C0wh51BqmebUj",
+          "name": "Odoo Mundo Verde Prod"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        4304,
+        -128
+      ],
+      "id": "3a73b528-076c-430b-8148-4ae1496c661f",
+      "name": "Loop Over Items"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "a34c6132-23c4-4d80-ac7f-facb5507dfa2",
+              "leftValue": "={{ $json.distribution_analytic_account_ids.isEmpty() }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        4656,
+        -112
+      ],
+      "id": "c639a47d-0992-4b11-bcc6-392d625258bb",
+      "name": "If lista de DISTRIBUTION IDs VACIO"
+    },
+    {
+      "parameters": {
+        "resource": "custom",
+        "customResource": "account.move.line",
+        "operation": "update",
+        "customResourceId": "={{ $('If lista de DISTRIBUTION IDs VACIO').item.json.id }}",
+        "fieldsToCreateOrUpdate": {
+          "fields": [
+            {
+              "fieldName": "analytic_distribution",
+              "fieldValue": "={{ $json.query }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.odoo",
+      "typeVersion": 1,
+      "position": [
+        5440,
+        -128
+      ],
+      "id": "1d31b505-2ec9-4466-a876-a00702aa6ea7",
+      "name": "Update an item",
+      "credentials": {
+        "odooApi": {
+          "id": "L54C0wh51BqmebUj",
+          "name": "Odoo Mundo Verde Prod"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "custom",
+        "customResource": "account.move.line",
+        "operation": "getAll",
+        "returnAll": true,
+        "options": {
+          "fieldsList": [
+            "distribution_analytic_account_ids",
+            "id",
+            "analytic_distribution"
+          ]
+        },
+        "filterRequest": {
+          "filter": [
+            {
+              "fieldName": "move_id",
+              "value": "={{ $('DATA FROM PREVIOUS WORKFLOW').item.json.res_id }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.odoo",
+      "typeVersion": 1,
+      "position": [
+        4048,
+        -128
+      ],
+      "id": "1ebfe7c1-58ce-445a-b7f6-030362b5ec37",
+      "name": "Get Poliza Contable de factura",
+      "credentials": {
+        "odooApi": {
+          "id": "L54C0wh51BqmebUj",
+          "name": "Odoo Mundo Verde Prod"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "custom",
+        "customResource": "account.move.line",
+        "operation": "get",
+        "customResourceId": "={{ $json.id }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.odoo",
+      "typeVersion": 1,
+      "position": [
+        5776,
+        -128
+      ],
+      "id": "e6f92e27-94a8-4b91-9a15-a1d9874769e2",
+      "name": "Get an item",
+      "credentials": {
+        "odooApi": {
+          "id": "L54C0wh51BqmebUj",
+          "name": "Odoo Mundo Verde Prod"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "1e3a9e48-e459-400e-84c3-62721875f808",
+              "name": "data_to_update",
+              "value": "={{ $('GET CUENTA ANALITICA').item.json.analytic_id[0] }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        4912,
+        -128
+      ],
+      "id": "fc82c3b5-1406-411e-9542-3b6cf6d612eb",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "c0d7068f-28c3-4d10-b771-6d340759a6d7",
+              "name": "query",
+              "value": "={ {{ $json.data_to_update }}:100 }",
+              "type": "object"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        5168,
+        -128
+      ],
+      "id": "bc82025c-6f78-484b-bac0-aed968db8971",
+      "name": "Edit Fields1"
+    }
+  ],
+  "pinData": {
+    "Start": [
+      {
+        "json": {
+          "res_id": 1247,
+          "id": 244,
+          "id_orden_compra": "219"
+        },
+        "pairedItem": {
+          "item": 0
+        }
+      }
+    ]
+  },
+  "connections": {
+    "Start": {
+      "main": [
+        [
+          {
+            "node": "DATA FROM PREVIOUS WORKFLOW",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "DATA FROM PREVIOUS WORKFLOW": {
+      "main": [
+        [
+          {
+            "node": "GET ID PROYECTO",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "GET ID PROYECTO": {
+      "main": [
+        [
+          {
+            "node": "GET CUENTA ANALITICA",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "GET CUENTA ANALITICA": {
+      "main": [
+        [
+          {
+            "node": "Get Poliza Contable de factura",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items": {
+      "main": [
+        [],
+        [
+          {
+            "node": "If lista de DISTRIBUTION IDs VACIO",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If lista de DISTRIBUTION IDs VACIO": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update an item": {
+      "main": [
+        [
+          {
+            "node": "Get an item",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Poliza Contable de factura": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get an item": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields1": {
+      "main": [
+        [
+          {
+            "node": "Update an item",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "timeSavedMode": "fixed",
+    "callerPolicy": "workflowsFromSameOwner",
+    "availableInMCP": false,
+    "errorWorkflow": "wv2-6zOqoyZTlgKRvmnxr"
+  },
+  "versionId": "de88c04c-02a6-4c24-8824-f4f4ff6527b5",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "d4ab02fb1ef8b6ca2c1c5c1f280ee696b0514d7d92cee5fb0da1784dbe393998"
+  },
+  "id": "hd4kZOAD0BCYRf9u",
+  "tags": [
+    {
+      "updatedAt": "2026-01-08T01:09:04.954Z",
+      "createdAt": "2026-01-08T01:09:04.954Z",
+      "id": "5STmV35Tlrs8TpZT",
+      "name": "✅COMPLETED"
+    }
+  ]
+}

@@ -1,0 +1,373 @@
+{
+  "name": "TRACKING INCOMING PAYMENTS - OUTLOOK",
+  "nodes": [
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1j_2va73Riv9_gmkVbDAKkGq9u661ZldS9BaaAkTNHYQ",
+          "mode": "list",
+          "cachedResultName": "Inconming Mail Payments ",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1j_2va73Riv9_gmkVbDAKkGq9u661ZldS9BaaAkTNHYQ/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "={{ \n  $json.month == 1\n    ? 'Jan'\n    : $json.month == 2\n      ? 'Feb'\n      : $json.month == 3\n        ? 'Mar'\n        : $json.month == 4\n          ? 'Apr'\n          : $json.month == 5\n            ? 'May'\n            : $json.month == 6\n              ? 'Jun'\n              : $json.month == 7\n                ? 'Jul'\n                : $json.month == 8\n                  ? 'Aug'\n                  : $json.month == 9\n                    ? 'Sep'\n                    : $json.month == 10\n                      ? 'Oct'\n                      : $json.month == 11\n                        ? 'Nov'\n                        : 'Dec'\n}}",
+          "mode": "name"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Sender Name": "={{ $('Create a record').item.json.fields['Sender Name'].replace(\"payment \",\"\") }}",
+            "Sent Date": "={{ $('Create a record').item.json.fields['Sent Date'] }}",
+            "Amount": "={{ $('Create a record').item.json.fields.Amount }}",
+            "Transaction No.": "={{ $('Create a record').item.json.fields['Transaction Number'] }}",
+            "Memo": "={{ $('Create a record').item.json.fields.Memo }}",
+            "ID": "={{ $('Create a record').item.json.id }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Sender Name",
+              "displayName": "Sender Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Amount",
+              "displayName": "Amount",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Sent Date",
+              "displayName": "Sent Date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Transaction No.",
+              "displayName": "Transaction No.",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Memo",
+              "displayName": "Memo",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "ID",
+              "displayName": "ID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        224,
+        -192
+      ],
+      "id": "7ab5ff4f-9661-4ef6-a208-0542a910cf65",
+      "name": "Append row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "Iut1j2vQOyWRXKrg",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Obtener el contenido del correo (puede ser HTML o texto plano)\nconst content = $input.first().json.body.content;\n\n// Función para limpiar y extraer texto de HTML\nfunction extractTextFromHTML(html) {\n  // Eliminar etiquetas HTML y convertir entidades HTML\n  let text = html.replace(/<[^>]+>/g, ' ')\n                 .replace(/&nbsp;/g, ' ')\n                 .replace(/&amp;/g, '&')\n                 .replace(/&lt;/g, '<')\n                 .replace(/&gt;/g, '>')\n                 .replace(/&quot;/g, '\"')\n                 .replace(/&apos;/g, \"'\");\n  \n  // Reemplazar múltiples espacios con uno solo y limpiar saltos de línea\n  text = text.replace(/\\s+/g, ' ').trim();\n  \n  return text;\n}\n\n// Determinar si es HTML y extraer texto limpio\nconst isHTML = /<[^>]+>/.test(content);\nconst cleanText = isHTML ? extractTextFromHTML(content) : content;\n\n// 1. Extraer nombre del remitente (más robusto para diferentes formatos)\nlet senderName = null;\nconst senderPatterns = [\n  /([A-Z][A-Za-z\\s.,'-]+?)\\s+sent\\s+you\\s+money\\s+with\\s+Zelle/i,\n  /([A-Z][A-Za-z\\s.,'-]+?)\\s+sent\\s+you\\s+money/i,\n  /from:\\s*([A-Z][A-Za-z\\s.,'-]+)/i\n];\n\nfor (const pattern of senderPatterns) {\n  const match = cleanText.match(pattern);\n  if (match) {\n    senderName = match[1].trim()\n      .replace(/(with\\s+Zelle®?|via\\s+Zelle®?|on\\s+Zelle®?)/i, '')\n      .replace(/\\s+$/, '')\n      .replace(/^(From|from):\\s*/i, '');\n    break;\n  }\n}\n\n// 2. Monto (mejorado para detectar diferentes formatos)\nlet amount = null;\nconst amountPatterns = [\n  /Amount\\s*\\$?(\\d{1,3}(?:,\\d{3})*(?:\\.\\d{2})?)/i,\n  /Amount\\s*:\\s*\\$?(\\d{1,3}(?:,\\d{3})*(?:\\.\\d{2})?)/i,\n  /\\$?(\\d{1,3}(?:,\\d{3})*(?:\\.\\d{2})?)\\s*(?:USD|dollars?|USDollars?)/i,\n  /Amount\\s*\\$?([\\d,.]+)/i\n];\n\nfor (const pattern of amountPatterns) {\n  const match = cleanText.match(pattern);\n  if (match) {\n    let extractedAmount = match[1].replace(/,/g, '');\n    if (!extractedAmount.includes('.')) {\n      extractedAmount += '.00';\n    }\n    amount = `$${parseFloat(extractedAmount).toFixed(2)}`;\n    break;\n  }\n}\n\n// 3. Fecha (mejorado para diferentes formatos de fecha)\nlet sentDate = null;\nconst datePatterns = [\n  /Sent\\s+on\\s+([A-Za-z]+\\s+\\d{1,2},?\\s+\\d{4})/i,\n  /Sent\\s*:\\s*([A-Za-z]+\\s+\\d{1,2},?\\s+\\d{4})/i,\n  /Date\\s*:\\s*([A-Za-z]+\\s+\\d{1,2},?\\s+\\d{4})/i,\n  /(\\d{1,2}\\/\\d{1,2}\\/\\d{4})/i,\n  /(\\d{4}-\\d{2}-\\d{2})/i\n];\n\nfor (const pattern of datePatterns) {\n  const match = cleanText.match(pattern);\n  if (match) {\n    sentDate = match[1].trim();\n    // Formatear fecha si está en formato ISO o numérico\n    if (/^\\d{4}-\\d{2}-\\d{2}$/.test(sentDate)) {\n      const dateObj = new Date(sentDate);\n      sentDate = dateObj.toLocaleDateString('en-US', { \n        month: 'short', \n        day: 'numeric', \n        year: 'numeric' \n      });\n    } else if (/^\\d{1,2}\\/\\d{1,2}\\/\\d{4}$/.test(sentDate)) {\n      const parts = sentDate.split('/');\n      const dateObj = new Date(`${parts[2]}-${parts[0]}-${parts[1]}`);\n      sentDate = dateObj.toLocaleDateString('en-US', { \n        month: 'short', \n        day: 'numeric', \n        year: 'numeric' \n      });\n    }\n    break;\n  }\n}\n\n// 4. Número de transacción (más preciso)\nlet transactionNumber = null;\nconst txnPatterns = [\n  /Transaction\\s+number\\s+(\\d{10,20})/i,\n  /Transaction\\s*ID\\s*:\\s*(\\d{10,20})/i,\n  /Txn\\s*#?\\s*(\\d{10,20})/i,\n  /Reference\\s*#?\\s*(\\d{10,20})/i\n];\n\nfor (const pattern of txnPatterns) {\n  const match = cleanText.match(pattern);\n  if (match) {\n    transactionNumber = match[1].trim();\n    break;\n  }\n}\n\n// 5. Memo (mejorado para extraer desde diferentes posiciones)\nlet memo = null;\nconst memoPatterns = [\n  /Memo\\s*:\\s*([^#]+?)(?=\\s*(?:Amount|Sent|Transaction|Date|$))/i,\n  /Memo\\s+([^\\n]+)/i,\n  /Note\\s*:\\s*([^\\n]+)/i,\n  /Message\\s*:\\s*([^\\n]+)/i\n];\n\nfor (const pattern of memoPatterns) {\n  const match = cleanText.match(pattern);\n  if (match) {\n    memo = match[1].trim();\n    // Eliminar texto que podría ser parte de la siguiente sección\n    memo = memo.replace(/(?:Amount|Sent|Transaction|Date|Thank you).*/i, '').trim();\n    if (memo.length > 100) {\n      memo = memo.substring(0, 100) + '...';\n    }\n    break;\n  }\n}\n\n// 6. Banco/Institución (información adicional útil)\nlet bank = null;\nconst bankPatterns = [\n  /\\b(Chase|Bank of America|Wells Fargo|Citibank|US Bank|PNC|Capital One|TD Bank|Ally|Discover)\\b/i\n];\n\nfor (const pattern of bankPatterns) {\n  const match = cleanText.match(pattern);\n  if (match) {\n    bank = match[1].trim();\n    break;\n  }\n}\n\n// Devolver resultado con información adicional y validación\nreturn [{\n  json: {\n    extracted: {\n      senderName: senderName || 'Unknown sender',\n      amount: amount || 'Amount not found',\n      sentDate: sentDate || 'Date not found',\n      transactionNumber: transactionNumber || 'Transaction number not found',\n      memo: memo || 'No memo provided',\n      bank: bank || 'Unknown bank',\n      rawText: cleanText.substring(0, 500) + '...' // Para debugging\n    },\n    success: !!(senderName && amount && sentDate && transactionNumber),\n    confidence: {\n      sender: senderName ? 'high' : 'low',\n      amount: amount ? 'high' : 'low',\n      date: sentDate ? 'high' : 'low',\n      transaction: transactionNumber ? 'high' : 'low'\n    }\n  }\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -448,
+        -192
+      ],
+      "id": "aa4f59a6-5e8f-46f9-84cc-6d5e5478d9bb",
+      "name": "Code in JavaScript1"
+    },
+    {
+      "parameters": {
+        "operation": "create",
+        "base": {
+          "__rl": true,
+          "value": "app6Nt3Hdoj9E6sZ8",
+          "mode": "list",
+          "cachedResultName": "Legal Case Tracking and Billing",
+          "cachedResultUrl": "https://airtable.com/app6Nt3Hdoj9E6sZ8"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tblTyWbKiqqDI6vJK",
+          "mode": "list",
+          "cachedResultName": "Zelle Payments",
+          "cachedResultUrl": "https://airtable.com/app6Nt3Hdoj9E6sZ8/tblTyWbKiqqDI6vJK"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Sent Date": "={{ new Date($json.extracted.sentDate) }}",
+            "Sender Name": "={{ $json.extracted.senderName }}",
+            "Amount": "={{ $json.extracted.amount }}",
+            "Transaction Number": "={{ $json.extracted.transactionNumber }}",
+            "Memo": "={{ $json.extracted.memo }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Sender Name",
+              "displayName": "Sender Name",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Amount",
+              "displayName": "Amount",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Sent Date",
+              "displayName": "Sent Date",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "dateTime",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Transaction Number",
+              "displayName": "Transaction Number",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Memo",
+              "displayName": "Memo",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.1,
+      "position": [
+        -224,
+        -192
+      ],
+      "id": "a96c4e03-b3b6-411a-8e4c-91b35e02182f",
+      "name": "Create a record",
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "6wPFco9G7xyqhPzg",
+          "name": "Airtable Personal Access Token account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            }
+          ]
+        },
+        "output": "fields",
+        "fields": [
+          "body"
+        ],
+        "filters": {
+          "custom": "contains(subject, 'FW: You received money with Zelle')",
+          "readStatus": "unread",
+          "sender": "mvarela@varela.law"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.microsoftOutlookTrigger",
+      "typeVersion": 1,
+      "position": [
+        -672,
+        -288
+      ],
+      "id": "549963f9-1fc7-4445-86e6-87aa681c5af0",
+      "name": "Microsoft Outlook Trigger",
+      "credentials": {
+        "microsoftOutlookOAuth2Api": {
+          "id": "a0yzNDuRyO9AwgcW",
+          "name": "automations@varela.law"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "html": "{{ $json.body.content }}"
+      },
+      "type": "n8n-nodes-base.html",
+      "typeVersion": 1.2,
+      "position": [
+        -448,
+        -384
+      ],
+      "id": "f70dbc19-b97b-43ad-9998-f5236b5e9067",
+      "name": "HTML"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "c49fe43e-1deb-4ad3-bf1c-a92969e7ddf6",
+              "name": "month",
+              "value": "={{ $json.fields['Sent Date'].toDateTime().extract('month') }}",
+              "type": "number"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        0,
+        -192
+      ],
+      "id": "303b3339-72e4-4ca3-a07c-7915f7f8b302",
+      "name": "Edit Fields"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Append row in sheet": {
+      "main": [
+        []
+      ]
+    },
+    "Code in JavaScript1": {
+      "main": [
+        [
+          {
+            "node": "Create a record",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Microsoft Outlook Trigger": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript1",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "HTML",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create a record": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "callerPolicy": "workflowsFromSameOwner",
+    "errorWorkflow": "mwmapzwppW-NTV4NwOhSq",
+    "timeSavedMode": "fixed",
+    "availableInMCP": false
+  },
+  "versionId": "b590ca4c-881c-49ba-a42f-149c75bd28ae",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "1605e0956f411c02ecc29f05b035dcb95746e902cd54a42b69d92da41bbef671"
+  },
+  "id": "BruqJ1jdEV9xl5zG",
+  "tags": []
+}

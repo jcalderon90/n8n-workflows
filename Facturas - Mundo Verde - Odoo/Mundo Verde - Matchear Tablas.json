@@ -1,0 +1,603 @@
+{
+  "name": "Mundo Verde - Matchear Tablas",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "triggerAtHour": 10
+            },
+            {
+              "triggerAtHour": 16
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -800,
+        -1872
+      ],
+      "id": "df5b3388-312e-4b1b-b1fb-733bbbcfa8b9",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        -352,
+        -1872
+      ],
+      "id": "3a4fd5c0-6e52-4ab2-82c0-42644bb6a8c9",
+      "name": "Loop Over Items"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "cef43186-0906-4ce4-a6dd-8ebff89b7905",
+              "leftValue": "={{ $json }}",
+              "rightValue": "",
+              "operator": {
+                "type": "object",
+                "operation": "exists",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        544,
+        -1936
+      ],
+      "id": "c0ce52d2-d281-47f4-b0e5-1b9b90446200",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "jsCode": "\n\nconst item_id = $input.first().json['factura de Formulario Encontrada']._id\n\nconst item_matched = true\n\nreturn {\n    _id : item_id,\n    matched: item_matched\n  }\n"
+      },
+      "id": "a2d1f0fe-0c85-4b51-83b7-6f2c1957b0f7",
+      "name": "Preparando datos a Modificar",
+      "type": "n8n-nodes-base.code",
+      "position": [
+        768,
+        -2032
+      ],
+      "typeVersion": 2
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "b997bb15-94ef-48db-ac5e-d8ada036fef9",
+              "name": "factura de Formulario Encontrada",
+              "value": "={{ $json }}",
+              "type": "object"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        320,
+        -1936
+      ],
+      "id": "c72c0b9d-4b7b-4957-88d3-54f4adcc6ad8",
+      "name": "factura en Tabla Formulario Encontrada"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "collection": "formulario",
+        "updateKey": "_id",
+        "fields": "=matched",
+        "options": {}
+      },
+      "name": "MongoDB - Actualizar factura en Tabla Formulario",
+      "type": "n8n-nodes-base.mongoDb",
+      "typeVersion": 1.2,
+      "position": [
+        992,
+        -2032
+      ],
+      "id": "b5d2ae6b-74fd-493f-b1ec-b655193b6899",
+      "credentials": {
+        "mongoDb": {
+          "id": "wwOL6pf5hqG6FrrM",
+          "name": "MongoDB Jorge de Garoo"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "collection": "formulario",
+        "options": {},
+        "query": "={\n  \"matched\": false,\n  \"NRO_FACTURA\": \"{{ $json['actual factura de Factura'].numero_dte }}\",\n  \"SERIE\": \"{{ $json['actual factura de Factura'].serie }}\",\n  \"NIT\": \"{{ $json['actual factura de Factura'].emisor_nit }}\"\n}"
+      },
+      "type": "n8n-nodes-base.mongoDb",
+      "typeVersion": 1.2,
+      "position": [
+        96,
+        -1936
+      ],
+      "id": "ee438b64-2a8f-46b3-920d-d526f6894ccd",
+      "name": "factura Tabla Formulario",
+      "credentials": {
+        "mongoDb": {
+          "id": "wwOL6pf5hqG6FrrM",
+          "name": "MongoDB Jorge de Garoo"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "329668a3-6e6e-4144-bd76-85a039fa4d6d",
+              "name": "actual factura de Factura",
+              "value": "={{ $json }}",
+              "type": "object"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -128,
+        -1936
+      ],
+      "id": "e7038d8e-409f-4dc9-baab-d7154b946f37",
+      "name": "current factura en Tabla Factura"
+    },
+    {
+      "parameters": {
+        "collection": "factura",
+        "options": {},
+        "query": "{\"matched\": false}"
+      },
+      "type": "n8n-nodes-base.mongoDb",
+      "typeVersion": 1.2,
+      "position": [
+        -576,
+        -1872
+      ],
+      "id": "39b03214-7d63-4eef-9732-223a27dbf434",
+      "name": "Encontrar facturas en Tabla Factura No Matcheadas",
+      "alwaysOutputData": false,
+      "credentials": {
+        "mongoDb": {
+          "id": "wwOL6pf5hqG6FrrM",
+          "name": "MongoDB Jorge de Garoo"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "\n\nconst item_id = $('current factura en Tabla Factura').first().json['actual factura de Factura']._id\n\nconst item_matched = true\n\nreturn {\n    _id : item_id,\n    matched: item_matched\n  }\n"
+      },
+      "id": "8d376d69-78ed-47b3-961d-d9b537ac677f",
+      "name": "Preparando datos a Modificar1",
+      "type": "n8n-nodes-base.code",
+      "position": [
+        768,
+        -1840
+      ],
+      "typeVersion": 2
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "collection": "factura",
+        "updateKey": "_id",
+        "fields": "=matched",
+        "options": {}
+      },
+      "name": "MongoDB - Actualizar factura en Tabla Formulario2",
+      "type": "n8n-nodes-base.mongoDb",
+      "typeVersion": 1.2,
+      "position": [
+        992,
+        -1840
+      ],
+      "id": "f9ce0488-7125-4f60-a350-f8bc53e662ed",
+      "credentials": {
+        "mongoDb": {
+          "id": "wwOL6pf5hqG6FrrM",
+          "name": "MongoDB Jorge de Garoo"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "chooseBranch",
+        "output": "empty"
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        1216,
+        -1936
+      ],
+      "id": "c785cdf4-447e-42c8-a03b-f4feeae86758",
+      "name": "Merge"
+    },
+    {
+      "parameters": {
+        "content": "## MATCHEA LAS FACTURAS QUE ESTAN EN LA TABLA facturas CON LA TABLA formulario COMPROBAR EXISTENCIA ",
+        "height": 80,
+        "width": 1376,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        128,
+        -2208
+      ],
+      "typeVersion": 1,
+      "id": "ca6c5499-87e2-42e2-a66c-b4f7547b4acb",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "wzU6DYI6ZbHyGwWl",
+          "mode": "list",
+          "cachedResultUrl": "/workflow/wzU6DYI6ZbHyGwWl",
+          "cachedResultName": "Mundo Verde - MATCH ODOO"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.2,
+      "position": [
+        2112,
+        -1872
+      ],
+      "name": "Call Mundo Verde - MATCH ODOO",
+      "id": "02887543-5667-4ea3-82e1-f7717e9e904d"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "960b3390-ea7a-4bd5-8cc8-ad297cfd73c6",
+              "name": "factura_form",
+              "value": "={{ $('factura en Tabla Formulario Encontrada').item.json['factura de Formulario Encontrada'] }}",
+              "type": "object"
+            },
+            {
+              "id": "2d093071-2752-427c-81db-52fbe70e7405",
+              "name": "factura_mail",
+              "value": "={{ $('current factura en Tabla Factura').item.json['actual factura de Factura'] }}",
+              "type": "object"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1888,
+        -1936
+      ],
+      "id": "d7b61fef-a427-4222-b7e5-b0a5f6e28339",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "resource": "custom",
+        "customResource": "purchase.order",
+        "operation": "getAll",
+        "returnAll": true,
+        "options": {},
+        "filterRequest": {
+          "filter": [
+            {
+              "fieldName": "name",
+              "value": "={{ $('factura en Tabla Formulario Encontrada').item.json['factura de Formulario Encontrada'].NRO_ORDEN_COMPRA }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.odoo",
+      "typeVersion": 1,
+      "position": [
+        1440,
+        -1936
+      ],
+      "id": "01d58465-1ccc-4e63-a9e8-00ea78017b1b",
+      "name": "Get PURCHASE ORDER",
+      "alwaysOutputData": true,
+      "credentials": {
+        "odooApi": {
+          "id": "NSH22REBW9N7NsMh",
+          "name": "Odoo Mundo Verde"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "e0ad6e3c-0a9b-4bc6-99ae-b4ccf4e06a4b",
+              "leftValue": "={{ $json.state }}",
+              "rightValue": "cancel",
+              "operator": {
+                "type": "string",
+                "operation": "notEquals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        1664,
+        -1936
+      ],
+      "id": "147fb683-1e7e-4050-ac12-7275b3e829ad",
+      "name": "If ORDEN CANCELADA"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Encontrar facturas en Tabla Factura No Matcheadas",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items": {
+      "main": [
+        [],
+        [
+          {
+            "node": "current factura en Tabla Factura",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Preparando datos a Modificar",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Preparando datos a Modificar1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        []
+      ]
+    },
+    "Preparando datos a Modificar": {
+      "main": [
+        [
+          {
+            "node": "MongoDB - Actualizar factura en Tabla Formulario",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "factura en Tabla Formulario Encontrada": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "MongoDB - Actualizar factura en Tabla Formulario": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "factura Tabla Formulario": {
+      "main": [
+        [
+          {
+            "node": "factura en Tabla Formulario Encontrada",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "current factura en Tabla Factura": {
+      "main": [
+        [
+          {
+            "node": "factura Tabla Formulario",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Encontrar facturas en Tabla Factura No Matcheadas": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Preparando datos a Modificar1": {
+      "main": [
+        [
+          {
+            "node": "MongoDB - Actualizar factura en Tabla Formulario2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "MongoDB - Actualizar factura en Tabla Formulario2": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "Get PURCHASE ORDER",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Call Mundo Verde - MATCH ODOO",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Call Mundo Verde - MATCH ODOO": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get PURCHASE ORDER": {
+      "main": [
+        [
+          {
+            "node": "If ORDEN CANCELADA",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If ORDEN CANCELADA": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "timezone": "America/Guatemala",
+    "callerPolicy": "workflowsFromSameOwner",
+    "availableInMCP": false,
+    "errorWorkflow": "wv2-6zOqoyZTlgKRvmnxr",
+    "timeSavedMode": "fixed"
+  },
+  "versionId": "dab39053-6187-4f52-bb62-14b7f858402a",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "d4ab02fb1ef8b6ca2c1c5c1f280ee696b0514d7d92cee5fb0da1784dbe393998"
+  },
+  "id": "z9ahrsFIuxwFj3DJ",
+  "tags": [
+    {
+      "updatedAt": "2026-01-08T01:09:04.954Z",
+      "createdAt": "2026-01-08T01:09:04.954Z",
+      "id": "5STmV35Tlrs8TpZT",
+      "name": "✅COMPLETED"
+    }
+  ]
+}

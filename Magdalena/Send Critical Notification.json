@@ -1,0 +1,349 @@
+{
+  "name": "Send Critical Notification",
+  "nodes": [
+    {
+      "parameters": {
+        "workflowInputs": {
+          "values": [
+            {
+              "name": "critic_polygon",
+              "type": "any"
+            },
+            {
+              "name": "analisis",
+              "type": "any"
+            }
+          ]
+        }
+      },
+      "id": "c121f1b1-ed96-40ee-b63b-9575d7baedad",
+      "typeVersion": 1.1,
+      "name": "Start",
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "position": [
+        3872,
+        16
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "9f22fbe2-3157-4fb5-9dc7-1a3b60d3888f",
+              "name": "supervisor_list",
+              "value": "={{ $('Find Polygon').item.json.supervisor_ids }}",
+              "type": "array"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        4320,
+        16
+      ],
+      "id": "e6bfcd32-f6d4-4329-8147-7900ce541780",
+      "name": "Edit Fields1"
+    },
+    {
+      "parameters": {
+        "jsCode": "const ids = $input.all().map(item => item.json.supervisor_list).flat();\nreturn ids.map(id => ({ json: { id } }));"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        4544,
+        -96
+      ],
+      "id": "6aa191a1-b4d3-4225-ac29-3deaf996d664",
+      "name": "Flat Array"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        4768,
+        -96
+      ],
+      "id": "fc92d716-9f5c-466f-aa90-171dbc077adf",
+      "name": "Loop Over Items"
+    },
+    {
+      "parameters": {
+        "collection": "Polygons",
+        "options": {},
+        "query": "={\n  \"_id\": \"{{ $json.critic_polygon.id_poligono }}\"\n}"
+      },
+      "type": "n8n-nodes-base.mongoDb",
+      "typeVersion": 1.2,
+      "position": [
+        4096,
+        16
+      ],
+      "id": "dc8733fa-f928-4bf6-a19f-db44648368a2",
+      "name": "Find Polygon",
+      "credentials": {
+        "mongoDb": {
+          "id": "oCCgJ1QnJPbirSub",
+          "name": "Magdalena"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "html": "<!DOCTYPE html>\n<html>\n<head>\n  <meta charset=\"UTF-8\">\n  <title>Notificación Redtec</title>\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n  <!-- Google Fonts: Poppins -->\n  <link href=\"https://fonts.googleapis.com/css?family=Poppins:400,500,600,700\" rel=\"stylesheet\">\n  <style>\n    body {\n      margin: 0;\n      padding: 0;\n      background-color: #f5f5f5;\n      font-family: 'Poppins', Arial, Helvetica, sans-serif;\n    }\n    .container {\n      max-width: 650px;\n      margin: 40px auto;\n      background-color: #fff;\n      border-radius: 16px;\n      box-shadow: 0 4px 20px rgba(0,0,0,0.08);\n      overflow: hidden;\n    }\n    .header {\n      padding: 40px 40px 30px 40px;\n      background: linear-gradient(135deg, #fff 0%, #fafafa 100%);\n    }\n    .logo {\n      width: 140px;\n      margin-bottom: 20px;\n    }\n    .title {\n      font-size: 26px;\n      font-weight: 700;\n      color: #2c2c2c;\n      margin: 15px 0;\n      line-height: 1.3;\n    }\n    .subtitle {\n      font-size: 15px;\n      color: #666;\n      margin-top: 10px;\n      line-height: 1.6;\n    }\n    .content {\n      padding: 10px 40px 40px 40px;\n    }\n    .info-card {\n      background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);\n      border-left: 4px solid #cc1d1a;\n      border-radius: 12px;\n      padding: 20px 24px;\n      margin: 20px 0;\n      box-shadow: 0 2px 8px rgba(0,0,0,0.04);\n    }\n    .info-label {\n      font-weight: 600;\n      color: #cc1d1a;\n      font-size: 13px;\n      text-transform: uppercase;\n      letter-spacing: 0.5px;\n      margin-bottom: 8px;\n    }\n    .info-content {\n      color: #444;\n      font-size: 15px;\n      line-height: 1.7;\n      font-weight: 400;\n    }\n    .button-container {\n      text-align: center;\n      margin-top: 35px;\n    }\n    .button {\n      display: inline-block;\n      padding: 14px 40px;\n      background: linear-gradient(90deg, #cc1d1a 0%, #e63946 100%);\n      color: #fff !important;\n      text-decoration: none;\n      border-radius: 12px;\n      font-size: 16px;\n      font-weight: 600;\n      border: none;\n      box-shadow: 0 4px 15px rgba(204, 29, 26, 0.3);\n      transition: all 0.3s ease;\n      cursor: pointer;\n    }\n    .button:hover {\n      background: linear-gradient(90deg, #a51618 0%, #cc1d1a 100%);\n      box-shadow: 0 6px 20px rgba(204, 29, 26, 0.4);\n      transform: translateY(-2px);\n    }\n    .divider {\n      height: 1px;\n      background: linear-gradient(90deg, transparent 0%, #e0e0e0 50%, transparent 100%);\n      margin: 30px 0;\n    }\n    .footer {\n      text-align: center;\n      padding: 30px 40px;\n      background-color: #fafafa;\n      border-top: 1px solid #f0f0f0;\n    }\n    .footer p {\n      margin: 5px 0;\n      font-size: 14px;\n      color: #888;\n    }\n    .emoji {\n      font-size: 24px;\n      margin-bottom: 10px;\n    }\n    @media (max-width: 650px) {\n      .container {\n        margin: 10px;\n        border-radius: 12px;\n      }\n      .header, .content {\n        padding: 25px 20px !important;\n      }\n      .info-card {\n        padding: 16px 18px;\n      }\n      .title {\n        font-size: 22px;\n      }\n      .button {\n        width: 100%;\n        padding: 14px 20px;\n      }\n      .footer {\n        padding: 25px 20px;\n      }\n    }\n  </style>\n</head>\n<body>\n  <div class=\"container\">\n    <div class=\"header\">\n      <img class=\"logo\" src=\"https://redtec.ai/assets/images/logos/logo1.png\" alt=\"Logo Redtec\">\n      <div class=\"title\">Alerta: Polígono Crítico Detectado</div>\n      <div class=\"subtitle\">\n        Hemos identificado una situación que requiere tu atención. Revisa los detalles a continuación.\n      </div>\n    </div>\n    \n    <div class=\"content\">\n      <div class=\"info-card\">\n        <div class=\"info-label\"> Polígono Crítico</div>\n        <div class=\"info-content\">Lote: {{ $('Find Polygon').item.json.n_lote }} - Pante: {{ $('Find Polygon').item.json.pante }}</div>\n      </div>\n\n      <div class=\"info-card\">\n        <div class=\"info-label\">Finca</div>\n        <div class=\"info-content\">{{ $('Find Polygon').item.json.finca.toUpperCase() }}</div>\n      </div>\n      \n      <div class=\"info-card\">\n        <div class=\"info-label\">Posible Causa</div>\n        <div class=\"info-content\">{{ $('Start').item.json.critic_polygon.analisis.causa }}</div>\n      </div>\n      \n      <div class=\"info-card\">\n        <div class=\"info-label\">Recomendación</div>\n        <div class=\"info-content\">{{ $('Start').item.json.critic_polygon.analisis.recomendacion }}</div>\n      </div>\n      \n      <div class=\"divider\"></div>\n      \n      <div class=\"button-container\">\n        <a class=\"button\" href=\"https://calm-shortbread-a6971f.netlify.app/formulario/{{ $('Start').item.json.critic_polygon.id_poligono }}/{{ $('Start').item.json.critic_polygon._id }}\" target=\"_blank\">\n          Ver Detalles Completos\n        </a>\n      </div>\n    </div>\n    \n    <div class=\"footer\">\n      <p><strong>Redtec AI</strong></p>\n    </div>\n  </div>\n</body>\n</html>"
+      },
+      "type": "n8n-nodes-base.html",
+      "typeVersion": 1.2,
+      "position": [
+        5216,
+        -160
+      ],
+      "id": "87ed657d-1f4b-4937-a8a0-ea99783ef476",
+      "name": "HTML"
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $('Find Supervisor').item.json.correo }}",
+        "subject": "Se detectó un nuevo Polígono Crítico!",
+        "message": "={{ $json.html }}",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        5440,
+        -96
+      ],
+      "id": "7ad84e4a-0802-45ac-9662-a17a68b929b4",
+      "name": "Send a message",
+      "webhookId": "cbbef4b8-7351-4654-9930-06b32e0b11fd",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "H8Qx7NlrthXmHUiy",
+          "name": "Soporte Garoo"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "collection": "Polygons_Supervisor",
+        "options": {},
+        "query": "={\n  \"_id\": \"{{ $json.id }}\"\n}"
+      },
+      "type": "n8n-nodes-base.mongoDb",
+      "typeVersion": 1.2,
+      "position": [
+        4992,
+        -160
+      ],
+      "id": "3231080c-1e65-45a3-86f2-25ff7f72851c",
+      "name": "Find Supervisor",
+      "credentials": {
+        "mongoDb": {
+          "id": "oCCgJ1QnJPbirSub",
+          "name": "Magdalena"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "=jorge.menzel@garooinc.com",
+        "subject": "Se detectó un nuevo Polígono Crítico!",
+        "message": "={{ $json.html }}",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        4768,
+        112
+      ],
+      "id": "1ad7b6a7-e7a1-40f7-b71a-8a8f10d01e68",
+      "name": "Send a message to Jorge menzel",
+      "webhookId": "cbbef4b8-7351-4654-9930-06b32e0b11fd",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "H8Qx7NlrthXmHUiy",
+          "name": "Soporte Garoo"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "html": "<!DOCTYPE html>\n<html>\n<head>\n  <meta charset=\"UTF-8\">\n  <title>Notificación Redtec</title>\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n  <!-- Google Fonts: Poppins -->\n  <link href=\"https://fonts.googleapis.com/css?family=Poppins:400,500,600,700\" rel=\"stylesheet\">\n  <style>\n    body {\n      margin: 0;\n      padding: 0;\n      background-color: #f5f5f5;\n      font-family: 'Poppins', Arial, Helvetica, sans-serif;\n    }\n    .container {\n      max-width: 650px;\n      margin: 40px auto;\n      background-color: #fff;\n      border-radius: 16px;\n      box-shadow: 0 4px 20px rgba(0,0,0,0.08);\n      overflow: hidden;\n    }\n    .header {\n      padding: 40px 40px 30px 40px;\n      background: linear-gradient(135deg, #fff 0%, #fafafa 100%);\n    }\n    .logo {\n      width: 140px;\n      margin-bottom: 20px;\n    }\n    .title {\n      font-size: 26px;\n      font-weight: 700;\n      color: #2c2c2c;\n      margin: 15px 0;\n      line-height: 1.3;\n    }\n    .subtitle {\n      font-size: 15px;\n      color: #666;\n      margin-top: 10px;\n      line-height: 1.6;\n    }\n    .content {\n      padding: 10px 40px 40px 40px;\n    }\n    .info-card {\n      background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);\n      border-left: 4px solid #cc1d1a;\n      border-radius: 12px;\n      padding: 20px 24px;\n      margin: 20px 0;\n      box-shadow: 0 2px 8px rgba(0,0,0,0.04);\n    }\n    .info-label {\n      font-weight: 600;\n      color: #cc1d1a;\n      font-size: 13px;\n      text-transform: uppercase;\n      letter-spacing: 0.5px;\n      margin-bottom: 8px;\n    }\n    .info-content {\n      color: #444;\n      font-size: 15px;\n      line-height: 1.7;\n      font-weight: 400;\n    }\n    .button-container {\n      text-align: center;\n      margin-top: 35px;\n    }\n    .button {\n      display: inline-block;\n      padding: 14px 40px;\n      background: linear-gradient(90deg, #cc1d1a 0%, #e63946 100%);\n      color: #fff !important;\n      text-decoration: none;\n      border-radius: 12px;\n      font-size: 16px;\n      font-weight: 600;\n      border: none;\n      box-shadow: 0 4px 15px rgba(204, 29, 26, 0.3);\n      transition: all 0.3s ease;\n      cursor: pointer;\n    }\n    .button:hover {\n      background: linear-gradient(90deg, #a51618 0%, #cc1d1a 100%);\n      box-shadow: 0 6px 20px rgba(204, 29, 26, 0.4);\n      transform: translateY(-2px);\n    }\n    .divider {\n      height: 1px;\n      background: linear-gradient(90deg, transparent 0%, #e0e0e0 50%, transparent 100%);\n      margin: 30px 0;\n    }\n    .footer {\n      text-align: center;\n      padding: 30px 40px;\n      background-color: #fafafa;\n      border-top: 1px solid #f0f0f0;\n    }\n    .footer p {\n      margin: 5px 0;\n      font-size: 14px;\n      color: #888;\n    }\n    .emoji {\n      font-size: 24px;\n      margin-bottom: 10px;\n    }\n    @media (max-width: 650px) {\n      .container {\n        margin: 10px;\n        border-radius: 12px;\n      }\n      .header, .content {\n        padding: 25px 20px !important;\n      }\n      .info-card {\n        padding: 16px 18px;\n      }\n      .title {\n        font-size: 22px;\n      }\n      .button {\n        width: 100%;\n        padding: 14px 20px;\n      }\n      .footer {\n        padding: 25px 20px;\n      }\n    }\n  </style>\n</head>\n<body>\n  <div class=\"container\">\n    <div class=\"header\">\n      <img class=\"logo\" src=\"https://redtec.ai/assets/images/logos/logo1.png\" alt=\"Logo Redtec\">\n      <div class=\"title\">Alerta: Polígono Crítico Detectado</div>\n      <div class=\"subtitle\">\n        Hemos identificado una situación que requiere tu atención. Revisa los detalles a continuación.\n      </div>\n    </div>\n    \n    <div class=\"content\">\n      <div class=\"info-card\">\n        <div class=\"info-label\"> Polígono Crítico</div>\n        <div class=\"info-content\">Lote: {{ $('Find Polygon').item.json.n_lote }} - Pante: {{ $('Find Polygon').item.json.pante }}</div>\n      </div>\n\n      <div class=\"info-card\">\n        <div class=\"info-label\">Finca</div>\n        <div class=\"info-content\">{{ $('Find Polygon').item.json.finca.toUpperCase() }}</div>\n      </div>\n      \n      <div class=\"info-card\">\n        <div class=\"info-label\">Posible Causa</div>\n        <div class=\"info-content\">{{ $('Start').item.json.analisis.causa }}</div>\n      </div>\n      \n      <div class=\"info-card\">\n        <div class=\"info-label\">Recomendación</div>\n        <div class=\"info-content\">{{ $('Start').item.json.critic_polygon.analisis.recomendacion }}</div>\n      </div>\n      \n      <div class=\"divider\"></div>\n      \n      <div class=\"button-container\">\n        <a class=\"button\" href=\"https://calm-shortbread-a6971f.netlify.app/formulario/{{ $('Start').item.json.critic_polygon.id_poligono }}/{{ $('Start').item.json.critic_polygon._id }}\" target=\"_blank\">\n          Ver Detalles Completos\n        </a>\n      </div>\n    </div>\n    \n    <div class=\"footer\">\n      <p><strong>Redtec AI</strong></p>\n    </div>\n  </div>\n</body>\n</html>"
+      },
+      "type": "n8n-nodes-base.html",
+      "typeVersion": 1.2,
+      "position": [
+        4544,
+        112
+      ],
+      "id": "75a5d14f-59d1-435d-9386-c6a957a7f875",
+      "name": "HTML1"
+    },
+    {
+      "parameters": {
+        "sendTo": "=LSaenz@magdalena.com.gt",
+        "subject": "Se detectó un nuevo Polígono Crítico!",
+        "message": "={{ $json.html }}",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        4768,
+        320
+      ],
+      "id": "d96ce84c-17c6-4536-afa7-ff3216ab0dc6",
+      "name": "Send a message to LSaens",
+      "webhookId": "cbbef4b8-7351-4654-9930-06b32e0b11fd",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "H8Qx7NlrthXmHUiy",
+          "name": "Soporte Garoo"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Start": {
+      "main": [
+        [
+          {
+            "node": "Find Polygon",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields1": {
+      "main": [
+        [
+          {
+            "node": "Flat Array",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "HTML1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Flat Array": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Find Supervisor",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Find Polygon": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTML": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Find Supervisor": {
+      "main": [
+        [
+          {
+            "node": "HTML",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send a message": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTML1": {
+      "main": [
+        [
+          {
+            "node": "Send a message to Jorge menzel",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Send a message to LSaens",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "timezone": "America/Guatemala",
+    "callerPolicy": "workflowsFromSameOwner",
+    "availableInMCP": false,
+    "errorWorkflow": "utrGBJjkIGauT5uw"
+  },
+  "versionId": "4bd5dc7d-9657-4e4f-b1db-8b4a25dafc38",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "d4ab02fb1ef8b6ca2c1c5c1f280ee696b0514d7d92cee5fb0da1784dbe393998"
+  },
+  "id": "5K2yxX10ttjh9iAk",
+  "tags": []
+}

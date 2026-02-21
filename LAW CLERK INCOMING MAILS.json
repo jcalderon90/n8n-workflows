@@ -1,0 +1,619 @@
+{
+  "name": "LAW CLERK INCOMING MAILS",
+  "nodes": [
+    {
+      "parameters": {
+        "operation": "pdf",
+        "binaryPropertyName": "attachment_0",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1,
+      "position": [
+        -480,
+        -64
+      ],
+      "id": "afaeac6c-f91e-4c5f-8b0f-ceb7047f8983",
+      "name": "Extract from File"
+    },
+    {
+      "parameters": {
+        "jsCode": "function parseLawClerkText(text) {\n  const lines = text\n    .split(/\\r?\\n/)\n    .map(line => line.trim())\n    .filter(line => line !== '');\n\n  const findIndex = (label) => lines.findIndex(line => line === label);\n\n  const timecardDate = lines[findIndex('Timecard Date') + 1] || '';\n\n  const weekOfIndex = findIndex('Week of:');\n  let weekStart = '', weekEnd = '';\n  if (weekOfIndex !== -1) {\n    const weekLine = lines[weekOfIndex + 1] || '';\n    const parts = weekLine.split('-').map(p => p.trim());\n    weekStart = parts[0] || '';\n    weekEnd = parts[1] || '';\n  }\n\n  const attorneyIndex = findIndex('Attorney');\n  const attorneyName = lines[attorneyIndex + 1] || '';\n  const attorneyEmail = lines[attorneyIndex + 2] || '';\n\n  const raIndex = findIndex('Remote Associate');\n  const remoteAssociate = lines[raIndex + 1] || '';\n\n  const rateLine = lines[findIndex('Hourly Rate') + 1] || '';\n  const hourlyRate = parseFloat(rateLine.replace(/[$,]/g, '')) || 0;\n\n  const paymentLine = lines[findIndex(\"This week's payment:\") + 1] || '';\n  const thisWeeksPayment = parseFloat(paymentLine.replace(/[$,]/g, '')) || 0;\n\n  const hoursLastWeek = parseFloat(lines[findIndex('Hours Logged Last Week (Mon-Sun)') + 1]) || 0;\n\n  const hoursLastMonth = parseFloat(lines[findIndex('Total Hours Logged Last Month - September - 2025') + 1]) || 0;\n\n  let hoursThisMonth = 0;\n  for (let i = 0; i < lines.length; i++) {\n    if (lines[i].includes('Total Hours Logged to Date this Month - October -')) {\n      const next = lines[i + 1] || '';\n      const nextNext = lines[i + 2] || '';\n      if (!isNaN(parseFloat(next))) {\n        hoursThisMonth = parseFloat(next);\n      } else if (!isNaN(parseFloat(nextNext))) {\n        hoursThisMonth = parseFloat(nextNext);\n      }\n      break;\n    }\n  }\n\n  return {\n    timecardDate,\n    weekStart,\n    weekEnd,\n    attorneyName,\n    attorneyEmail,\n    remoteAssociate,\n    hourlyRate,\n    thisWeeksPayment,\n    hoursLastWeek,\n    hoursLastMonth,\n    hoursThisMonth\n  };\n}\n\n// --- n8n: entrada y salida correcta ---\nconst text = $input.first().json.text;\nconst parsed = parseLawClerkText(text);\nreturn [parsed]; // ✅ Esto es lo que n8n espera"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -704,
+        368
+      ],
+      "id": "9b8c3e0f-8921-4348-800a-859fe75b392e",
+      "name": "Code in JavaScript",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "16v2w3Ku1XxtmvlqIVah4aOT7DypVBf3imZPf5fickJw",
+          "mode": "list",
+          "cachedResultName": "Law Clerk Data",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/16v2w3Ku1XxtmvlqIVah4aOT7DypVBf3imZPf5fickJw/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/16v2w3Ku1XxtmvlqIVah4aOT7DypVBf3imZPf5fickJw/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Time Card Date": "={{ $('response').item.json.timeCardDate }}",
+            "Week Start": "={{ $('response').item.json.weekStart }}",
+            "Week End": "={{ $('response').item.json.weekEnd }}",
+            "Attorney Name": "={{ $('response').item.json.attorneyName }}",
+            "Attorney Email": "={{ $('response').item.json.attorneyEmail }}",
+            "Remote Associate": "={{ $('response').item.json.remoteAssociate }}",
+            "Hourly Rate": "={{ $('response').item.json.hourlyRate }}",
+            "This Weeks Payment": "={{ $('response').item.json.thisWeeksPayment }}",
+            "Hours Last Week": "={{ $('response').item.json.hoursLastWeek }}",
+            "Hours Last Month": "={{ $('response').item.json.hoursLastMonth }}",
+            "Hours This Month": "={{ $('response').item.json.hoursThisMonth }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Time Card Date",
+              "displayName": "Time Card Date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Week Start",
+              "displayName": "Week Start",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Week End",
+              "displayName": "Week End",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Attorney Name",
+              "displayName": "Attorney Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Attorney Email",
+              "displayName": "Attorney Email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Remote Associate",
+              "displayName": "Remote Associate",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Hourly Rate",
+              "displayName": "Hourly Rate",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "This Weeks Payment",
+              "displayName": "This Weeks Payment",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Hours Last Week",
+              "displayName": "Hours Last Week",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Hours Last Month",
+              "displayName": "Hours Last Month",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Hours This Month",
+              "displayName": "Hours This Month",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        928,
+        -64
+      ],
+      "id": "f02f2c19-8528-47d1-8660-3099cc1ad11d",
+      "name": "Append row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "Iut1j2vQOyWRXKrg",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            }
+          ]
+        },
+        "simple": false,
+        "filters": {
+          "q": "subject:\"Hourly Associate Opportunity Master Time Record\"",
+          "readStatus": "unread",
+          "sender": "mvarela@varela.law"
+        },
+        "options": {
+          "downloadAttachments": true
+        }
+      },
+      "type": "n8n-nodes-base.gmailTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        -704,
+        -64
+      ],
+      "id": "9a8ee765-012e-4e0b-8515-b59467e8585a",
+      "name": "Gmail Trigger",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "JeoA3ck6F9AaFBSc",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.text }}",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "=Actúa como un extractor de datos especializado en documentos de Lawclerk. Tu tarea es analizar el texto proporcionado y extraer la información relevante para completar las siguientes columnas:\n\n- **Time Card Date**: La fecha del timecard (ej. \"10/20/2025\").\n- **Week Start**: La fecha de inicio de la semana (primera fecha en el rango \"Week of:\", ej. \"10/13/2025\").\n- **Week End**: La fecha de fin de la semana (segunda fecha en el rango \"Week of:\", ej. \"10/19/2025\").\n- **Attorney Name**: El nombre completo del abogado (ej. \"Mario Varela\").\n- **Attorney Email**: El correo electrónico del abogado (ej. \"mvarela@varela.law\").\n- **Remote Associate**: El nombre completo del asociado remoto (ej. \"Edward Kurzen\").\n- **Hourly Rate**: La tarifa por hora, sin símbolo de dólar (ej. \"110\").\n- **This Weeks Payment**: El pago de esta semana, sin símbolo de dólar (ej. \"110.0\").\n- **Hours Last Week**: Las horas registradas la semana pasada (ej. \"1.0\").\n- **Hours Last Month**: Las horas totales registradas el mes pasado (ej. \"4.7\").\n- **Hours This Month**: Las horas totales registradas hasta la fecha este mes (ej. \"7.6\").\n\n**Instrucciones:**\n1. Lee cuidadosamente todo el texto proporcionado.\n2. Localiza los campos clave mencionados arriba. Están generalmente etiquetados claramente (por ejemplo, \"Timecard Date\", \"Week of:\", \"Attorney\", \"Remote Associate\", etc.).\n3. Extrae los valores exactos. No calcules ni infieras valores; solo toma lo que está explícitamente escrito.\n4. Formatea las fechas siempre como MM/DD/YYYY.\n5. Para los campos numéricos (Hourly Rate, This Weeks Payment, Hours Last Week, Hours Last Month, Hours This Month), extrae el número tal cual aparece, incluyendo decimales si los hay. No agregues símbolos de dólar o porcentaje.\n6. Si un campo no está presente en el texto, asigna `null` a ese campo.\n7. Devuelve **únicamente** un objeto JSON válido con las claves exactas indicadas abajo, sin explicaciones adicionales, comentarios ni texto extra.\n\nClaves del JSON:\n- timeCardDate\n- weekStart\n- weekEnd\n- attorneyName\n- attorneyEmail\n- remoteAssociate\n- hourlyRate\n- thisWeeksPayment\n- hoursLastWeek\n- hoursLastMonth\n- hoursThisMonth\n\n**Ejemplo de salida esperada:**\n{\n  \"timeCardDate\": \"10/20/2025\",\n  \"weekStart\": \"10/13/2025\",\n  \"weekEnd\": \"10/19/2025\",\n  \"attorneyName\": \"Mario Varela\",\n  \"attorneyEmail\": \"mvarela@varela.law\",\n  \"remoteAssociate\": \"Edward Kurzen\",\n  \"hourlyRate\": \"110\",\n  \"thisWeeksPayment\": \"110.0\",\n  \"hoursLastWeek\": \"1.0\",\n  \"hoursLastMonth\": \"4.7\",\n  \"hoursThisMonth\": \"7.6\"\n}"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        -224,
+        -64
+      ],
+      "id": "2080b64b-c5ba-4b52-8cc4-bc1adc0da7bb",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4o-mini",
+          "mode": "list",
+          "cachedResultName": "gpt-4o-mini"
+        },
+        "options": {
+          "responseFormat": "json_object"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        -256,
+        160
+      ],
+      "id": "224fbd0d-1b4d-4f1f-9962-66fe27e571f1",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "lopdnXZa5QlttiNa",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{\n  \"timeCardDate\": \"10/20/2025\",\n  \"weekStart\": \"10/13/2025\",\n  \"weekEnd\": \"10/19/2025\",\n  \"attorneyName\": \"Mario Varela\",\n  \"attorneyEmail\": \"mvarela@varela.law\",\n  \"remoteAssociate\": \"Edward Kurzen\",\n  \"hourlyRate\": \"110\",\n  \"thisWeeksPayment\": \"110.0\",\n  \"hoursLastWeek\": \"1.0\",\n  \"hoursLastMonth\": \"4.7\",\n  \"hoursThisMonth\": \"7.6\"\n}",
+        "autoFix": true
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        -128,
+        160
+      ],
+      "id": "f9956d8a-a8d0-411a-a322-bcc41c59e7a5",
+      "name": "Structured Output Parser"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4o-mini",
+          "mode": "list",
+          "cachedResultName": "gpt-4o-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        -48,
+        368
+      ],
+      "id": "2ecb5077-caf1-45ab-a27c-1cb85ff1fdb9",
+      "name": "OpenAI Chat Model1",
+      "credentials": {
+        "openAiApi": {
+          "id": "lopdnXZa5QlttiNa",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "raw",
+        "jsonOutput": "={{ $json.output }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        240,
+        -64
+      ],
+      "id": "dfce9902-5f86-4412-bb4f-55cd73a05977",
+      "name": "response"
+    },
+    {
+      "parameters": {
+        "operation": "create",
+        "base": {
+          "__rl": true,
+          "value": "app6Nt3Hdoj9E6sZ8",
+          "mode": "list",
+          "cachedResultName": "Legal Case Tracking and Billing",
+          "cachedResultUrl": "https://airtable.com/app6Nt3Hdoj9E6sZ8"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tblJu0uvjcop3GLdq",
+          "mode": "list",
+          "cachedResultName": "Law Clerk",
+          "cachedResultUrl": "https://airtable.com/app6Nt3Hdoj9E6sZ8/tblJu0uvjcop3GLdq"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Time Card Date": "={{ new Date($json.timeCardDate ) }}",
+            "Week Start": "={{ new Date($json.weekStart) }}",
+            "Week End": "={{ new Date($json.weekEnd) }}",
+            "Attorney Name": "={{ $json.attorneyName }}",
+            "Remote Associate": "={{ $json.remoteAssociate }}",
+            "Hourly Rate": "={{ $json.hourlyRate }}",
+            "This Weeks Payment": "={{ $json.thisWeeksPayment }}",
+            "Hours Last Week": "={{ $json.hoursLastWeek }}",
+            "Hours Last Month": "={{ $json.hoursLastMonth }}",
+            "Hours This Month": "={{ $json.hoursThisMonth }}",
+            "Attorney Email": "={{ $json.attorneyEmail }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Time Card Date",
+              "displayName": "Time Card Date",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "dateTime",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Week Start",
+              "displayName": "Week Start",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "dateTime",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Week End",
+              "displayName": "Week End",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "dateTime",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Attorney Name",
+              "displayName": "Attorney Name",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Attorney Email",
+              "displayName": "Attorney Email",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Remote Associate",
+              "displayName": "Remote Associate",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Hourly Rate",
+              "displayName": "Hourly Rate",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "This Weeks Payment",
+              "displayName": "This Weeks Payment",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Hours Last Week",
+              "displayName": "Hours Last Week",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Hours Last Month",
+              "displayName": "Hours Last Month",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Hours This Month",
+              "displayName": "Hours This Month",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.1,
+      "position": [
+        592,
+        -64
+      ],
+      "id": "3320ba4d-d409-46c3-88aa-34876cdeff1e",
+      "name": "Create a record",
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "6wPFco9G7xyqhPzg",
+          "name": "Airtable Personal Access Token account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Extract from File": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        []
+      ]
+    },
+    "Gmail Trigger": {
+      "main": [
+        [
+          {
+            "node": "Extract from File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Structured Output Parser",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "response": {
+      "main": [
+        [
+          {
+            "node": "Create a record",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create a record": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "timeSavedMode": "fixed",
+    "callerPolicy": "workflowsFromSameOwner",
+    "availableInMCP": false,
+    "errorWorkflow": "mwmapzwppW-NTV4NwOhSq"
+  },
+  "versionId": "8ff104d4-d089-41f9-a07c-d73c86b27063",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "1605e0956f411c02ecc29f05b035dcb95746e902cd54a42b69d92da41bbef671"
+  },
+  "id": "ouEWLv56CcsbMmjG",
+  "tags": []
+}

@@ -1,0 +1,303 @@
+{
+  "name": "Mundo Verde - REPORTE FACTURAS SIN MATCHEAR",
+  "nodes": [
+    {
+      "parameters": {
+        "collection": "formulario",
+        "options": {},
+        "query": "{\"matched\": false}"
+      },
+      "type": "n8n-nodes-base.mongoDb",
+      "typeVersion": 1.2,
+      "position": [
+        96,
+        -2224
+      ],
+      "id": "ffaa2ff5-c8f4-499d-886f-939ba5a45f34",
+      "name": "Find documents en formulario",
+      "alwaysOutputData": true,
+      "credentials": {
+        "mongoDb": {
+          "id": "wwOL6pf5hqG6FrrM",
+          "name": "MongoDB Jorge de Garoo"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "collection": "factura",
+        "options": {},
+        "query": "{\"matched\": false}"
+      },
+      "type": "n8n-nodes-base.mongoDb",
+      "typeVersion": 1.2,
+      "position": [
+        96,
+        -2032
+      ],
+      "id": "39d0b01e-3692-49b3-aff8-5a9bd3c85e82",
+      "name": "Find documents en factura",
+      "alwaysOutputData": true,
+      "credentials": {
+        "mongoDb": {
+          "id": "wwOL6pf5hqG6FrrM",
+          "name": "MongoDB Jorge de Garoo"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// n8n Code Node (JavaScript)\nconst data = items.map(item => item.json);\n\n// Construimos solo el contenedor con los divs de facturas\nlet html = `<div class=\"facturas\" style=\"font-family: Arial, sans-serif; display: flex; flex-direction: column; gap: 12px;\">`;\n\nfor (const record of data) {\n  html += `\n  <div class=\"factura\" style=\"\n    border: 1px solid #ccc;\n    border-radius: 8px;\n    padding: 6px;\n    background-color: #f9f9f9;\n    box-shadow: 0 2px 4px rgba(0,0,0,0.1);\n  \">\n    <p style=\"margin: 4px 0;\"><strong>Nro Factura:</strong> ${record.NRO_FACTURA}</p>\n    <p style=\"margin: 4px 0;\"><strong>Serie:</strong> ${record.SERIE}</p>\n    <p style=\"margin: 4px 0;\"><strong>NIT:</strong> ${record.NIT}</p>\n    <p style=\"margin: 4px 0;\"><strong>Orden:</strong> ${record.NRO_ORDEN_COMPRA\n}</p>\n  </div>\n  `;\n}\n\nhtml += `</div>`;\n\n// Retornamos el HTML parcial\nreturn [{\n  json: {\n    html\n  }\n}];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        320,
+        -2224
+      ],
+      "id": "1184bcae-045d-48bf-8a66-900be8ac8100",
+      "name": "Code in JavaScript"
+    },
+    {
+      "parameters": {
+        "jsCode": "// n8n Code Node (JavaScript)\nconst data = items.map(item => item.json);\n\n// Construimos solo un div con los datos de Certificación\nlet html = `<div class=\"certificaciones\" style=\"font-family: Arial, sans-serif; display: flex; flex-direction: column; gap: 12px;\">`;\n\nfor (const record of data) {\n  const cert = record.Certificacion;\n\n  html += `\n  <div class=\"certificacion\" style=\"\n    border: 1px solid #ccc;\n    border-radius: 8px;\n    padding: 6px;\n    background-color: #f9f9f9;\n    box-shadow: 0 2px 4px rgba(0,0,0,0.1);\n  \">\n    <p style=\"margin: 4px 0;\"><strong>Nro Factura:</strong> ${record.numero_autorizacion}</p>\n    <p style=\"margin: 4px 0;\"><strong>Serie:</strong> ${record.serie}</p>\n    <p style=\"margin: 4px 0;\"><strong>NIT Certificador:</strong> ${record.emisor_nit}</p>\n    <p style=\"margin: 4px 0;\"><strong>Nombre Certificador:</strong> ${record.emisor_nombre}</p>\n  </div>\n  `;\n}\n\nhtml += `</div>`;\n\n// Retornamos el HTML parcial\nreturn [{\n  json: {\n    html\n  }\n}];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        320,
+        -2032
+      ],
+      "id": "8f58492a-bd19-4c19-8a52-f657057b8da8",
+      "name": "Code in JavaScript1"
+    },
+    {
+      "parameters": {
+        "html": "<!DOCTYPE html>\n<html>\n<head>\n  <meta charset=\"UTF-8\" />\n  <title>My HTML document</title>\n  <style>\n    body {\n      font-family: Arial, sans-serif;\n      background-color: #f4f4f4;\n      margin: 0;\n      padding: 10px;\n    }\n\n    /* .container {\n      background-color: #ffffff;\n      text-align: center;\n      padding: 24px;\n      border-radius: 8px;\n      max-width: 800px;\n      margin: 0 auto;\n      box-shadow: 0 4px 8px rgba(0,0,0,0.1);\n    } */\n\n    .formulario {\n      margin-bottom: 40px; /* separación solo debajo del formulario */\n    }\n\n    h1 {\n      font-size: 30px;\n      font-weight: bold;\n      padding: 1px 0;\n      text-align: center;\n      margin-bottom: 10%;\n      color: darkred;\n    }\n\n    h2 {\n      color: gray;\n      font-size: 22px;\n      font-weight: bold;\n      padding: 3px 0;\n    }\n  </style>\n</head>\n<body>\n  <div class=\"container\">\n\n    <h1>Reporte de Facturas Sin Validar</h1>\n    <p><strong>Fecha:</strong> {{ $now.format('yyyy-MM-dd') }}</p>\n    \n    <div class=\"formulario\">\n      <h2>Facturas de Proveedores</h2>\n      {{ $('Code in JavaScript').item.json.html }}\n    </div>\n\n    <div class=\"factura\">\n      <h2>Facturas de la SAT</h2>\n      {{ $('Code in JavaScript1').item.json.html }}\n    </div>\n    \n  </div>\n\n  <script>\n    console.log(\"Hello World!\");\n  </script>\n</body>\n</html>\n"
+      },
+      "type": "n8n-nodes-base.html",
+      "typeVersion": 1.2,
+      "position": [
+        976,
+        -2128
+      ],
+      "id": "07c5d92e-d050-438b-a9f3-ebd97de653c0",
+      "name": "HTML2"
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "combineBy": "combineAll",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        544,
+        -2128
+      ],
+      "id": "1c2eda46-9613-46cd-ac1a-a39cec1a3f3f",
+      "name": "Merge"
+    },
+    {
+      "parameters": {
+        "sendTo": "vivian.valenzuela@mundoverde.com.gt",
+        "subject": "REPORTE DE FACTURAS SIN VALIDAR !!!",
+        "message": "={{ $json.html }}",
+        "options": {
+          "senderName": "Soporte de Garoo"
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        1200,
+        -2128
+      ],
+      "id": "2e449e36-1d7f-4f08-977d-bcb39c8ae39e",
+      "name": "Send a message",
+      "webhookId": "19683580-5f17-4ae0-80e2-76b9ee804c24",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "H8Qx7NlrthXmHUiy",
+          "name": "Soporte Garoo"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "weeks",
+              "triggerAtDay": [
+                5
+              ],
+              "triggerAtHour": 14
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        -224,
+        -2128
+      ],
+      "id": "852cffd4-d714-4549-b00a-93067b58c9ce",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "1757bd12-eac4-465b-8ce7-3d2c366d9653",
+              "leftValue": "={{ $('Merge').item.json.isNotEmpty() }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.3,
+      "position": [
+        752,
+        -2128
+      ],
+      "id": "35088a24-4b2c-4e69-9eac-b6214bb50b1b",
+      "name": "Filter"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Find documents en formulario": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Find documents en factura": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript1": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "Filter",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTML2": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Find documents en formulario",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Find documents en factura",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter": {
+      "main": [
+        [
+          {
+            "node": "HTML2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "timeSavedMode": "fixed",
+    "callerPolicy": "workflowsFromSameOwner",
+    "availableInMCP": false,
+    "errorWorkflow": "wv2-6zOqoyZTlgKRvmnxr"
+  },
+  "versionId": "9e8bda84-45be-4719-8f6d-7951f49e8edf",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "d4ab02fb1ef8b6ca2c1c5c1f280ee696b0514d7d92cee5fb0da1784dbe393998"
+  },
+  "id": "tl1OxPzqD3XRh83V",
+  "tags": [
+    {
+      "updatedAt": "2026-01-08T01:09:04.954Z",
+      "createdAt": "2026-01-08T01:09:04.954Z",
+      "id": "5STmV35Tlrs8TpZT",
+      "name": "✅COMPLETED"
+    }
+  ]
+}

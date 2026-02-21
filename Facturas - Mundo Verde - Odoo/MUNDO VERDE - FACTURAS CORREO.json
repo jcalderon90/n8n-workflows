@@ -1,0 +1,1329 @@
+{
+  "name": "MUNDO VERDE - FACTURAS CORREO",
+  "nodes": [
+    {
+      "parameters": {
+        "resource": "custom",
+        "customResource": "res.partner",
+        "operation": "getAll",
+        "limit": 1,
+        "options": {},
+        "filterRequest": {
+          "filter": [
+            {
+              "fieldName": "vat",
+              "value": "={{ $('Information Extractor').item.json.output.emisor_nit }}"
+            },
+            {
+              "fieldName": "x_studio_no_po_invoice",
+              "value": "={{ Boolean(true) }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.odoo",
+      "typeVersion": 1,
+      "position": [
+        2368,
+        -768
+      ],
+      "id": "efe74037-e8c0-4c45-925d-feb893f98fe3",
+      "name": "Get Proveedor Fijo",
+      "alwaysOutputData": true,
+      "credentials": {
+        "odooApi": {
+          "id": "L54C0wh51BqmebUj",
+          "name": "Odoo Mundo Verde Prod"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "951c85be-416b-45fc-aee8-6f6bc7a3a451",
+              "leftValue": "={{ $json.id }}",
+              "rightValue": "",
+              "operator": {
+                "type": "number",
+                "operation": "exists",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        3264,
+        -864
+      ],
+      "id": "eeffcbf9-fd64-4ae6-8f28-3ec91d16ca07",
+      "name": "If Existe relacion Proveedor-Producto"
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $('VARIABLES').item.json.correo_contab }}",
+        "subject": "RELACIÓN PROVEEDOR - PRODUCTO INEXISTENTE",
+        "emailType": "text",
+        "message": "=En la factura:\n  Serie - {{ $('Datos Factura').item.json.Certificacion['dte:NumeroAutorizacion'].Serie }}\n  Numero - {{ $('Datos Factura').item.json.Certificacion['dte:NumeroAutorizacion'].Numero }}\n  Proveedor - \"{{ $('Get Proveedor Fijo').item.json.complete_name }}\"\n\n  No se encuentra relación con un producto en el sistema.",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        3488,
+        -768
+      ],
+      "id": "7eb3b75c-55e4-4e88-886e-83f617961171",
+      "name": "Send a message",
+      "webhookId": "ca2152c1-4579-4d55-bafc-2461d22d8acf",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "H8Qx7NlrthXmHUiy",
+          "name": "Soporte Garoo"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "custom",
+        "customResource": "product.supplierinfo",
+        "operation": "getAll",
+        "returnAll": true,
+        "options": {},
+        "filterRequest": {
+          "filter": [
+            {
+              "fieldName": "partner_id",
+              "value": "={{ Number($('Get Proveedor Fijo').item.json.id) }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.odoo",
+      "typeVersion": 1,
+      "position": [
+        3040,
+        -864
+      ],
+      "id": "df0c2f7e-1670-49a4-8607-5d713a971627",
+      "name": "Get Proveedor - Producto",
+      "alwaysOutputData": true,
+      "credentials": {
+        "odooApi": {
+          "id": "L54C0wh51BqmebUj",
+          "name": "Odoo Mundo Verde Prod"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "custom",
+        "customResource": "res.company",
+        "operation": "getAll",
+        "limit": 1,
+        "options": {},
+        "filterRequest": {
+          "filter": [
+            {
+              "fieldName": "vat",
+              "value": "={{ $('Datos Factura').item.json.DatosEmision['dte:Receptor'].IDReceptor }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.odoo",
+      "typeVersion": 1,
+      "position": [
+        4832,
+        -960
+      ],
+      "id": "3393022b-606c-430a-854c-38a28b63745b",
+      "name": "Get Company",
+      "credentials": {
+        "odooApi": {
+          "id": "L54C0wh51BqmebUj",
+          "name": "Odoo Mundo Verde Prod"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://mundoverdegt-test3-24043064.dev.odoo.com/jsonrpc",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"jsonrpc\": \"2.0\",\n  \"method\": \"call\",\n  \"params\": {\n    \"service\": \"object\",\n    \"method\": \"execute_kw\",\n    \"args\": [\n      \"mundoverdegt-test3-24043064\",\n      {{ $('Auth en Odoo').item.json.result }},\n      \"R3dT3c!!502\",\n      \"account.move\",\n      \"create\",\n      [\n        {\n          \"move_type\": \"in_invoice\",\n          \"partner_id\": {{ $('Get Proveedor - Producto').item.json.partner_id[0] }},\n          \"invoice_date\": \"{{ $('Datos Factura').item.json.DatosEmision['dte:DatosGenerales'].FechaHoraEmision }}\",\n          \"invoice_line_ids\": [\n            [0, 0, {\n              \"product_id\": {{ $('Get Product').item.json.id }},\n              \"quantity\": 1,\n              \"price_unit\": {{ $('Datos Factura').item.json.DatosEmision['dte:Totales']['dte:GranTotal'] }}\n            }\n            ]\n          ]\n        }\n      ]\n    ]\n  },\n  \"id\": 3\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        5504,
+        -960
+      ],
+      "id": "11f6482e-65ab-4573-9128-6b499059a751",
+      "name": "CREAR JOURNAL ENTRY"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "cf40301e-f761-4503-b761-446b3d14fb4e",
+              "name": "lista",
+              "value": "={{ $('Datos Factura').item.json.DatosEmision['dte:Items']['dte:Item'] }}",
+              "type": "array"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        3936,
+        -1024
+      ],
+      "id": "94bf97e7-0846-4909-bfce-c763592db864",
+      "name": "Items List"
+    },
+    {
+      "parameters": {
+        "jsCode": "return $input.all().map(item => item.json.lista).flat();"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        4160,
+        -1024
+      ],
+      "id": "791036e8-0181-489b-ba81-c2e903c661a1",
+      "name": "Code in JavaScript"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        4384,
+        -1024
+      ],
+      "id": "704b7737-8b18-4982-be31-909283fa4bc5",
+      "name": "Loop Over Items"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "4abf7ab5-2d20-4244-8d0e-9fbb4e239872",
+              "leftValue": "={{ $json.is_array }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        3712,
+        -960
+      ],
+      "id": "60fec1dd-5818-487b-86f9-8cca1be61769",
+      "name": "If es Lista de Productos"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://mundoverdegt-test3-24043064.dev.odoo.com/jsonrpc",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"jsonrpc\": \"2.0\",\n  \"method\": \"call\",\n  \"params\": {\n    \"service\": \"common\",\n    \"method\": \"login\",\n    \"args\": [\n      \"mundoverdegt-test3-24043064\",\n      \"jorge.menzel@mundoverde.com.gt\",\n      \"R3dT3c!!502\"\n    ]\n  },\n  \"id\": 1\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        5280,
+        -960
+      ],
+      "id": "7163462d-4759-4a27-916a-af32176664ac",
+      "name": "Auth en Odoo"
+    },
+    {
+      "parameters": {
+        "resource": "custom",
+        "customResource": "product.product",
+        "operation": "getAll",
+        "limit": 1,
+        "options": {},
+        "filterRequest": {
+          "filter": [
+            {
+              "fieldName": "product_tmpl_id",
+              "value": "={{ $('Get Proveedor - Producto').item.json.product_tmpl_id[0] }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.odoo",
+      "typeVersion": 1,
+      "position": [
+        5056,
+        -960
+      ],
+      "id": "2eb67bee-9e86-4be0-9a9b-5955479339cb",
+      "name": "Get Product",
+      "credentials": {
+        "odooApi": {
+          "id": "L54C0wh51BqmebUj",
+          "name": "Odoo Mundo Verde Prod"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "04900094-46fb-46e4-a5e9-885de33bccfd",
+              "leftValue": "={{ $json['dte:Descripcion'] }}",
+              "rightValue": "={{ $('Get Proveedor - Producto').item.json.product_name }}",
+              "operator": {
+                "type": "string",
+                "operation": "contains"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        4608,
+        -1024
+      ],
+      "id": "4e5780e0-747f-45fe-b4a5-892ec9cdeedb",
+      "name": "If Existe"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Obtener el valor\nconst itemValue = $('Datos Factura').first().json.DatosEmision?.['dte:Items']?.['dte:Item'];\n\n// Verificar si es un array\nconst isArray = Array.isArray(itemValue);\n\n// Devolver en el formato que n8n espera: array de objetos con propiedad \"json\"\nreturn [\n  {\n    json: {\n      is_array: isArray\n    }\n  }\n];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        3488,
+        -960
+      ],
+      "id": "a274dabb-a9c2-4f03-bf71-1dd530b6293f",
+      "name": "SI es listado de Productos o NO"
+    },
+    {
+      "parameters": {
+        "operation": "insert",
+        "collection": "factura",
+        "fields": "={{ Object.keys($json).join(\",\") }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.mongoDb",
+      "typeVersion": 1.2,
+      "position": [
+        3200,
+        -256
+      ],
+      "id": "251ca1e9-c0d2-4c83-9ce8-a6dd49189815",
+      "name": "Guardar en factura",
+      "credentials": {
+        "mongoDb": {
+          "id": "wwOL6pf5hqG6FrrM",
+          "name": "MongoDB Jorge de Garoo"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "chooseBranch",
+        "numberInputs": 3,
+        "output": "empty"
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        5824,
+        -1440
+      ],
+      "id": "a878c87e-a6ae-4853-b36d-7002870dc49f",
+      "name": "Merge1"
+    },
+    {
+      "parameters": {
+        "resource": "custom",
+        "customResource": "ir.attachment",
+        "fieldsToCreateOrUpdate": {
+          "fields": [
+            {
+              "fieldName": "type",
+              "fieldValue": "=binary"
+            },
+            {
+              "fieldName": "datas",
+              "fieldValue": "={{ $('XML to Base64').item.json.data }}"
+            },
+            {
+              "fieldName": "res_id",
+              "fieldValue": "={{ $('CREAR JOURNAL ENTRY').item.json.result }}"
+            },
+            {
+              "fieldName": "res_model",
+              "fieldValue": "account.move"
+            },
+            {
+              "fieldName": "mimetype",
+              "fieldValue": "=text/xml"
+            },
+            {
+              "fieldName": "name",
+              "fieldValue": "=Factura-xml-{{ $('Datos Factura').item.json.Certificacion['dte:NumeroAutorizacion'].Serie }}-{{ $('Datos Factura').item.json.Certificacion['dte:NumeroAutorizacion'].Numero }}.xml"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.odoo",
+      "typeVersion": 1,
+      "position": [
+        6192,
+        -1216
+      ],
+      "id": "16467e6c-02db-490c-a643-d2be659128fe",
+      "name": "Create XML Attachment",
+      "credentials": {
+        "odooApi": {
+          "id": "L54C0wh51BqmebUj",
+          "name": "Odoo Mundo Verde Prod"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "custom",
+        "customResource": "ir.attachment",
+        "fieldsToCreateOrUpdate": {
+          "fields": [
+            {
+              "fieldName": "mimetype",
+              "fieldValue": "=application/pdf"
+            },
+            {
+              "fieldName": "name",
+              "fieldValue": "=Factura-pdf-{{ $('Datos Factura').item.json.Certificacion['dte:NumeroAutorizacion'].Serie }}-{{ $('Datos Factura').item.json.Certificacion['dte:NumeroAutorizacion'].Numero }}.pdf"
+            },
+            {
+              "fieldName": "type",
+              "fieldValue": "=binary"
+            },
+            {
+              "fieldName": "datas",
+              "fieldValue": "={{ $('PDF to base64').item.json.pdf_data }}"
+            },
+            {
+              "fieldName": "res_id",
+              "fieldValue": "={{ $('CREAR JOURNAL ENTRY').item.json.result }}"
+            },
+            {
+              "fieldName": "res_model",
+              "fieldValue": "=account.move"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.odoo",
+      "typeVersion": 1,
+      "position": [
+        6416,
+        -1216
+      ],
+      "id": "05608a59-d07f-45e3-bf36-04207f51a7ac",
+      "name": "Create PDF Attachment",
+      "credentials": {
+        "odooApi": {
+          "id": "L54C0wh51BqmebUj",
+          "name": "Odoo Mundo Verde Prod"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "chooseBranch",
+        "output": "empty"
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        5984,
+        -1424
+      ],
+      "id": "2a355b08-111d-4e39-a79c-52bba9974b81",
+      "name": "Merge2"
+    },
+    {
+      "parameters": {
+        "resource": "custom",
+        "customResource": "account.move",
+        "operation": "update",
+        "customResourceId": "={{ $('CREAR JOURNAL ENTRY').item.json.result }}",
+        "fieldsToCreateOrUpdate": {
+          "fields": [
+            {
+              "fieldName": "serie_gt",
+              "fieldValue": "={{ $('Datos Factura').item.json.Certificacion['dte:NumeroAutorizacion'].Serie }}"
+            },
+            {
+              "fieldName": "documento_gt",
+              "fieldValue": "={{ $('Datos Factura').item.json.Certificacion['dte:NumeroAutorizacion'].Numero }}"
+            },
+            {
+              "fieldName": "date",
+              "fieldValue": "={{ $('Datos Factura').item.json.DatosEmision['dte:DatosGenerales'].FechaHoraEmision }}"
+            },
+            {
+              "fieldName": "company_id",
+              "fieldValue": "={{ $('Get Company').item.json.id }}"
+            },
+            {
+              "fieldName": "ubl_cii_xml_id",
+              "fieldValue": "={{ $('Create XML Attachment').item.json.id }}"
+            },
+            {
+              "fieldName": "invoice_pdf_report_id",
+              "fieldValue": "={{ $json.id }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.odoo",
+      "typeVersion": 1,
+      "position": [
+        6640,
+        -1216
+      ],
+      "id": "e7f3c605-33a8-484e-b0fc-14528b713a2e",
+      "name": "Update Journal Entry",
+      "credentials": {
+        "odooApi": {
+          "id": "L54C0wh51BqmebUj",
+          "name": "Odoo Mundo Verde Prod"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "raw",
+        "jsonOutput": "={{ $('Datos Factura').item.json }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        6864,
+        -1216
+      ],
+      "id": "97dd4268-6b07-4158-bfb2-444e228d4987",
+      "name": "Edit Fields2"
+    },
+    {
+      "parameters": {
+        "operation": "insert",
+        "collection": "Proveedor-Estandar",
+        "fields": "DatosEmision,Certificacion,url_xml,matched,arrive_date",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.mongoDb",
+      "typeVersion": 1.2,
+      "position": [
+        7088,
+        -1216
+      ],
+      "id": "c6b3ee71-e411-42bc-9986-c888863de1cd",
+      "name": "Guardar Proveedor-Estandar",
+      "credentials": {
+        "mongoDb": {
+          "id": "wwOL6pf5hqG6FrrM",
+          "name": "MongoDB Jorge de Garoo"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "=jorge.calderon@garooinc.com",
+        "subject": "FACTURA VALIDADA !!!",
+        "message": "={{ $json.html }}",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        7760,
+        -1216
+      ],
+      "id": "3edcf3ce-0b5b-491c-8876-e4fb8b56344d",
+      "name": "CORREO USUARIO VALIDACION",
+      "webhookId": "3aaa64bb-d31f-4622-8650-03854cecd444",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "H8Qx7NlrthXmHUiy",
+          "name": "Soporte Garoo"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "custom",
+        "customResource": "account.move",
+        "operation": "get",
+        "customResourceId": "={{ $('Update Journal Entry').item.json.id }}",
+        "options": {
+          "fieldsList": [
+            "access_url"
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.odoo",
+      "typeVersion": 1,
+      "position": [
+        7312,
+        -1216
+      ],
+      "id": "34f92e48-1609-4b0a-9246-ba5801b5a990",
+      "name": "Get ACCESS URL",
+      "credentials": {
+        "odooApi": {
+          "id": "L54C0wh51BqmebUj",
+          "name": "Odoo Mundo Verde Prod"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "html": "<!DOCTYPE html>\n<html>\n<head>\n  <meta charset=\"UTF-8\">\n  <title>Validación Exitosa Usuario</title>\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n  <!-- Google Fonts: Poppins -->\n  <link href=\"https://fonts.googleapis.com/css?family=Poppins:400,600,800\" rel=\"stylesheet\">\n  <style>\n    body {\n      margin: 0;\n      padding: 0;\n      background-color: #f9f9f9;\n      font-family: 'Poppins', Arial, Helvetica, sans-serif;\n    }\n    .container {\n      max-width: 700px;\n      margin: 30px auto;\n      background-color: #fff;\n      border-radius: 14px;\n      box-shadow: 0 2px 12px #0001;\n      padding: 0 0 30px 0;\n    }\n    .header {\n      padding: 30px 30px 10px 30px;\n      text-align: start;\n      border-top-left-radius: 14px;\n      border-top-right-radius: 14px;\n      background: #fff;\n    }\n    .logo {\n      width: 120px;\n      margin-bottom: 12px;\n    }\n    .title {\n      font-size: 24px;\n      font-weight: 600;\n      color: #151515;\n      margin: 10px 0;\n      text-align: left;\n      letter-spacing: -0.5px;\n    }\n    .description {\n      margin: 18px 30px;\n      font-size: 15px;\n      color: #555;\n      text-align: justify;\n    }\n    .section-block {\n      background-color: #f2f2f2;\n      border-radius: 10px;\n      padding: 18px 30px 12px 30px;\n      margin: 22px 30px 0 30px;\n    }\n    .section-title {\n      font-size: 20px;\n      font-weight: 800;\n      color: #151515;\n      margin-top: 10px;\n      margin-bottom: 8px;\n      text-align: left;\n    }\n    .field-label {\n      font-weight: 600;\n      color: #000;\n      font-size: 15px;\n      letter-spacing: 0.1px;\n    }\n    .file-link {\n      display: block;\n      margin: 4px 0 10px 0;\n      word-break: break-all;\n      color: #48ABE4;\n      text-decoration: underline;\n      font-size: 14px;\n      transition: color .2s;\n    }\n    .file-link:hover {\n      color: #1E1665;\n    }\n    .button {\n      display: inline-block;\n      width: 90%;\n      max-width: 250px;\n      margin: 26px auto 0 auto;\n      padding: 12px 10px;\n      background: linear-gradient(90deg, #1E1665, #46AAE3);\n      color: #fff !important;\n      text-decoration: none;\n      border-radius: 10px;\n      font-size: 16px;\n      font-weight: 500;\n      text-align: center;\n      border: none;\n      box-shadow: 0 2px 6px #48abe440;\n      transition: background .2s;\n      cursor: pointer;\n    }\n    .button:hover {\n      background: linear-gradient(90deg, #46AAE3, #1E1665);\n    }\n    .footer {\n      text-align: center;\n      margin-top: 30px;\n      padding: 20px 0 0 0;\n      color: #151515;\n    }\n    .footer span {\n      font-size: 15px;\n      font-weight: 600;\n      opacity: .7;\n    }\n    @media (max-width: 650px) {\n      .container, .section-block {\n        margin: 6px;\n        padding: 15px !important;\n      }\n      .header, .section-block {\n        padding: 16px !important;\n      }\n      .button { width: 100%; }\n    }\n  </style>\n</head>\n<body>\n  <div class=\"container\">\n    <div class=\"header\">\n      <img class=\"logo\" src=\"https://garooinc.com/assets/images/logo2.png\" alt=\"Logo Rocknrolla\">\n      <div class=\"title\">¡Hola {{ $('Get Contab User Data').item.json.display_name }}!\n\n      </div>\n      <div class=\"description\">\n        Su Factura con los siguientes datos, fue validada exitosamente:<br><br>\n        <br><br>\n        <div class=\"section-block\">\n          <div class=\"field-label\">Serie:</div>\n          <div>{{ $('Datos Factura').item.json.Certificacion['dte:NumeroAutorizacion'].Serie }}</div>\n          <br>\n          <div class=\"field-label\">Número:</div>\n          <div>{{ $('Datos Factura').item.json.Certificacion['dte:NumeroAutorizacion'].Numero }}</div>\n          <br>\n          <div class=\"field-label\">Proveedor:</div>\n          <div>{{ $('Get Proveedor Fijo').item.json.complete_name }}</div>\n        </div>\n      </div>\n        <a class=\"button\" href=`{{ $('VARIABLES').item.json.url_odoo }}web?debug=1#id={{ $json.id }}&cids=1&menu_id=124&action=244&model=account.move&view_type=form` target=\"_blank\" style=\"align-items: center; justify-content: center; display: flex;\">Revisar Factura</a>\n        <div class=\"footer\">\n        <p>© 2025 Mundo Verde</p>\n        </div>\n    </div>\n</body>\n</html>"
+      },
+      "type": "n8n-nodes-base.html",
+      "typeVersion": 1.2,
+      "position": [
+        7536,
+        -1216
+      ],
+      "id": "10e407fe-d01d-4c8a-a45a-2846fc384fea",
+      "name": "HTML Exito-Usuario"
+    },
+    {
+      "parameters": {
+        "collection": "VARIABLES",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.mongoDb",
+      "typeVersion": 1.2,
+      "position": [
+        1920,
+        -768
+      ],
+      "id": "8b8a8759-d7b6-4d6d-b060-718caaeddb0a",
+      "name": "VARIABLES",
+      "credentials": {
+        "mongoDb": {
+          "id": "wwOL6pf5hqG6FrrM",
+          "name": "MongoDB Jorge de Garoo"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "custom",
+        "customResource": "res.users",
+        "operation": "getAll",
+        "limit": 1,
+        "options": {},
+        "filterRequest": {
+          "filter": [
+            {
+              "fieldName": "email",
+              "value": "={{ $json.correo_contab }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.odoo",
+      "typeVersion": 1,
+      "position": [
+        2144,
+        -768
+      ],
+      "id": "247716d6-20f6-4d4f-81a7-365f0472326a",
+      "name": "Get Contab User Data",
+      "credentials": {
+        "odooApi": {
+          "id": "L54C0wh51BqmebUj",
+          "name": "Odoo Mundo Verde Prod"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            }
+          ]
+        },
+        "simple": false,
+        "filters": {
+          "labelIds": [
+            "Label_2392461021160482593"
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmailTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        1200,
+        -928
+      ],
+      "id": "7ea37604-7148-4fc3-9f83-bc103afb8e10",
+      "name": "correo",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "H8Qx7NlrthXmHUiy",
+          "name": "Soporte Garoo"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "html": "{{ $json.html }}"
+      },
+      "type": "n8n-nodes-base.html",
+      "typeVersion": 1.2,
+      "position": [
+        1632,
+        -1088
+      ],
+      "id": "9fb245de-fe4b-463b-b510-2ca3344db7bd",
+      "name": "HTML"
+    },
+    {
+      "parameters": {
+        "text": "={{ $json.html }}",
+        "attributes": {
+          "attributes": [
+            {
+              "name": "receptor_nombre",
+              "description": "Nombre de la empresa o persona que recibe (ej: BRAVANTE, SOCIEDAD ANÓNIMA)",
+              "required": true
+            },
+            {
+              "name": "receptor_nit",
+              "description": "NIT del receptor (ej: 120719762).",
+              "required": true
+            },
+            {
+              "name": "emisor_nombre",
+              "description": "Nombre de quien emite la factura (ej: JOSÉ ALFONSO ASTURIAS MANZO).",
+              "required": true
+            },
+            {
+              "name": "emisor_nit",
+              "description": "NIT del emisor (extraído del campo Emisor).",
+              "required": true
+            },
+            {
+              "name": "numero_autorizacion",
+              "description": "El UUID/Número de Autorización largo.",
+              "required": true
+            },
+            {
+              "name": "serie",
+              "description": "Serie del documento.",
+              "required": true
+            },
+            {
+              "name": "numero_dte",
+              "description": "El número correlativo del documento.",
+              "required": true
+            },
+            {
+              "name": "fecha_emision",
+              "description": "Fecha y hora exacta en formato ISO o texto.",
+              "required": true
+            },
+            {
+              "name": "monto_total",
+              "type": "number",
+              "description": "Valor numérico total (ej: 15400.00).",
+              "required": true
+            },
+            {
+              "name": "moneda",
+              "description": "Siglas de la moneda (ej: GTQ).",
+              "required": true
+            }
+          ]
+        },
+        "options": {
+          "systemPromptTemplate": "=\"Eres un extractor de datos especializado en documentos tributarios electrónicos (FEL) de Guatemala. Tu objetivo es procesar el contenido HTML del correo de notificación de la SAT y devolver un objeto estructurado.\n\nReglas críticas:\n\nEl campo 'Emisor' suele venir en formato 'NIT - NOMBRE', sepáralos.\n\nLimpia los montos: elimina el símbolo 'GTQ' o 'Q' y entrega solo el número con decimales.\n\nSi un dato no está presente, devuelve null.\n\nIgnora cualquier texto legal o de pie de página que no sea relevante a los datos de la tabla.\""
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.informationExtractor",
+      "typeVersion": 1.2,
+      "position": [
+        1568,
+        -768
+      ],
+      "id": "58cbbff4-0a1a-4633-ac20-b54d75321e71",
+      "name": "Information Extractor"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4o-mini",
+          "mode": "list",
+          "cachedResultName": "gpt-4o-mini"
+        },
+        "builtInTools": {},
+        "options": {
+          "temperature": 0.5
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        1568,
+        -576
+      ],
+      "id": "a887e1c0-238f-42a3-99ba-b401b92293b0",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "qAwk3ovPNccriNZx",
+          "name": "Mundo Verde"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "raw",
+        "jsonOutput": "={{ Object.assign({}, $('Information Extractor').item.json.output, {\"matched\": false, \"confirmed\": false}) }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        2976,
+        -256
+      ],
+      "id": "ec6fd76e-af6e-42da-8b42-7a7c3ef2f221",
+      "name": "DATA TO SAVE - FACTURA"
+    },
+    {
+      "parameters": {
+        "operation": "markAsRead",
+        "messageId": "={{ $('correo').item.json.id }}"
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        3456,
+        -256
+      ],
+      "id": "6c94abcc-52ae-4562-a01a-887698527faa",
+      "name": "Mark a message as read",
+      "webhookId": "d9b103e7-1408-4b7f-89a5-ad064e98efac",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "H8Qx7NlrthXmHUiy",
+          "name": "Soporte Garoo"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $('correo').item.json.from.value[0].address }}",
+        "subject": "Notificación Factura Electrónica",
+        "message": "={{ $json.html }}",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        1840,
+        -1088
+      ],
+      "id": "0544827c-25a8-45b6-93d6-1f967f0a9e2e",
+      "name": "Send a message1",
+      "webhookId": "be0205d7-4818-43ec-b6cd-2a987ce2c7f5",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "H8Qx7NlrthXmHUiy",
+          "name": "Soporte Garoo"
+        }
+      },
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        1360,
+        -784
+      ],
+      "id": "353ccbbd-2a14-490d-aeda-b6b697c7e055",
+      "name": "Loop Over Items1"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Get Proveedor Fijo": {
+      "main": [
+        [
+          {
+            "node": "DATA TO SAVE - FACTURA",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If Existe relacion Proveedor-Producto": {
+      "main": [
+        [
+          {
+            "node": "SI es listado de Productos o NO",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Proveedor - Producto": {
+      "main": [
+        [
+          {
+            "node": "If Existe relacion Proveedor-Producto",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Company": {
+      "main": [
+        [
+          {
+            "node": "Get Product",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Items List": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items": {
+      "main": [
+        [],
+        [
+          {
+            "node": "If Existe",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "CREAR JOURNAL ENTRY": {
+      "main": [
+        []
+      ]
+    },
+    "If es Lista de Productos": {
+      "main": [
+        [
+          {
+            "node": "Items List",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Get Company",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Auth en Odoo": {
+      "main": [
+        [
+          {
+            "node": "CREAR JOURNAL ENTRY",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Product": {
+      "main": [
+        [
+          {
+            "node": "Auth en Odoo",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If Existe": {
+      "main": [
+        [
+          {
+            "node": "Get Company",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "SI es listado de Productos o NO": {
+      "main": [
+        [
+          {
+            "node": "If es Lista de Productos",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Guardar en factura": {
+      "main": [
+        [
+          {
+            "node": "Mark a message as read",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge1": {
+      "main": [
+        [
+          {
+            "node": "Merge2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create XML Attachment": {
+      "main": [
+        [
+          {
+            "node": "Create PDF Attachment",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create PDF Attachment": {
+      "main": [
+        [
+          {
+            "node": "Update Journal Entry",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge2": {
+      "main": [
+        [
+          {
+            "node": "Create XML Attachment",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields2": {
+      "main": [
+        [
+          {
+            "node": "Guardar Proveedor-Estandar",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update Journal Entry": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get ACCESS URL": {
+      "main": [
+        [
+          {
+            "node": "HTML Exito-Usuario",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTML Exito-Usuario": {
+      "main": [
+        [
+          {
+            "node": "CORREO USUARIO VALIDACION",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Guardar Proveedor-Estandar": {
+      "main": [
+        [
+          {
+            "node": "Get ACCESS URL",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "VARIABLES": {
+      "main": [
+        [
+          {
+            "node": "Get Contab User Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Contab User Data": {
+      "main": [
+        [
+          {
+            "node": "Get Proveedor Fijo",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "correo": {
+      "main": [
+        [
+          {
+            "node": "HTML",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Loop Over Items1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Information Extractor",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Information Extractor": {
+      "main": [
+        [
+          {
+            "node": "VARIABLES",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "DATA TO SAVE - FACTURA": {
+      "main": [
+        [
+          {
+            "node": "Guardar en factura",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTML": {
+      "main": [
+        [
+          {
+            "node": "Send a message1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items1": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Information Extractor",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Mark a message as read": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "callerPolicy": "workflowsFromSameOwner",
+    "availableInMCP": false,
+    "errorWorkflow": "wv2-6zOqoyZTlgKRvmnxr",
+    "timezone": "America/Guatemala",
+    "timeSavedMode": "fixed"
+  },
+  "versionId": "e21923a1-0e07-4248-b35f-aa6043a5e143",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "d4ab02fb1ef8b6ca2c1c5c1f280ee696b0514d7d92cee5fb0da1784dbe393998"
+  },
+  "id": "LkJTCJx0v6GcHVE0",
+  "tags": [
+    {
+      "updatedAt": "2026-01-08T01:09:04.954Z",
+      "createdAt": "2026-01-08T01:09:04.954Z",
+      "id": "5STmV35Tlrs8TpZT",
+      "name": "✅COMPLETED"
+    }
+  ]
+}

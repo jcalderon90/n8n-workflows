@@ -1,0 +1,289 @@
+{
+  "name": "LOAD POLYGONS TO DATABASE",
+  "nodes": [
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        496,
+        -624
+      ],
+      "id": "91863948-661e-4d35-8558-29336842edee",
+      "name": "Loop Over Items"
+    },
+    {
+      "parameters": {
+        "jsCode": "return $input.all().map(item => item.json.lista).flat();"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        272,
+        -624
+      ],
+      "id": "ed8cf8ee-b8df-44d7-8f4f-1f8ce6dc27a2",
+      "name": "FLAT NDVI ARRAY"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "e762bf8f-adad-4327-9193-cf43b307f76b",
+              "name": "lista",
+              "value": "={{ $json.data.features }}",
+              "type": "array"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        48,
+        -624
+      ],
+      "id": "2a5e193e-a798-4781-97dd-fc2893c2fc61",
+      "name": "Edit Fields1"
+    },
+    {
+      "parameters": {
+        "jsCode": "return {\n  admin: $('Loop Over Items').first().json.attributes.ADMIN,\n  empresa: $('Loop Over Items').first().json.attributes.EMPRESA,\n  n_sector: $('Loop Over Items').first().json.attributes.C_SECTOR,\n  n_lote: $('Loop Over Items').first().json.attributes.C_LOTE,\n  n_finca: $('Loop Over Items').first().json.attributes.C_FINCA,\n  finca: $('Loop Over Items').first().json.attributes.FINCA,\n  region: $('Loop Over Items').first().json.attributes.REGION,\n  pante: $('Loop Over Items').first().json.attributes.PANTE,\n  categoria: $('Loop Over Items').first().json.attributes.CATEGORIA,\n  lote: $('Loop Over Items').first().json.attributes.LOTE,\n  area: $('Loop Over Items').first().json.attributes.AREA,\n  n_cortes: $('Loop Over Items').first().json.attributes.NUMERO_CORTES,\n  fecha_0: $('Loop Over Items').first().json.attributes.FECHA_ULTIMO_CORTE,\n  tipo_cosecha: $('Loop Over Items').first().json.attributes.TIPO_COSECHA,\n  renovacion: $('Loop Over Items').first().json.attributes.RENOVACION,\n  revisado: $('Loop Over Items').first().json.attributes.REVISADO,\n  long_forma: $('Loop Over Items').first().json.attributes.Shape_Length,\n  area_forma: $('Loop Over Items').first().json.attributes.Shape_Area,\n  coordenadas: $('Loop Over Items').first().json.geometry.rings,\n  supervisor_id: $input.first().json._id\n};"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        944,
+        -688
+      ],
+      "id": "b1311f20-4f82-4227-9c2e-3ba28dbb47f6",
+      "name": "Transformar a MongoDB"
+    },
+    {
+      "parameters": {
+        "operation": "insert",
+        "collection": "Polygons",
+        "fields": "admin,empresa,n_sector,n_lote,n_finca,finca,region,pante,categoria,lote,area,renovacion,revisado,long_forma,area_forma,coordenadas,supervisor_id",
+        "options": {}
+      },
+      "name": "Guardar en MongoDB",
+      "type": "n8n-nodes-base.mongoDb",
+      "typeVersion": 1,
+      "position": [
+        1168,
+        -624
+      ],
+      "id": "6ed11016-754e-4739-8347-6fedaa7f460d",
+      "credentials": {
+        "mongoDb": {
+          "id": "oCCgJ1QnJPbirSub",
+          "name": "Magdalena"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "download",
+        "fileId": {
+          "__rl": true,
+          "value": "1d7DyghykHDDKayDTjw1g_uY-P7jJUPGd",
+          "mode": "list",
+          "cachedResultName": "MAESTRO_LOTES_25_26_json.json",
+          "cachedResultUrl": "https://drive.google.com/file/d/1d7DyghykHDDKayDTjw1g_uY-P7jJUPGd/view?usp=drivesdk"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        -400,
+        -624
+      ],
+      "id": "b6e8b2aa-b686-4bac-b8cd-92692b2f1fef",
+      "name": "Download file",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "lwsELp5kIIpLgWoe",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "fromJson",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1,
+      "position": [
+        -176,
+        -624
+      ],
+      "id": "4ec43e56-6081-401e-9ee6-4d222ad25d97",
+      "name": "Extract from File"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -624,
+        -624
+      ],
+      "id": "d1fc6ec7-224f-45d9-84da-4185ffd0b0ac",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "collection": "Polygons_Supervisor",
+        "options": {},
+        "query": "=\n  {\"region\":\"{{ $json.attributes.REGION }}\"}\n"
+      },
+      "type": "n8n-nodes-base.mongoDb",
+      "typeVersion": 1.2,
+      "position": [
+        720,
+        -688
+      ],
+      "id": "8e388ef9-ed20-4bd3-9312-1e84831154ad",
+      "name": "Find Supervisor",
+      "credentials": {
+        "mongoDb": {
+          "id": "oCCgJ1QnJPbirSub",
+          "name": "Magdalena"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Loop Over Items": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Find Supervisor",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "FLAT NDVI ARRAY": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields1": {
+      "main": [
+        [
+          {
+            "node": "FLAT NDVI ARRAY",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Transformar a MongoDB": {
+      "main": [
+        [
+          {
+            "node": "Guardar en MongoDB",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Guardar en MongoDB": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Download file": {
+      "main": [
+        [
+          {
+            "node": "Extract from File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract from File": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "Download file",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Find Supervisor": {
+      "main": [
+        [
+          {
+            "node": "Transformar a MongoDB",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "6724a55f-3550-4e80-854a-792c43a97a71",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "d4ab02fb1ef8b6ca2c1c5c1f280ee696b0514d7d92cee5fb0da1784dbe393998"
+  },
+  "id": "U4SN1Ppl81GBc2xZ",
+  "tags": [
+    {
+      "updatedAt": "2025-09-01T16:26:02.067Z",
+      "createdAt": "2025-09-01T16:24:18.355Z",
+      "id": "HF6FDHuL9dV9Y33x",
+      "name": "INTERV. HUMANA"
+    },
+    {
+      "updatedAt": "2025-09-01T16:22:03.233Z",
+      "createdAt": "2025-09-01T16:22:03.233Z",
+      "id": "gROeDXsIw8PaI9x1",
+      "name": "FUNCIONAL"
+    }
+  ]
+}

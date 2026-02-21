@@ -1,0 +1,385 @@
+{
+  "name": "CRITICAL STATUS NOTIFICACTIONS",
+  "nodes": [
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json }}",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "=name: AnalizadorAgronomicoCritico\ndescription: >\n  Eres un agente especialista en agronomía y teledetección para diagnóstico\n  de polígonos en estado crítico. Tu función es diagnosticar la causa principal\n  y generar una recomendación de acción inmediata prioritaria.\n\ncontext: >\n  EL POLÍGONO ANALIZADO YA SE ENCUENTRA EN ESTADO CRÍTICO. \n  NO confirmes el estado, diagnostica el \"por qué\" y el \"qué hacer\".\n  DEBES generar EXCLUSIVAMENTE un objeto JSON con la estructura exacta especificada.\n\ninstructions:\n  - Analiza las métricas proporcionadas (diferencia, velocidad, aceleración)\n  - Diagnostica la causa principal basado en los valores críticos\n  - Genera UNA recomendación accionable y prioritaria\n  - PRODUCE ÚNICAMENTE el objeto JSON sin texto adicional\n  - USA números reales (no strings) para los valores numéricos\n  - MANTÉN el orden exacto de los campos requeridos\n  - CONSERVA los valores originales de finca, lote y métricas sin modificarlos\n  - DEVUELVE la estructura EXACTA: array con objeto notificacion_poligono\n  - INCLUYE las métricas originales en la respuesta junto con el diagnóstico\n\nanalysis_parameters:\n  ndvi_critical: diferencia < -0.2\n  ndwi_critical: diferencia < -0.2  \n  high_velocity: velocidad > 0.1\n  high_acceleration: aceleracion > 0.05\n\ndiagnostic_rules:\n  - rule: \"ndvi.diferencia < -0.2 AND ndwi.diferencia < -0.2\"\n    cause: \"Déficit hídrico severo\"\n  - rule: \"ndvi.diferencia < -0.2 AND ndwi.diferencia > -0.1\"\n    cause: \"Estrés no hídrico (plagas, enfermedades o nutrición)\"\n  - rule: \"ndvi.velocidad > 0.1 AND ndvi.aceleracion > 0.05\"\n    cause: \"Progresión acelerada del deterioro\"\n  - rule: \"ndvi.diferencia >= -0.2 AND ndwi.diferencia >= -0.2\"\n    cause: \"Estado crítico por factores combinados o error de medición\""
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        384,
+        -144
+      ],
+      "id": "3b770433-23d2-4816-9e3e-11dc16b9ee72",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        -288,
+        -144
+      ],
+      "id": "6a5aa33f-37f1-4b3f-abaa-b08b8be9efad",
+      "name": "Loop Over Items"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "a1c4858e-9af8-490b-b05b-1ca7296b7c5f",
+              "name": "notificacion_poligono",
+              "value": "={{ $json.output }}",
+              "type": "object"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        736,
+        -16
+      ],
+      "id": "67abe9f0-7077-4161-b053-126791aff7c4",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        -64,
+        -336
+      ],
+      "id": "8673c338-ce36-45d9-9bea-84ff4ec1dcca",
+      "name": "Merge"
+    },
+    {
+      "parameters": {
+        "collection": "Critic_State_Polygons",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.mongoDb",
+      "typeVersion": 1.2,
+      "position": [
+        -512,
+        -144
+      ],
+      "id": "09b5ee8b-9073-4d2a-bcb1-eac5b4ac0e2f",
+      "name": "Find Critic Polygons",
+      "credentials": {
+        "mongoDb": {
+          "id": "oCCgJ1QnJPbirSub",
+          "name": "Magdalena"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "collection": "Polygons",
+        "options": {},
+        "query": "={\"_id\":\"{{ $json.id_poligono }}\"}"
+      },
+      "type": "n8n-nodes-base.mongoDb",
+      "typeVersion": 1.2,
+      "position": [
+        -64,
+        -144
+      ],
+      "id": "88690779-cda1-479f-affb-f8a69f31ca46",
+      "name": "Find Finca related",
+      "credentials": {
+        "mongoDb": {
+          "id": "oCCgJ1QnJPbirSub",
+          "name": "Magdalena"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4o-mini",
+          "mode": "list",
+          "cachedResultName": "gpt-4o-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        400,
+        80
+      ],
+      "id": "de0b70bc-c0bd-449c-82e8-a366413cf678",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "g0eaXSZocJ0Qp8eF",
+          "name": "Magdalena"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "f9bfd8a9-d30f-45f1-8346-1795c4c133e3",
+              "name": "finca",
+              "value": "={{ $json.finca }}",
+              "type": "string"
+            },
+            {
+              "id": "9c04a0ff-ae17-4e20-94b1-bed781947489",
+              "name": "lote",
+              "value": "={{ $json.lote }}",
+              "type": "string"
+            },
+            {
+              "id": "dc60e579-8a81-41bb-b6db-e6eaf1856ce5",
+              "name": "polygon_id",
+              "value": "={{ $('Loop Over Items').item.json._id }}",
+              "type": "string"
+            },
+            {
+              "id": "80e41061-0754-4bd8-9916-de374fa93533",
+              "name": "ndvi",
+              "value": "={{ $('Loop Over Items').item.json.ndvi }}",
+              "type": "object"
+            },
+            {
+              "id": "2eb9160c-4d15-4465-b6ac-20479be17b40",
+              "name": "ndwi",
+              "value": "={{ $('Loop Over Items').item.json.ndwi }}",
+              "type": "object"
+            },
+            {
+              "id": "a28289cb-8057-4143-a5da-850c232e721c",
+              "name": "ndvi_metricas",
+              "value": "={{ $('Loop Over Items').item.json.ndvi_metricas }}",
+              "type": "object"
+            },
+            {
+              "id": "fe8413b9-9a97-4386-bc54-20b85d33bf6b",
+              "name": "ndwi_metricas",
+              "value": "={{ $('Loop Over Items').item.json.ndwi_metricas }}",
+              "type": "object"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        160,
+        -144
+      ],
+      "id": "8bf7b9a4-4357-4633-8a52-0189668e5e61",
+      "name": "RELATION"
+    },
+    {
+      "parameters": {
+        "schemaType": "manual",
+        "inputSchema": "{\n        \"type\": \"object\",\n        \"properties\": {\n          \"finca\": {\n            \"type\": \"string\",\n            \"description\": \"Nombre de la finca (conservar valor original)\"\n          },\n          \"lote\": {\n            \"type\": \"string\",\n            \"description\": \"Nombre del lote (conservar valor original)\"\n          },\n          \"metricas\": {\n            \"type\": \"object\",\n            \"properties\": {\n              \"ndvi\": {\n                \"type\": \"object\",\n                \"properties\": {\n                  \"diferencia\": {\n                    \"type\": \"number\",\n                    \"description\": \"Diferencia del valor de NDVI (conservar valor original)\"\n                  },\n                  \"velocidad\": {\n                    \"type\": \"number\",\n                    \"description\": \"Velocidad de cambio del NDVI (conservar valor original)\"\n                  },\n                  \"aceleracion\": {\n                    \"type\": \"number\",\n                    \"description\": \"Aceleración del cambio del NDVI (conservar valor original)\"\n                  }\n                }\n              },\n              \"ndwi\": {\n                \"type\": \"object\",\n                \"properties\": {\n                  \"diferencia\": {\n                    \"type\": \"number\",\n                    \"description\": \"Diferencia del valor de NDWI (conservar valor original)\"\n                  }\n                }\n              }\n            }\n          },\n          \"causa_probable\": {\n            \"type\": \"string\",\n            \"description\": \"Causa principal del estado crítico basado en análisis de métricas\"\n          },\n          \"recomendacion\": {\n            \"type\": \"string\",\n            \"description\": \"Recomendación prioritaria de acción inmediata\"\n          }\n        },\n        \"required\": [\"finca\", \"lote\", \"metricas\", \"causa_probable\", \"recomendacion\"]\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        528,
+        80
+      ],
+      "id": "f785e519-66ac-47f4-b3bb-a9ef5bb3484a",
+      "name": "Structured Output Parser"
+    },
+    {
+      "parameters": {
+        "path": "63efc370-69d6-426e-a0c3-83c920cb4afa",
+        "responseMode": "responseNode",
+        "options": {
+          "allowedOrigins": "*"
+        }
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -736,
+        -144
+      ],
+      "id": "e0e6c62e-5739-4c11-b836-594469d09f31",
+      "name": "Webhook",
+      "webhookId": "63efc370-69d6-426e-a0c3-83c920cb4afa"
+    },
+    {
+      "parameters": {
+        "respondWith": "allIncomingItems",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        160,
+        -336
+      ],
+      "id": "72aee558-7719-4911-bebd-d605406661ae",
+      "name": "Respond to Webhook"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Find Finca related",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Find Critic Polygons": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Find Finca related": {
+      "main": [
+        [
+          {
+            "node": "RELATION",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "RELATION": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Find Critic Polygons",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "95fda7b6-8a7e-476e-b2d2-57594e03acff",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "d4ab02fb1ef8b6ca2c1c5c1f280ee696b0514d7d92cee5fb0da1784dbe393998"
+  },
+  "id": "YpVPbubMI2ICur3d",
+  "tags": [
+    {
+      "updatedAt": "2025-09-01T16:22:47.416Z",
+      "createdAt": "2025-09-01T16:22:47.416Z",
+      "id": "ka8DcLmxeLqc0xy5",
+      "name": "NO FUNCIONAL"
+    },
+    {
+      "updatedAt": "2025-09-01T16:26:59.242Z",
+      "createdAt": "2025-09-01T16:26:59.242Z",
+      "id": "nhXlFKezuUDtk9fi",
+      "name": "AUTOMATICO"
+    }
+  ]
+}

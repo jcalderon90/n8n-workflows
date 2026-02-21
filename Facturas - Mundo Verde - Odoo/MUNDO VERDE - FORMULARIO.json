@@ -1,0 +1,835 @@
+{
+  "name": "MUNDO VERDE - FORMULARIO",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "facturas",
+        "responseMode": "responseNode",
+        "options": {
+          "allowedOrigins": "*"
+        }
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -1472,
+        -656
+      ],
+      "id": "cd3c5f4c-f26c-41ac-8f62-8a9c7ffbd3a6",
+      "name": "Form React Trigger",
+      "webhookId": "8481ab6d-c964-41f6-86a4-17f7e0f84788"
+    },
+    {
+      "parameters": {
+        "keepOnlySet": true,
+        "values": {
+          "string": [
+            {
+              "name": "NIT",
+              "value": "={{ $('Form React Trigger').item.json.body.nit }}"
+            },
+            {
+              "name": "NRO_ORDEN_COMPRA",
+              "value": "={{ $('Form React Trigger').item.json.body.serie }}"
+            },
+            {
+              "name": "NRO_FACTURA",
+              "value": "={{ $('EXTRACTED DATA').item.json.nro_factura }}"
+            },
+            {
+              "name": "SERIE",
+              "value": "={{ $('EXTRACTED DATA').item.json.nro_serie }}"
+            },
+            {
+              "name": "PDF_URL",
+              "value": "={{ $('UPLOAD PDF').item.json.url }}"
+            },
+            {
+              "name": "XML_URL",
+              "value": "={{ $('UPLOAD XML').item.json.url }}"
+            },
+            {
+              "name": "ARRIVE_DATE",
+              "value": "={{ $now.format('yyyy-MM-dd') }}"
+            }
+          ],
+          "boolean": [
+            {
+              "name": "matched"
+            },
+            {
+              "name": "confirmed"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "name": "Form Data",
+      "type": "n8n-nodes-base.set",
+      "position": [
+        1088,
+        -720
+      ],
+      "typeVersion": 1,
+      "id": "723b9012-ad63-4161-a5e7-78d9194e22fa"
+    },
+    {
+      "parameters": {
+        "operation": "insert",
+        "collection": "formulario",
+        "fields": "={{ Object.keys($json).join(\",\") }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.mongoDb",
+      "typeVersion": 1.2,
+      "position": [
+        1312,
+        -720
+      ],
+      "id": "cb5008e2-6813-44fc-bea5-c9141f2b61e8",
+      "name": "INSERT EN TABLA FORMULARIO",
+      "alwaysOutputData": true,
+      "credentials": {
+        "mongoDb": {
+          "id": "wwOL6pf5hqG6FrrM",
+          "name": "MongoDB Jorge de Garoo"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "{\n  \"status\": \"ok\",\n  \"title\": \"FACTURA GUARDADA CON ÉXITO !!!\",\n  \"message\": \"La factura se ha guardado correctamente. Se comenzará con el proceso de verificación y se le notificará al correo.\"\n}",
+        "options": {
+          "responseCode": 200
+        }
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        1536,
+        -816
+      ],
+      "id": "1ac74d63-5cbc-46e8-9776-5aee0d3db230",
+      "name": "Respond to Webhook1"
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "{\n  \"status\": \"error\",\n  \"title\": \"ERROR !!!\",\n  \"message\": \"Esta factura ya existe en el sistema\"\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        208,
+        -352
+      ],
+      "id": "063c9f89-14e7-43dd-8324-48270678a748",
+      "name": "Respond to Webhook"
+    },
+    {
+      "parameters": {
+        "collection": "factura",
+        "options": {},
+        "query": "={\n\"matched\": false,\n\"numero_dte\": \"{{ $('INSERT EN TABLA FORMULARIO').item.json.NRO_FACTURA }}\",\n\"serie\": \"{{ $('INSERT EN TABLA FORMULARIO').item.json.SERIE }}\"\n}"
+      },
+      "type": "n8n-nodes-base.mongoDb",
+      "typeVersion": 1.2,
+      "position": [
+        1536,
+        -624
+      ],
+      "id": "155947b4-451d-40ec-b6c3-3d7ce7cdee6a",
+      "name": "Find EN TABLA FACTURA",
+      "alwaysOutputData": true,
+      "credentials": {
+        "mongoDb": {
+          "id": "wwOL6pf5hqG6FrrM",
+          "name": "MongoDB Jorge de Garoo"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "dataPropertyName": "=xml_data",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.xml",
+      "typeVersion": 1,
+      "position": [
+        -768,
+        -928
+      ],
+      "id": "a9e212fc-7504-4a02-8a5e-d30d2e4bf3f6",
+      "name": "XML"
+    },
+    {
+      "parameters": {
+        "text": "={{ $json.text }}",
+        "attributes": {
+          "attributes": [
+            {
+              "name": "nro_factura",
+              "description": "El numero de la factura que aparece en el texto como \"Número de DTE\"",
+              "required": true
+            },
+            {
+              "name": "serie",
+              "description": "Numero de la Serie de la factura presente en el texto con el nombre \"Serie\"",
+              "required": true
+            }
+          ]
+        },
+        "options": {
+          "systemPromptTemplate": "Extrae los datos solicitados del texto, numero de la factura y la serie.\nNo hagas nada mas.\nNo invenetes datos que no existen."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.informationExtractor",
+      "typeVersion": 1.2,
+      "position": [
+        -832,
+        -496
+      ],
+      "id": "8d76dfcc-064e-4c4f-a8b5-bf5790327fa8",
+      "name": "Information Extractor"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4o-mini",
+          "mode": "list",
+          "cachedResultName": "gpt-4o-mini"
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        -768,
+        -272
+      ],
+      "id": "be717023-cd3b-4c62-bd7d-76b40cf901a0",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "qAwk3ovPNccriNZx",
+          "name": "Mundo Verde"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "0150d431-3173-48f3-85ab-472b53c16edb",
+              "name": "nro_factura",
+              "value": "={{ $json.output.nro_factura }}",
+              "type": "string"
+            },
+            {
+              "id": "365447e4-d922-45ef-8b68-2bd75b0a6db3",
+              "name": "nro_serie",
+              "value": "={{ $json.output.serie }}",
+              "type": "string"
+            },
+            {
+              "id": "440ca4e9-2b13-415d-a4e4-9c741631cdc0",
+              "name": "nit_emisor",
+              "value": "={{ $('Form React Trigger').item.json.body.nit }}",
+              "type": "string"
+            },
+            {
+              "id": "6e9cb485-3cbe-494d-9289-fd468a1c06aa",
+              "name": "orden_compra",
+              "value": "={{ $('Form React Trigger').item.json.body.serie }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -480,
+        -496
+      ],
+      "id": "992af6ef-de54-4e42-8330-308fcac88452",
+      "name": "EXTRACTED DATA"
+    },
+    {
+      "parameters": {
+        "collection": "formulario",
+        "options": {},
+        "query": "={\n  \"NIT\": \"{{ $json.nit_emisor }}\",\n  \"SERIE\": \"{{ $json.nro_serie }}\",\n  \"NRO_FACTURA\": \"{{ $json.nro_factura }}\"\n}"
+      },
+      "type": "n8n-nodes-base.mongoDb",
+      "typeVersion": 1.2,
+      "position": [
+        -256,
+        -496
+      ],
+      "id": "118580a1-6998-409e-bb50-7cc1d6840a24",
+      "name": "Find Factura de Formulario",
+      "alwaysOutputData": true,
+      "credentials": {
+        "mongoDb": {
+          "id": "wwOL6pf5hqG6FrrM",
+          "name": "MongoDB Jorge de Garoo"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "dc501900-e83c-4ecc-987b-6de2c30c17a1",
+              "leftValue": "={{ $json.isEmpty() }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -32,
+        -496
+      ],
+      "id": "a37e8b85-e619-4987-9545-3e45c93ff5b4",
+      "name": "If NO EXISTE ESTA FACTURA EN DB"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "93c8baa8-b2a2-45f5-a910-326a2882f39d",
+              "name": "pdf_file",
+              "value": "={{ $('Form React Trigger').item.binary.pdf }}",
+              "type": "object"
+            },
+            {
+              "id": "6f80b5eb-aa7d-4127-8822-3b44399b690f",
+              "name": "xml_file",
+              "value": "={{ $('Form React Trigger').item.binary.xml }}",
+              "type": "object"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        192,
+        -592
+      ],
+      "id": "5df4fe79-4889-49bf-bda0-c907dbac3608",
+      "name": "DOCUMENTS DATA OBJECT"
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "combineBy": "combineAll",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        864,
+        -720
+      ],
+      "id": "da074618-5583-4d3b-a193-9feaf3632095",
+      "name": "Merge"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://agents.garooinc.com/upload/fel-agents",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "multipart/form-data"
+            }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "multipart-form-data",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "parameterType": "formBinaryData",
+              "name": "file",
+              "inputDataFieldName": "pdf"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        640,
+        -816
+      ],
+      "id": "da988c24-5617-42a2-9e43-b04af6b2078d",
+      "name": "UPLOAD PDF"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://agents.garooinc.com/upload/fel-agents",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "multipart/form-data"
+            }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "multipart-form-data",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "parameterType": "formBinaryData",
+              "name": "file",
+              "inputDataFieldName": "xml"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        640,
+        -624
+      ],
+      "id": "38bd4ed5-d9bc-4fbe-bd02-88d80edc0d00",
+      "name": "UPLOAD XML"
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "wzU6DYI6ZbHyGwWl",
+          "mode": "list",
+          "cachedResultUrl": "/workflow/wzU6DYI6ZbHyGwWl",
+          "cachedResultName": "Mundo Verde - MATCH ODOO"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.2,
+      "position": [
+        2208,
+        -624
+      ],
+      "name": "Call Mundo Verde - MATCH ODOO",
+      "id": "44737dd1-9a55-4100-aa74-38129bf7209f"
+    },
+    {
+      "parameters": {
+        "operation": "xml",
+        "binaryPropertyName": "xml",
+        "destinationKey": "xml_data",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1.1,
+      "position": [
+        -1056,
+        -928
+      ],
+      "id": "a9efc171-7ce9-4fdc-8b3c-3a593922fe89",
+      "name": "Extract from XML"
+    },
+    {
+      "parameters": {
+        "operation": "pdf",
+        "binaryPropertyName": "pdf",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1.1,
+      "position": [
+        -1056,
+        -496
+      ],
+      "id": "c6c3b5bc-0847-4391-a476-b6f70e08e1a0",
+      "name": "Extract from PDF"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "822d65f5-fa92-426c-a6cc-a91ab9941bcb",
+              "leftValue": "={{ $json.isEmpty() }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        1776,
+        -640
+      ],
+      "id": "6f7cbc04-0d3b-42cc-9590-84e29ba5a03b",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "960b3390-ea7a-4bd5-8cc8-ad297cfd73c6",
+              "name": "factura_form",
+              "value": "={{ $('Find EN TABLA FACTURA').item.json }}",
+              "type": "object"
+            },
+            {
+              "id": "2d093071-2752-427c-81db-52fbe70e7405",
+              "name": "factura_mail",
+              "value": "={{ $('INSERT EN TABLA FORMULARIO').item.json }}",
+              "type": "object"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1984,
+        -624
+      ],
+      "id": "46164adc-ac35-4507-afce-1b0c734183dc",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "combineBy": "combineAll",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        416,
+        -720
+      ],
+      "id": "6f4f9775-0c39-430f-905c-b544b3fa2248",
+      "name": "Merge1"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Form React Trigger": {
+      "main": [
+        [
+          {
+            "node": "Extract from PDF",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Extract from XML",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Merge1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Form Data": {
+      "main": [
+        [
+          {
+            "node": "INSERT EN TABLA FORMULARIO",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "INSERT EN TABLA FORMULARIO": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook1",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Find EN TABLA FACTURA",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Find EN TABLA FACTURA": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Information Extractor",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Information Extractor": {
+      "main": [
+        [
+          {
+            "node": "EXTRACTED DATA",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Find Factura de Formulario": {
+      "main": [
+        [
+          {
+            "node": "If NO EXISTE ESTA FACTURA EN DB",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "EXTRACTED DATA": {
+      "main": [
+        [
+          {
+            "node": "Find Factura de Formulario",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If NO EXISTE ESTA FACTURA EN DB": {
+      "main": [
+        [
+          {
+            "node": "DOCUMENTS DATA OBJECT",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "DOCUMENTS DATA OBJECT": {
+      "main": [
+        [
+          {
+            "node": "Merge1",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "Form Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "UPLOAD PDF": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "UPLOAD XML": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Respond to Webhook1": {
+      "main": [
+        []
+      ]
+    },
+    "Extract from XML": {
+      "main": [
+        [
+          {
+            "node": "XML",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract from PDF": {
+      "main": [
+        [
+          {
+            "node": "Information Extractor",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Call Mundo Verde - MATCH ODOO",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge1": {
+      "main": [
+        [
+          {
+            "node": "UPLOAD PDF",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "UPLOAD XML",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Call Mundo Verde - MATCH ODOO": {
+      "main": [
+        []
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "timezone": "America/Guatemala",
+    "callerPolicy": "workflowsFromSameOwner",
+    "availableInMCP": false,
+    "errorWorkflow": "wv2-6zOqoyZTlgKRvmnxr",
+    "timeSavedMode": "fixed"
+  },
+  "versionId": "3e515341-2e8c-43cd-8803-622cdc9a3642",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "d4ab02fb1ef8b6ca2c1c5c1f280ee696b0514d7d92cee5fb0da1784dbe393998"
+  },
+  "id": "KRBg5iwlabwmG0Ko",
+  "tags": [
+    {
+      "updatedAt": "2026-01-08T01:09:04.954Z",
+      "createdAt": "2026-01-08T01:09:04.954Z",
+      "id": "5STmV35Tlrs8TpZT",
+      "name": "✅COMPLETED"
+    }
+  ]
+}

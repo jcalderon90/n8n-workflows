@@ -1,0 +1,1578 @@
+{
+  "name": "Mundo Verde - MATCH ODOO",
+  "nodes": [
+    {
+      "parameters": {
+        "inputSource": "passthrough"
+      },
+      "id": "9ecc27d1-76ad-4d79-b7c2-09f26dae20f5",
+      "typeVersion": 1.1,
+      "name": "Start",
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "position": [
+        -10608,
+        -3408
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $('Find Variables').item.json.url_odoo }}/jsonrpc",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"jsonrpc\": \"2.0\",\n  \"method\": \"call\",\n  \"params\": {\n    \"service\": \"object\",\n    \"method\": \"execute_kw\",\n    \"args\": [\n      \"{{ $('Find Variables').item.json.database}}\",\n      {{ $('Auth en Odoo2').item.json.result }},\n      \"{{ $('Find Variables').item.json.pass }}\",\n      \"purchase.order\",\n      \"action_create_invoice\",\n      [[{{ $('Get PURCHASE ORDER').item.json.id }}]]\n    ]\n  },\n  \"id\": 3\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -8144,
+        -3504
+      ],
+      "id": "66f5a4a2-37dc-4665-bc76-c5c1457ec8bd",
+      "name": "CREAR JOURNAL ENTRY1"
+    },
+    {
+      "parameters": {
+        "resource": "custom",
+        "customResource": "account.move",
+        "operation": "update",
+        "customResourceId": "={{ $('CREAR JOURNAL ENTRY1').item.json.result.res_id }}",
+        "fieldsToCreateOrUpdate": {
+          "fields": [
+            {
+              "fieldName": "date",
+              "fieldValue": "={{ $('Start').item.json.factura_form.fecha_emision }}"
+            },
+            {
+              "fieldName": "invoice_date",
+              "fieldValue": "={{ $('Start').item.json.factura_form.fecha_emision }}"
+            },
+            {
+              "fieldName": "invoice_pdf_report_id",
+              "fieldValue": "={{ $('Create Attachment2').item.json.id }}"
+            },
+            {
+              "fieldName": "serie_gt",
+              "fieldValue": "={{ $('Start').item.json.factura_form.serie }}"
+            },
+            {
+              "fieldName": "documento_gt",
+              "fieldValue": "={{ $('Start').item.json.factura_form.numero_dte }}"
+            },
+            {
+              "fieldName": "ubl_cii_xml_id",
+              "fieldValue": "={{ $('Create Attachment3').item.json.id }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.odoo",
+      "typeVersion": 1,
+      "position": [
+        -6576,
+        -3600
+      ],
+      "id": "faa0c48f-81f8-40d7-abd8-df3a16ee3fb6",
+      "name": "Update JOURNAL ENTRY1",
+      "credentials": {
+        "odooApi": {
+          "id": "L54C0wh51BqmebUj",
+          "name": "Odoo Mundo Verde Prod"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "={{ $('Start').item.json.factura_mail.PDF_URL }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/pdf"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -7472,
+        -3504
+      ],
+      "id": "ce911add-f81f-4a78-a638-7076b0e9c782",
+      "name": "Download PDF1"
+    },
+    {
+      "parameters": {
+        "resource": "custom",
+        "customResource": "ir.attachment",
+        "fieldsToCreateOrUpdate": {
+          "fields": [
+            {
+              "fieldName": "mimetype",
+              "fieldValue": "={{ $('Download PDF1').item.binary.data.mimeType }}"
+            },
+            {
+              "fieldName": "name",
+              "fieldValue": "=Factura-pdf-{{ $('DATA').item.json.serie }}-{{ $('DATA').item.json.Nro_Factura }}.pdf"
+            },
+            {
+              "fieldName": "type",
+              "fieldValue": "=binary"
+            },
+            {
+              "fieldName": "datas",
+              "fieldValue": "={{ $json.data }}"
+            },
+            {
+              "fieldName": "res_id",
+              "fieldValue": "={{ $('CREAR JOURNAL ENTRY1').item.json.result.res_id }}"
+            },
+            {
+              "fieldName": "res_model",
+              "fieldValue": "={{ $('CREAR JOURNAL ENTRY1').item.json.result.res_model }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.odoo",
+      "typeVersion": 1,
+      "position": [
+        -7024,
+        -3504
+      ],
+      "id": "000b94be-eeee-40fe-93a6-09c44dc75291",
+      "name": "Create Attachment2",
+      "credentials": {
+        "odooApi": {
+          "id": "L54C0wh51BqmebUj",
+          "name": "Odoo Mundo Verde Prod"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "binaryToPropery",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1,
+      "position": [
+        -7248,
+        -3504
+      ],
+      "id": "92bf51d4-8b2c-4acc-b3d5-884a1c7c5add",
+      "name": "Extract from File2"
+    },
+    {
+      "parameters": {
+        "resource": "custom",
+        "customResource": "ir.attachment",
+        "fieldsToCreateOrUpdate": {
+          "fields": [
+            {
+              "fieldName": "type",
+              "fieldValue": "=binary"
+            },
+            {
+              "fieldName": "datas",
+              "fieldValue": "={{ $json.data }}"
+            },
+            {
+              "fieldName": "res_id",
+              "fieldValue": "={{ $('CREAR JOURNAL ENTRY1').item.json.result.res_id }}"
+            },
+            {
+              "fieldName": "res_model",
+              "fieldValue": "={{ $('CREAR JOURNAL ENTRY1').item.json.result.res_model }}"
+            },
+            {
+              "fieldName": "mimetype",
+              "fieldValue": "={{ $('Code in JavaScript1').item.binary.xmlFile.mimeType }}"
+            },
+            {
+              "fieldName": "name",
+              "fieldValue": "=Factura-xml-{{ $('DATA').item.json.serie }}-{{ $('DATA').item.json.Nro_Factura }}.xml"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.odoo",
+      "typeVersion": 1,
+      "position": [
+        -7024,
+        -3696
+      ],
+      "id": "78926bb4-3a62-4adc-b7dc-384f430baeef",
+      "name": "Create Attachment3",
+      "credentials": {
+        "odooApi": {
+          "id": "L54C0wh51BqmebUj",
+          "name": "Odoo Mundo Verde Prod"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "hd4kZOAD0BCYRf9u",
+          "mode": "list",
+          "cachedResultUrl": "/workflow/hd4kZOAD0BCYRf9u",
+          "cachedResultName": "Mundo verde - Asignar Cuenta Analitica"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.2,
+      "position": [
+        -6128,
+        -3408
+      ],
+      "name": "Call Mundo verde - Asignar Cuenta Analitica1",
+      "id": "4d5aff7d-4589-4fe3-b515-40ddd732dcb0",
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "64e95b1c-beba-4c72-913a-07bcbad38d15",
+              "name": "res_id",
+              "value": "={{ $('CREAR JOURNAL ENTRY1').item.json.result.res_id }}",
+              "type": "number"
+            },
+            {
+              "id": "b8dafed0-dd09-4e43-a401-cceba819c970",
+              "name": "id",
+              "value": "={{ $('CREAR JOURNAL ENTRY1').item.json.result.id }}",
+              "type": "number"
+            },
+            {
+              "id": "9eb92fb9-e84d-4c0d-9b09-8413836ab20e",
+              "name": "id_orden_compra",
+              "value": "={{ $('Get PURCHASE ORDER').item.json.id }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -6352,
+        -3312
+      ],
+      "id": "20843232-3ceb-435e-8f2a-dd6779972c15",
+      "name": "Edit Fields2"
+    },
+    {
+      "parameters": {
+        "url": "={{ $('Start').item.json.factura_mail.XML_URL }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/xml"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -7696,
+        -3696
+      ],
+      "id": "dadbfca6-6b50-4e58-bfc4-97ae61b36faf",
+      "name": "Download XML1"
+    },
+    {
+      "parameters": {
+        "mode": "chooseBranch",
+        "output": "empty"
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        -6800,
+        -3600
+      ],
+      "id": "c1e5e2b6-9d09-4ec5-9de6-c85332460484",
+      "name": "Merge1"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Obtener el primer ítem (o todos si prefieres procesar múltiples)\nconst inputItems = $input.all();\n\nreturn inputItems.map(item => {\n    // Obtener el XML string\n    const xmlString = item.json.data;\n\n    // Convertir a Buffer (binario)\n    const binaryData = Buffer.from(xmlString, 'utf-8');\n\n    // Crear o asegurar el objeto binary\n    const newItem = {\n        ...item,\n        binary: {\n            ...item.binary,\n            xmlFile: {\n                data: binaryData.toString('base64'),\n                mimeType: 'application/xml',\n                fileExtension: 'xml',\n                fileName: 'factura_electronica.xml'\n            }\n        }\n    };\n\n    // Opcional: eliminar el campo 'data' del JSON si ya no lo necesitas\n    delete newItem.json.data;\n\n    return newItem;\n});"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -7472,
+        -3696
+      ],
+      "id": "68da9aa2-8996-4c3f-a9b0-a0a5aceb4a6e",
+      "name": "Code in JavaScript1"
+    },
+    {
+      "parameters": {
+        "operation": "binaryToPropery",
+        "binaryPropertyName": "xmlFile",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1,
+      "position": [
+        -7248,
+        -3696
+      ],
+      "id": "2adc1cbd-9f38-4ec8-9ccd-f2690e3a3e14",
+      "name": "Extract from File3"
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $('Get Correo de Usuario').item.json.email }}",
+        "subject": "FACTURA VALIDADA !!!",
+        "message": "={{ $json.html }}",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        -5888,
+        -3920
+      ],
+      "id": "1ceb4547-1e88-4dcd-9525-05d076a8e132",
+      "name": "CORREO USUARIO VALIDACION1",
+      "webhookId": "6fd9a0f6-0343-44b4-a148-0acd5dec7140",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "H8Qx7NlrthXmHUiy",
+          "name": "Soporte Garoo"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $('Get Correo de Proveedor').item.json.email }}",
+        "subject": "FACTURA VALIDADA !!!",
+        "message": "={{ $json.html }}",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        -5856,
+        -3696
+      ],
+      "id": "38f8b0ee-d948-4c35-b317-109d99caada5",
+      "name": "CORREO PROVEEDOR VALIDACION1",
+      "webhookId": "6fd9a0f6-0343-44b4-a148-0acd5dec7140",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "H8Qx7NlrthXmHUiy",
+          "name": "Soporte Garoo"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $('Get Correo de Usuario1').item.json.email }}",
+        "subject": "=ERROR !!!",
+        "emailType": "text",
+        "message": "={{ $json.html }}",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        -7472,
+        -3312
+      ],
+      "id": "84905705-9be2-4460-811a-ad19dde98e1a",
+      "name": "CORREO USUARIO ERROR1",
+      "webhookId": "db880570-d2fa-4883-9b30-6c58a0462ba4",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "H8Qx7NlrthXmHUiy",
+          "name": "Soporte Garoo"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "custom",
+        "customResource": "account.move",
+        "operation": "get",
+        "customResourceId": "={{ $json.id }}",
+        "options": {
+          "fieldsList": [
+            "access_url"
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.odoo",
+      "typeVersion": 1,
+      "position": [
+        -6352,
+        -3792
+      ],
+      "id": "e1a4f8a3-2f9e-4296-923c-71f48e755ab4",
+      "name": "Get ACCESS URL1",
+      "credentials": {
+        "odooApi": {
+          "id": "L54C0wh51BqmebUj",
+          "name": "Odoo Mundo Verde Prod"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "html": "<!DOCTYPE html>\n<html lang=\"es\">\n<head>\n  <meta charset=\"UTF-8\">\n  <title>Validación Exitosa Proveedor</title>\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n  <link href=\"https://fonts.googleapis.com/css?family=Poppins:400,600,800\" rel=\"stylesheet\">\n  <style>\n    body {\n      margin: 0; padding: 0; background-color: #f9f9f9;\n      font-family: 'Poppins', Arial, Helvetica, sans-serif;\n      -webkit-text-size-adjust: 100%;\n    }\n    .container {\n      max-width: 700px; margin: 30px auto; background-color: #fff;\n      border-radius: 14px; box-shadow: 0 2px 12px rgba(0,0,0,0.1);\n      padding-bottom: 30px; overflow: hidden;\n    }\n    .header { padding: 30px 30px 10px 30px; text-align: left; }\n    .logo { width: 120px; display: block; margin-bottom: 12px; border: 0; }\n    .title { font-size: 24px; font-weight: 600; color: #151515; margin: 10px 0; }\n    .description {\n      padding: 0 30px; font-size: 15px; color: #555;\n      line-height: 1.6; text-align: left; /* Más seguro que justify */\n    }\n    .section-block {\n      background-color: #f2f2f2; border-radius: 10px;\n      padding: 20px 30px; margin: 20px 30px;\n    }\n    .field-label { font-weight: 600; color: #000; font-size: 15px; }\n    .footer { text-align: center; margin-top: 30px; color: #151515; font-size: 14px; opacity: 0.7; }\n\n    @media (max-width: 650px) {\n      .container { margin: 10px; }\n      .section-block { margin: 15px; padding: 15px; }\n      .description { padding: 0 15px; }\n    }\n  </style>\n</head>\n<body>\n  <div class=\"container\">\n    <div class=\"header\">\n      <img class=\"logo\" src=\"https://garooinc.com/assets/images/logo2.png\" alt=\"Logo Rocknrolla\">\n      <div class=\"title\">¡Factura Validada!</div>\n    </div>\n\n    <div class=\"description\">\n      Su Factura emitida a <strong>{{ $('Get PURCHASE ORDER').item.json.company_id[1] }}</strong> con los siguientes datos, fue validada exitosamente:\n    </div>\n\n    <div class=\"section-block\">\n      <div class=\"field-label\">Serie:</div>\n      <div>{{ $('DATA').item.json.serie }}</div>\n      <br>\n      <div class=\"field-label\">Número:</div>\n      <div>{{ $('DATA').item.json.Nro_Factura }}</div>\n      <br>\n      <div class=\"field-label\">Número Orden de Compra:</div>\n      <div>{{ $('DATA').item.json.Nro_Orden_Compra }}</div>\n    </div>\n\n    <div class=\"footer\">\n      <p>© 2025 Mundo Verde</p>\n    </div>\n  </div> </body>\n</html>"
+      },
+      "type": "n8n-nodes-base.html",
+      "typeVersion": 1.2,
+      "position": [
+        -6352,
+        -3600
+      ],
+      "id": "d29a6a00-8051-4141-8f9a-aede8acc28a7",
+      "name": "HTML Exito-Proveedor1"
+    },
+    {
+      "parameters": {
+        "html": "<!DOCTYPE html>\n<html lang=\"es\">\n<head>\n  <meta charset=\"UTF-8\">\n  <title>Validación Exitosa Usuario</title>\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n  <link href=\"https://fonts.googleapis.com/css?family=Poppins:400,600,800\" rel=\"stylesheet\">\n  <style>\n    body {\n      margin: 0; padding: 0; background-color: #f9f9f9;\n      font-family: 'Poppins', Arial, Helvetica, sans-serif;\n      -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%;\n    }\n    .container {\n      max-width: 700px; margin: 30px auto; background-color: #fff;\n      border-radius: 14px; box-shadow: 0 2px 12px rgba(0,0,0,0.1);\n      padding-bottom: 30px;\n    }\n    .header { padding: 30px; text-align: left; }\n    .logo { width: 120px; display: block; margin-bottom: 12px; border: 0; }\n    .title {\n      font-size: 24px; font-weight: 600; color: #151515;\n      margin: 10px 0; letter-spacing: -0.5px;\n    }\n    .description {\n      font-size: 15px; color: #555; text-align: justify; line-height: 1.5;\n    }\n    .section-block {\n      background-color: #f2f2f2; border-radius: 10px;\n      padding: 20px; margin-top: 20px;\n    }\n    .field-label { font-weight: 600; color: #000; font-size: 15px; }\n    \n    /* Botón compatible */\n    .button-container { text-align: center; margin-top: 26px; }\n    .button {\n      display: inline-block;\n      width: 250px;\n      padding: 14px 0;\n      background-color: #1E1665; /* Respaldo */\n      background: linear-gradient(90deg, #1E1665, #46AAE3);\n      color: #ffffff !important;\n      text-decoration: none;\n      border-radius: 10px;\n      font-size: 16px;\n      font-weight: 500;\n      text-align: center;\n    }\n    \n    .footer { text-align: center; margin-top: 30px; color: #151515; font-size: 14px; opacity: 0.7; }\n\n    @media (max-width: 650px) {\n      .container { margin: 10px; width: auto !important; }\n      .button { width: 100%; }\n    }\n  </style>\n</head>\n<body>\n  <div class=\"container\">\n    <div class=\"header\">\n      <img class=\"logo\" src=\"https://garooinc.com/assets/images/logo2.png\" alt=\"Logo Rocknrolla\">\n      <h1 class=\"title\">¡Hola {{ $('Get Correo de Usuario').item.json.name }}!</h1>\n      \n      <div class=\"description\">\n        Su factura con los siguientes datos fue validada exitosamente:\n      </div>\n\n      <div class=\"section-block\">\n        <div class=\"field-label\">Serie:</div>\n        <div>{{ $('DATA').item.json.serie }}</div>\n        <br>\n        <div class=\"field-label\">Número:</div>\n        <div>{{ $('DATA').item.json.Nro_Factura }}</div>\n        <br>\n        <div class=\"field-label\">Número Orden de Compra:</div>\n        <div>{{ $('DATA').item.json.Nro_Orden_Compra }}</div>\n      </div>\n\n      <div class=\"button-container\">\n        <a class=\"button\" href=\"https://mundoverdegt-test3-21352445.dev.odoo.com/web?debug=1#id={{ $json.id }}&cids=1&menu_id=124&action=244&model=account.move&view_type=form\" target=\"_blank\">\n          Revisar Factura\n        </a>\n      </div>\n\n      <div class=\"footer\">\n        <p>© 2025 Mundo Verde</p>\n      </div>\n    </div>\n  </div> </body>\n</html>"
+      },
+      "type": "n8n-nodes-base.html",
+      "typeVersion": 1.2,
+      "position": [
+        -6128,
+        -3792
+      ],
+      "id": "8f4b64ca-c5c5-478a-aa78-327d74e5d12d",
+      "name": "HTML Exito-Usuario1"
+    },
+    {
+      "parameters": {
+        "html": "<!DOCTYPE html>\n<html>\n<head>\n  <meta charset=\"UTF-8\">\n  <title>Usuario Error</title>\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n  <!-- Google Fonts: Poppins -->\n  <link href=\"https://fonts.googleapis.com/css?family=Poppins:400,600,800\" rel=\"stylesheet\">\n  <style>\n    body {\n      margin: 0;\n      padding: 0;\n      background-color: #f9f9f9;\n      font-family: 'Poppins', Arial, Helvetica, sans-serif;\n    }\n    .container {\n      max-width: 700px;\n      margin: 30px auto;\n      background-color: #fff;\n      border-radius: 14px;\n      box-shadow: 0 2px 12px #0001;\n      padding: 0 0 30px 0;\n    }\n    .header {\n      padding: 30px 30px 10px 30px;\n      text-align: start;\n      border-top-left-radius: 14px;\n      border-top-right-radius: 14px;\n      background: #fff;\n    }\n    .logo {\n      width: 120px;\n      margin-bottom: 12px;\n    }\n    .title {\n      font-size: 24px;\n      font-weight: 600;\n      color: #151515;\n      margin: 10px 0;\n      text-align: left;\n      letter-spacing: -0.5px;\n    }\n    .description {\n      margin: 18px 30px;\n      font-size: 15px;\n      color: #555;\n      text-align: justify;\n    }\n    .section-block {\n      background-color: #f2f2f2;\n      border-radius: 10px;\n      padding: 18px 30px 12px 30px;\n      margin: 22px 30px 0 30px;\n    }\n    .section-title {\n      font-size: 20px;\n      font-weight: 800;\n      color: #151515;\n      margin-top: 10px;\n      margin-bottom: 8px;\n      text-align: left;\n    }\n    .field-label {\n      font-weight: 600;\n      color: #000;\n      font-size: 15px;\n      letter-spacing: 0.1px;\n    }\n    .file-link {\n      display: block;\n      margin: 4px 0 10px 0;\n      word-break: break-all;\n      color: #48ABE4;\n      text-decoration: underline;\n      font-size: 14px;\n      transition: color .2s;\n    }\n    .file-link:hover {\n      color: #1E1665;\n    }\n    .button {\n      display: inline-block;\n      width: 90%;\n      max-width: 250px;\n      margin: 26px auto 0 auto;\n      padding: 12px 10px;\n      background: linear-gradient(90deg, #1E1665, #46AAE3);\n      color: #fff !important;\n      text-decoration: none;\n      border-radius: 10px;\n      font-size: 16px;\n      font-weight: 500;\n      text-align: center;\n      border: none;\n      box-shadow: 0 2px 6px #48abe440;\n      transition: background .2s;\n      cursor: pointer;\n    }\n    .button:hover {\n      background: linear-gradient(90deg, #46AAE3, #1E1665);\n    }\n    .footer {\n      text-align: center;\n      margin-top: 30px;\n      padding: 20px 0 0 0;\n      color: #151515;\n    }\n    .footer span {\n      font-size: 15px;\n      font-weight: 600;\n      opacity: .7;\n    }\n    @media (max-width: 650px) {\n      .container, .section-block {\n        margin: 6px;\n        padding: 15px !important;\n      }\n      .header, .section-block {\n        padding: 16px !important;\n      }\n      .button { width: 100%; }\n    }\n  </style>\n</head>\n<body>\n  <div class=\"container\">\n    <div class=\"header\">\n      <img class=\"logo\" src=\"https://garooinc.com/assets/images/logo2.png\" alt=\"Logo Rocknrolla\">\n      <div class=\"title\">¡Hola equipo Mundo verde!\n\n      </div>\n      <div class=\"description\">\n        Existió el siguiente problema al generar la factura: {{ $json.error.data.message }}\n        <br><br>\n        Datos de la factura:\n        <div class=\"section-block\">\n          <div class=\"field-label\">NIT:</div>\n          <div>{{ $('FORMULARIO').item.json.NIT }}</div>\n            <div class=\"\">\n            <div class=\"field-label\">Nombre Comercial:</div>\n            <div>{{ $('Loop Over Items').item.json.DatosEmision['dte:Emisor'].NombreComercial }}</div>\n            </div>\n            <div class=\"\">\n            <div class=\"field-label\">Razón Social:</div>\n            <div>{{ $('Loop Over Items').item.json.DatosEmision['dte:Emisor'].NombreEmisor }}</div>\n            </div>\n            <div class=\"\">\n            <div class=\"field-label\">Serie:</div>\n            <div>{{ $('FORMULARIO').item.json.Nro_Serie }}</div>\n            </div>\n            <div class=\"\">\n            <div class=\"field-label\">Número:</div>\n            <div>{{ $('FORMULARIO').item.json.Nro_Factura }}</div>\n            </div>\n            <div class=\"\">\n            <div class=\"field-label\">Número Orden de Compra:</div>\n            <div>{{ $('FORMULARIO').item.json.Nro_Orden }}</div>\n            </div>\n        </div>\n      </div>\n        <!-- <a class=\"button\" href=\"\" target=\"_blank\" style=\"align-items: center; justify-content: center; display: flex;\">Ir al panel</a> -->\n        <div class=\"footer\">\n        <p>© 2025 Mundo Verde</p>\n        </div>\n    </div>\n</body>\n</html>\n"
+      },
+      "type": "n8n-nodes-base.html",
+      "typeVersion": 1.2,
+      "position": [
+        -7696,
+        -3312
+      ],
+      "id": "82ae9d43-b119-4f39-8f47-39c4247ff3ff",
+      "name": "HTML Error-Usuario1"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "b93f00c9-00ef-402c-ab89-9d76bb7f0377",
+              "leftValue": "={{ $json.error.code }}",
+              "rightValue": "",
+              "operator": {
+                "type": "number",
+                "operation": "notExists",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -7920,
+        -3504
+      ],
+      "id": "2c875920-8721-48cd-885e-e1a3ea1cec93",
+      "name": "If NO ERROR1"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "33df5a0f-8517-420e-a293-6b96202ae2c4",
+              "leftValue": "={{ $('Get Correo de Usuario').item.json.id }}",
+              "rightValue": "",
+              "operator": {
+                "type": "number",
+                "operation": "exists",
+                "singleValue": true
+              }
+            },
+            {
+              "id": "1d718bd7-af48-48a0-aca7-febb7a0b4599",
+              "leftValue": "={{ $('Get PURCHASE ORDER').item.json.amount_total + $('TOTAL of UNTAXED AMOUNTS').item.json.total_tax_sin_iva }}",
+              "rightValue": "={{ $('DATA').item.json.total }}",
+              "operator": {
+                "type": "number",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -9040,
+        -3504
+      ],
+      "id": "01aff800-baf1-4ec6-bab0-527bf2948d0f",
+      "name": "If EXISTS y TOTALES SON IGUALES1"
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "contactId": "={{ $('Get PURCHASE ORDER').item.json.partner_id[0] }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.odoo",
+      "typeVersion": 1,
+      "position": [
+        -9920,
+        -3408
+      ],
+      "id": "97b6deb4-2816-431d-87ac-efa2d8212daa",
+      "name": "Get Correo de Proveedor",
+      "credentials": {
+        "odooApi": {
+          "id": "L54C0wh51BqmebUj",
+          "name": "Odoo Mundo Verde Prod"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "custom",
+        "customResource": "res.users",
+        "operation": "get",
+        "customResourceId": "={{ $('Get PURCHASE ORDER').item.json.user_id[0] }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.odoo",
+      "typeVersion": 1,
+      "position": [
+        -9760,
+        -3408
+      ],
+      "id": "dd5b11c5-1018-47e4-b48a-c69f33001ee3",
+      "name": "Get Correo de Usuario",
+      "credentials": {
+        "odooApi": {
+          "id": "L54C0wh51BqmebUj",
+          "name": "Odoo Mundo Verde Prod"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "445979d8-5264-439d-b8f8-3324f0440132",
+              "name": "Nro_Factura",
+              "value": "={{ $json.factura_mail.NRO_FACTURA }}",
+              "type": "string"
+            },
+            {
+              "id": "3e2c33bb-b625-4943-a416-3b5a61dff9a4",
+              "name": "Nro_Orden_Compra",
+              "value": "={{ $json.factura_mail.NRO_ORDEN_COMPRA }}",
+              "type": "string"
+            },
+            {
+              "id": "43014c82-50a3-4294-86f5-9377d7eddd86",
+              "name": "total",
+              "value": "={{ $json.factura_form.monto_total }}",
+              "type": "number"
+            },
+            {
+              "id": "a139e7eb-a9c8-4bca-90b5-1b704597dedd",
+              "name": "serie",
+              "value": "={{ $json.factura_mail.SERIE }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -10448,
+        -3408
+      ],
+      "id": "37625549-a0b1-4624-969f-a5f6d73206c6",
+      "name": "DATA"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $('Find Variables').item.json.url_odoo }}/jsonrpc",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"jsonrpc\": \"2.0\",\n  \"method\": \"call\",\n  \"params\": {\n    \"service\": \"common\",\n    \"method\": \"login\",\n    \"args\": [\n      \"{{ $('Find Variables').item.json.database.trim() }}\",\n      \"{{ $('Find Variables').item.json.usuario.trim() }}\",\n      \"{{ $('Find Variables').item.json.pass.trim() }}\"\n    ]\n  },\n  \"id\": 1\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -8816,
+        -3600
+      ],
+      "id": "191838c0-d524-42f5-bbf9-ec7a5f3f766a",
+      "name": "Auth en Odoo2"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $('Find Variables').item.json.url_odoo }}/jsonrpc",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"jsonrpc\": \"2.0\",\n  \"method\": \"call\",\n  \"params\": {\n    \"service\": \"object\",\n    \"method\": \"execute_kw\",\n    \"args\": [\n      \"{{ $('Find Variables').item.json.database }}\",\n      {{ $json.result }},\n      \"{{ $('Find Variables').item.json.pass }}\",\n      \"purchase.order\",\n      \"button_confirm\",\n      [[{{ $('Get PURCHASE ORDER').item.json.id }}]]\n    ]\n  },\n  \"id\": 3\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -8592,
+        -3600
+      ],
+      "id": "8d13f064-f150-490e-865f-268a95a0b8cb",
+      "name": "CONFIRMACION DE PURCHASE ORDER1"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "fdda2469-2b2c-4572-8dcd-ce66eb1f7c20",
+              "leftValue": "={{ $json.result }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -8368,
+        -3600
+      ],
+      "id": "48f04e95-be13-43cf-a8dd-da081a580750",
+      "name": "IF CONFIRMADA1"
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "metMtC8lCjihYXw2",
+          "mode": "list",
+          "cachedResultUrl": "/workflow/metMtC8lCjihYXw2",
+          "cachedResultName": "INGRESA CONECEPTO DETALLE FACTURA"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "res_id": "={{ $('Edit Fields2').item.json.res_id }}",
+            "id": "={{ $('Edit Fields2').item.json.id }}",
+            "id_orden_compra": "={{ $('Get PURCHASE ORDER').item.json.id }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "res_id",
+              "displayName": "res_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "number",
+              "removed": false
+            },
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "number",
+              "removed": false
+            },
+            {
+              "id": "id_orden_compra",
+              "displayName": "id_orden_compra",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "number",
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.2,
+      "position": [
+        -6128,
+        -3216
+      ],
+      "name": "Call INGRESA CONECEPTO DETALLE FACTURA1",
+      "id": "80e9e7cc-8a2d-4676-803e-0375ac0175b7",
+      "executeOnce": true,
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $('Get Correo de Usuario').item.json.email }}",
+        "subject": "=FACTURA PREVIAMENTE INGRESADA !!!",
+        "emailType": "text",
+        "message": "=LA ORDEN DE COMPRA \"{{ $('Get PURCHASE ORDER').item.json.name }}\" YA HA SIDO INGRESADA PREVIAMENTE AL SISTEMA.",
+        "options": {
+          "appendAttribution": false,
+          "ccList": "={{ $('Get Correo de Proveedor').item.json.email ? $('Get Correo de Proveedor').item.json.email : \"\" }}"
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        -9104,
+        -3040
+      ],
+      "id": "b47c565d-808f-42d0-9ca3-8ec03991a64b",
+      "name": "NOTIFICACION A USUARIO Y PROVEEDOR",
+      "webhookId": "db880570-d2fa-4883-9b30-6c58a0462ba4",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "H8Qx7NlrthXmHUiy",
+          "name": "Soporte Garoo"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "### Notificacion de correo al usuario y al proveedor en caso de que la factura haya sido ingresada anteriormente en el sistema.",
+        "height": 304,
+        "width": 304,
+        "color": 2
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -9200,
+        -3168
+      ],
+      "typeVersion": 1,
+      "id": "d6723ba4-b207-4ca0-9a46-62999a8d43a9",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "ceadbae4-7409-4038-b02f-d0487f187a52",
+              "leftValue": "={{ $('Get PURCHASE ORDER').item.json.invoice_status }}",
+              "rightValue": "invoiced",
+              "operator": {
+                "type": "string",
+                "operation": "notEquals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -9264,
+        -3408
+      ],
+      "id": "50cd2d36-c544-44e2-a4b3-f92e4e1a8dd3",
+      "name": "IF NO INGRESADA2"
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $('Get Correo de Usuario').item.json.email }}",
+        "subject": "=FACTURA CON ERROR !!!",
+        "emailType": "text",
+        "message": "=EL TOTAL LA FACTURA SERIE: {{ $('DATA').item.json.serie }} NRO: {{ $('DATA').item.json.Nro_Factura }}, NO COINCIDE CON EL TOTAL DE LA ORDEN DE COMPRA: {{ $('Get PURCHASE ORDER').item.json.name }}.",
+        "options": {
+          "appendAttribution": false,
+          "ccList": "={{ $('Get Correo de Proveedor').item.json.email ? $('Get Correo de Proveedor').item.json.email : \"\" }}"
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        -8640,
+        -3232
+      ],
+      "id": "d69ee2b8-6289-4414-9097-3d033b87b26c",
+      "name": "NOTIFICACION A USUARIO Y PROVEEDOR1",
+      "webhookId": "db880570-d2fa-4883-9b30-6c58a0462ba4",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "H8Qx7NlrthXmHUiy",
+          "name": "Soporte Garoo"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "### Notificacion de correo al usuario y al proveedor en caso de que no coinciden los TOTALES de la factura enviada",
+        "height": 288,
+        "width": 304,
+        "color": 2
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -8736,
+        -3328
+      ],
+      "typeVersion": 1,
+      "id": "e66f117e-a7e9-4412-b0b5-571c20e98d4a",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "collection": "VARIABLES",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.mongoDb",
+      "typeVersion": 1.2,
+      "position": [
+        -10320,
+        -3408
+      ],
+      "id": "cee5b836-5bd2-476a-b4c8-5df043fe77af",
+      "name": "Find Variables",
+      "credentials": {
+        "mongoDb": {
+          "id": "wwOL6pf5hqG6FrrM",
+          "name": "MongoDB Jorge de Garoo"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "### Notificacion de correo al usuario porqu la Orden de Compra no ha sido confirmada",
+        "height": 272,
+        "width": 272,
+        "color": 2
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -8176,
+        -3280
+      ],
+      "typeVersion": 1,
+      "id": "124394cf-29a2-4983-ac75-6ad203bcde8b",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $('Get Correo de Usuario').item.json.email }}",
+        "subject": "=FACTURA NO CONFIRMADA !!!",
+        "emailType": "text",
+        "message": "=LA ORDEN DE COMPRA: {{ $('Get PURCHASE ORDER').item.json.name }} NO HA SIDO CONFIRMADA y EL PROVEEDOR ENVIO FACTURA CON SERIE: {{ $('DATA').item.json.serie }} Y NRO: {{ $('DATA').item.json.Nro_Factura }}",
+        "options": {
+          "appendAttribution": "={{ false }}"
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        -8080,
+        -3184
+      ],
+      "id": "b4ded122-c738-4791-90f3-4be68cd7c4ae",
+      "name": "NOTIFICACION A USUARIO",
+      "webhookId": "db880570-d2fa-4883-9b30-6c58a0462ba4",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "H8Qx7NlrthXmHUiy",
+          "name": "Soporte Garoo"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "\n    const rawId = $('Start').first().json.factura_form._id;\n\n    const cleanedId = rawId.replace(/^\"(.*)\"$/, '$1');\n    return {\n        json: {\n            id: cleanedId,\n            confirmed: true\n        }\n    };"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -8144,
+        -3888
+      ],
+      "id": "c3f53e16-1242-4529-bea8-0cc9e132ef1d",
+      "name": "Database ID FORM"
+    },
+    {
+      "parameters": {
+        "jsCode": "\n    const rawId = $('Start').first().json.factura_mail._id;\n\n    const cleanedId = rawId.replace(/^\"(.*)\"$/, '$1');\n    return {\n        json: {\n            id: cleanedId,\n            confirmed: true\n        }\n    };"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -8144,
+        -3696
+      ],
+      "id": "abca7c41-07a0-4923-8a93-5ee7d8f406a9",
+      "name": "Database ID FORM1"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "collection": "factura",
+        "fields": "confirmed",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.mongoDb",
+      "typeVersion": 1.2,
+      "position": [
+        -7920,
+        -3696
+      ],
+      "id": "3e7ac0ef-d972-4d43-9c09-2a730e176d22",
+      "name": "Update Correo",
+      "credentials": {
+        "mongoDb": {
+          "id": "wwOL6pf5hqG6FrrM",
+          "name": "MongoDB Jorge de Garoo"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "collection": "formulario",
+        "fields": "confirmed",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.mongoDb",
+      "typeVersion": 1.2,
+      "position": [
+        -7920,
+        -3888
+      ],
+      "id": "582ba588-d29a-48d2-a8a4-607dcb1325cb",
+      "name": "Update Form",
+      "credentials": {
+        "mongoDb": {
+          "id": "wwOL6pf5hqG6FrrM",
+          "name": "MongoDB Jorge de Garoo"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $('Get Correo de Usuario').item.json.email }}",
+        "subject": "PROVEEDOR NO HA SIDO NOTIFICADO !!!",
+        "emailType": "text",
+        "message": "=El proveedor {{ $('Get Correo de Proveedor').item.json.complete_name }} no posee un correo asignado en el Sistema, por favor ingresarlo y notificarle lo más pronto posible.",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        -5840,
+        -3488
+      ],
+      "id": "7ceb4302-0e56-4985-b712-5cb0d5668340",
+      "name": "CORREO USUARIO VALIDACION 2",
+      "webhookId": "6fd9a0f6-0343-44b4-a148-0acd5dec7140",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "H8Qx7NlrthXmHUiy",
+          "name": "Soporte Garoo"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "4c7b4a7b-1581-4194-91ab-8d6be10e69ad",
+              "leftValue": "={{ $('Get Correo de Proveedor').item.json.email.toBoolean() }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        -6144,
+        -3600
+      ],
+      "id": "f3ca905e-363b-43b0-bf3f-515ef4f5f090",
+      "name": "If CORREO EXISTE"
+    },
+    {
+      "parameters": {
+        "resource": "custom",
+        "customResource": "purchase.order",
+        "operation": "getAll",
+        "limit": 1,
+        "options": {},
+        "filterRequest": {
+          "filter": [
+            {
+              "fieldName": "name",
+              "value": "={{ $('DATA').item.json.Nro_Orden_Compra }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.odoo",
+      "typeVersion": 1,
+      "position": [
+        -10080,
+        -3408
+      ],
+      "id": "c6c093f4-7e57-4919-8628-3dbcb1a3ca2b",
+      "name": "Get PURCHASE ORDER",
+      "credentials": {
+        "odooApi": {
+          "id": "L54C0wh51BqmebUj",
+          "name": "Odoo Mundo Verde Prod"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// 1. Obtenemos la lista de impuestos\nconst untaxed_amount_list = $('Get PURCHASE ORDER').first().json.tax_totals.groups_by_subtotal['Untaxed Amount'];\n\nlet total_tax_amount = 0;\n\n// 2. Verificamos que la lista exista\nif (untaxed_amount_list && Array.isArray(untaxed_amount_list)) {\n  for (const item of untaxed_amount_list) {\n    \n    // 3. Condición: Sumar solo si el nombre NO es \"IVA\"\n    if (item.tax_group_name !== \"IVA\") {\n      total_tax_amount += item.tax_group_amount;\n    }\n    \n  }\n}\n\n// 4. Retornamos el total formateado\nreturn {\n  total_tax_sin_iva: parseFloat(total_tax_amount.toFixed(2))*-1\n};"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -9520,
+        -3408
+      ],
+      "id": "0e8710f5-4240-4f6b-b665-d8de362ef6bb",
+      "name": "TOTAL of UNTAXED AMOUNTS"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Start": {
+      "main": [
+        [
+          {
+            "node": "DATA",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "CREAR JOURNAL ENTRY1": {
+      "main": [
+        [
+          {
+            "node": "If NO ERROR1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update JOURNAL ENTRY1": {
+      "main": [
+        [
+          {
+            "node": "Get ACCESS URL1",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "HTML Exito-Proveedor1",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Edit Fields2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Download PDF1": {
+      "main": [
+        [
+          {
+            "node": "Extract from File2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create Attachment2": {
+      "main": [
+        [
+          {
+            "node": "Merge1",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Extract from File2": {
+      "main": [
+        [
+          {
+            "node": "Create Attachment2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create Attachment3": {
+      "main": [
+        [
+          {
+            "node": "Merge1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields2": {
+      "main": [
+        [
+          {
+            "node": "Call Mundo verde - Asignar Cuenta Analitica1",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Call INGRESA CONECEPTO DETALLE FACTURA1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Download XML1": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge1": {
+      "main": [
+        [
+          {
+            "node": "Update JOURNAL ENTRY1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript1": {
+      "main": [
+        [
+          {
+            "node": "Extract from File3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract from File3": {
+      "main": [
+        [
+          {
+            "node": "Create Attachment3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get ACCESS URL1": {
+      "main": [
+        [
+          {
+            "node": "HTML Exito-Usuario1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTML Exito-Proveedor1": {
+      "main": [
+        [
+          {
+            "node": "If CORREO EXISTE",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTML Exito-Usuario1": {
+      "main": [
+        [
+          {
+            "node": "CORREO USUARIO VALIDACION1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTML Error-Usuario1": {
+      "main": [
+        [
+          {
+            "node": "CORREO USUARIO ERROR1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If NO ERROR1": {
+      "main": [
+        [
+          {
+            "node": "Download PDF1",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Download XML1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "HTML Error-Usuario1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If EXISTS y TOTALES SON IGUALES1": {
+      "main": [
+        [
+          {
+            "node": "Auth en Odoo2",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "NOTIFICACION A USUARIO Y PROVEEDOR1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Correo de Proveedor": {
+      "main": [
+        [
+          {
+            "node": "Get Correo de Usuario",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Correo de Usuario": {
+      "main": [
+        [
+          {
+            "node": "TOTAL of UNTAXED AMOUNTS",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "DATA": {
+      "main": [
+        [
+          {
+            "node": "Find Variables",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Auth en Odoo2": {
+      "main": [
+        [
+          {
+            "node": "CONFIRMACION DE PURCHASE ORDER1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "CONFIRMACION DE PURCHASE ORDER1": {
+      "main": [
+        [
+          {
+            "node": "IF CONFIRMADA1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "IF CONFIRMADA1": {
+      "main": [
+        [
+          {
+            "node": "CREAR JOURNAL ENTRY1",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Database ID FORM",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Database ID FORM1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "NOTIFICACION A USUARIO",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Call Mundo verde - Asignar Cuenta Analitica1": {
+      "main": [
+        []
+      ]
+    },
+    "IF NO INGRESADA2": {
+      "main": [
+        [
+          {
+            "node": "If EXISTS y TOTALES SON IGUALES1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "NOTIFICACION A USUARIO Y PROVEEDOR",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Find Variables": {
+      "main": [
+        [
+          {
+            "node": "Get PURCHASE ORDER",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Database ID FORM": {
+      "main": [
+        [
+          {
+            "node": "Update Form",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Database ID FORM1": {
+      "main": [
+        [
+          {
+            "node": "Update Correo",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If CORREO EXISTE": {
+      "main": [
+        [
+          {
+            "node": "CORREO PROVEEDOR VALIDACION1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "CORREO USUARIO VALIDACION 2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get PURCHASE ORDER": {
+      "main": [
+        [
+          {
+            "node": "Get Correo de Proveedor",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "TOTAL of UNTAXED AMOUNTS": {
+      "main": [
+        [
+          {
+            "node": "IF NO INGRESADA2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": false,
+    "timeSavedMode": "fixed",
+    "callerPolicy": "workflowsFromSameOwner",
+    "errorWorkflow": "wv2-6zOqoyZTlgKRvmnxr"
+  },
+  "versionId": "1c90fbf7-39bf-4a34-9a8f-a092a0dc050a",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "d4ab02fb1ef8b6ca2c1c5c1f280ee696b0514d7d92cee5fb0da1784dbe393998"
+  },
+  "id": "wzU6DYI6ZbHyGwWl",
+  "tags": [
+    {
+      "updatedAt": "2026-01-08T01:09:04.954Z",
+      "createdAt": "2026-01-08T01:09:04.954Z",
+      "id": "5STmV35Tlrs8TpZT",
+      "name": "✅COMPLETED"
+    }
+  ]
+}

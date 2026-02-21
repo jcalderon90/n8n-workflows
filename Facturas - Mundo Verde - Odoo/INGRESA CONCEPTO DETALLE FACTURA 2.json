@@ -1,0 +1,286 @@
+{
+  "name": "INGRESA CONCEPTO DETALLE FACTURA 2",
+  "nodes": [
+    {
+      "parameters": {
+        "workflowInputs": {
+          "values": [
+            {
+              "name": "lista_detalle_factura",
+              "type": "array"
+            },
+            {
+              "name": "id_solicitud_servicio",
+              "type": "number"
+            }
+          ]
+        }
+      },
+      "id": "a310527a-8d38-477c-a594-4c412bccefbd",
+      "typeVersion": 1.1,
+      "name": "Start",
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "position": [
+        5344,
+        624
+      ]
+    },
+    {
+      "parameters": {
+        "resource": "custom",
+        "customResource": "service.list",
+        "operation": "getAll",
+        "returnAll": true,
+        "options": {},
+        "filterRequest": {
+          "filter": [
+            {
+              "fieldName": "service_id",
+              "value": "={{ Number($('ID SOLICITUD Y LISTA de Elementos').item.json.id_solicitud_servicio) }}"
+            },
+            {
+              "fieldName": "product_id",
+              "value": "={{ Number($json.product_id[0]) }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.odoo",
+      "typeVersion": 1,
+      "position": [
+        6240,
+        544
+      ],
+      "id": "5fc3f9a5-8433-4ad2-bab8-790fdd951271",
+      "name": "DETALLES SOLICITUD",
+      "credentials": {
+        "odooApi": {
+          "id": "NSH22REBW9N7NsMh",
+          "name": "Odoo Mundo Verde"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "lista_detalle_factura",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        5792,
+        624
+      ],
+      "id": "045facaa-42b0-48f6-b32b-868e3fdd5a95",
+      "name": "Split Out"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        6016,
+        624
+      ],
+      "id": "61175b7c-16e1-44cd-996f-f8f25cba8266",
+      "name": "Loop Over Items"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "978537a0-ffd0-485c-8737-1f4be460eca4",
+              "name": "id_solicitud_servicio",
+              "value": "={{ $json.id_solicitud_servicio }}",
+              "type": "number"
+            },
+            {
+              "id": "91c7d589-87ae-48a2-940c-0c0c75b20ae2",
+              "name": "lista_detalle_factura",
+              "value": "={{ $json.lista_detalle_factura }}",
+              "type": "array"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        5568,
+        624
+      ],
+      "id": "cb45e55a-09b6-461a-b8ff-2fff3b0ea0b3",
+      "name": "ID SOLICITUD Y LISTA de Elementos"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "02bd278a-5576-400b-94a3-8b70caecaf00",
+              "name": "budget_id",
+              "value": "={{ $json.budget_id[0] }}",
+              "type": "number"
+            },
+            {
+              "id": "2b8c3b43-16a0-4707-80e2-78b6c1166f30",
+              "name": "bim_concepts_id",
+              "value": "={{ $json.bim_concepts_id[0] }}",
+              "type": "number"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        6464,
+        544
+      ],
+      "id": "a17d5588-6ca3-4b74-a963-c5aa752fd54b",
+      "name": "data"
+    },
+    {
+      "parameters": {
+        "resource": "custom",
+        "customResource": "account.move.line",
+        "operation": "update",
+        "customResourceId": "={{ $('Loop Over Items').item.json.id }}",
+        "fieldsToCreateOrUpdate": {
+          "fields": [
+            {
+              "fieldName": "budget_id",
+              "fieldValue": "={{ $json.budget_id }}"
+            },
+            {
+              "fieldName": "concept_id",
+              "fieldValue": "={{ $json.bim_concepts_id }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.odoo",
+      "typeVersion": 1,
+      "position": [
+        6688,
+        624
+      ],
+      "id": "4c01ee42-fd3f-49f0-92fe-e40c3f3b703b",
+      "name": "Update Detalle Factura",
+      "credentials": {
+        "odooApi": {
+          "id": "NSH22REBW9N7NsMh",
+          "name": "Odoo Mundo Verde"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Start": {
+      "main": [
+        [
+          {
+            "node": "ID SOLICITUD Y LISTA de Elementos",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split Out": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items": {
+      "main": [
+        [],
+        [
+          {
+            "node": "DETALLES SOLICITUD",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "ID SOLICITUD Y LISTA de Elementos": {
+      "main": [
+        [
+          {
+            "node": "Split Out",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "DETALLES SOLICITUD": {
+      "main": [
+        [
+          {
+            "node": "data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "data": {
+      "main": [
+        [
+          {
+            "node": "Update Detalle Factura",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update Detalle Factura": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": false,
+    "timeSavedMode": "fixed",
+    "callerPolicy": "workflowsFromSameOwner",
+    "errorWorkflow": "wv2-6zOqoyZTlgKRvmnxr"
+  },
+  "versionId": "82c77cc6-dec4-4447-bc8f-2b0a0cf30244",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "d4ab02fb1ef8b6ca2c1c5c1f280ee696b0514d7d92cee5fb0da1784dbe393998"
+  },
+  "id": "EhwYWvGG08HvhjAm",
+  "tags": [
+    {
+      "updatedAt": "2026-01-08T01:09:04.954Z",
+      "createdAt": "2026-01-08T01:09:04.954Z",
+      "id": "5STmV35Tlrs8TpZT",
+      "name": "✅COMPLETED"
+    }
+  ]
+}
