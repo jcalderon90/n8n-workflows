@@ -21,7 +21,7 @@
     {
       "parameters": {
         "schemaType": "manual",
-        "inputSchema": "{\n  \"type\": \"object\",\n  \"properties\": {\n    \"response\": {\n      \"type\": \"string\",\n      \"description\": \"Mensaje natural generado por el asistente, sin palabras clave como 'RESERVA', etiquetas ni frases genéricas.\"\n    },\n    \"parameters\": {\n      \"type\": \"object\",\n      \"properties\": {\n        \"numero_habitaciones\": {\n          \"type\": [\"string\", \"null\"],\n          \"pattern\": \"^[1-9]\\\\d*$\",\n          \"description\": \"Número entero de habitaciones (como cadena). Puede ser null o vacío, pero si se da, debe ser un entero positivo como string.\"\n        },\n        \"intencion_compra\": {\n          \"type\": [\"string\", \"null\"],\n          \"enum\": [null, \"V\", \"I\"],\n          \"description\": \"V = Vivir, I = Invertir. Puede ser null.\"\n        },\n        \"metodo_contacto_pref\": {\n          \"type\": [\"string\", \"null\"],\n          \"enum\": [null, \"2\", \"3\", \"4\", \"5\"],\n          \"description\": \"2 = Correo, 3 = Llamada, 4 = WhatsApp, 5 = Cualquier forma. Puede ser null.\"\n        },\n        \"fecha_hora\": {\n          \"type\": [\"string\", \"null\"],\n          \"pattern\": \"^\\\\d{4}-(?:0[1-9]|1[0-2])-(?:0[1-9]|[12]\\\\d|3[01])T(?:[01]\\\\d|2[0-3]):[0-5]\\\\d$\",\n          \"description\": \"Fecha y hora en formato ISO (YYYY-MM-DDTHH:MM), zona horaria America/Guatemala. Puede ser null o vacío, pero si se proporciona, debe cumplir el formato.\"\n        }\n      },\n      \"required\": [\n        \"numero_habitaciones\",\n        \"intencion_compra\",\n        \"metodo_contacto_pref\",\n        \"fecha_hora\",\n        \"estado_civil\"\n      ],\n      \"additionalProperties\": false\n    }\n  },\n  \"required\": [\"response\", \"parameters\"],\n  \"additionalProperties\": false\n}",
+        "inputSchema": "{\n  \"type\": \"object\",\n  \"properties\": {\n    \"response\": {\n      \"type\": \"string\",\n      \"description\": \"Mensaje natural al usuario.\"\n    },\n    \"parameters\": {\n      \"type\": \"object\",\n      \"properties\": {\n        \"tipo_agendamiento\": {\n          \"type\": \"string\",\n          \"enum\": [\"cita\", \"llamada\"],\n          \"description\": \"Tipo de reunión a agendar.\"\n        },\n        \"fecha_hora\": {\n          \"type\": [\"string\", \"null\"],\n          \"pattern\": \"^\\\\d{4}-(?:0[1-9]|1[0-2])-(?:0[1-9]|[12]\\\\d|3[01])T(?:[01]\\\\d|2[0-3]):[0-5]\\\\d$\",\n          \"description\": \"Formato ISO YYYY-MM-DDTHH:MM\"\n        },\n        \"numero_habitaciones\": {\n          \"type\": [\"string\", \"null\"],\n          \"pattern\": \"^[1-9]\\\\d*$\",\n          \"description\": \"Solo requerido si es 'cita'. Null si es 'llamada'.\"\n        },\n        \"intencion_compra\": {\n          \"type\": [\"string\", \"null\"],\n          \"enum\": [null, \"V\", \"I\"],\n          \"description\": \"V = Vivir, I = Invertir\"\n        },\n        \"metodo_contacto_pref\": {\n          \"type\": [\"string\", \"null\"],\n          \"enum\": [null, \"2\", \"3\", \"4\", \"5\"],\n          \"description\": \"2=Correo, 3=Llamada, 4=WhatsApp, 5=Cualquiera\"\n        }\n      },\n      \"required\": [\n        \"tipo_agendamiento\",\n        \"fecha_hora\",\n        \"metodo_contacto_pref\"\n      ],\n      \"additionalProperties\": false\n    }\n  },\n  \"required\": [\"response\", \"parameters\"]\n}",
         "autoFix": true
       },
       "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
@@ -63,7 +63,7 @@
             {
               "id": "d4a17054-737a-4177-99ca-40b783ae2d11",
               "name": "rol",
-              "value": "=Tu nombre es Sof-IA, la agente virtual oficial del proyecto Parque Vista verde, en Z15 Guatemala. \n\nDebes comunicarte siempre utilizando un español neutro. Evita estrictamente el voseo. Usa el 'tuteo' estándar: en lugar de decir 'querés', di 'quieres'; en lugar de 'contame', di 'cuéntame'; en lugar de 'decime', di 'dime'. No utilices la palabra 'vos', utiliza siempre 'tú' o simplemente omite el pronombre. Preséntate siempre como Sof-IA, la agente virtual oficial de Parque Vista Verde, si es la primera interacción con el usuario.\n\n- Eres un asistente de IA multilingüe y servicial. Tu regla principal es detectar automáticamente el idioma del mensaje del usuario y responder siempre, y sin excepción, en ese mismo idioma. No uses otro idioma.\n\nTu misión es asesorar y guiar a los prospectos hacia su nueva forma de vivir. \n\nEstas hablando con una persona llamada: {{ $('PARSE Body').item.json.current_body.name }}\n\n\n## Personalidad y Tono\n- Hablas como una experta en bienes raíces siempre eres muy amable y cordial, nunca robótica. \n- Eres profesional, cercana y orientado al acompañamiento. \n- Usas un lenguaje fresco, natural y contemporáneo.\n- Transmites conocimiento profundo del proyecto con profesionalismo.\n- Enfatizas experiencias y emociones, no solo características técnicas.\n- Respondes en el idioma en el que te están hablando.\n\nLa página web de Parque Vista Verde: https://parquevistaverde.com.gt/\n",
+              "value": "=### ROLE ###\nEres Sof-IA, la agente virtual oficial del proyecto Parque Vista Verde, en Z15 Guatemala.\nNUNCA te presentes. Eres un agente dentro de un flujo continuo; el usuario ya conoce tu identidad.\n\n### IDIOMA Y TONO ###\n- DETECCIÓN DE IDIOMA: Detecta automáticamente el idioma del usuario y responde SIEMPRE en ese mismo idioma.\n- REGLA ESPAÑOL: Si el usuario escribe en español, usa estrictamente español neutro. \n  - PROHIBIDO el voseo (no uses \"vos\", \"querés\", \"contame\", \"decime\").\n  - USA el tuteo estándar (\"tú\", \"quieres\", \"cuéntame\", \"dime\") o omite el pronombre.\n- TONO: Experta en bienes raíces, amable, cordial, nunca robótica. Profesional, cercana y orientada al acompañamiento.\n- ESTILO: Lenguaje fresco, natural y contemporáneo. Enfatiza experiencias y emociones, no solo características técnicas.\n\n### CONTEXTO DEL USUARIO ###\n- NOMBRE: {{ $('PARSE Body').item.json.current_body.name }}\n- WEB OFICIAL: https://parquevistaverde.com.gt/\n\n### MISIÓN ###\nAsesorar y guiar a los prospectos hacia su nueva forma de vivir en Parque Vista Verde.\n- Usa el conocimiento profundo del proyecto con profesionalismo.",
               "type": "string"
             }
           ]
@@ -73,7 +73,7 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        -19696,
+        -19568,
         1744
       ],
       "id": "2540c9cc-3571-4ca4-a519-ffc2dd3194a1",
@@ -94,7 +94,7 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "typeVersion": 1.2,
       "position": [
-        -19968,
+        -19760,
         1968
       ],
       "id": "5978bfd6-1175-4c36-942b-a86696630c3e",
@@ -132,9 +132,9 @@
       "parameters": {
         "model": {
           "__rl": true,
-          "value": "gpt-5.2",
+          "value": "gpt-5-mini",
           "mode": "list",
-          "cachedResultName": "gpt-5.2"
+          "cachedResultName": "gpt-5-mini"
         },
         "options": {}
       },
@@ -212,9 +212,9 @@
       "parameters": {
         "model": {
           "__rl": true,
-          "value": "gpt-4o-mini",
+          "value": "gpt-4.1-mini",
           "mode": "list",
-          "cachedResultName": "gpt-4o-mini"
+          "cachedResultName": "gpt-4.1-mini"
         },
         "options": {}
       },
@@ -722,16 +722,15 @@
       "parameters": {
         "promptType": "define",
         "text": "={{ $json.input }}",
-        "hasOutputParser": true,
         "options": {
-          "systemMessage": "=Eres un agente JUEZ que forma parte de un flujo compuesto por otros agentes. \n\nEl último mensaje del usuario: \n{{ \n  $('user to use').item.json._id\n  ? \"$('Find user').item.json.last_message\"\n  : \"\"\n}}\n\n\nLa última respuesta del agente encargado fue: \n{{ \n  $('user to use').item.json._id\n  ? \"$('Find user').item.json.last_agent_message\"\n  : \"\"\n}}\n\n\ninstruction: |\n  Tu tarea es clasificar el mensaje del usuario en UNA de estas dos categorías:\n  - RESERVA → Todo lo relacionado con agendar citas, visitas o reservas, excepto llamadas. Para esto también chequea el último mensaje más arriba, el cual puede indicar si se encuentra ya en proceso de reserva. Proceso de reserva puedo ser cuando el agente esta solictando datos como estado civil, numero de habitaciones, tipo de contacto preferido, si es para vivir o invertir.\n\n  - CONVERSACION → Todo lo demás: saludos, amenidades, ubicación, cotizaciones, redes sociales, mascotas, llamadas.\n\npriority_rules: |\n  - Si el mensaje contiene palabras como “cita”, “visita”, “reserva”, clasifica como RESERVA.\n  - Si no aplica ninguna de las anteriores, clasifica como CONVERSACION.\n  - Prioridad: RESERVA > CONVERSACION.\n\noutput: |\n  Devuelve SOLO una palabra en mayúsculas:\n  RESERVA o CONVERSACION.\n  Sin comillas, sin puntos, sin explicación ni texto adicional."
+          "systemMessage": "=Eres un agente JUEZ. Tu ÚNICA función es clasificar mensajes en RESERVA o CONVERSACION.\n\n# CONTEXTO\nMensaje usuario: {{ $('user to use').item.json._id ? $('Find user').item.json.last_message : \"\" }}\nÚltima respuesta agente: {{ $('user to use').item.json._id ? $('Find user').item.json.last_agent_message : \"\" }}\n\n# CLASIFICACIÓN\n\nRESERVA → Si el usuario:\n- Acepta cita/llamada (\"si\", \"ok\", \"perfecto\", \"me interesa\", \"dale\", \"bueno\", \"sí\")\n- Menciona fecha/hora (\"mañana\", \"3pm\", \"lunes\", \"viernes\", \"10:00\", \"esta semana\")\n- Pide disponibilidad (\"¿tienen hora?\", \"¿cuándo puedo?\", \"¿qué días?\")\n- Usa: \"agendar\", \"reservar\", \"programar\", \"coordinar\", \"cita\", \"llamada\", \"visita\"\n- Responde mientras el agente pide datos de reserva (habitaciones, intención, contacto, fecha)\n- Da datos para agendar (fecha, hora, preferencias)\n\nCONVERSACION → Todo lo demás:\n- Preguntas (precios, amenidades, ubicación, mascotas, políticas, información)\n- Saludos, despedidas, gracias (\"hola\", \"buenas\", \"gracias\", \"adiós\")\n- Rechazos (\"no\", \"no gracias\", \"más adelante\", \"no me interesa\", \"luego\")\n- Dudas (\"déjame pensar\", \"¿qué requisitos?\", \"¿qué documentos?\")\n\n# REGLAS CRÍTICAS\n1. Si el agente está pidiendo datos de reserva → RESERVA\n2. Si hay CTA previo y usuario dice \"si/ok\" → RESERVA\n3. Si hay ambigüedad o duda → CONVERSACION\n4. NUNCA devuelvas otra palabra que no sea RESERVA o CONVERSACION\n\n# VALIDACIÓN DE SALIDA\n- SOLO devuelve: RESERVA o CONVERSACION\n- MAYÚSCULAS completas\n- Sin comillas, sin puntos, sin espacios\n- Sin explicaciones, sin texto adicional\n- Si tienes duda → CONVERSACION\n\n# EJEMPLOS\n\"¿aceptan mascotas?\" → CONVERSACION\n\"si\" (con CTA antes) → RESERVA\n\"si\" (sin CTA antes) → CONVERSACION\n\"mañana a las 3\" → RESERVA\n\"¿tienen hora el viernes?\" → RESERVA\n\"me interesa una llamada\" → RESERVA\n\"quiero agendar\" → RESERVA\n\"no quiero\" → CONVERSACION\n\"¿precios?\" → CONVERSACION\n\"hola\" → CONVERSACION\n\"gracias\" → CONVERSACION\n\"más adelante\" → CONVERSACION\n\n# SALIDA OBLIGATORIA\nDevuelve EXACTAMENTE una palabra: RESERVA o CONVERSACION\nCualquier otro formato romperá el sistema."
         }
       },
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 2,
       "position": [
-        -20288,
-        1760
+        -20336,
+        1744
       ],
       "id": "03dc5e6a-1da3-4b8a-b151-e869f0eb7b32",
       "name": "JUDGE"
@@ -752,8 +751,8 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "typeVersion": 1.2,
       "position": [
-        -20288,
-        1984
+        -20336,
+        1968
       ],
       "id": "1daa260b-439e-469f-94f4-bc77a2eb9fc8",
       "name": "OpenAI Chat Model",
@@ -766,31 +765,17 @@
     },
     {
       "parameters": {
-        "schemaType": "manual",
-        "inputSchema": "{\n  \"type\": \"string\",\n  \"enum\": [\"RESERVA\", \"TECNICA\", \"CONVERSACION\"],\n  \"description\": \"Clasificación final del mensaje.\"\n}"
-      },
-      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
-      "typeVersion": 1.3,
-      "position": [
-        -20160,
-        1984
-      ],
-      "id": "3a6f1a5d-568d-435d-8179-4ebf34cf231f",
-      "name": "Structured Output Parser1"
-    },
-    {
-      "parameters": {
-        "text": "={{ $('JOINING RESPONSE').item.json.MESSAGE }}",
+        "text": "={{ $('INPUT1').isExecuted ? $('INPUT1').item.json.input : $('INPUT').item.json.input }}",
         "schemaType": "manual",
         "inputSchema": "{\n  \"type\": \"object\",\n  \"properties\": {\n    \"schedule_interest\": {\n      \"type\": \"string\",\n      \"enum\": [\"0\", \"1\"],\n      \"description\": \"Indica si el mensaje muestra interés o curiosidad en un apartamento: '0' cuando no muestra interés, '1' para cuando si muestra interés o curiosidad.\"\n    }\n  },\n  \"required\": [\"schedule_interest\"],\n  \"additionalProperties\": false\n}",
         "options": {
-          "systemPromptTemplate": "Eres un algoritmo de extracción experto.  \nSolo extrae información relevante del texto.\n\nPara el campo \"schedule_interest\": si el mensaje muestra interés o curiosidad en un apartamento, en los métodos de pago, en el proceso de compra, o en hacer una visita: pon '0' cuando no muestra interés, pon '1' para cuando si muestra interés o curiosidad."
+          "systemPromptTemplate": "=Eres un algoritmo de extracción experto.  \nSolo extrae información relevante del texto.\n\nPara el campo \"schedule_interest\": si el mensaje muestra interés o curiosidad en un apartamento, en los métodos de pago, en el proceso de compra, o en hacer una visita: pon '0' cuando no muestra interés, pon '1' para cuando si muestra interés o curiosidad."
         }
       },
       "type": "@n8n/n8n-nodes-langchain.informationExtractor",
       "typeVersion": 1.2,
       "position": [
-        -20000,
+        -19840,
         1744
       ],
       "id": "6ac2fad0-b39d-4fea-b3d1-0cc0c1918acf",
@@ -813,7 +798,7 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        -19520,
+        -19408,
         1744
       ],
       "id": "3de35d17-35a3-4abb-843b-3354eb01fc50",
@@ -828,7 +813,7 @@
       "type": "n8n-nodes-base.mongoDb",
       "typeVersion": 1.2,
       "position": [
-        -19376,
+        -19248,
         1744
       ],
       "id": "f9d74d7c-5dac-4726-bcde-e9c506dac8c6",
@@ -855,7 +840,7 @@
                 },
                 "conditions": [
                   {
-                    "leftValue": "={{ $('JUDGE').item.json.output }}",
+                    "leftValue": "={{ $('PARSE JUEZ RESPONSE').item.json.clasificacion }}",
                     "rightValue": "RESERVA",
                     "operator": {
                       "type": "string",
@@ -880,7 +865,7 @@
                 "conditions": [
                   {
                     "id": "983cf74f-8a03-4883-9fad-c9e7acfc48ee",
-                    "leftValue": "={{ $('JUDGE').item.json.output }}",
+                    "leftValue": "={{ $('PARSE JUEZ RESPONSE').item.json.clasificacion }}",
                     "rightValue": "CONVERSACION",
                     "operator": {
                       "type": "string",
@@ -901,7 +886,7 @@
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3.2,
       "position": [
-        -19200,
+        -19072,
         1744
       ],
       "id": "a603f2cc-9dbb-4a05-a166-ded7ba6c67c1",
@@ -913,7 +898,7 @@
         "text": "={{ $('JOINING RESPONSE').item.json.MESSAGE }}",
         "hasOutputParser": true,
         "options": {
-          "systemMessage": "=# ================================================\n# Zona horaria: America/Guatemala (UTC-6)\n# Fecha actual: {{ $now.format('yyyy-MM-dd') }}\n# ================================================\n\nobjetivo: >\n  Debes recopilar toda la información necesaria para agendar una cita con el cliente, NUNCA dices que la cita fue agendada hasta tener todos los datos.\n  No puede finalizar si falta algún campo obligatorio.\n  Los datos deben solicitarse estrictamente uno por uno, en orden secuencial.\n\n## Personalidad y Tono\n- Hablas como una amiga experta en bienes raíces: amable, cordial y segura de lo que dices.\n- Tu lenguaje es fresco, natural y contemporáneo.\n- Respondes siempre en el mismo idioma que usa el usuario.\n- No usas expresiones robóticas ni repetitivas.\n\ndisponibilidad:\n  - lunes_a_domingo: \"10:00 a 19:00\"\n\ndatos_obligatorios:\n  - fecha_hora:\n      tipo: string\n      validacion: \"Interpreta la fecha proporcionada por el usuario en lenguaje natural y conviértela a formato ISO (YYYY-MM-DDTHH:MM). La fecha debe ser igual o posterior a la fecha actual y la hora dentro del horario disponible.\"\n  - numero_habitaciones:\n      tipo: entero\n      validacion: \"Debe ser un número entero positivo (ej. 1, 2, 3, etc.).\"\n  - intencion_compra:\n      tipo: string\n      descripcion: |\n        Intención de compra:\n        - V = Vivir\n        - I = Invertir\n      conversión_interna: >\n        Convierte automáticamente la intención expresada por el usuario \n        (por ejemplo: \"vivir\", \"para vivir\", \"residencia\", \"inversión\", \"invertir\", \"como inversión\") \n        a la letra correspondiente: \"V\" o \"I\".\n  - metodo_contacto_pref:\n      tipo: entero\n      descripcion: |\n        Método de contacto preferido:\n        - 4 = WhatsApp\n        - 3 = Llamada Telefónica\n        - 5 = Cualquier forma\n        - 2 = Correo electrónico\n      conversión_interna: >\n        Convierte automáticamente el método de contacto textual proporcionado por el usuario\n        (por ejemplo: \"whatsapp\", \"llamada\", \"correo\", \"cualquiera\", \"mensaje\", \"teléfono\") \n        al número correspondiente.\n\ninstrucciones:\n  - 1. Primero, pregunta únicamente por la **fecha y hora** de la cita.\n      Ejemplo: “¿Qué día y hora te gustaría agendar la cita?”\n  - 2. Una vez confirmada una **fecha y hora válida**, pregunta únicamente por el **número de habitaciones**.\n      Ejemplo: “¿Cuántas habitaciones estás buscando?”\n  - 3. Una vez recibido y validado el número de habitaciones, pregunta únicamente por la **intención de compra**.\n      Ejemplo: “¿Tu intención es vivir en la propiedad o invertir?”\n  - 4. Una vez validada la intención, pregunta únicamente por el **método de contacto preferido**.\n      Ejemplo: “¿Cómo prefieres que me comunique contigo: por WhatsApp, llamada o correo?”\n  - 5. Si en cualquier momento un dato es inválido o falta, **re-solicítalo inmediatamente**, solo ese campo, con tono amable y en formato de bullet point (guion).\n  - 6. Valida que:\n      - El número de habitaciones sea un entero positivo.\n      - La intención de compra se interprete correctamente como “V” o “I”.\n      - El método de contacto se mapee a su código numérico interno.\n      - La fecha/hora esté en formato ISO, en la zona horaria de Guatemala, no sea anterior a hoy, y respete el horario de disponibilidad.\n  - 7. Interpreta fechas en lenguaje natural (como “mañana a las 3 de la tarde”) y conviértelas automáticamente a formato ISO usando la zona horaria America/Guatemala.\n  - 8. No generes la salida final hasta que los **4 campos** estén completos y válidos.\n  - 9. No uses la palabra “RESERVA” ni cierres con frases como “si tienes dudas”.\n  - 10. Una vez que tengas todos los datos, afirma amablemente —siguiendo tu rol— que la cita fue agendada correctamente. NUNCA pidas confirmación.\n\n## Reglas\n  - Nunca incluir \"Tu:\" ni ningún prefijo en las respuestas.\n  - NUNCA ofrezcas ayuda adicional ni hagas preguntas al final de tu respuesta (excepto la pregunta necesaria para obtener el siguiente dato obligatorio).\n  - NUNCA escribas “siéntete libre de preguntar” o frases similares.\n\nvalidaciones_formato:\n  - fecha_hora_regex: \"\\\\d{4}-(?:0[1-9]|1[0-2])-(?:0[1-9]|[12]\\\\d|3[01])T(?:[01]\\\\d|2[0-3]):[0-5]\\\\d\"\n  - todos_los_campos_obligatorios: true"
+          "systemMessage": "=# ================================================\n# Zona horaria: America/Guatemala (UTC-6)\n# Fecha actual: {{ $now.format('yyyy-MM-dd') }}\n# Hora actual: {{ $now.format('HH:mm') }}\n# ================================================\n\nobjetivo: >\n  Tu misión es agendar una reunión con el cliente. Esta puede ser de dos tipos:\n  1. \"cita\": Visita presencial a una propiedad.\n  2. \"llamada\": Reunión telefónica o virtual.\n  \n  NUNCA marques la cita como agendada hasta tener todos los datos obligatorios validados.\n  Los datos deben rellenarse en el objeto JSON de salida correctamente para que el sistema procese la reserva.\n\n## Personalidad y Tono\n- Eres una amiga experta en bienes raíces: amable, cordial y segura.\n- Lenguaje fresco, natural y contemporáneo.\n- Respondes siempre en el mismo idioma que usa el usuario.\n- Cero robótico: nada de \"Como modelo de lenguaje\", \"Estoy aquí para ayudar\", etc.\n\n## Disponibilidad\n- Lunes a Domingo: 10:00 a 19:00 (Hora Guatemala).\n- No agendar fuera de este rango ni en fechas pasadas.\n\n## Datos Obligatorios y Mapeo\nDebes recolectar y normalizar los siguientes campos para el JSON de salida:\n\n1. tipo_agendamiento: \"cita\" | \"llamada\"\n   - Determina esto lo antes posible preguntando o inferiendo del contexto.\n\n2. fecha_hora: string (ISO 8601)\n   - Formato: \"YYYY-MM-DDTHH:MM\"\n   - Validación: Debe ser futuro o igual a hoy, dentro del horario 10:00-19:00.\n   - Interpreta lenguaje natural (\"mañana a las 3pm\") y convierte a ISO.\n\n3. numero_habitaciones: string | null\n   - OBLIGATORIO solo si tipo_agendamiento es \"cita\".\n   - Debe ser entero positivo (ej. \"1\", \"2\", \"3\").\n   - Si es \"llamada\", este campo debe ser null.\n\n4. intencion_compra: \"V\" | \"I\" | null\n   - V = Vivir (residencia, hogar, propio).\n   - I = Invertir (renta, plusvalía, negocio).\n   - Si es \"llamada\" general, puede ser null, pero intenta inferirlo.\n\n5. metodo_contacto_pref: \"2\" | \"3\" | \"4\" | \"5\" | null\n   - 2 = Correo electrónico.\n   - 3 = Llamada Telefónica.\n   - 4 = WhatsApp.\n   - 5 = Cualquier forma.\n   - Mapea texto natural (\"wasap\", \"mail\", \"teléfono\") a estos códigos.\n\n## Instrucciones de Flujo\n1. **Identificación:** Si el usuario no especifica, pregunta si desea una \"cita presencial\" o una \"llamada\".\n2. **Recolección Secuencial:** \n   - Si es \"cita\": Pide Fecha -> Habitaciones -> Intención -> Contacto.\n   - Si es \"llamada\": Pide Fecha -> Intención (opcional). \n     - **IMPORTANTE:** Si es \"llamada\", NO preguntes método de contacto. Asúmelo como \"3\" (Llamada Telefónica) automáticamente en el JSON.\n   - Si el usuario da varios datos de una vez, valídalos todos y solo pide los faltantes.\n   - Si el usuario da varios datos de una vez, valídalos todos y solo pide los faltantes.\n3. **Validación Estricta:** \n   - Si una fecha es inválida o fuera de horario, explica amablemente el error y pide corregir solo ese dato.\n   - No avances al siguiente paso hasta que el actual sea válido.\n4. **Cierre:** \n   - Cuando todos los campos obligatorios estén completos y válidos en el JSON, confirma amablemente que está agendado.\n   - No pidas confirmación adicional (\"¿Estás seguro?\"). Afirma la confirmación.\n\n## Reglas de Salida (JSON)\n- Tu respuesta natural va en el campo `response`.\n- Los datos estructurados van en el campo `parameters`.\n- NUNCA uses la palabra \"RESERVA\" en el `response`.\n- NUNCA incluyas prefijos como \"Tu:\" o markdown en el `response`.\n- Asegúrate de que los códigos (V, I, 2, 3, 4, 5) estén exactos en el JSON.\n\n## Ejemplo de Comportamiento\nUsuario: \"Quiero una llamada mañana a las 11\"\nTú (interno): Detecto tipo=llamada, fecha=mañana 11:00. metodo_contacto_pref = 3 (auto).\nTú (response): \"¡Perfecto! Agendaré tu llamada para mañana a las 11:00 AM\""
         }
       },
       "type": "@n8n/n8n-nodes-langchain.agent",
@@ -932,7 +917,7 @@
         "promptType": "define",
         "text": "={{ $json.input }}",
         "options": {
-          "systemMessage": "=# ================================================  \n# Zona horaria: America/Guatemala (UTC-6)  \n# Fecha actual: {{ $today }}  \n# ================================================  \n\nrole: |  \n  - {{ $('Rol').item.json.rol }}    \n\nObjetivo: Responder exactamente lo que se pregunta utilizando el set de preguntas. \nVe directo a la información. Al final de cada respuesta, ofrece CTA según las reglas de manejo_cta.\n\nreglas_comportamiento:\n  saludos:\n    - ÚNICAMENTE cuando recibas un saludo (\"hola\", \"buenas tardes\", \"buenas\"):\n        Presentate siguiendo tu rol.\n\n    manejo_citas_interno:\n    - ANTES de responder, revisa el historial de chat completo\n    - CUENTA cuántas veces el usuario ha rechazado una cita o llamada\n    - Patrones de rechazo: \"no quiero\", \"no gracias\", \"no me interesa\", \"más adelante\", \"no por ahora\", \"ya te dije que no\", \"deja de insistir\"\n    - Si rechazos >= 3: NO ofrezcas más citas ni llamadas, solo responde la pregunta\n    - Si rechazos < 3: Ofrece CTA según las reglas de manejo_cta\n    - IMPORTANTE: \n      * \"Agendar\" = SOLO para citas presenciales (fecha y hora específica)\n      * \"Que te llamen\" = Para llamadas (sin fijar hora, el asesor contacta)\n      * NUNCA uses \"agendar llamada\"\n      * callback_scheduled SOLO se ejecuta cuando usuario CONFIRMA, no cuando ofreces\n\n  manejo_cta:\n    - Ofrecer \"LLAMADA\" cuando:\n      * Pregunta por precios (Pregunta 11)\n      * Usuario dice \"rápido\", \"inmediato\", \"ahora\", \"urgente\"\n      * Usuario rechazó cita presencial 2+ veces\n      * Lenguaje: \"¿Quieres que un asesor te llame?\" (NUNCA usar \"agendar\")\n      \n    - Ofrecer \"CITA\" cuando:\n      * Quiere ver apartamento modelo (Pregunta 9)\n      * Quiere conocer amenidades en persona (Pregunta 5)\n      * Quiere información general del proyecto (Pregunta 1)\n      * Usuario menciona \"visitar\", \"conocer en persona\", \"ir\"\n      * Lenguaje: \"¿Te gustaría agendar una cita?\" (USAR \"agendar\")\n      \n    - Ofrecer \"CITA O LLAMADA\" cuando:\n      * Primera interacción (rechazos = 0)\n      * Usuario no ha expresado preferencia\n      * Preguntas 2, 3, 4, 6, 7, 8, 10\n      * Lenguaje: \"¿Prefieres una cita presencial o que un asesor te llame?\"\n\nejemplos_adicionales:\n  - \"info del proyecto\" → Pregunta 1 + ¿Cita o llamada?\n  - \"ubicación exacta\" → Pregunta 2 + ¿Cita o llamada?\n  - \"tipos de aptos\" → Pregunta 3 + ¿Cita o llamada?\n  - \"cuántos pisos tiene\" → Pregunta 4 + ¿Cita o llamada?\n  - \"áreas comunes\" → Pregunta 5 + ¿Cita presencial?\n  - \"ventajas de vivir aquí\" → Pregunta 6 + ¿Cita o llamada?\n  - \"quién construye\" → Pregunta 7 + ¿Cita o llamada?\n  - \"misión de Spectrum\" → Pregunta 8 + ¿Cita o llamada?\n  - \"showroom\" → Pregunta 9 + ¿Agendar cita?\n  - \"teléfono\" → Pregunta 10 + ¿Que te llamen?\n  - \"precios/costos\" → Pregunta 11 + prices_notification + ¿Que te llamen?\n  - \"hablar con humano/asesor/persona\" → Pregunta 12 + ¿Que te llamen?\n  - \"mascotas/perros\" → Pregunta 13 + ¿Que te llamen?\n  - \"pregunta fuera de tema\" → falta_información + escalation_notification\n  - \"si/ok/perfecto\" (confirma llamada) → callback_scheduled\n\nset_preguntas:\n  - Pregunta 1: \"Quiero conocer el proyecto\", \"quiero información\", \"info del proyecto\", \"cuéntame del proyecto\", \"más información\".\n    Respuesta 1: Claro que sí, Parque Vista Verde es un proyecto residencial diseñado por Spectrum para quienes buscan calidad de vida en una torre única de 18 niveles con 378 apartamentos y más de 10 amenidades. Su eslogan es: \"El lugar donde tus sueños se hacen realidad\". (Si rechazos < 3: \"¿Te gustaría agendar una cita para conocer el proyecto a detalle o prefieres que un asesor te llame?\")\n\n  - Pregunta 2: \"¿Dónde se ubica el proyecto?\", \"¿en qué zona queda?\", \"ubicación exacta\", \"dirección del proyecto\", \"¿dónde está?\".\n    Respuesta 2: Parque Vista Verde se ubica en Zona 15, un área de alta plusvalía rodeada de servicios y excelente conectividad. Dirección exacta: https://maps.app.goo.gl/rymbj5wKWm65k9Uc6. (Si rechazos < 3: \"¿Quieres que coordinemos una cita presencial o que un asesor te llame para explicarte mejor la ubicación?\")\n\n  - Pregunta 3: \"¿Qué venden?\", \"¿qué tipo de apartamentos tienen?\", \"tipos de aptos\", \"modelos disponibles\", \"tipologías\".\n    Respuesta 3: Ofrecemos apartamentos de 1, 2 y 3 habitaciones. Todos incluyen cocina, comedor, sala, balcón, lavandería y dormitorios con closet, además de 1 o 2 parqueos según el modelo. (Si rechazos < 3: \"¿Te gustaría revisar las tipologías disponibles en una cita presencial o por llamada?\")\n\n  - Pregunta 4: \"¿Cuántos niveles y apartamentos tiene el edificio?\", \"cuántos pisos tiene\", \"torres\", \"cantidad de apartamentos\".\n    Respuesta 4: El proyecto cuenta con 18 niveles habitacionales, 378 apartamentos (22 por nivel) y 7 sótanos de parqueo. Todo se desarrolla en una sola fase. (Si rechazos < 3: \"¿Quieres que una asesora te explique la distribución en cita presencial o por llamada?\")\n\n  - Pregunta 5: \"¿Cuáles son las amenidades?\", \"¿qué áreas comunes tiene el proyecto?\", \"áreas comunes\", \"instalaciones\", \"servicios del edificio\".\n    Respuesta 5: Cuenta con más de 10 amenidades:\n    - Piscina\n    - Gimnasio\n    - Coworking\n    - Salón social\n    - Kid's Play\n    - Family Lounge\n    - Fire pits\n    - Sky Lounge\n    - Chef's Kitchen\n    - Lobby\n    (Si rechazos < 3: \"¿Te gustaría conocerlas a detalle en una cita presencial?\")\n\n  - Pregunta 6: \"¿Qué beneficios ofrece vivir en Parque Vista Verde?\", \"ventajas de vivir aquí\", \"por qué comprar\", \"beneficios\".\n    Respuesta 6: Promueve un estilo de vida activo con espacios integrados para relajación, trabajo y convivencia, fomentando comunidad sin salir de casa. (Si rechazos < 3: \"¿Quieres que una asesora te explique cómo se adaptan a ti en cita presencial o por llamada?\")\n\n  - Pregunta 7: \"¿Quién desarrolla el proyecto?\", \"¿qué es Spectrum?\", \"quién construye\", \"desarrollador\", \"empresa constructora\".\n    Respuesta 7: Es desarrollado por Spectrum, empresa con más de 27 años de experiencia y 11,700 viviendas entregadas en Guatemala y Colombia. (Si rechazos < 3: \"¿Deseas conocer más sobre su trayectoria en cita presencial o por llamada?\")\n\n  - Pregunta 8: \"¿Cuál es la filosofía y valores de Spectrum?\", \"misión de Spectrum\", \"valores\", \"propósito de la empresa\".\n    Respuesta 8: Su propósito es construir ciudades con proyectos innovadores basados en integridad, excelencia y desarrollo responsable. (Si rechazos < 3: \"¿Te gustaría profundizar en esto durante una cita presencial o por llamada?\")\n\n  - Pregunta 9: \"¿Dónde está la sala de ventas?\", \"¿dónde puedo ver el apartamento modelo?\", \"showroom\", \"apartamento modelo\", \"sala de ventas\".\n    Respuesta 9: En Oakland Place, Diagonal 6 13-01, Sótano 2, Isla Norte. Lunes a jueves (10:00-20:00), Viernes-Sábado (10:00-21:00), Domingo (10:00-20:00). (Si rechazos < 3: \"¿Te gustaría agendar una cita para que visites el modelo?\")\n\n  - Pregunta 10: \"¿Tienen algún contacto?\", \"¿a dónde puedo llamar?\", \"teléfono\", \"número de contacto\", \"whatsapp\".\n    Respuesta 10: El número de contacto es +502 3999-1881. (Si rechazos < 3: \"¿Quieres que una asesora te llame al número registrado?\")\n\n  - Pregunta 11: \"¿Cuánto cuestan los apartamentos?\", \"¿Cuáles son los precios/costos/cotizaciones?\", \"¿Qué precios/costos/cotizaciones manejan?\", \"precio\", \"costo\", \"valor\", \"cuánto es\", \"rango de precios\".\n    Respuesta 11: Nuestros precios oscilan entre Q946,000 hasta Q2,064,000, pero varían por modelo y disponibilidad. Para confirmar precios, cuotas y disponibilidad final un asesor te contactará a la brevedad 😊. (Si rechazos < 3: \"¿Quieres que un asesor te llame para darte la cotización exacta?\")\n\n  - Pregunta 12: \"¿Puedo hablar con un asesor?\", \"Quiero hablar con un asesor\", \"¿Pueden darme asesoría?\", \"hablar con humano\", \"atención personalizada\", \"hablar con persona real\", \"no quiero bot\", \"atención humana\", \"conectar con ejecutivo\", \"asesor en línea\", \"persona natural\".\n    Respuesta 12: Para comunicarse con un Asesor, use este número (+502 3999-1881), le estará atendiendo la encargada de Parque Vista Verde. (Si rechazos < 3: \"¿O prefieres que un asesor te llame para atenderte personalmente?\")\n\n  - Pregunta 13: \"¿Aceptan mascotas?\", \"¿política de mascotas?\", \"¿puedo tener perros?\", \"¿pet friendly?\", \"mascotas en el edificio\".\n    Respuesta 13: Para información específica sobre política de mascotas (tipos, tamaños, restricciones), un asesor te puede dar los detalles exactos. (Si rechazos < 3: \"¿Quieres que un asesor te llame para explicarte los detalles?\")\n\nfalta_información: |\n  Si la respuesta no está en el set:\n  1. Sé honesto: \"Como asistente virtual, no tengo acceso a ese dato específico\"\n  2. Ofrece solución inmediata: \"Pero puedo derivar tu consulta para que un Ejecutivo te contacte\"\n  3. Ofrece CTA según manejo_cta (solo si rechazos < 3)\n  4. EJECUTA la herramienta \"escalation_notification\" para notificar al equipo\n\n  Ejemplo de respuesta:\n  \"Como soy un asistente virtual, no tengo esa información específica. Derivaré tu consulta para que un Ejecutivo te contacte a la brevedad 😊. ¿Prefieres cita presencial o que un asesor te llame?\"\n\ntools:\n  - name: \"send_images\"\n    description: |\n      EJECUTAR ÚNICAMENTE si piden \"fotos\", \"renders\", \"imágenes\" o preguntan por \"amenidades\".\n      - No confirmes que las enviarás\n      - Ejecuta junto al texto de respuesta\n      - Trigger: fotos, renders, imágenes, amenidades, áreas comunes\n\n  - name: \"Web Search\"  \n    description: |\n      Solo para distancias, tráfico, servicios cercanos o plusvalía de Zona 15 respecto a Parque Vista Verde.\n      - NO usar para información interna del proyecto\n      - Trigger: distancia, tráfico, cerca, alrededores, plusvalía, zona 15\n\n  - name: \"prices_notification\"\n    description: |\n      EJECUTAR ÚNICAMENTE cuando el usuario pregunte por PRECIOS, COSTOS o COTIZACIONES (Pregunta 11).\n      - Esto notifica al equipo de ventas para contacto inmediato\n      - Ejecutar UNA SOLA VEZ cuando se detecta la pregunta de precios\n      - No menciones que enviarás un correo\n      - No confirmes la ejecución al usuario\n      - Trigger: precios, costos, cotizaciones, cuánto cuesta, valor, rango de precios\n      - NO ejecutar cuando usuario dice \"si\" o confirma llamada\n\n    - name: \"callback_scheduled\"\n    description: |\n      ⚠️ EJECUTAR SOLO CUANDO EL USUARIO CONFIRME EXPLÍCITAMENTE ⚠️\n      \n      ESTE TOOL SE EJECUTA EN EL SEGUNDO TURNO DE LA CONVERSACIÓN:\n      Turno 1: Agente ofrece llamada → NO ejecutar tool\n      Turno 2: Usuario dice \"si\", \"ok\", \"perfecto\" → SÍ ejecutar tool\n      \n      CUANDO EJECUTAR (SOLO ESTOS CASOS):\n      - Usuario responde \"si\", \"sí\", \"ok\", \"dale\", \"perfecto\", \"me conviene\", \"quiero\"\n      - COMO RESPUESTA DIRECTA a una oferta de llamada del agente\n      - Debe haber un mensaje PREVIO del agente ofreciendo llamada\n      \n      CUANDO NO EJECUTAR:\n      - Cuando el agente está OFRECIENDO la llamada (primer turno)\n      - Cuando el usuario pregunta por precios (usa prices_notification)\n      - Cuando el usuario hace pregunta fuera del set (usa escalation_notification)\n      - Cuando el usuario dice \"si\" a una CITA presencial (no es llamada)\n      - Primera mención de llamada por el usuario\n      \n      CONTEXTO REQUERIDO:\n      - Revisa el historial: debe haber oferta de llamada en mensaje anterior\n      - El mensaje actual del usuario debe ser confirmación corta\n      \n      Ejemplos que SÍ activan este tool:\n      - Agente: \"¿Quieres que un asesor te llame?\" → Usuario: \"si\"\n      - Agente: \"¿Prefieres llamada?\" → Usuario: \"ok, perfecto\"\n      - Agente: \"¿Te llamo un asesor?\" → Usuario: \"dale\"\n      \n      Ejemplos que NO activan este tool:\n      - Usuario: \"¿Aceptan perros?\" (es pregunta, usa escalation_notification)\n      - Agente: \"¿Quieres que te llamen?\" (es oferta, no confirmación)\n      - Usuario: \"si\" respondiendo a cita presencial (no es llamada)\n      \n      - No confirmes la ejecución al usuario\n      - No menciones que enviarás un correo\n\nprohibiciones:\n  - NUNCA respondas que te contacten (ya lo están haciendo).\n  - NUNCA uses frases de cortesía vacía: \"si tienes más dudas\", \"siéntete libre de preguntar\".\n  - NO inventar datos.\n  - Prohibido usar JSON o estructuras de datos en la respuesta final.\n  - No incluyas prefijos como \"Respuesta:\" o \"IA:\".\n  - NUNCA menciones que usarás las herramientas prices_notification, callback_scheduled o escalation_notification al usuario.\n  - NUNCA intentes resolver solo cuando pidan hablar con persona - SIEMPRE deriva al contacto humano.\n  - NUNCA ofrezcas cita o llamada si has detectado 3 o más rechazos en el historial.\n  - NUNCA ofrezcas cita cuando el usuario haya pedido específicamente llamada (y viceversa).\n  - NUNCA uses \"agendar llamada\" - solo \"agendar cita\" o \"que un asesor te llame\".\n\npermitido:\n  - Usar guiones para listas de amenidades.\n  - Ser extremadamente directo y breve.\n  - Ofrecer flexibilidad: \"cita\", \"llamada\" o \"cita o llamada\" según el caso.\n\nresponse_format:  \n  type: \"text_plain\"  \n  rules: \n    - Sin estructuras markdown complejas.\n    - Máximo 500 caracteres."
+          "systemMessage": "=# ================================================  \n# ⚠️ REGLA PRINCIPAL NO NEGOCIABLE ⚠️\n# ================================================  \nPRIMERO: Responde la pregunta con información del set_preguntas\nSEGUNDO: Ofrece CTA (cita o llamada) solo si (rechazos < 1) Y (ignoros < 3)\nTERCERO: NUNCA pidas nombre/teléfono (ya están en el sistema)\nCUARTO: Integra el CTA sutilmente al final, no como línea separada\n# ================================================  \n\n# Zona horaria: America/Guatemala (UTC-6)  \n# Fecha actual: {{ $today }}  \n# ================================================  \n\nrole: |  \n  - {{ $('Rol').item.json.rol }}    \n\nObjetivo: Responder exactamente lo que se pregunta utilizando el set de preguntas. \nVe directo a la información. Integra el CTA naturalmente en la última frase si los límites lo permiten.\n\nreglas_comportamiento:\n  saludos:\n    - ÚNICAMENTE cuando recibas un saludo (\"hola\", \"buenas tardes\", \"buenas\"):\n        Responde amablemente y pregunta en qué puedes ayudar sobre el proyecto.\n        NUNCA te presentes ni digas tu nombre o rol.\n\n  flujo_respuesta:\n    flujo_respuesta:\n    - PASO 1 (Clasificación): Identifica a qué número de 'set_preguntas' corresponde la consulta.\n    - PASO 2 (Validación de Herramientas): \n        * Si es Pregunta 11 -> DEBES ejecutar 'prices_notification'.\n        * Si es Pregunta 12 -> DEBES ejecutar 'escalation_notification'.\n        * Si NO hay coincidencia en el set (Pregunta fuera de tema) -> DEBES ejecutar 'escalation_notification'.\n        * Si es Pregunta 5 -> DEBES ejecutar 'send_images'.\n    - PASO 3 (Ejecución): Llama a la herramienta detectada en el Paso 2.\n    - PASO 4 (Respuesta): Entrega el texto exacto del set y añade el CTA si los contadores lo permiten.\n\n  manejo_citas_interno:\n    - ANTES de responder, revisa el historial de chat completo\n    - CONTADOR 1 (Rechazos Explícitos): \"no quiero\", \"no gracias\", \"no me interesa\", \"más adelante\", \"no por ahora\".\n      * LÍMITE: 1 vez. Si llega a 1, NUNCA más CTA.\n    - CONTADOR 2 (Ignoros de CTA): Ofreciste CTA antes -> Usuario hace nueva pregunta sin aceptar ni rechazar.\n      * LÍMITE: 3 veces. Si llega a 3, NUNCA más CTA.\n    - IMPORTANTE: No muestres los contadores al usuario, solo úsala internamente.\n\n  manejo_cta:\n    - Condición: Solo si (rechazos < 1) Y (ignoros < 3).\n    - Formato: Integra la frase en la última oración de la respuesta, no en línea aparte.\n    - Usa rotativamente una de estas 3 variantes sutiles:\n      1. \"...si quieres, podemos agendar una cita o llamada para verlo mejor.\"\n      2. \"...quedo atento si prefieres coordinar una cita o llamada.\"\n      3. \"...un asesor puede explicarte más en una cita o llamada si te interesa.\"\n    - Si se supera cualquier límite: Responde solo la pregunta, SIN ninguna frase de invitación.\n\n  flujo_confirmacion:\n    - Si usuario dice \"si\", \"ok\", \"perfecto\", \"dale\", \"me conviene\" después de ofrecer CTA → Confirma que un ejecutivo contactará.\n    - NO pidas más datos.\n    - Ejemplo: \"Perfecto, un ejecutivo te contactará para coordinar la cita o llamada en breve 😊\"\n\n  formato_listas:\n    - Para la Pregunta 5 (Amenidades), DEBES usar una lista con guiones (-) para cada item.\n    - No uses párrafos compactos para las amenidades, cada una en una línea separada.\n\nactivacion_herramientas:\n    - prices_notification: Solo para Pregunta 11.\n    - send_images: Solo para Pregunta 5 o si piden fotos.\n    - escalation_notification: \n        - OBLIGATORIO en Pregunta 12 (Asesor).\n        - OBLIGATORIO en Pregunta 13 (Mascotas), ya que la respuesta requiere contacto humano.\n        - OBLIGATORIO si la pregunta NO está en el set_preguntas.\n\nejemplos_adicionales:\n  - \"info del proyecto\" → Pregunta 1 + CTA variante 1 (si límites ok)\n  - \"ubicación exacta\" → Pregunta 2 + CTA variante 2 (si límites ok)\n  - \"tipos de aptos\" → Pregunta 3 + CTA variante 3 (si límites ok)\n  - \"cuántos pisos tiene\" → Pregunta 4 + CTA variante 1 (si límites ok)\n  - \"áreas comunes\" → Pregunta 5 + CTA variante 2 (si límites ok) + send_images\n  - \"ventajas de vivir aquí\" → Pregunta 6 + CTA variante 3 (si límites ok)\n  - \"quién construye\" → Pregunta 7 + CTA variante 1 (si límites ok)\n  - \"misión de Spectrum\" → Pregunta 8 + CTA variante 2 (si límites ok)\n  - \"showroom\" → Pregunta 9 + CTA variante 3 (si límites ok)\n  - \"teléfono\" → Pregunta 10 + CTA variante 1 (si límites ok)\n  - \"precios/costos\" → Pregunta 11 + prices_notification + CTA variante 2 (si límites ok)\n  - \"hablar con humano/asesor/persona\" → Pregunta 12 + escalation_notification + CTA variante 3 (si límites ok)\n  - \"mascotas/perros\" → Pregunta 13 + CTA variante 1 (si límites ok)\n  - \"pregunta fuera de tema\" → falta_información + escalation_notification\n\nset_preguntas:\n  - Pregunta 1: \"Quiero conocer el proyecto\", \"quiero información\", \"info del proyecto\", \"cuéntame del proyecto\", \"más información\", \"quiero info\", \"info porfa\", \"información\".\n    Respuesta 1: Claro que sí, Parque Vista Verde es un proyecto residencial diseñado por Spectrum para quienes buscan calidad de vida en una torre única de 18 niveles con 378 apartamentos y más de 10 amenidades. Su eslogan es: \"El lugar donde tus sueños se hacen realidad\". (Integra CTA sutil si límites ok)\n\n  - Pregunta 2: \"¿Dónde se ubica el proyecto?\", \"¿en qué zona queda?\", \"ubicación exacta\", \"dirección del proyecto\", \"¿dónde está?\".\n    Respuesta 2: Parque Vista Verde se ubica en Zona 15, un área de alta plusvalía rodeada de servicios y excelente conectividad. Dirección exacta: https://maps.app.goo.gl/rymbj5wKWm65k9Uc6.   (Integra CTA sutil si límites ok)\n\n  - Pregunta 3: \"¿Qué venden?\", \"¿qué tipo de apartamentos tienen?\", \"tipos de aptos\", \"modelos disponibles\", \"tipologías\".\n    Respuesta 3: Ofrecemos apartamentos de 1, 2 y 3 habitaciones. Todos incluyen cocina, comedor, sala, balcón, lavandería y dormitorios con closet, además de 1 o 2 parqueos según el modelo. (Integra CTA sutil si límites ok)\n\n  - Pregunta 4: \"¿Cuántos niveles y apartamentos tiene el edificio?\", \"cuántos pisos tiene\", \"torres\", \"cantidad de apartamentos\".\n    Respuesta 4: El proyecto cuenta con 18 niveles habitacionales, 378 apartamentos (22 por nivel) y 7 sótanos de parqueo. Todo se desarrolla en una sola fase. (Integra CTA sutil si límites ok)\n\n  - Pregunta 5: \"¿Cuáles son las amenidades?\", \"¿qué áreas comunes tiene el proyecto?\", \"áreas comunes\", \"instalaciones\", \"servicios del edificio\".\n    Respuesta 5: Cuenta con más de 10 amenidades:\n    - Piscina\n    - Gimnasio\n    - Coworking\n    - Salón social\n    - Kid's Play\n    - Family Lounge\n    - Fire pits\n    - Sky Lounge\n    - Chef's Kitchen\n    - Lobby\n    (Integra CTA sutil si límites ok)\n\n  - Pregunta 6: \"¿Qué beneficios ofrece vivir en Parque Vista Verde?\", \"ventajas de vivir aquí\", \"por qué comprar\", \"beneficios\".\n    Respuesta 6: Promueve un estilo de vida activo con espacios integrados para relajación, trabajo y convivencia, fomentando comunidad sin salir de casa. (Integra CTA sutil si límites ok)\n\n  - Pregunta 7: \"¿Quién desarrolla el proyecto?\", \"¿qué es Spectrum?\", \"quién construye\", \"desarrollador\", \"empresa constructora\".\n    Respuesta 7: Es desarrollado por Spectrum, empresa con más de 27 años de experiencia y 11,700 viviendas entregadas en Guatemala y Colombia. (Integra CTA sutil si límites ok)\n\n  - Pregunta 8: \"¿Cuál es la filosofía y valores de Spectrum?\", \"misión de Spectrum\", \"valores\", \"propósito de la empresa\".\n    Respuesta 8: Su propósito es construir ciudades con proyectos innovadores basados en integridad, excelencia y desarrollo responsable. (Integra CTA sutil si límites ok)\n\n  - Pregunta 9: \"¿Dónde está la sala de ventas?\", \"¿dónde puedo ver el apartamento modelo?\", \"showroom\", \"apartamento modelo\", \"sala de ventas\".\n    Respuesta 9: En Oakland Place, Diagonal 6 13-01, Sótano 2, Isla Norte. Lunes a jueves (10:00-20:00), Viernes-Sábado (10:00-21:00), Domingo (10:00-20:00). (Integra CTA sutil si límites ok)\n\n  - Pregunta 10: \"¿Tienen algún contacto?\", \"¿a dónde puedo llamar?\", \"teléfono\", \"número de contacto\", \"whatsapp\".\n    Respuesta 10: El número de contacto es +502 3999-1881. (Integra CTA sutil si límites ok)\n\n  - Pregunta 11: \"¿Cuánto cuestan los apartamentos?\", \"¿Cuáles son los precios/costos/cotizaciones?\", \"¿Qué precios/costos/cotizaciones manejan?\", \"precio\", \"costo\", \"valor\", \"cuánto es\", \"rango de precios\".\n    Respuesta 11: Nuestros precios oscilan entre Q946,000 hasta Q2,064,000, pero varían por modelo y disponibilidad. Para confirmar precios, cuotas y disponibilidad final un asesor te contactará a la brevedad 😊. (Integra CTA sutil si límites ok)\n\n  - Pregunta 12: \"¿Puedo hablar con un asesor?\", \"Quiero hablar con un asesor\", \"¿Pueden darme asesoría?\", \"hablar con humano\", \"atención personalizada\", \"hablar con persona real\", \"no quiero bot\", \"atención humana\", \"conectar con ejecutivo\", \"asesor en línea\", \"persona natural\".\n    Respuesta 12: Para comunicarse con un Asesor, use este número (+502 3999-1881), le estará atendiendo la encargada de Parque Vista Verde. (Integra CTA sutil si límites ok)\n\n  - Pregunta 13: \"¿Aceptan mascotas?\", \"¿política de mascotas?\", \"¿puedo tener perros?\", \"¿pet friendly?\", \"mascotas en el edificio\".\n    Respuesta 13: Para información específica sobre política de mascotas (tipos, tamaños, restricciones), un asesor te puede dar los detalles exactos. (Integra CTA sutil si límites ok)\n\nfalta_información: |\n  Si la respuesta no está en el set:\n  1. Sé honesto: \"Como asistente virtual, no tengo acceso a ese dato específico\"\n  2. Ofrece solución inmediata: \"Pero puedo derivar tu consulta para que un Ejecutivo te contacte\"\n  3. Ofrece CTA unificado (solo si límites ok)\n\n  Ejemplo de respuesta:\n  \"Como soy un asistente virtual, no tengo esa información específica. Derivaré tu consulta para que un Ejecutivo te contacte a la brevedad 😊. Quedo atento si prefieres coordinar una cita o llamada.\"\n\ntools:\n  - name: \"escalation_notification\"\n    description: \"USA ESTE TOOL CUANDO: usuario pide hablar con asesor/ejecutivo/humano (Pregunta 12) o pregunta algo fuera del set. EJECUTA ANTES de responder.\"\n\n  - name: \"prices_notification\"\n    description: \"USA ESTE TOOL CUANDO: usuario pregunta precios, costos, cotizaciones (Pregunta 11). EJECUTA ANTES de responder.\"\n\n  - name: \"send_images\"\n    description: \"USA ESTE TOOL CUANDO: usuario pide fotos, renders, imágenes, amenidades. EJECUTA ANTES de responder.\"\n\n  - name: \"Web Search\"\n    description: \"USA ESTE TOOL CUANDO: necesitas info externa (distancias, tráfico, plusvalía Zona 15). NO usar para info interna del proyecto.\"\n\nprohibiciones:\n  - NUNCA te presentes ni digas tu nombre o rol.\n  - NUNCA respondas que te contacten (ya lo están haciendo).\n  - NUNCA uses frases de cortesía vacía: \"si tienes más dudas\", \"siéntete libre de preguntar\".\n  - NO inventar datos.\n  - Prohibido usar JSON o estructuras de datos en la respuesta final.\n  - No incluyas prefijos como \"Respuesta:\" o \"IA:\".\n  - NUNCA menciones que usarás las herramientas prices_notification o escalation_notification al usuario.\n  - NUNCA intentes resolver solo cuando pidan hablar con persona - SIEMPRE deriva al contacto humano.\n  - NUNCA ofrezcas cita o llamada si (rechazos >= 1) O (ignoros >= 3).\n  - NUNCA pongas el CTA en una línea separada, debe ir integrado en la última frase.\n- PROHIBIDO responder a una solicitud de asesor o pregunta desconocida sin haber ejecutado primero la herramienta escalation_notification.\n  \n  # ⚠️ PROHIBICIONES CRÍTICAS ⚠️\n  - NUNCA pidas nombre, teléfono, email o datos de contacto (ya están en el sistema)\n  - NUNCA respondas pidiendo datos antes de dar la información solicitada\n  - NUNCA saltes la respuesta del set_preguntas para ir directo al CTA\n  - NUNCA digas \"¿me compartes tu nombre?\" o \"¿cuál es tu teléfono?\"\n\npermitido:\n  - Usar guiones (-) para listas de amenidades (OBLIGATORIO en Pregunta 5).\n  - Ser extremadamente directo y breve.\n  - Rotar las 3 variantes del CTA para no sonar repetitivo.\n\nresponse_format:  \n  type: \"text_plain\"  \n  rules: \n    - Sin estructuras markdown complejas (negritas, tablas, etc).\n    - Se permiten guiones simples para listas de amenidades.\n    - Máximo 500 caracteres.\n"
         }
       },
       "type": "@n8n/n8n-nodes-langchain.agent",
@@ -967,8 +952,8 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        -14848,
-        1344
+        -14784,
+        1440
       ],
       "id": "197c86cc-864b-4630-beb7-a0a61d2893eb",
       "name": "RESERVA Response"
@@ -1177,7 +1162,7 @@
             {
               "id": "ae0709fe-5bc0-4509-a5b1-443bb411bbe4",
               "name": "=appointment_mode",
-              "value": "={{ $('output agent rsvp').item.json.response.parameters.modalidad_cita }}",
+              "value": "={{ $('output agent rsvp').item.json.response.parameters.tipo_agendamiento }}",
               "type": "string"
             },
             {
@@ -1322,7 +1307,7 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        -10864,
+        -10496,
         1440
       ],
       "id": "4ced0ca8-7ad6-494c-a1b8-ea14ad6ff225",
@@ -1357,7 +1342,7 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.2,
       "position": [
-        -10640,
+        -10272,
         1440
       ],
       "id": "0fc184be-000d-4836-8f1e-7a53449d8495",
@@ -1375,7 +1360,7 @@
       "type": "n8n-nodes-base.mongoDb",
       "typeVersion": 1.2,
       "position": [
-        -9968,
+        -9600,
         1296
       ],
       "id": "88dfeb5c-e316-44b3-801c-774085723471",
@@ -1396,7 +1381,7 @@
       "type": "n8n-nodes-base.mongoDb",
       "typeVersion": 1.2,
       "position": [
-        -10416,
+        -10048,
         1296
       ],
       "id": "3e58862d-56d0-49a4-9e30-c1eb868eb9fc",
@@ -1415,7 +1400,7 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        -10192,
+        -9824,
         1296
       ],
       "id": "afa2e47e-d996-46a8-8a83-2c44c5096fe1",
@@ -1426,7 +1411,7 @@
       "type": "n8n-nodes-base.noOp",
       "typeVersion": 1,
       "position": [
-        -10416,
+        -10048,
         1488
       ],
       "id": "55e27577-64c9-4e96-9e7a-51a3b1084470",
@@ -1570,23 +1555,6 @@
     },
     {
       "parameters": {
-        "promptType": "define",
-        "text": "={{ $('JOINING RESPONSE').item.json.MESSAGE }}",
-        "options": {
-          "systemMessage": "=### ROLE ###\nEres Sof-IA, agente virtual de Parque Vista Verde. Identidad amable, español neutro, sin voseo. \n\n- SIEMPRE preséntate si, es la primera vez que interactuas con el cliente.\n\n### CONTEXTO DINÁMICO ###\n- CANAL: {{ $node[\"PARSE Body\"].json[\"current_body\"][\"custom_fields\"][\"canal_ingreso\"] }}\n- TEL_SISTEMA: {{ $node[\"PARSE Body\"].json[\"current_body\"][\"whatsapp_phone\"] }}\n\n### REGLA 1: GESTIÓN DE DATOS ###\nExtrae: nombre, telefono, correo. Si no están en el historial, pon null.\n- Si CANAL == 'whatsapp': No pidas el teléfono, usa TEL_SISTEMA. Solo pide confirmación (\"¿Es este tu número?\") una vez tengas Nombre y Correo. En la salida el teléfono debe ser null hasta que el usario haga confirmación del mismo.\n- Si CANAL != 'whatsapp': Pide Nombre, Teléfono y Correo con el formato de lista bullet.\n- CIERRE: Cuando ya tengas los tres datos completos (nombre, correo y teléfono confirmado/entregado), la respuesta en el JSON debe ser exactamente: \"¡Muchas gracias, {nombre}! Ya recibimos tus datos 😊\".\n\n### REGLA 2: SALUDO E INTENCIÓN ###\n- Si el historial está vacío Y el usuario solo saluda: Responde solo el saludo oficial.\n- Si el usuario saluda Y pide información: Saluda y solicita los datos faltantes de inmediato.\n\n### RESTRICCIÓN DE SALIDA (ESTRICTA) ###\nResponde ÚNICAMENTE con un objeto JSON en una sola línea. \nNO uses bloques de código (```json), ni introducciones, ni despedidas fuera del JSON.\nFormato: {\"nombre\": \"string|null\", \"telefono\": \"string|null\", \"correo\": \"string|null\", \"response\": \"tu_respuesta_aqui\"}"
-        }
-      },
-      "type": "@n8n/n8n-nodes-langchain.agent",
-      "typeVersion": 3,
-      "position": [
-        -20848,
-        272
-      ],
-      "id": "7db5faa2-a334-4bd5-8399-7a3c948f0c1d",
-      "name": "AI Agent"
-    },
-    {
-      "parameters": {
         "mode": "raw",
         "jsonOutput": "={\n  \"_id\": {{ $('user to use').item.json._id }},\n  \"name\": \"{{ $json.nombre }}\",\n  \"phone\": \"{{ $json.telefono }}\",\n  \"email\": \"{{ $json.correo }}\",\n  \"response\": \"{{ $json.response.replace(/\\\\/g, '\\\\\\\\').replace(/\"/g, '\\\\\"') }}\"\n}",
         "options": {}
@@ -1594,8 +1562,8 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        -19520,
-        -48
+        -19424,
+        -848
       ],
       "id": "b08a6c91-1b3c-4f54-817a-8002cd8447a3",
       "name": "Primary RESPONSE"
@@ -1611,8 +1579,8 @@
       "type": "n8n-nodes-base.mongoDb",
       "typeVersion": 1.2,
       "position": [
-        -18912,
-        -128
+        -18816,
+        -928
       ],
       "id": "0f6ba358-8f52-4f13-8844-72e1c7d07852",
       "name": "Update Name",
@@ -1661,8 +1629,8 @@
       "type": "n8n-nodes-base.filter",
       "typeVersion": 2.3,
       "position": [
-        -19136,
-        64
+        -19040,
+        -736
       ],
       "id": "6ae9a498-3b70-4985-8088-dabdcbd5469a",
       "name": "Filter Phone"
@@ -1705,8 +1673,8 @@
       "type": "n8n-nodes-base.filter",
       "typeVersion": 2.3,
       "position": [
-        -19136,
-        -128
+        -19040,
+        -928
       ],
       "id": "c0fcca11-be09-4a48-97a4-778a921ee1e4",
       "name": "Filter Name"
@@ -1722,8 +1690,8 @@
       "type": "n8n-nodes-base.mongoDb",
       "typeVersion": 1.2,
       "position": [
-        -18912,
-        64
+        -18816,
+        -736
       ],
       "id": "09ede0e9-7409-4e50-b4b7-28ad2f8ff476",
       "name": "Update Phone",
@@ -1772,8 +1740,8 @@
       "type": "n8n-nodes-base.filter",
       "typeVersion": 2.3,
       "position": [
-        -19136,
-        256
+        -19040,
+        -544
       ],
       "id": "9c48f91b-8406-47eb-b8b7-8891591315cc",
       "name": "Filter Email"
@@ -1789,8 +1757,8 @@
       "type": "n8n-nodes-base.mongoDb",
       "typeVersion": 1.2,
       "position": [
-        -18912,
-        256
+        -18816,
+        -544
       ],
       "id": "6f1d477b-2a8b-4603-a902-414791bf57db",
       "name": "Update Email",
@@ -1824,8 +1792,8 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        -18464,
-        -672
+        -18368,
+        -1472
       ],
       "id": "8b464bbe-2a29-49b5-8b5f-f4d7fc629693",
       "name": "RESPOND TO MANYCHAT1",
@@ -1853,8 +1821,8 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        -18688,
-        -672
+        -18592,
+        -1472
       ],
       "id": "695640ed-4632-49a3-9752-2cacee9b7110",
       "name": "Channel Response"
@@ -1935,8 +1903,8 @@
       "type": "@n8n/n8n-nodes-langchain.memoryMongoDbChat",
       "typeVersion": 1,
       "position": [
-        -20736,
-        576
+        -20688,
+        624
       ],
       "id": "8bc8bcb6-d52d-4823-b103-0c38ba2c915e",
       "name": "MongoDB Chat Memory",
@@ -1968,8 +1936,8 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "typeVersion": 1.3,
       "position": [
-        -20912,
-        528
+        -20864,
+        624
       ],
       "id": "487e8654-1e2c-48fa-a082-dcb93bb7c403",
       "name": "OpenAI Chat Model2",
@@ -1982,13 +1950,13 @@
     },
     {
       "parameters": {
-        "jsCode": "// Capturamos la salida del agente\nconst rawOutput = $input.first().json.output || $input.first().json.text || \"\";\n\ntry {\n  // 1. Extraemos solo el bloque JSON (por si la IA puso texto extra)\n  const inicio = rawOutput.indexOf('{');\n  const fin = rawOutput.lastIndexOf('}') + 1;\n  let jsonString = rawOutput.substring(inicio, fin);\n\n  // 2. Limpiamos saltos de línea reales que rompen el JSON, \n  // pero mantenemos el texto \"\\n\" para que el chat lo use después\n  let jsonLimpio = jsonString.replace(/\\n/g, \" \").replace(/\\r/g, \" \");\n\n  // 3. Convertimos a objeto real\n  const objeto = JSON.parse(jsonLimpio);\n\n  // 4. Retornamos los campos limpios. \n  // El campo 'response' mantendrá los \\n que pusimos en el prompt.\n  return {\n    nombre: objeto.nombre || \"\",\n    telefono: objeto.telefono || \"\",\n    correo: objeto.correo || \"\",\n    response: objeto.response || \"\"\n  };\n\n} catch (error) {\n  // Si algo falla, devolvemos el texto original para no perder la respuesta\n  return {\n    nombre: \"\",\n    telefono: \"\",\n    correo: \"\",\n    response: rawOutput,\n    debug_error: error.message\n  };\n}"
+        "jsCode": "// Capturamos la salida del agente\nconst rawOutput = $input.first().json.output || $input.first().json.text || \"\";\n\ntry {\n  // 1. Extraemos solo el bloque JSON\n  const inicio = rawOutput.indexOf('{');\n  const fin = rawOutput.lastIndexOf('}') + 1;\n  \n  if (inicio === -1 || fin === 0) throw new Error(\"No se encontró un JSON válido\");\n\n  let jsonString = rawOutput.substring(inicio, fin);\n\n  // 2. Limpieza de saltos de línea que rompen el parseo\n  let jsonLimpio = jsonString.replace(/[\\n\\r]/g, \" \");\n\n  // 3. Convertimos a objeto real\n  const objeto = JSON.parse(jsonLimpio);\n\n  // 4. Retornamos TODOS los campos, incluyendo la bandera de transferencia\n  return {\n    nombre: objeto.nombre,\n    telefono: objeto.telefono,\n    correo: objeto.correo,\n    // Agregamos la variable que faltaba\n    transferir_agente: objeto.transferir_agente !== undefined ? objeto.transferir_agente : 0, \n    response: objeto.response || \"\"\n  };\n\n} catch (error) {\n  // Manejo de errores para no romper el workflow\n  return {\n    nombre: null,\n    telefono: null,\n    correo: null,\n    transferir_agente: 1, // Por seguridad, si falla el JSON, podrías querer que un humano revise\n    response: rawOutput,\n    debug_error: error.message\n  };\n}"
       },
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        -20368,
-        272
+        -20400,
+        368
       ],
       "id": "73ae4d77-3af1-487a-a0ad-24a1a65b2638",
       "name": "PARSE RESPONSE"
@@ -2041,8 +2009,8 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
       "position": [
-        -19184,
-        -448
+        -19088,
+        -1248
       ],
       "id": "5d7ccb84-63fc-4d2f-9f18-fab45dfa4b0a",
       "name": "IF Faltan Datos"
@@ -2110,7 +2078,7 @@
       "typeVersion": 2.3,
       "position": [
         -21248,
-        1744
+        1728
       ],
       "id": "e40eed68-65ad-4068-93ba-6d3db92cb59c",
       "name": "If ES UPDATE"
@@ -2215,63 +2183,11 @@
       "type": "n8n-nodes-base.filter",
       "typeVersion": 2.3,
       "position": [
-        -20128,
-        448
+        -20176,
+        368
       ],
       "id": "4cf7aa4d-14e6-4018-afc4-261686ca9117",
       "name": "Filter si no hay datos"
-    },
-    {
-      "parameters": {
-        "content": "## Actualizar ultimo mensaje del Usuario\n",
-        "height": 288,
-        "width": 480,
-        "color": 5
-      },
-      "type": "n8n-nodes-base.stickyNote",
-      "position": [
-        -19824,
-        384
-      ],
-      "typeVersion": 1,
-      "id": "af153d5a-ddd9-4f56-8b5b-5a3c1e482014",
-      "name": "Sticky Note15"
-    },
-    {
-      "parameters": {
-        "jsCode": "const id = $('user to use').first().json._id || $('Insert user').first().json._id;\n\nconst last_interaction = new Date($('Create Body').first().json.timestamp);\n\nconst last_message = $('PARSE Body').first().json.current_body.last_input_text;\n\n// Si viene como objeto con $oid\nif (typeof id === \"object\" && id !== null && id.$oid) {\n  return [{ json: { _id: id.$oid } }];\n}\n// Si ya es una cadena\nelse if (typeof id === \"string\") {\n  return [\n    {\n      json: {\n        _id: id,\n        last_interaction: last_interaction,\n        last_message: last_message,\n      },\n    },\n  ];\n}\n// Si es otro tipo (poco común), conviértelo a string\nelse {\n  return [\n    {\n      json: {\n        _id: String(id),\n        last_interaction: last_interaction,\n        last_message: last_message,\n      },\n    },\n  ];\n}\n"
-      },
-      "type": "n8n-nodes-base.code",
-      "typeVersion": 2,
-      "position": [
-        -19760,
-        480
-      ],
-      "id": "22eb9b54-6d97-4273-84b7-ce47882392f0",
-      "name": "Data to Update Normalization1"
-    },
-    {
-      "parameters": {
-        "operation": "update",
-        "collection": "users_test",
-        "updateKey": "=_id",
-        "fields": "last_interaction,last_message",
-        "options": {}
-      },
-      "type": "n8n-nodes-base.mongoDb",
-      "typeVersion": 1.2,
-      "position": [
-        -19536,
-        480
-      ],
-      "id": "e1c5b491-a3d4-4d69-9dcf-ebc91e5e1edf",
-      "name": "Update user1",
-      "credentials": {
-        "mongoDb": {
-          "id": "al8RU2TlqRrXROGb",
-          "name": "Spectrum - Parque Vista Verde"
-        }
-      }
     },
     {
       "parameters": {
@@ -2280,7 +2196,7 @@
             {
               "id": "6e34221c-74d3-4423-a6d5-8526ec64ab0a",
               "name": "input",
-              "value": "={{ $('JOINING RESPONSE').item.json.MESSAGE }}",
+              "value": "={{ $('INPUT1').isExecuted ? $('INPUT1').item.json.input : $('INPUT').item.json.input }}",
               "type": "string"
             }
           ]
@@ -2313,7 +2229,7 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        -20448,
+        -20480,
         1520
       ],
       "id": "982976c5-693f-4327-b39f-37a678a7dc60",
@@ -2326,7 +2242,7 @@
             {
               "id": "2b5a9b61-cb57-4a91-9007-6055662b6e6b",
               "name": "input",
-              "value": "={{ $('Pregunta FInal').item.json.input }}",
+              "value": "={{ $('JOINING RESPONSE').item.json.MESSAGE }}",
               "type": "string"
             }
           ]
@@ -2337,7 +2253,7 @@
       "typeVersion": 3.4,
       "position": [
         -20608,
-        1760
+        1744
       ],
       "id": "e8a61fb9-aefd-4236-ad32-297201a3dc24",
       "name": "INPUT"
@@ -2351,8 +2267,8 @@
       "type": "n8n-nodes-base.mongoDb",
       "typeVersion": 1.2,
       "position": [
-        -18224,
-        -432
+        -18128,
+        -1232
       ],
       "id": "fe50440e-061b-41e5-b926-4a3db45cb097",
       "name": "Find User",
@@ -2386,8 +2302,8 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        -18512,
-        -432
+        -18416,
+        -1232
       ],
       "id": "79f66f42-8f6c-4ea8-a24e-08ac1f085213",
       "name": "RESPOND TO MANYCHAT2",
@@ -2415,8 +2331,8 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        -18736,
-        -432
+        -18640,
+        -1232
       ],
       "id": "304ff9fa-9731-4d00-b2d2-ac109f530f94",
       "name": "Channel Response1"
@@ -2469,8 +2385,8 @@
       "type": "n8n-nodes-base.filter",
       "typeVersion": 2.3,
       "position": [
-        -19136,
-        448
+        -18672,
+        -352
       ],
       "id": "9a76e655-4aa0-45dc-81d5-759356ba4fa7",
       "name": "DATACOMPLETE"
@@ -2501,8 +2417,8 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        -18512,
-        448
+        -18048,
+        -352
       ],
       "id": "5217b5fd-c987-475f-a466-e29fb02b7183",
       "name": "GENERAR LEAD CONTACT",
@@ -2515,8 +2431,8 @@
       "type": "n8n-nodes-base.xml",
       "typeVersion": 1,
       "position": [
-        -18304,
-        448
+        -17840,
+        -352
       ],
       "id": "62c839da-8866-453c-840c-56575bac082a",
       "name": "XML BODY",
@@ -2539,8 +2455,8 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        -18912,
-        448
+        -18448,
+        -352
       ],
       "id": "3240f0d9-a589-449a-a949-1499bb3a2505",
       "name": "Body"
@@ -2553,8 +2469,8 @@
       "type": "n8n-nodes-base.xml",
       "typeVersion": 1,
       "position": [
-        -18704,
-        448
+        -18240,
+        -352
       ],
       "id": "c162fe82-773e-4755-a671-0b79bde8419c",
       "name": "PARSE BODY"
@@ -2644,7 +2560,7 @@
             {
               "id": "29bc8a2a-9b6e-4b09-ae6d-30b74ab45b94",
               "name": "body",
-              "value": "=<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<soap:Envelope xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\">\n<soap:Body>\n<CreacionClientePotencialBot xmlns=\"http://tempuri.org/\">\n<_OrigenCliente>100000001</_OrigenCliente>\n<_Proyecto>PVV</_Proyecto>\n<_UTMCampaing>Cliente atendido desde Chatbot</_UTMCampaing>\n<_Comentarios>Habitaciones: {{ $('If date EXIST').item.json.response.parameters.numero_habitaciones || \"no\" }}, Motivo Interes: {{ $('If date EXIST').item.json.response.parameters.intencion_compra == 'V' ? 'Vivir' : 'Rentar'}} y Método Contacto: {{ $('output agent rsvp').item.json.response.parameters.metodo_contacto_pref == 3 ? \"Llamada Telefónica\" : $('output agent rsvp').item.json.response.parameters.metodo_contacto_pref == 4 ? \"WhatsApp\" : $('output agent rsvp').item.json.response.parameters.metodo_contacto_pref == 2 ? \"Correo electrónico\" : \"Cualquier forma\" }}</_Comentarios>\n<_UTMSource>{{ $('PARSE Body').item.json.current_body.custom_fields.canal_ingreso == 'whatsapp' ? 100000004 : $('PARSE Body').item.json.current_body.custom_fields.canal_ingreso == 'instagram' ? 100000012 : 100000005 }}</_UTMSource>\n<_TelefonoMovil>{{ $json.phone }}</_TelefonoMovil>\n<_CorreEletronico>{{ $json.email }}</_CorreEletronico>\n<_Nombre>{{ $json.name.split(\" \")[0] }}</_Nombre>\n<_Apellido>{{ $json.name.split(\" \")[1] }}</_Apellido>\n{{ \n  $('IF EXIST DATA').item.json.response.parameters.fecha_hora !== null\n  ?\n  `<_FechaCita>${$('FORMAT APPOINTMENT DATE').item.json.fecha_hora.toDateTime()}</_FechaCita>`\n  :\n  ``\n}}\n{{ \n  $('IF EXIST DATA').item.json.response.parameters.metodo_contacto_pref !== null\n  ? \n  `<_MetodocontactoPref>${$('IF EXIST DATA').item.json.response.parameters.metodo_contacto_pref}</_MetodocontactoPref>`\n  :\n  ``\n}}\n{{ \n  $('IF EXIST DATA').item.json.response.parameters.numero_habitaciones !== null\n  ?\n  `<_NumeroHabitaciones>${$('IF EXIST DATA').item.json.response.parameters.numero_habitaciones=='1'?100000000:$('IF EXIST DATA').item.json.response.parameters.numero_habitaciones=='2'?100000001:100000002}</_NumeroHabitaciones>`\n  :\n  ``\n}}\n</CreacionClientePotencialBot>\n</soap:Body>\n</soap:Envelope>",
+              "value": "=<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<soap:Envelope xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\">\n<soap:Body>\n<CreacionClientePotencialBot xmlns=\"http://tempuri.org/\">\n<_OrigenCliente>100000001</_OrigenCliente>\n<_Proyecto>PVV</_Proyecto>\n<_UTMCampaing>Cliente atendido desde Chatbot</_UTMCampaing>\n<_Comentarios>Tipo Agendamiento: {{ $('output agent rsvp').item.json.response.parameters.tipo_agendamiento }}, Habitaciones: {{ $('If date EXIST').item.json.response.parameters.numero_habitaciones || \"no\" }}, Motivo Interes: {{ $('If date EXIST').item.json.response.parameters.intencion_compra == 'V' ? 'Vivir' : 'Rentar'}} y Método Contacto: {{ $('output agent rsvp').item.json.response.parameters.metodo_contacto_pref == 3 ? \"Llamada Telefónica\" : $('output agent rsvp').item.json.response.parameters.metodo_contacto_pref == 4 ? \"WhatsApp\" : $('output agent rsvp').item.json.response.parameters.metodo_contacto_pref == 2 ? \"Correo electrónico\" : \"Cualquier forma\" }}</_Comentarios>\n<_UTMSource>{{ $('PARSE Body').item.json.current_body.custom_fields.canal_ingreso == 'whatsapp' ? 100000004 : $('PARSE Body').item.json.current_body.custom_fields.canal_ingreso == 'instagram' ? 100000012 : 100000005 }}</_UTMSource>\n<_TelefonoMovil>{{ $json.phone }}</_TelefonoMovil>\n<_CorreEletronico>{{ $json.email }}</_CorreEletronico>\n<_Nombre>{{ $json.name.split(\" \")[0] }}</_Nombre>\n<_Apellido>{{ $json.name.split(\" \")[1] }}</_Apellido>\n{{ \n  $('IF EXIST DATA').item.json.response.parameters.fecha_hora !== null\n  ?\n  `<_FechaCita>${$('FORMAT APPOINTMENT DATE').item.json.fecha_hora.toDateTime()}</_FechaCita>`\n  :\n  ``\n}}\n{{ \n  $('IF EXIST DATA').item.json.response.parameters.metodo_contacto_pref !== null\n  ? \n  `<_MetodocontactoPref>${$('IF EXIST DATA').item.json.response.parameters.metodo_contacto_pref}</_MetodocontactoPref>`\n  :\n  ``\n}}\n{{ \n  $('IF EXIST DATA').item.json.response.parameters.numero_habitaciones !== null\n  ?\n  `<_NumeroHabitaciones>${$('IF EXIST DATA').item.json.response.parameters.numero_habitaciones=='1'?100000000:$('IF EXIST DATA').item.json.response.parameters.numero_habitaciones=='2'?100000001:100000002}</_NumeroHabitaciones>`\n  :\n  ``\n}}\n</CreacionClientePotencialBot>\n</soap:Body>\n</soap:Envelope>",
               "type": "string"
             }
           ]
@@ -2714,8 +2630,8 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.2,
       "position": [
-        -17296,
-        1168
+        -17408,
+        1136
       ],
       "id": "cab3503e-c700-494e-b685-c9cd45cdf39f",
       "name": "IF EXIST DATA"
@@ -2735,39 +2651,6 @@
     },
     {
       "parameters": {
-        "conditions": {
-          "options": {
-            "caseSensitive": true,
-            "leftValue": "",
-            "typeValidation": "strict",
-            "version": 3
-          },
-          "conditions": [
-            {
-              "id": "21af431f-b37d-4c6b-ba94-624239ad0579",
-              "leftValue": "={{ $json.response.parameters.fecha_hora }}",
-              "rightValue": "",
-              "operator": {
-                "type": "string",
-                "operation": "notEquals"
-              }
-            }
-          ],
-          "combinator": "and"
-        },
-        "options": {}
-      },
-      "type": "n8n-nodes-base.if",
-      "typeVersion": 2.3,
-      "position": [
-        -17072,
-        1056
-      ],
-      "id": "d463acba-0383-4ec6-8948-39823393e6f9",
-      "name": "If date EXIST"
-    },
-    {
-      "parameters": {
         "assignments": {
           "assignments": [
             {
@@ -2783,8 +2666,8 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        -16720,
-        912
+        -16688,
+        928
       ],
       "id": "fa1c3e21-64e0-4ef5-a8b0-4884dc6835ce",
       "name": "FORMAT APPOINTMENT DATE"
@@ -3013,8 +2896,8 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        -17296,
-        -160
+        -16832,
+        -960
       ],
       "id": "1f34046a-0347-4a84-b9e1-0008b583ab77",
       "name": "Calculate Time1",
@@ -3048,8 +2931,8 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.2,
       "position": [
-        -17072,
-        -160
+        -16608,
+        -960
       ],
       "id": "75d16789-6f54-497a-81e8-8e5c5111434d",
       "name": "If First Execution1"
@@ -3065,8 +2948,8 @@
       "type": "n8n-nodes-base.mongoDb",
       "typeVersion": 1.2,
       "position": [
-        -16400,
-        -304
+        -15936,
+        -1104
       ],
       "id": "2090c52c-03b2-47cf-98a8-9df6c3ae1d6c",
       "name": "Update First Execution Time1",
@@ -3086,8 +2969,8 @@
       "type": "n8n-nodes-base.mongoDb",
       "typeVersion": 1.2,
       "position": [
-        -16848,
-        -304
+        -16384,
+        -1104
       ],
       "id": "faecc42d-201b-4bb7-849c-26a17d16febe",
       "name": "Find User Chat History1",
@@ -3105,8 +2988,8 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        -16624,
-        -304
+        -16160,
+        -1104
       ],
       "id": "25c46225-0e64-4e20-a4e7-7eead31a9109",
       "name": "Data Time to Update Normalization1"
@@ -3116,8 +2999,8 @@
       "type": "n8n-nodes-base.noOp",
       "typeVersion": 1,
       "position": [
-        -16848,
-        -112
+        -16384,
+        -912
       ],
       "id": "6036e830-9ee2-411e-bf35-b47fb568d784",
       "name": "No Operation, do nothing3"
@@ -3329,108 +3212,13 @@
     },
     {
       "parameters": {
-        "conditions": {
-          "options": {
-            "caseSensitive": true,
-            "leftValue": "",
-            "typeValidation": "strict",
-            "version": 3
-          },
-          "conditions": [
-            {
-              "id": "9a5d9bbf-360e-4c16-b248-7e75b8a1b807",
-              "leftValue": "={{ $json.output.asesoria }}",
-              "rightValue": false,
-              "operator": {
-                "type": "boolean",
-                "operation": "true",
-                "singleValue": true
-              }
-            }
-          ],
-          "combinator": "and"
-        },
-        "options": {}
-      },
-      "type": "n8n-nodes-base.if",
-      "typeVersion": 2.3,
-      "position": [
-        -23648,
-        1312
-      ],
-      "id": "09843ece-179f-4719-8ae0-e0dd07c58c7e",
-      "name": "IF requiere asesoría",
-      "disabled": true
-    },
-    {
-      "parameters": {
-        "method": "POST",
-        "url": "https://api.manychat.com/fb/sending/sendContent",
-        "authentication": "genericCredentialType",
-        "genericAuthType": "httpHeaderAuth",
-        "sendHeaders": true,
-        "headerParameters": {
-          "parameters": [
-            {
-              "name": "Content-Type",
-              "value": "application/json"
-            }
-          ]
-        },
-        "sendBody": true,
-        "specifyBody": "json",
-        "jsonBody": "={\n  \"subscriber_id\": \"{{ $('PARSE Body').item.json.current_body.id }}\",\n  \"data\": {\n    \"version\": \"v2\",\n    \"content\": {\n      \"type\": \"{{ $json.type.trim() }}\",\n      \"messages\": [\n        {\n          \"type\": \"text\",\n          \"text\": \"Para comunicarse con un Asesor, use este número (+50239991881), le estará atendiendo la encargada de Parque Vista Verde.\"\n        }\n      ]\n    }\n  }\n}",
-        "options": {}
-      },
-      "type": "n8n-nodes-base.httpRequest",
-      "typeVersion": 4.2,
-      "position": [
-        -23136,
-        1168
-      ],
-      "id": "a11cae09-1775-4ad6-8b37-426c99e4e082",
-      "name": "RESPOND TO MANYCHAT3",
-      "credentials": {
-        "httpHeaderAuth": {
-          "id": "2KClojasxcPLSibd",
-          "name": "Manychat"
-        }
-      },
-      "disabled": true
-    },
-    {
-      "parameters": {
-        "assignments": {
-          "assignments": [
-            {
-              "id": "dcff964b-b8c1-4e8f-9c6d-0a188497de72",
-              "name": "type",
-              "value": "={{ \n  $('PARSE Body').item.json.current_body.custom_fields.canal_ingreso.includes(\"Instagram\")\n    ? \"instagram\"\n    : \n    $('PARSE Body').item.json.current_body.custom_fields.canal_ingreso.includes(\"Messenger\")\n      ? \"messenger\"\n      : \"whatsapp\" \n}}",
-              "type": "string"
-            }
-          ]
-        },
-        "options": {}
-      },
-      "type": "n8n-nodes-base.set",
-      "typeVersion": 3.4,
-      "position": [
-        -23360,
-        1168
-      ],
-      "id": "632dce12-a935-4859-a976-36c9e0d62982",
-      "name": "Channel Response2",
-      "disabled": true
-    },
-    {
-      "parameters": {
         "html": "<!doctype html>\n<html lang=\"es\">\n  <head>\n    <meta charset=\"utf-8\" />\n    <meta name=\"viewport\" content=\"width=device-width,initial-scale=1\" />\n    <meta name=\"x-apple-disable-message-reformatting\" />\n    <title>Nuevo lead ingresado</title>\n    <style>\n      body, table, td, a { -webkit-text-size-adjust:100%; -ms-text-size-adjust:100%; }\n      table, td { mso-table-lspace:0pt; mso-table-rspace:0pt; }\n      img { -ms-interpolation-mode:bicubic; border:0; outline:none; text-decoration:none; }\n      table { border-collapse:collapse !important; }\n      body { margin:0 !important; padding:0 !important; width:100% !important; height:100% !important; }\n    </style>\n  </head>\n\n  <body style=\"background:#f7f7f8; margin:0; padding:0;\">\n    <!-- Preheader -->\n    <div style=\"display:none; font-size:1px; line-height:1px; max-height:0; max-width:0; opacity:0; overflow:hidden; mso-hide:all;\">\n      Nuevo lead registrado para seguimiento inmediato.\n    </div>\n\n    <table role=\"presentation\" width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" style=\"background:#f7f7f8;\">\n      <tr>\n        <td align=\"center\" style=\"padding:28px 16px;\">\n          <table role=\"presentation\" width=\"600\" cellpadding=\"0\" cellspacing=\"0\" style=\"width:600px; max-width:600px;\">\n            \n            <!-- Header -->\n            <tr>\n              <td style=\"padding:0 0 16px 0;\">\n                <table role=\"presentation\" width=\"100%\" cellpadding=\"0\" cellspacing=\"0\">\n                  <tr>\n                    <td align=\"left\" style=\"font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;\">\n                      <img \n                        src=\"https://drive.google.com/uc?export=view&id=1GvaiLW9wZtrHTrGQuu2RbSfvi8TdCM2n\" \n                        alt=\"RedTec\" \n                        height=\"28\" \n                        style=\"display:block; max-height:28px;\" \n                      />\n                    </td>\n                    <td align=\"right\" style=\"font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;\">\n                      <span style=\"font-size:12px; color:#9b1c1c;\">Notificación automática</span>\n                    </td>\n                  </tr>\n                </table>\n              </td>\n            </tr>\n\n            <!-- Card -->\n            <tr>\n              <td style=\"background:#ffffff; border:1px solid #f1d4d4; border-radius:14px; padding:22px;\">\n                <div style=\"font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; color:#111827;\">\n\n                  <div style=\"font-size:18px; color:#9b1c1c; margin-bottom:4px;\">\n                    Proyecto <span style=\"font-weight:700;\">Parque Vista Verde</span>\n                  </div>\n                  \n                  <div style=\"font-size:18px; font-weight:700; color:#9b1c1c; margin-bottom:6px;\">\n                    Nuevo lead entrante\n                  </div>\n\n                  <div style=\"font-size:14px; color:#9b1c1c; line-height:1.6;\">\n                    Ha entrado un nuevo lead con los siguientes datos:\n                  </div>\n\n                  <div style=\"height:14px;\"></div>\n\n                  <!-- Lead details -->\n                  <table role=\"presentation\" width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" style=\"border:1px solid #fde8e8; border-radius:12px;\">\n                    <tr>\n                      <td style=\"padding:12px 14px 8px 14px;\">\n                        <div style=\"font-size:14px; color:#dc2626; text-transform:uppercase; letter-spacing:0.6px; font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;\">\n                          Datos del lead\n                        </div>\n                      </td>\n                    </tr>\n\n                    <tr>\n                      <td style=\"padding:0 14px 14px 14px;\">\n                        <table role=\"presentation\" width=\"100%\" cellpadding=\"0\" cellspacing=\"0\">\n                          <tr>\n                            <td style=\"padding:10px 0; border-top:1px solid #fde8e8;\">\n                              <div style=\"font-size:12px; color:#6b7280;\">Nombre</div>\n                              <div style=\"font-size:15px; font-weight:600; color:#dc2626;\">{{ $('DATACOMPLETE').item.json.name }}</div>\n                            </td>\n                          </tr>\n\n                          <tr>\n                            <td style=\"padding:10px 0; border-top:1px solid #fde8e8;\">\n                              <div style=\"font-size:12px; color:#6b7280;\">Teléfono</div>\n                              <div style=\"font-size:15px; font-weight:600;\">\n                                <a href=\"tel:+50254113908\" style=\"color:#dc2626; text-decoration:none;\">{{ $('DATACOMPLETE').item.json.phone }}</a>\n                              </div>\n                            </td>\n                          </tr>\n\n                          <tr>\n                            <td style=\"padding:10px 0; border-top:1px solid #fde8e8;\">\n                              <div style=\"font-size:12px; color:#6b7280;\">Correo</div>\n                              <div style=\"font-size:15px; font-weight:600;\">\n                                <a href=\"mailto:Edgarfernandoortizpaz@gmail.com\" style=\"color:#dc2626; text-decoration:none;\">{{ $('DATACOMPLETE').item.json.email }}</a>\n                              </div>\n                            </td>\n                          </tr>\n                        </table>\n                      </td>\n                    </tr>\n                  </table>\n\n                  <!-- CTA -->\n                  <div style=\"height:18px;\"></div>\n\n                  <table role=\"presentation\" cellpadding=\"0\" cellspacing=\"0\">\n                    <tr>\n                      <td style=\"background:#dc2626;\">\n                        <a href=\"tel:{{ $('DATACOMPLETE').item.json.phone }}\"\n                           style=\"display:inline-block; padding:12px 16px; font-size:14px; font-weight:600; color:#ffffff; text-decoration:none; font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;\">\n                          Llamar al lead\n                        </a>\n                      </td>\n                      \n                      <td style=\"width:10px;\"></td>\n\n                      <!-- <td style=\"background:#dc2626; border-radius:10px;\">\n                        <a href=\"mailto:Edgarfernandoortizpaz@gmail.com?subject=Seguimiento%20RedTec%20-%20Gracias%20por%20tu%20inter%C3%A9s\"\n                           style=\"display:inline-block; padding:12px 16px; font-size:14px; font-weight:600; color:#ffffff; text-decoration:none; font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;\">\n                          Enviar correo al lead\n                        </a>\n                      </td> -->\n                    </tr>\n                  </table>\n\n                </div>\n              </td>\n            </tr>\n\n            <!-- Footer -->\n            <tr>\n              <td style=\"padding:14px 6px 0 6px; font-size:12px; color:#6b7280; font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; line-height:1.6;\">\n                Enviado por <strong style=\"color:#9b1c1c;\">RedTec</strong> · Notificación automática de leads  \n                <br/>Recomendación: responder en menos de 15 minutos para maximizar conversión.\n              </td>\n            </tr>\n\n          </table>\n        </td>\n      </tr>\n    </table>\n  </body>\n</html>"
       },
       "type": "n8n-nodes-base.html",
       "typeVersion": 1.2,
       "position": [
-        -18128,
-        448
+        -17664,
+        -352
       ],
       "id": "f1732822-a2fc-4d45-b61b-9aaa8e5b94c7",
       "name": "HTML"
@@ -3470,8 +3258,8 @@
       "type": "n8n-nodes-base.gmail",
       "typeVersion": 2.2,
       "position": [
-        -17792,
-        -144
+        -17328,
+        -944
       ],
       "id": "6bd5bd45-6544-4d34-9b9b-56173d3d27b8",
       "name": "Notificacion Jorge Menzel",
@@ -3481,8 +3269,7 @@
           "id": "H8Qx7NlrthXmHUiy",
           "name": "Soporte Garoo"
         }
-      },
-      "disabled": true
+      }
     },
     {
       "parameters": {
@@ -3496,8 +3283,8 @@
       "type": "n8n-nodes-base.gmail",
       "typeVersion": 2.2,
       "position": [
-        -17792,
-        48
+        -17328,
+        -752
       ],
       "id": "d41be4a6-a0a2-46a8-a2db-bb8132922bc0",
       "name": "Notificacion Harim",
@@ -3522,8 +3309,8 @@
       "type": "n8n-nodes-base.gmail",
       "typeVersion": 2.2,
       "position": [
-        -17792,
-        256
+        -17328,
+        -544
       ],
       "id": "7fd59c2a-4557-424d-8322-23f963377ece",
       "name": "Notificacion dmartinez@spectrum.com.gt",
@@ -3548,8 +3335,8 @@
       "type": "n8n-nodes-base.gmail",
       "typeVersion": 2.2,
       "position": [
-        -17792,
-        448
+        -17328,
+        -352
       ],
       "id": "67e6acaa-3eb3-4f56-962d-983f909c7b43",
       "name": "Notificacion avelasquez@spectrum.com.gt",
@@ -3567,8 +3354,8 @@
       "type": "n8n-nodes-base.noOp",
       "typeVersion": 1,
       "position": [
-        -17472,
-        176
+        -17008,
+        -624
       ],
       "id": "f7907090-9b3b-4c9b-a7d6-0f615643d76d",
       "name": "No Operation, do nothing4",
@@ -3888,8 +3675,8 @@
       "type": "n8n-nodes-base.mongoDb",
       "typeVersion": 1.2,
       "position": [
-        -21104,
-        272
+        -21056,
+        368
       ],
       "id": "bf1ad1e5-7be5-4492-8116-9e4d31ce2dfb",
       "name": "Update Data Interaction",
@@ -3923,8 +3710,8 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        -21312,
-        272
+        -21264,
+        368
       ],
       "id": "a6ecefd1-c113-4ecb-a666-00e15b985643",
       "name": "interaction quantity"
@@ -3996,7 +3783,7 @@
       "type": "n8n-nodes-base.mongoDb",
       "typeVersion": 1.2,
       "position": [
-        -18864,
+        -18688,
         1392
       ],
       "id": "4c56a4c7-5905-4f50-bfc4-7734eb4a75ae",
@@ -4031,7 +3818,7 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        -19056,
+        -18880,
         1392
       ],
       "id": "a58ec4de-6cd4-4d3f-a8c5-c3aed3e2a81d",
@@ -4049,62 +3836,32 @@
           "conditions": [
             {
               "id": "b5b6d610-4dee-416c-8533-28843f5e8bb1",
-              "leftValue": "={{ $('user to use').item.json.name }}",
+              "leftValue": "={{ !$json.name || $json.name == \"\" || $json.name == \"null\" }}",
               "rightValue": "undefined",
               "operator": {
-                "type": "string",
-                "operation": "empty",
+                "type": "boolean",
+                "operation": "true",
                 "singleValue": true
               }
             },
             {
               "id": "4490fab0-bd0e-43ae-848a-742c56a2672f",
-              "leftValue": "={{ $('user to use').item.json.phone }}",
+              "leftValue": "={{ !$json.phone || $json.phone == \"\" || $json.phone == \"null\" }}",
               "rightValue": "undefined",
               "operator": {
-                "type": "string",
-                "operation": "empty",
+                "type": "boolean",
+                "operation": "true",
                 "singleValue": true
               }
             },
             {
               "id": "8bfb2cd9-a7be-49aa-a69e-b11f253b686b",
-              "leftValue": "={{ $('user to use').item.json.email }}",
+              "leftValue": "={{ !$json.email || $json.email == \"\" || $json.email == \"null\" }}",
               "rightValue": "undefined",
               "operator": {
-                "type": "string",
-                "operation": "empty",
+                "type": "boolean",
+                "operation": "true",
                 "singleValue": true
-              }
-            },
-            {
-              "id": "a89301e6-e227-4b9b-a1ac-e67a7afe11d1",
-              "leftValue": "={{ $('user to use').item.json.name }}",
-              "rightValue": "undefined",
-              "operator": {
-                "type": "string",
-                "operation": "equals",
-                "name": "filter.operator.equals"
-              }
-            },
-            {
-              "id": "6b66c40b-c679-4408-b453-c934d775e1b0",
-              "leftValue": "={{ $('user to use').item.json.phone }}",
-              "rightValue": "undefined",
-              "operator": {
-                "type": "string",
-                "operation": "equals",
-                "name": "filter.operator.equals"
-              }
-            },
-            {
-              "id": "0814f5cc-159f-40a3-86d8-9a0697c454a1",
-              "leftValue": "={{ $('user to use').item.json.email }}",
-              "rightValue": "undefined",
-              "operator": {
-                "type": "string",
-                "operation": "equals",
-                "name": "filter.operator.equals"
               }
             }
           ],
@@ -4146,7 +3903,7 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        -22112,
+        -22080,
         1472
       ],
       "id": "6729cef2-33e1-4d1e-87e6-79077116946a",
@@ -4171,7 +3928,7 @@
       "type": "n8n-nodes-base.noOp",
       "typeVersion": 1,
       "position": [
-        -11440,
+        -11072,
         400
       ],
       "id": "a7ebb209-4cd4-4e71-929a-404101665862",
@@ -4242,7 +3999,7 @@
       "type": "n8n-nodes-base.gmail",
       "typeVersion": 2.2,
       "position": [
-        -12144,
+        -11776,
         -256
       ],
       "id": "36ed64a7-42f4-4517-9dae-a79f245889f2",
@@ -4268,7 +4025,7 @@
       "type": "n8n-nodes-base.gmail",
       "typeVersion": 2.2,
       "position": [
-        -12144,
+        -11776,
         -448
       ],
       "id": "e43506b1-c962-4634-adc3-8c5c78d619d1",
@@ -4296,10 +4053,10 @@
     },
     {
       "parameters": {
-        "sendTo": "jorge.calderon@garooinc.com",
+        "sendTo": "jorge.menzel@garooinc.com",
         "subject": "Lead interesado en precios - Parque Vista Verde",
         "emailType": "text",
-        "message": "=Cliente {{ $('USER').item.json.name }} preguntó por precios de apartamentos y se le respondió que sería contactado por un asesor. \n\nSu teléfono es: {{ $('USER').item.json.phone }}",
+        "message": "=Cliente {{ $('USER').item.json.name }} preguntó por precios de apartamentos.\n\nSu teléfono es: {{ $('USER').item.json.phone }}",
         "options": {
           "appendAttribution": false,
           "senderName": "Soporte de Redtec"
@@ -4324,8 +4081,8 @@
     {
       "parameters": {
         "descriptionType": "manual",
-        "toolDescription": "=EJECUTAR cuando: (1) El usuario prefiera LLAMADA telefónica en lugar de cita presencial, (2) La pregunta no esté en el set de preguntas, (3) El usuario solicite hablar con un ejecutivo. REGLAS: No confirmes la ejecución al usuario. No menciones que enviarás un correo.",
-        "sendTo": "jorge.calderon@garooinc.com",
+        "toolDescription": "=Usa esta herramienta EXCLUSIVAMENTE cuando el usuario pida hablar con un asesor/humano o cuando la pregunta sea totalmente ajena a la información del proyecto inmobiliario proporcionada en el set oficial.",
+        "sendTo": "jorge.menzel@garooinc.com",
         "subject": "Solicitud de contacto - Parque Vista Verde",
         "emailType": "text",
         "message": "=Cliente {{ $('USER').item.json.name }} hizo pregunta fuera del set. Requiere contacto de Ejecutivo. \n\nPregunta: {{ $json.input }}\nSu teléfono es: {{ $('USER').item.json.phone }}",
@@ -4352,29 +4109,258 @@
     },
     {
       "parameters": {
-        "sendTo": "jorge.calderon@garooinc.com",
-        "subject": "Llamada confirmada - Parque Vista Verde",
-        "message": "=El usuario CONFIRMÓ que desea una llamada telefónica.\n\nNombre: {{ $('USER').item.json.name ?? 'No disponible' }}\nTeléfono: {{ $('USER').item.json.phone ?? 'No disponible' }}\nHora: {{ $now.format('HH:mm') }}\nFecha: {{ $now.format('dd LLL yyyy') }}\n\nContexto: Usuario aceptó llamada después de oferta del agente.\nPrioridad: ALTA (confirmación explícita del usuario)",
-        "options": {
-          "appendAttribution": false,
-          "senderName": "Soporte de Redtec"
-        }
+        "jsCode": "const raw = $input.first().json.output;\n\nif (raw !== 'RESERVA' && raw !== 'CONVERSACION') {\n  console.warn('Clasificación inválida:', $input.item.json.output);\n  return { clasificacion: 'CONVERSACION' };\n}\n\nreturn { clasificacion: raw };"
       },
-      "type": "n8n-nodes-base.gmailTool",
-      "typeVersion": 2.2,
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
       "position": [
-        -17040,
-        2640
+        -20016,
+        1744
       ],
-      "id": "66fed762-4656-4f97-b9e3-6112c6ecabf2",
-      "name": "callback_scheduled",
-      "webhookId": "88c5c648-60ac-4d76-a4e8-ec720b35e6bf",
+      "id": "f76a20ac-86d5-4f6b-9381-b083ca67e47d",
+      "name": "PARSE JUEZ RESPONSE"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "9cbb3b29-a940-4b2f-989f-6eff0aaffadd",
+              "leftValue": "={{ $json.response.parameters.fecha_hora }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        -17104,
+        1056
+      ],
+      "id": "48d6b33e-99a4-40ee-956c-9e2036bf1747",
+      "name": "If date EXIST"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "b3526e50-7a9b-4ab2-91c5-16e267fb202c",
+              "leftValue": "={{ $('Find appointment').item.json }}",
+              "rightValue": "",
+              "operator": {
+                "type": "object",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        -16832,
+        1088
+      ],
+      "id": "386ce1fe-1e80-4e05-826b-99839aea3f09",
+      "name": "If Appointment EXIST"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4o-mini",
+          "mode": "list",
+          "cachedResultName": "gpt-4o-mini"
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        -19648,
+        704
+      ],
+      "id": "31d13858-babf-4442-8c25-fc9edf1c3dd4",
+      "name": "OpenAI Chat Model3",
       "credentials": {
-        "gmailOAuth2": {
-          "id": "H8Qx7NlrthXmHUiy",
-          "name": "Soporte Garoo"
+        "openAiApi": {
+          "id": "mwtQQFLfYjj6JZcg",
+          "name": "Spectrum - Parque Verde"
         }
       }
+    },
+    {
+      "parameters": {
+        "collection": "chat_histories_lead_test",
+        "options": {},
+        "query": "={\"sessionId\":\"{{ $('PARSE Body').item.json.current_body.key }}\"}"
+      },
+      "type": "n8n-nodes-base.mongoDb",
+      "typeVersion": 1.2,
+      "position": [
+        -19840,
+        496
+      ],
+      "id": "7721fc9f-5d53-4970-9a09-92e7a822c882",
+      "name": "Find Conversation",
+      "credentials": {
+        "mongoDb": {
+          "id": "al8RU2TlqRrXROGb",
+          "name": "Spectrum - Parque Vista Verde"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "text": "={{ $json.messages.toJsonString() }}",
+        "attributes": {
+          "attributes": [
+            {
+              "name": "user_question",
+              "description": "=que quiere saber el cliente?",
+              "required": true
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.informationExtractor",
+      "typeVersion": 1.2,
+      "position": [
+        -19680,
+        496
+      ],
+      "id": "1750b33b-8fe4-484c-83d8-0a93826d30ac",
+      "name": "RESSUME"
+    },
+    {
+      "parameters": {
+        "jsCode": "const id = $('user to use').first().json._id || $('Insert user').first().json._id;\n\nconst last_interaction = new Date($('Create Body').first().json.timestamp);\n\nconst last_message = $('PARSE RESPONSE').first().json.transferir_agente == 0 \n  ?\n  $('PARSE Body').first().json.current_body.last_input_text\n  :\n  $input.first().json.output.user_question;\n  \n// Si viene como objeto con $oid\nif (typeof id === \"object\" && id !== null && id.$oid) {\n  return [{ json: { _id: id.$oid } }];\n}\n// Si ya es una cadena\nelse if (typeof id === \"string\") {\n  return [\n    {\n      json: {\n        _id: id,\n        last_interaction: last_interaction,\n        last_message: last_message,\n      },\n    },\n  ];\n}\n// Si es otro tipo (poco común), conviértelo a string\nelse {\n  return [\n    {\n      json: {\n        _id: String(id),\n        last_interaction: last_interaction,\n        last_message: last_message,\n      },\n    },\n  ];\n}\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -19344,
+        352
+      ],
+      "id": "22eb9b54-6d97-4273-84b7-ce47882392f0",
+      "name": "Data Normalization"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "aaf77102-3b23-4f79-a693-c6a5e5a27a3f",
+              "leftValue": "={{ $('PARSE RESPONSE').item.json.transferir_agente }}",
+              "rightValue": 0,
+              "operator": {
+                "type": "number",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        -20016,
+        368
+      ],
+      "id": "2bc84711-46e1-41bd-8898-756cb04e442f",
+      "name": "If3"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "collection": "users_test",
+        "updateKey": "=_id",
+        "fields": "last_interaction,last_message",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.mongoDb",
+      "typeVersion": 1.2,
+      "position": [
+        -19152,
+        352
+      ],
+      "id": "e1c5b491-a3d4-4d69-9dcf-ebc91e5e1edf",
+      "name": "Update User Data",
+      "credentials": {
+        "mongoDb": {
+          "id": "al8RU2TlqRrXROGb",
+          "name": "Spectrum - Parque Vista Verde"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.input }}",
+        "options": {
+          "systemMessage": "=# ================================================  \n# ⚠️ REGLA PRINCIPAL NO NEGOCIABLE ⚠️\n# ================================================  \nPRIMERO: Responde la pregunta con información del set_preguntas\nSEGUNDO: Ofrece CTA (cita o llamada) solo si (rechazos < 2) Y (ignoros < 3)\nTERCERO: NUNCA pidas nombre/teléfono (ya están en el sistema)\nCUARTO: Integra el CTA sutilmente al final, no como línea separada\n# ================================================  \n\n# Zona horaria: America/Guatemala (UTC-6)  \n# Fecha actual: {{ $today }}  \n# ================================================  \n\nrole: |  \n  - {{ $('Rol').item.json.rol }}    \n\nObjetivo: Responder exactamente lo que se pregunta utilizando el set de preguntas. \nVe directo a la información. Integra el CTA naturalmente en la última frase si los límites lo permiten.\n\nreglas_comportamiento:\n  saludos:\n    - ÚNICAMENTE cuando recibas un saludo (\"hola\", \"buenas tardes\", \"buenas\"):\n        Responde amablemente y pregunta en qué puedes ayudar sobre el proyecto.\n        NUNCA te presentes ni digas tu nombre o rol.\n\n  flujo_respuesta:\n    - PASO 1: Identifica qué pregunta del set_preguntas corresponde\n    - PASO 2: Responde con la información completa de esa pregunta\n    - PASO 3: Revisa historial para contar rechazos e ignoros de CTA\n    - PASO 4: Si (rechazos < 2) Y (ignoros < 3), integra un CTA sutil al final\n    - PASO 5: Si usuario acepta, confirma que un ejecutivo contactará\n    - NUNCA inviertas el orden (NO pidas datos antes de informar)\n\n  manejo_citas_interno:\n    - ANTES de responder, revisa el historial de chat completo\n    - CONTADOR 1 (Rechazos Explícitos): \"no quiero\", \"no gracias\", \"no me interesa\", \"más adelante\", \"no por ahora\".\n      * LÍMITE: 2 veces. Si llega a 2, NUNCA más CTA.\n    - CONTADOR 2 (Ignoros de CTA): Ofreciste CTA antes -> Usuario hace nueva pregunta sin aceptar ni rechazar.\n      * LÍMITE: 3 veces. Si llega a 3, NUNCA más CTA.\n    - IMPORTANTE: No muestres los contadores al usuario, solo úsala internamente.\n\n  manejo_cta:\n    - Condición: Solo si (rechazos < 2) Y (ignoros < 3).\n    - Formato: Integra la frase en la última oración de la respuesta, no en línea aparte.\n    - Usa rotativamente una de estas 3 variantes sutiles:\n      1. \"...si quieres, podemos agendar una cita o llamada para verlo mejor.\"\n      2. \"...quedo atento si prefieres coordinar una cita o llamada.\"\n      3. \"...un asesor puede explicarte más en una cita o llamada si te interesa.\"\n    - Si se supera cualquier límite: Responde solo la pregunta, SIN ninguna frase de invitación.\n\n  flujo_confirmacion:\n    - Si usuario dice \"si\", \"ok\", \"perfecto\", \"dale\", \"me conviene\" después de ofrecer CTA → Confirma que un ejecutivo contactará.\n    - NO pidas más datos.\n    - Ejemplo: \"Perfecto, un ejecutivo te contactará para coordinar la cita o llamada en breve 😊\"\n\n  formato_listas:\n    - Para la Pregunta 5 (Amenidades), DEBES usar una lista con guiones (-) para cada item.\n    - No uses párrafos compactos para las amenidades, cada una en una línea separada.\n\n  activacion_herramientas:\n    - PRECIOS (Pregunta 11): EJECUTAR prices_notification + responder\n    - MASCOTAS/POLÍTICAS (Pregunta 13): EJECUTAR escalation_notification + responder\n    - HABLAR CON ASESOR (Pregunta 12): EJECUTAR escalation_notification + responder\n    - FUERA DEL SET: EJECUTAR escalation_notification + usar sección falta_información\n    - REGLA DE ORO: Si tu respuesta menciona \"un asesor te contactará\" o \"un asesor te da los detalles\", DEBES activar escalation_notification\n\nejemplos_adicionales:\n  - \"info del proyecto\" → Pregunta 1 + CTA variante 1 (si límites ok)\n  - \"ubicación exacta\" → Pregunta 2 + CTA variante 2 (si límites ok)\n  - \"tipos de aptos\" → Pregunta 3 + CTA variante 3 (si límites ok)\n  - \"cuántos pisos tiene\" → Pregunta 4 + CTA variante 1 (si límites ok)\n  - \"áreas comunes\" → Pregunta 5 + CTA variante 2 (si límites ok) + send_images\n  - \"ventajas de vivir aquí\" → Pregunta 6 + CTA variante 3 (si límites ok)\n  - \"quién construye\" → Pregunta 7 + CTA variante 1 (si límites ok)\n  - \"misión de Spectrum\" → Pregunta 8 + CTA variante 2 (si límites ok)\n  - \"showroom\" → Pregunta 9 + CTA variante 3 (si límites ok)\n  - \"teléfono\" → Pregunta 10 + CTA variante 1 (si límites ok)\n  - \"precios/costos\" → Pregunta 11 + prices_notification + CTA variante 2 (si límites ok)\n  - \"hablar con humano/asesor/persona\" → Pregunta 12 + escalation_notification + CTA variante 3 (si límites ok)\n  - \"mascotas/perros\" → Pregunta 13 + escalation_notification + CTA variante 1 (si límites ok)\n  - \"pregunta fuera de tema\" → falta_información + escalation_notification\n\nset_preguntas:\n  - Pregunta 1: \"Quiero conocer el proyecto\", \"quiero información\", \"info del proyecto\", \"cuéntame del proyecto\", \"más información\", \"quiero info\", \"info porfa\", \"información\".\n    Respuesta 1: Claro que sí, Parque Vista Verde es un proyecto residencial diseñado por Spectrum para quienes buscan calidad de vida en una torre única de 18 niveles con 378 apartamentos y más de 10 amenidades. Su eslogan es: \"El lugar donde tus sueños se hacen realidad\". (Integra CTA sutil si límites ok)\n\n  - Pregunta 2: \"¿Dónde se ubica el proyecto?\", \"¿en qué zona queda?\", \"ubicación exacta\", \"dirección del proyecto\", \"¿dónde está?\".\n    Respuesta 2: Parque Vista Verde se ubica en Zona 15, un área de alta plusvalía rodeada de servicios y excelente conectividad. Dirección exacta: https://maps.app.goo.gl/rymbj5wKWm65k9Uc6. (Integra CTA sutil si límites ok)\n\n  - Pregunta 3: \"¿Qué venden?\", \"¿qué tipo de apartamentos tienen?\", \"tipos de aptos\", \"modelos disponibles\", \"tipologías\".\n    Respuesta 3: Ofrecemos apartamentos de 1, 2 y 3 habitaciones. Todos incluyen cocina, comedor, sala, balcón, lavandería y dormitorios con closet, además de 1 o 2 parqueos según el modelo. (Integra CTA sutil si límites ok)\n\n  - Pregunta 4: \"¿Cuántos niveles y apartamentos tiene el edificio?\", \"cuántos pisos tiene\", \"torres\", \"cantidad de apartamentos\".\n    Respuesta 4: El proyecto cuenta con 18 niveles habitacionales, 378 apartamentos (22 por nivel) y 7 sótanos de parqueo. Todo se desarrolla en una sola fase. (Integra CTA sutil si límites ok)\n\n  - Pregunta 5: \"¿Cuáles son las amenidades?\", \"¿qué áreas comunes tiene el proyecto?\", \"áreas comunes\", \"instalaciones\", \"servicios del edificio\".\n    Respuesta 5: Cuenta con más de 10 amenidades:\n    - Piscina\n    - Gimnasio\n    - Coworking\n    - Salón social\n    - Kid's Play\n    - Family Lounge\n    - Fire pits\n    - Sky Lounge\n    - Chef's Kitchen\n    - Lobby\n    (Integra CTA sutil si límites ok)\n\n  - Pregunta 6: \"¿Qué beneficios ofrece vivir en Parque Vista Verde?\", \"ventajas de vivir aquí\", \"por qué comprar\", \"beneficios\".\n    Respuesta 6: Promueve un estilo de vida activo con espacios integrados para relajación, trabajo y convivencia, fomentando comunidad sin salir de casa. (Integra CTA sutil si límites ok)\n\n  - Pregunta 7: \"¿Quién desarrolla el proyecto?\", \"¿qué es Spectrum?\", \"quién construye\", \"desarrollador\", \"empresa constructora\".\n    Respuesta 7: Es desarrollado por Spectrum, empresa con más de 27 años de experiencia y 11,700 viviendas entregadas en Guatemala y Colombia. (Integra CTA sutil si límites ok)\n\n  - Pregunta 8: \"¿Cuál es la filosofía y valores de Spectrum?\", \"misión de Spectrum\", \"valores\", \"propósito de la empresa\".\n    Respuesta 8: Su propósito es construir ciudades con proyectos innovadores basados en integridad, excelencia y desarrollo responsable. (Integra CTA sutil si límites ok)\n\n  - Pregunta 9: \"¿Dónde está la sala de ventas?\", \"¿dónde puedo ver el apartamento modelo?\", \"showroom\", \"apartamento modelo\", \"sala de ventas\".\n    Respuesta 9: En Oakland Place, Diagonal 6 13-01, Sótano 2, Isla Norte. Lunes a jueves (10:00-20:00), Viernes-Sábado (10:00-21:00), Domingo (10:00-20:00). (Integra CTA sutil si límites ok)\n\n  - Pregunta 10: \"¿Tienen algún contacto?\", \"¿a dónde puedo llamar?\", \"teléfono\", \"número de contacto\", \"whatsapp\".\n    Respuesta 10: El número de contacto es +502 3999-1881. (Integra CTA sutil si límites ok)\n\n  - Pregunta 11: \"¿Cuánto cuestan los apartamentos?\", \"¿Cuáles son los precios/costos/cotizaciones?\", \"¿Qué precios/costos/cotizaciones manejan?\", \"precio\", \"costo\", \"valor\", \"cuánto es\", \"rango de precios\".\n    Respuesta 11: Nuestros precios oscilan entre Q946,000 hasta Q2,064,000, pero varían por modelo y disponibilidad. Para confirmar precios, cuotas y disponibilidad final un asesor te contactará a la brevedad 😊. (Integra CTA sutil si límites ok)\n\n  - Pregunta 12: \"¿Puedo hablar con un asesor?\", \"Quiero hablar con un asesor\", \"¿Pueden darme asesoría?\", \"hablar con humano\", \"atención personalizada\", \"hablar con persona real\", \"no quiero bot\", \"atención humana\", \"conectar con ejecutivo\", \"asesor en línea\", \"persona natural\".\n    Respuesta 12: Para comunicarse con un Asesor, use este número (+502 3999-1881), le estará atendiendo la encargada de Parque Vista Verde. (Integra CTA sutil si límites ok)\n\n  - Pregunta 13: \"¿Aceptan mascotas?\", \"¿política de mascotas?\", \"¿puedo tener perros?\", \"¿pet friendly?\", \"mascotas en el edificio\".\n    Respuesta 13: Para información específica sobre política de mascotas (tipos, tamaños, restricciones), un asesor te puede dar los detalles exactos. (Integra CTA sutil si límites ok)\n\nfalta_información: |\n  Si la respuesta no está en el set:\n  1. Sé honesto: \"Como asistente virtual, no tengo acceso a ese dato específico\"\n  2. Ofrece solución inmediata: \"Pero puedo derivar tu consulta para que un Ejecutivo te contacte\"\n  3. Ofrece CTA unificado (solo si límites ok)\n  4. EJECUTA la herramienta \"escalation_notification\" para notificar al equipo\n\n  Ejemplo de respuesta:\n  \"Como soy un asistente virtual, no tengo esa información específica. Derivaré tu consulta para que un Ejecutivo te contacte a la brevedad 😊. Quedo atento si prefieres coordinar una cita o llamada.\"\n\ntools:\n  - name: \"send_images\"\n    description: |\n      EJECUTAR ÚNICAMENTE si piden \"fotos\", \"renders\", \"imágenes\" o preguntan por \"amenidades\".\n      - No confirmes que las enviarás\n      - Ejecuta junto al texto de respuesta\n      - Trigger: fotos, renders, imágenes, amenidades, áreas comunes\n\n  - name: \"Web Search\"  \n    description: |\n      Solo para distancias, tráfico, servicios cercanos o plusvalía de Zona 15 respecto a Parque Vista Verde.\n      - NO usar para información interna del proyecto\n      - Trigger: distancia, tráfico, cerca, alrededores, plusvalía, zona 15\n\n  - name: \"prices_notification\"\n    description: |\n      EJECUTAR ÚNICAMENTE cuando el usuario pregunte por PRECIOS, COSTOS o COTIZACIONES (Pregunta 11).\n      - Esto notifica al equipo de ventas para contacto inmediato\n      - Ejecutar UNA SOLA VEZ cuando se detecta la pregunta de precios\n      - No menciones que enviarás un correo\n      - No confirmes la ejecución al usuario\n      - Trigger: precios, costos, cotizaciones, cuánto cuesta, valor, rango de precios\n\n  - name: \"escalation_notification\"\n    description: |\n      ⚠️ EJECUTAR EN LOS SIGUIENTES CASOS ⚠️\n      \n      CUANDO EJECUTAR (OBLIGATORIO):\n      - Pregunta 12: Usuario pide hablar con asesor/humano/persona\n      - Pregunta 13: Usuario pregunta por mascotas/políticas/restricciones\n      - Preguntas FUERA DEL SET (usa sección falta_información)\n      - Tu respuesta menciona \"un asesor te contactará\" o \"un asesor te da los detalles\"\n      \n      CUANDO NO EJECUTAR:\n      - Usuario responde \"si\", \"sí\", \"ok\", \"dale\", \"perfecto\", \"bien\" (confirmaciones)\n      - Usuario acepta cita o llamada ya ofrecida\n      - Preguntas 1-11 que ya tienen respuesta en el set (excepto precios)\n      - Usuario pregunta por precios (usa prices_notification en su lugar)\n      \n      Ejemplos que SÍ activan este tool:\n      - \"¿Aceptan mascotas?\"\n      - \"¿Puedo hablar con un asesor?\"\n      - \"¿Tienen piscina de olas?\" (fuera del set)\n      - \"¿Aceptan cocodrilos?\" (fuera del set)\n      \n      Ejemplos que NO activan este tool:\n      - \"si\"\n      - \"ok, perfecto\"\n      - \"me interesa la cita o llamada\"\n      - \"¿cuánto cuesta?\" (usa prices_notification)\n      \n      - No confirmes la ejecución al usuario\n      - No menciones que enviarás un correo\n\nprohibiciones:\n  - NUNCA te presentes ni digas tu nombre o rol.\n  - NUNCA respondas que te contacten (ya lo están haciendo).\n  - NUNCA uses frases de cortesía vacía: \"si tienes más dudas\", \"siéntete libre de preguntar\".\n  - NO inventar datos.\n  - Prohibido usar JSON o estructuras de datos en la respuesta final.\n  - No incluyas prefijos como \"Respuesta:\" o \"IA:\".\n  - NUNCA menciones que usarás las herramientas prices_notification o escalation_notification al usuario.\n  - NUNCA intentes resolver solo cuando pidan hablar con persona - SIEMPRE deriva al contacto humano.\n  - NUNCA ofrezcas cita o llamada si (rechazos >= 2) O (ignoros >= 3).\n  - NUNCA pongas el CTA en una línea separada, debe ir integrado en la última frase.\n  \n  # ⚠️ PROHIBICIONES CRÍTICAS ⚠️\n  - NUNCA pidas nombre, teléfono, email o datos de contacto (ya están en el sistema)\n  - NUNCA respondas pidiendo datos antes de dar la información solicitada\n  - NUNCA saltes la respuesta del set_preguntas para ir directo al CTA\n  - NUNCA digas \"¿me compartes tu nombre?\" o \"¿cuál es tu teléfono?\"\n\npermitido:\n  - Usar guiones (-) para listas de amenidades (OBLIGATORIO en Pregunta 5).\n  - Ser extremadamente directo y breve.\n  - Rotar las 3 variantes del CTA para no sonar repetitivo.\n\nresponse_format:  \n  type: \"text_plain\"  \n  rules: \n    - Sin estructuras markdown complejas (negritas, tablas, etc).\n    - Se permiten guiones simples para listas de amenidades.\n    - Máximo 500 caracteres."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2,
+      "position": [
+        -18224,
+        2544
+      ],
+      "id": "41e43b58-eb22-428b-9aee-bc1d0d557372",
+      "name": "GENERAL INFO1",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $('JOINING RESPONSE').item.json.MESSAGE }}",
+        "options": {
+          "systemMessage": "=### ROLE ###\nEres Sof-IA, agente virtual de Parque Vista Verde. Identidad amable, español neutro.\nObjetivo: Calificar leads (Nombre, Correo, Teléfono) máximo 3 intentos. Si no es posible, activar bandera para proceso interno.\n\n### CONTEXTO DINÁMICO ###\n- CANAL: {{ $node[\"PARSE Body\"].json[\"current_body\"][\"custom_fields\"][\"canal_ingreso\"] }}\n- TEL_SISTEMA: {{ $node[\"PARSE Body\"].json[\"current_body\"][\"whatsapp_phone\"] }}\n\n### REGLAS DE LÓGICA ###\n1. EXTRACCIÓN: Identifica nombre, teléfono y correo en el mensaje actual.\n2. LÓGICA POR CANAL:\n   - Si CANAL == 'whatsapp': \n     - NO pidas el número. Usa TEL_SISTEMA.\n     - Debes CONFIRMARLO explícitamente después de tener Nombre y Correo.\n     - CAMPO JSON 'telefono': Déjalo en NULL hasta que el usuario confirme explícitamente (\"Sí\", \"Correcto\", etc.).\n   - Si CANAL != 'whatsapp': \n     - SOLICITA el número como dato obligatorio junto con Nombre y Correo.\n     - CAMPO JSON 'telefono': Llénavlo solo cuando el usuario lo proporcione textualmente.\n3. CONTEO DE INTENTOS (Memoria): Analiza el HISTORIAL. Cuenta cuántas veces has solicitado los datos faltantes.\n4. DECISIÓN DE BANDERA (transferir_agente):\n   - Si es el 3er intento de solicitud O el usuario niega datos explícitamente: Setear transferir_agente = 1.\n   - Si datos completados (y teléfono confirmado si es WhatsApp): Setear transferir_agente = 0.\n   - Else: Setear transferir_agente = 0.\n5. GENERAR RESPUESTA (response): Elige el escenario exacto según el estado:\n\n   - ESCENARIO 1 (Primer mensaje + Solo Saludo):\n     \"¡Hola! Soy Sof-IA, agente virtual de Parque Vista Verde. ¿En qué puedo ayudarte hoy? 😊\"\n\n   - ESCENARIO 2 (Primer mensaje + Saludo + Solicitud de Info):\n     - Si CANAL == 'whatsapp': \"¡Hola! Soy Sof-IA. Para brindarte información, ¿podrías indicarme por favor?:\\n\\n- tu nombre \\n- tu correo electrónico\\n\\nYo te resolveré dudas antes de que te contacte un asesor 😊.\"\n     - Si CANAL != 'whatsapp': \"¡Hola! Soy Sof-IA. Para brindarte información, ¿podrías indicarme por favor?:\\n\\n- tu nombre \\n- tu correo electrónico\\n- tu número de teléfono\\n\\nYo te resolveré dudas mientras un asesor te contacta 😊.\"\n\n   - ESCENARIO 3 (Mensaje posterior + Datos Incompletos + Intentos < 3):\n     - Si falta Nombre/Correo: \"Para brindarte la información, ¿podrías indicarme por favor?:\\n\\n- tu nombre \\n- tu correo electrónico\"\n     - Si falta Teléfono (CANAL != 'whatsapp'): \"Solo me falta tu número de teléfono para completar tus datos. ¿Me lo podrías compartir?\"\n\n   - ESCENARIO 3.5 (WhatsApp + Nombre/Correo Listos + Teléfono Sin Confirmar):\n     \"¡Gracias! Un último detalle. ¿Este es tu número {{ $node[\"PARSE Body\"].json[\"current_body\"][\"whatsapp_phone\"] }}?\n\n   - ESCENARIO 3.6 (WhatsApp + Usuario Niega Número):\n     \"Entiendo. ¿Podrías indicarme entonces cuál es el número correcto para contactarte?\"\n\n   - ESCENARIO 4 (Datos Completos + Teléfono Confirmado/Entregado):\n     \"¡Muchas gracias, {nombre}! Ya recibimos tus datos 😊. Yo te resolveré dudas mientras un asesor te contacta\"\n\n   - ESCENARIO 5 (Intentos >= 3 O Negativa):\n     \"Entiendo. Déjame revisar esa información para ti un momento 😊.\"\n\n### RESTRICCIÓN DE SALIDA (ESTRICTA) ###\nResponde ÚNICAMENTE con un objeto JSON en una sola línea.\nNO uses bloques de código (```json), ni introducciones, ni texto fuera del JSON.\nFormato: {\"nombre\": \"string|null\", \"telefono\": \"string|null\", \"correo\": \"string|null\", \"transferir_agente\": 0|1, \"response\": \"tu_respuesta_aqui\"}\nREGLA JSON CRÍTICA: El campo \"telefono\" debe ser NULL si estás en el ESCENARIO 3.5 (esperando confirmación). Solo llena \"telefono\" con el valor real cuando el usuario haya dicho \"Sí\" (WhatsApp) o lo haya escrito (Otros canales)."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3,
+      "position": [
+        -20800,
+        368
+      ],
+      "id": "7db5faa2-a334-4bd5-8399-7a3c948f0c1d",
+      "name": "Lead Agent"
     }
   ],
   "connections": {
@@ -4719,7 +4705,7 @@
       "main": [
         [
           {
-            "node": "Information Extractor",
+            "node": "PARSE JUEZ RESPONSE",
             "type": "main",
             "index": 0
           }
@@ -4732,17 +4718,6 @@
           {
             "node": "JUDGE",
             "type": "ai_languageModel",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Structured Output Parser1": {
-      "ai_outputParser": [
-        [
-          {
-            "node": "JUDGE",
-            "type": "ai_outputParser",
             "index": 0
           }
         ]
@@ -5092,17 +5067,6 @@
         ]
       ]
     },
-    "AI Agent": {
-      "main": [
-        [
-          {
-            "node": "PARSE RESPONSE",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
     "Primary RESPONSE": {
       "main": [
         [
@@ -5215,7 +5179,7 @@
       "ai_memory": [
         [
           {
-            "node": "AI Agent",
+            "node": "Lead Agent",
             "type": "ai_memory",
             "index": 0
           }
@@ -5226,7 +5190,7 @@
       "ai_languageModel": [
         [
           {
-            "node": "AI Agent",
+            "node": "Lead Agent",
             "type": "ai_languageModel",
             "index": 0
           }
@@ -5329,18 +5293,7 @@
       "main": [
         [
           {
-            "node": "Data to Update Normalization1",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Data to Update Normalization1": {
-      "main": [
-        [
-          {
-            "node": "Update user1",
+            "node": "If3",
             "type": "main",
             "index": 0
           }
@@ -5529,24 +5482,6 @@
         [
           {
             "node": "XML to JSON",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "If date EXIST": {
-      "main": [
-        [
-          {
-            "node": "FORMAT APPOINTMENT DATE",
-            "type": "main",
-            "index": 0
-          }
-        ],
-        [
-          {
-            "node": "Find Updated User",
             "type": "main",
             "index": 0
           }
@@ -5809,29 +5744,6 @@
         ]
       ]
     },
-    "IF requiere asesoría": {
-      "main": [
-        [
-          {
-            "node": "Channel Response2",
-            "type": "main",
-            "index": 0
-          }
-        ],
-        []
-      ]
-    },
-    "Channel Response2": {
-      "main": [
-        [
-          {
-            "node": "RESPOND TO MANYCHAT3",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
     "HTML": {
       "main": [
         [
@@ -6067,7 +5979,7 @@
       "main": [
         [
           {
-            "node": "AI Agent",
+            "node": "Lead Agent",
             "type": "main",
             "index": 0
           }
@@ -6283,19 +6195,213 @@
         ]
       ]
     },
-    "callback_scheduled": {
-      "ai_tool": [
+    "PARSE JUEZ RESPONSE": {
+      "main": [
         [
           {
-            "node": "GENERAL INFO",
-            "type": "ai_tool",
+            "node": "Information Extractor",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If date EXIST": {
+      "main": [
+        [
+          {
+            "node": "FORMAT APPOINTMENT DATE",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "If Appointment EXIST",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If Appointment EXIST": {
+      "main": [
+        [
+          {
+            "node": "Find Updated User",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "RESERVA Response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model3": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "RESSUME",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Find Conversation": {
+      "main": [
+        [
+          {
+            "node": "RESSUME",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "RESSUME": {
+      "main": [
+        [
+          {
+            "node": "Data Normalization",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Data Normalization": {
+      "main": [
+        [
+          {
+            "node": "Update User Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If3": {
+      "main": [
+        [
+          {
+            "node": "Data Normalization",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Find Conversation",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Lead Agent": {
+      "main": [
+        [
+          {
+            "node": "PARSE RESPONSE",
+            "type": "main",
             "index": 0
           }
         ]
       ]
     }
   },
-  "pinData": {},
+  "pinData": {
+    "Webhook": [
+      {
+        "headers": {
+          "host": "agentsprod.redtec.ai",
+          "user-agent": "ManyChat",
+          "content-length": "1557",
+          "content-type": "application/json; charset=utf-8",
+          "x-forwarded-for": "63.178.65.182",
+          "x-forwarded-host": "agentsprod.redtec.ai",
+          "x-forwarded-port": "443",
+          "x-forwarded-proto": "https",
+          "x-forwarded-server": "384e7f6570bc",
+          "x-real-ip": "63.178.65.182",
+          "accept-encoding": "gzip"
+        },
+        "params": {},
+        "query": {},
+        "body": {
+          "key": "user:1623941319",
+          "id": "1623941319",
+          "page_id": "962079940550460",
+          "user_refs": [],
+          "status": "active",
+          "first_name": "Jorge",
+          "last_name": "Calderon",
+          "name": "Jorge Calderon",
+          "gender": "unknown",
+          "profile_pic": null,
+          "locale": null,
+          "language": null,
+          "timezone": "UTC±00",
+          "live_chat_url": "https://app.manychat.com/fb962079940550460/chat/1623941319",
+          "last_input_text": "jorge calderon, jcalderon@mail.com",
+          "optin_phone": true,
+          "phone": "+13322311881",
+          "optin_email": false,
+          "email": null,
+          "subscribed": "2026-02-04T13:17:27-06:00",
+          "last_interaction": null,
+          "ig_last_interaction": null,
+          "last_seen": null,
+          "ig_last_seen": null,
+          "is_followup_enabled": true,
+          "ig_username": null,
+          "ig_id": null,
+          "whatsapp_phone": "+13322311881",
+          "optin_whatsapp": true,
+          "phone_country_code": "US",
+          "last_growth_tool": null,
+          "custom_fields": {
+            "canal_ingreso": "WhatsApp",
+            "Celular": null,
+            "ChatGPT's response": null,
+            "ChatGPT's response (2024-08-13 21:18:56)": null,
+            "Conversation": null,
+            "Conversation (2024-08-13 21:18:56)": null,
+            "debugging": null,
+            "Fecha Evento": null,
+            "Fecha Evento 2": null,
+            "Fecha Evento 3": null,
+            "Fecha Reserva": null,
+            "First name for prompt": null,
+            "First name for prompt (2024-08-13 21:18:56)": null,
+            "image_descriptioin": null,
+            "Input from Template": null,
+            "Last Input": null,
+            "last_interaction_timestamp": null,
+            "Nombre Cotizacion": null,
+            "Nombre Reserva": null,
+            "Numero Personas": null,
+            "Ocasion": null,
+            "Panelista": null,
+            "Pregunta": null,
+            "Respuesta de image-n8n via Webhook": null,
+            "Respuesta de n8n via Webhook": null,
+            "user's question fallback": null,
+            "user's question fallback (2024-08-13 21:18:56)": null,
+            "voice_note_transcription": null
+          }
+        },
+        "webhookUrl": "https://agentsprod.redtec.ai/webhook/pvv-testing",
+        "executionMode": "production"
+      }
+    ]
+  },
   "meta": {
     "templateCredsSetupCompleted": true,
     "instanceId": "d4ab02fb1ef8b6ca2c1c5c1f280ee696b0514d7d92cee5fb0da1784dbe393998"
