@@ -14,9 +14,9 @@
         -29184,
         1584
       ],
-      "id": "9215c035-6be6-4017-99ca-7dc264d48cb0",
+      "id": "071f786b-b7bc-4cd0-b7df-a2688651e61d",
       "name": "Webhook",
-      "webhookId": "50127fd3-0528-4d91-898c-08b6534d71b1"
+      "webhookId": "d4b69ab8-2c9f-460b-940a-b697500faa98"
     },
     {
       "parameters": {
@@ -27,10 +27,10 @@
       "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
       "typeVersion": 1.3,
       "position": [
-        -17888,
+        -17264,
         1360
       ],
-      "id": "f53c46b9-0adf-47a1-8255-04b147ad0321",
+      "id": "9ff01ac0-77df-4408-b088-dd34eb9f005f",
       "name": "Structured Output Parser"
     },
     {
@@ -50,10 +50,10 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        -17664,
+        -17040,
         1136
       ],
-      "id": "daca603b-5cfe-4d9e-8d64-0f014ba3daa2",
+      "id": "c6ceb082-dbd9-4ead-bdb7-c004d1eb0875",
       "name": "output agent rsvp"
     },
     {
@@ -73,10 +73,10 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        -19568,
+        -18944,
         1744
       ],
-      "id": "2540c9cc-3571-4ca4-a519-ffc2dd3194a1",
+      "id": "72eea30a-7767-4a74-a9f9-5dabe3b22b1c",
       "name": "Rol"
     },
     {
@@ -94,10 +94,10 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "typeVersion": 1.2,
       "position": [
-        -19760,
+        -19136,
         1968
       ],
-      "id": "5978bfd6-1175-4c36-942b-a86696630c3e",
+      "id": "f8b53c53-449f-4a3f-b4de-fdbb74928aae",
       "name": "OpenAI Chat Model6",
       "credentials": {
         "openAiApi": {
@@ -108,23 +108,23 @@
     },
     {
       "parameters": {
-        "collection": "users_test",
+        "collection": "users",
         "options": {},
         "query": "={\"user_id\":\"{{ $('user to use').item.json.user_id }}\"}"
       },
       "type": "n8n-nodes-base.mongoDb",
       "typeVersion": 1.2,
       "position": [
-        -13632,
+        -13008,
         2112
       ],
-      "id": "b67b4e9f-9958-44f4-ae1c-7d5337315b36",
+      "id": "4297d565-ad44-449b-b4e5-16423bc0f62c",
       "name": "Find user to UPD",
       "alwaysOutputData": true,
       "credentials": {
         "mongoDb": {
-          "id": "al8RU2TlqRrXROGb",
-          "name": "Spectrum - Parque Vista Verde"
+          "id": "hSK9MIPMlFYEbG1O",
+          "name": "Spectrum - Parque Vista Verde TEST"
         }
       }
     },
@@ -141,10 +141,10 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "typeVersion": 1.2,
       "position": [
-        -17856,
+        -17232,
         2640
       ],
-      "id": "8aef2451-f464-41a0-84f5-8afb3cfe028b",
+      "id": "7d1b0faf-bc19-4ebb-a594-ee87c64f96c7",
       "name": "OpenAI RESPONSE1",
       "credentials": {
         "openAiApi": {
@@ -162,17 +162,16 @@
           "cachedResultName": "gpt-4.1-mini"
         },
         "options": {
-          "responseFormat": "json_object",
           "temperature": 0.5
         }
       },
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "typeVersion": 1.2,
       "position": [
-        -18016,
+        -17392,
         1360
       ],
-      "id": "214c2c2f-2fec-44bb-ad7b-5be9d263b184",
+      "id": "ab4d4b85-2853-4743-a692-f8575bbcabb7",
       "name": "OpenAI Chat Model9",
       "credentials": {
         "openAiApi": {
@@ -196,10 +195,10 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "typeVersion": 1.2,
       "position": [
-        -14128,
+        -13504,
         2000
       ],
-      "id": "f54d0985-72a6-4fe3-9458-73eb8d3bff44",
+      "id": "a7fa3895-4e01-42cd-bb07-866153ffdf32",
       "name": "OpenAI Chat Model10",
       "credentials": {
         "openAiApi": {
@@ -221,10 +220,10 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "typeVersion": 1.2,
       "position": [
-        -17808,
+        -17184,
         1568
       ],
-      "id": "c1cd5873-1795-4c36-9935-d0f0df0f5709",
+      "id": "bd9e2fd7-b93b-477f-9811-5ce4726ec4d5",
       "name": "OpenAI Chat Model12",
       "credentials": {
         "openAiApi": {
@@ -240,10 +239,10 @@
       "type": "n8n-nodes-base.xml",
       "typeVersion": 1,
       "position": [
-        -15184,
+        -14560,
         1104
       ],
-      "id": "e1717081-cbac-4bb4-ae5d-128233046a9c",
+      "id": "9cec19b2-aee7-444c-b193-394fc55b561a",
       "name": "XML",
       "disabled": true
     },
@@ -251,22 +250,22 @@
       "parameters": {
         "sessionIdType": "customKey",
         "sessionKey": "={{ $('PARSE Body').item.json.current_body.key }}",
-        "collectionName": "chat_histories_test",
-        "databaseName": "ParqueVerde",
+        "collectionName": "chat_histories",
+        "databaseName": "ParqueVerde_Test",
         "contextWindowLength": 40
       },
       "type": "@n8n/n8n-nodes-langchain.memoryMongoDbChat",
       "typeVersion": 1,
       "position": [
-        -16960,
+        -16336,
         1824
       ],
-      "id": "d505ebd3-9e2c-477e-bad1-9475be1782f5",
+      "id": "90b33b38-b023-45f2-a738-4ed879c0ce0c",
       "name": "MongoDB Chat Memory2",
       "credentials": {
         "mongoDb": {
-          "id": "al8RU2TlqRrXROGb",
-          "name": "Spectrum - Parque Vista Verde"
+          "id": "hSK9MIPMlFYEbG1O",
+          "name": "Spectrum - Parque Vista Verde TEST"
         }
       }
     },
@@ -290,7 +289,7 @@
         -27536,
         1584
       ],
-      "id": "dff055e3-879b-49b4-b8d1-8d93e204e9b0",
+      "id": "6ba6feed-46cb-406e-966f-1da6f872ae8c",
       "name": "Analyze image",
       "credentials": {
         "openAiApi": {
@@ -309,7 +308,7 @@
         -28880,
         1584
       ],
-      "id": "b855174c-5d77-4f95-b0ca-abf7dd31755b",
+      "id": "f9a236ea-923d-4947-97cc-5cd10df6a243",
       "name": "Create Body"
     },
     {
@@ -351,7 +350,7 @@
         -28432,
         1584
       ],
-      "id": "b66e9e90-05d5-469f-95ec-9a4d9c0058a2",
+      "id": "dd4c4c82-8ef2-47b2-b6bf-379841698a49",
       "name": "ES ARCHIVO"
     },
     {
@@ -365,7 +364,7 @@
         -28208,
         1488
       ],
-      "id": "9a288472-f1d4-45b6-9db4-7f963e870311",
+      "id": "da68038c-25fd-444f-a92d-77c87e046b1d",
       "name": "HTTP Request"
     },
     {
@@ -407,7 +406,7 @@
         -27984,
         1488
       ],
-      "id": "28909df7-a7aa-47c4-8a0f-9c7d2c6550b2",
+      "id": "f2ab5028-73ee-4911-a58b-d7b135bf6d25",
       "name": "ES AUDIO / IMAGEN"
     },
     {
@@ -421,7 +420,7 @@
         -27760,
         1392
       ],
-      "id": "87b08177-3861-474a-a576-cd232cb5d9e9",
+      "id": "82d2be3c-c03a-4555-9631-7b208c2f644f",
       "name": "HTTP ISAUDIO"
     },
     {
@@ -436,7 +435,7 @@
         -27536,
         1392
       ],
-      "id": "03141040-1dcf-4eec-889b-7cc517a157d0",
+      "id": "78b0b514-318e-4dc5-9db7-0d3b5cab9e0e",
       "name": "TRANSCRIBE AUDIO",
       "credentials": {
         "openAiApi": {
@@ -471,7 +470,7 @@
         -27312,
         1392
       ],
-      "id": "64079ac9-d790-4dc9-a7a4-8c3ae6f2c43d",
+      "id": "ce3712cd-85cc-47c4-a708-0165e19c4148",
       "name": "Edit Fields1"
     },
     {
@@ -500,7 +499,7 @@
         -27312,
         1584
       ],
-      "id": "94cfcbda-5707-475b-952d-afff1d830037",
+      "id": "b81a8248-1fde-4708-90d8-24f96c7b87ce",
       "name": "Edit Fields2"
     },
     {
@@ -529,7 +528,7 @@
         -27312,
         1776
       ],
-      "id": "28920f95-887b-45b1-9666-21af1c7e677d",
+      "id": "32c3f3fa-8079-4b68-9587-77cd7c8cabc9",
       "name": "Edit Fields3"
     },
     {
@@ -542,7 +541,7 @@
         -27088,
         1472
       ],
-      "id": "f0a588cf-6a62-4b77-a78b-05c9ac308846",
+      "id": "0497d353-0654-4c2f-a71f-214f79fd2619",
       "name": "Merge"
     },
     {
@@ -562,7 +561,7 @@
         -26912,
         1488
       ],
-      "id": "a0cf0ded-ffde-4f51-8af7-0e296f61576f",
+      "id": "3ac5311c-f696-44c9-99fa-613f9b5f2c62",
       "name": "Sort"
     },
     {
@@ -582,50 +581,50 @@
         -26752,
         1488
       ],
-      "id": "6e22e545-0a53-4aa0-b2a0-e372396a0cb5",
+      "id": "f51afd15-9416-4ae1-8dac-0e02de103ac8",
       "name": "Aggregate"
     },
     {
       "parameters": {
-        "collection": "users_test",
+        "collection": "users",
         "options": {},
         "query": "={\"user_id\":\"{{ $('PARSE Body').item.json.current_body.id }}\"}"
       },
       "type": "n8n-nodes-base.mongoDb",
       "typeVersion": 1.2,
       "position": [
-        -23424,
+        -22800,
         1472
       ],
-      "id": "41b9c2d1-953b-43ab-9113-bb965b9098a9",
+      "id": "85fee24e-f0e8-466f-8869-dc42b7684660",
       "name": "Find user",
       "alwaysOutputData": true,
       "credentials": {
         "mongoDb": {
-          "id": "al8RU2TlqRrXROGb",
-          "name": "Spectrum - Parque Vista Verde"
+          "id": "hSK9MIPMlFYEbG1O",
+          "name": "Spectrum - Parque Vista Verde TEST"
         }
       }
     },
     {
       "parameters": {
         "operation": "insert",
-        "collection": "users_test",
+        "collection": "users",
         "fields": "user_id,name,real_name,phone,email,last_interaction,first_interaction,last_message,has_reservation,input_channel,last_agent_message",
         "options": {}
       },
       "type": "n8n-nodes-base.mongoDb",
       "typeVersion": 1.2,
       "position": [
-        -22080,
+        -21456,
         1248
       ],
-      "id": "f77787bc-ab06-4399-836d-45352b3c208f",
+      "id": "3c10aed0-911a-4604-a046-d32a0c3b0e5d",
       "name": "Insert user",
       "credentials": {
         "mongoDb": {
-          "id": "al8RU2TlqRrXROGb",
-          "name": "Spectrum - Parque Vista Verde"
+          "id": "hSK9MIPMlFYEbG1O",
+          "name": "Spectrum - Parque Vista Verde TEST"
         }
       }
     },
@@ -712,10 +711,10 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        -22224,
+        -21600,
         1248
       ],
-      "id": "2b382924-24d3-458b-ab50-0f012e03f8a9",
+      "id": "3c537dc5-5b8b-43fc-b890-3554cc59461e",
       "name": "user to create"
     },
     {
@@ -729,10 +728,10 @@
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 2,
       "position": [
-        -20336,
+        -19712,
         1744
       ],
-      "id": "03dc5e6a-1da3-4b8a-b151-e869f0eb7b32",
+      "id": "29d3fa30-05c4-49c6-a829-ff5819439cf6",
       "name": "JUDGE"
     },
     {
@@ -751,10 +750,10 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "typeVersion": 1.2,
       "position": [
-        -20336,
+        -19712,
         1968
       ],
-      "id": "1daa260b-439e-469f-94f4-bc77a2eb9fc8",
+      "id": "090af9d9-e966-4b02-8ff4-56fd7e84279f",
       "name": "OpenAI Chat Model",
       "credentials": {
         "openAiApi": {
@@ -775,10 +774,10 @@
       "type": "@n8n/n8n-nodes-langchain.informationExtractor",
       "typeVersion": 1.2,
       "position": [
-        -19840,
+        -19216,
         1744
       ],
-      "id": "6ac2fad0-b39d-4fea-b3d1-0cc0c1918acf",
+      "id": "c84aead5-8562-4872-9ebf-edee4afbacdf",
       "name": "Information Extractor"
     },
     {
@@ -798,31 +797,31 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        -19408,
+        -18784,
         1744
       ],
-      "id": "3de35d17-35a3-4abb-843b-3354eb01fc50",
+      "id": "9f081e1a-2be8-4377-b36c-63ea6ef86c69",
       "name": "ID USER"
     },
     {
       "parameters": {
-        "collection": "appointments_test",
+        "collection": "appointments",
         "options": {},
         "query": "={\"user_id\":\"{{ $json.id_user }}\"}"
       },
       "type": "n8n-nodes-base.mongoDb",
       "typeVersion": 1.2,
       "position": [
-        -19248,
+        -18624,
         1744
       ],
-      "id": "f9d74d7c-5dac-4726-bcde-e9c506dac8c6",
+      "id": "e89c9605-aca8-4bdf-a28e-dd11cb4ea523",
       "name": "Find appointment",
       "alwaysOutputData": true,
       "credentials": {
         "mongoDb": {
-          "id": "al8RU2TlqRrXROGb",
-          "name": "Spectrum - Parque Vista Verde"
+          "id": "hSK9MIPMlFYEbG1O",
+          "name": "Spectrum - Parque Vista Verde TEST"
         }
       }
     },
@@ -886,10 +885,10 @@
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3.2,
       "position": [
-        -19072,
+        -18448,
         1744
       ],
-      "id": "a603f2cc-9dbb-4a05-a166-ded7ba6c67c1",
+      "id": "f0d8d3c6-36d2-4c75-8925-f91a6a3e7ed6",
       "name": "router"
     },
     {
@@ -898,16 +897,16 @@
         "text": "={{ $('JOINING RESPONSE').item.json.MESSAGE }}",
         "hasOutputParser": true,
         "options": {
-          "systemMessage": "=# ================================================\n# Zona horaria: America/Guatemala (UTC-6)\n# Fecha actual: {{ $now.format('yyyy-MM-dd') }}\n# Hora actual: {{ $now.format('HH:mm') }}\n# ================================================\n\nobjetivo: >\n  Tu misión es agendar una reunión con el cliente. Esta puede ser de dos tipos:\n  1. \"cita\": Visita presencial a una propiedad.\n  2. \"llamada\": Reunión telefónica o virtual.\n  \n  NUNCA marques la cita como agendada hasta tener todos los datos obligatorios validados.\n  Los datos deben rellenarse en el objeto JSON de salida correctamente para que el sistema procese la reserva.\n\n## Personalidad y Tono\n- Eres una amiga experta en bienes raíces: amable, cordial y segura.\n- Lenguaje fresco, natural y contemporáneo.\n- Respondes siempre en el mismo idioma que usa el usuario.\n- Cero robótico: nada de \"Como modelo de lenguaje\", \"Estoy aquí para ayudar\", etc.\n\n## Disponibilidad\n- Lunes a Domingo: 10:00 a 19:00 (Hora Guatemala).\n- No agendar fuera de este rango ni en fechas pasadas.\n\n## Datos Obligatorios y Mapeo\nDebes recolectar y normalizar los siguientes campos para el JSON de salida:\n\n1. tipo_agendamiento: \"cita\" | \"llamada\"\n   - Determina esto lo antes posible preguntando o inferiendo del contexto.\n\n2. fecha_hora: string (ISO 8601)\n   - Formato: \"YYYY-MM-DDTHH:MM\"\n   - Validación: Debe ser futuro o igual a hoy, dentro del horario 10:00-19:00.\n   - Interpreta lenguaje natural (\"mañana a las 3pm\") y convierte a ISO.\n\n3. numero_habitaciones: string | null\n   - OBLIGATORIO solo si tipo_agendamiento es \"cita\".\n   - Debe ser entero positivo (ej. \"1\", \"2\", \"3\").\n   - Si es \"llamada\", este campo debe ser null.\n\n4. intencion_compra: \"V\" | \"I\" | null\n   - V = Vivir (residencia, hogar, propio).\n   - I = Invertir (renta, plusvalía, negocio).\n   - Si es \"llamada\" general, puede ser null, pero intenta inferirlo.\n\n5. metodo_contacto_pref: \"2\" | \"3\" | \"4\" | \"5\" | null\n   - 2 = Correo electrónico.\n   - 3 = Llamada Telefónica.\n   - 4 = WhatsApp.\n   - 5 = Cualquier forma.\n   - Mapea texto natural (\"wasap\", \"mail\", \"teléfono\") a estos códigos.\n\n## Instrucciones de Flujo\n1. **Identificación:** Si el usuario no especifica, pregunta si desea una \"cita presencial\" o una \"llamada\".\n2. **Recolección Secuencial:** \n   - Si es \"cita\": Pide Fecha -> Habitaciones -> Intención -> Contacto.\n   - Si es \"llamada\": Pide Fecha -> Intención (opcional). \n     - **IMPORTANTE:** Si es \"llamada\", NO preguntes método de contacto. Asúmelo como \"3\" (Llamada Telefónica) automáticamente en el JSON.\n   - Si el usuario da varios datos de una vez, valídalos todos y solo pide los faltantes.\n   - Si el usuario da varios datos de una vez, valídalos todos y solo pide los faltantes.\n3. **Validación Estricta:** \n   - Si una fecha es inválida o fuera de horario, explica amablemente el error y pide corregir solo ese dato.\n   - No avances al siguiente paso hasta que el actual sea válido.\n4. **Cierre:** \n   - Cuando todos los campos obligatorios estén completos y válidos en el JSON, confirma amablemente que está agendado.\n   - No pidas confirmación adicional (\"¿Estás seguro?\"). Afirma la confirmación.\n\n## Reglas de Salida (JSON)\n- Tu respuesta natural va en el campo `response`.\n- Los datos estructurados van en el campo `parameters`.\n- NUNCA uses la palabra \"RESERVA\" en el `response`.\n- NUNCA incluyas prefijos como \"Tu:\" o markdown en el `response`.\n- Asegúrate de que los códigos (V, I, 2, 3, 4, 5) estén exactos en el JSON.\n\n## Ejemplo de Comportamiento\nUsuario: \"Quiero una llamada mañana a las 11\"\nTú (interno): Detecto tipo=llamada, fecha=mañana 11:00. metodo_contacto_pref = 3 (auto).\nTú (response): \"¡Perfecto! Agendaré tu llamada para mañana a las 11:00 AM\""
+          "systemMessage": "=# ================================================\n# Zona horaria: America/Guatemala (UTC-6)\n# Fecha actual: {{ $now.format('yyyy-MM-dd') }}\n# Hora actual: {{ $now.format('HH:mm') }}\n# ================================================\n\nobjetivo: >\n  Tu misión es agendar una reunión con el cliente. Esta puede ser de dos tipos:\n  1. \"cita\": Visita presencial a una propiedad.\n  2. \"llamada\": Reunión telefónica o virtual.\n  \n  NUNCA marques la cita como agendada hasta tener todos los datos obligatorios validados.\n  Los datos deben rellenarse en el objeto JSON de salida correctamente para que el sistema procese la reserva.\n\n## Personalidad y Tono\n- Eres una amiga experta en bienes raíces: amable, cordial y segura.\n- Lenguaje fresco, natural y contemporáneo.\n- Respondes siempre en el mismo idioma que usa el usuario.\n- Cero robótico: nada de \"Como modelo de lenguaje\", \"Estoy aquí para ayudar\", \"Estaré atento\", \"No dudes en escribir\", etc.\n- NUNCA expongas códigos internos al usuario (V, I, 2, 3, 4, 5). Usa siempre lenguaje natural.\n\n## Disponibilidad\n- Lunes a Domingo: 10:00 a 19:00 (Hora Guatemala).\n- No agendar fuera de este rango ni en fechas pasadas.\n- Ante ambigüedad AM/PM, asume la hora que caiga dentro del horario 10:00-19:00. Si ambas caen fuera, pide aclaración.\n\n## Datos Obligatorios y Mapeo\nDebes recolectar y normalizar los siguientes campos para el JSON de salida:\n\n1. tipo_agendamiento: \"cita\" | \"llamada\"\n   - Determina esto lo antes posible preguntando o inferiendo del contexto.\n\n2. fecha_hora: string (ISO 8601)\n   - Formato: \"YYYY-MM-DDTHH:MM\"\n   - Validación: Debe ser futuro o igual a hoy, dentro del horario 10:00-19:00.\n   - Interpreta lenguaje natural (\"mañana a las 3pm\") y convierte a ISO.\n\n3. numero_habitaciones: string | null\n   - OBLIGATORIO solo si tipo_agendamiento es \"cita\".\n   - Debe ser entero positivo (ej. \"1\", \"2\", \"3\").\n   - Si es \"llamada\", este campo debe ser null.\n\n4. intencion_compra: \"V\" | \"I\" | null\n   - V = Vivir (residencia, hogar, propio).\n   - I = Invertir (renta, plusvalía, negocio).\n   - DEBES preguntarlo siempre, tanto para \"cita\" como para \"llamada\".\n   - Pregúntalo de forma natural, sin exponer los códigos al usuario.\n     Ejemplo: \"¿Estás buscando el inmueble para vivir o para invertir?\"\n   - NO anticipes que puede omitirlo. Solo acepta null si el usuario \n     explícitamente lo evade o ignora la pregunta.\n\n5. metodo_contacto_pref: \"2\" | \"3\" | \"4\" | \"5\" | null\n   - 2 = Correo electrónico.\n   - 3 = Llamada Telefónica.\n   - 4 = WhatsApp.\n   - 5 = Cualquier forma.\n   - Mapea texto natural (\"wasap\", \"mail\", \"teléfono\") a estos códigos.\n   - Si es \"llamada\", asigna automáticamente \"3\" en el JSON. No lo preguntes.\n   - Si es \"cita\", pregúntalo de forma natural sin exponer los códigos.\n     Ejemplo: \"¿Por qué medio prefieres que te contactemos: correo, llamada o WhatsApp?\"\n\n## Instrucciones de Flujo\n\n1. **Identificación:** Si el usuario no especifica, pregunta si desea una \"cita presencial\" o una \"llamada\".\n\n2. **Recolección Secuencial:**\n   - Si es \"cita\":    Pide Fecha → Habitaciones → Intención → Contacto.\n   - Si es \"llamada\": Pide Fecha → Intención.\n     - metodo_contacto_pref siempre será \"3\" en el JSON. No lo preguntes.\n   - Si el usuario da varios datos de una vez, valídalos todos y solo pide los faltantes.\n\n3. **Validación Estricta:**\n   - Si una fecha es inválida o fuera de horario, explica amablemente el error y pide corregir solo ese dato.\n   - No avances al siguiente paso hasta que el actual sea válido.\n\n4. **Cierre:**\n   - Cuando todos los campos obligatorios estén completos y válidos en el JSON, confirma amablemente que está agendado.\n   - No pidas confirmación adicional (\"¿Estás seguro?\"). Afirma la confirmación.\n\n## Reglas de Salida (JSON)\n- Tu respuesta natural va en el campo `response`.\n- Los datos estructurados van en el campo `parameters`.\n- NUNCA uses la palabra \"RESERVA\" en el `response`.\n- NUNCA incluyas prefijos como \"Tu:\" o markdown en el `response`.\n- NUNCA expongas códigos internos (V, I, 2, 3, 4, 5) en el `response`.\n- Asegúrate de que los códigos (V, I, 2, 3, 4, 5) estén exactos en el JSON.\n- Mientras no tengas todos los datos obligatorios, los campos pendientes deben ir como null en el JSON."
         }
       },
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 2,
       "position": [
-        -18000,
+        -17376,
         1088
       ],
-      "id": "79bd4340-2e30-4f2c-a90b-1a277ae4ffe6",
+      "id": "f6b4fe9b-8749-42e4-ac7d-524a5ccd721a",
       "name": "RSVP AGENT",
       "retryOnFail": true,
       "maxTries": 2
@@ -917,16 +916,16 @@
         "promptType": "define",
         "text": "={{ $json.input }}",
         "options": {
-          "systemMessage": "=# ================================================  \n# ⚠️ REGLA PRINCIPAL NO NEGOCIABLE ⚠️\n# ================================================  \nPRIMERO: Responde la pregunta con información del set_preguntas\nSEGUNDO: Ofrece CTA (cita o llamada) solo si (rechazos < 1) Y (ignoros < 3)\nTERCERO: NUNCA pidas nombre/teléfono (ya están en el sistema)\nCUARTO: Integra el CTA sutilmente al final, no como línea separada\n# ================================================  \n\n# Zona horaria: America/Guatemala (UTC-6)  \n# Fecha actual: {{ $today }}  \n# ================================================  \n\nrole: |  \n  - {{ $('Rol').item.json.rol }}    \n\nObjetivo: Responder exactamente lo que se pregunta utilizando el set de preguntas. \nVe directo a la información. Integra el CTA naturalmente en la última frase si los límites lo permiten.\n\nreglas_comportamiento:\n  saludos:\n    - ÚNICAMENTE cuando recibas un saludo (\"hola\", \"buenas tardes\", \"buenas\"):\n        Responde amablemente y pregunta en qué puedes ayudar sobre el proyecto.\n        NUNCA te presentes ni digas tu nombre o rol.\n\n  flujo_respuesta:\n    flujo_respuesta:\n    - PASO 1 (Clasificación): Identifica a qué número de 'set_preguntas' corresponde la consulta.\n    - PASO 2 (Validación de Herramientas): \n        * Si es Pregunta 11 -> DEBES ejecutar 'prices_notification'.\n        * Si es Pregunta 12 -> DEBES ejecutar 'escalation_notification'.\n        * Si NO hay coincidencia en el set (Pregunta fuera de tema) -> DEBES ejecutar 'escalation_notification'.\n        * Si es Pregunta 5 -> DEBES ejecutar 'send_images'.\n    - PASO 3 (Ejecución): Llama a la herramienta detectada en el Paso 2.\n    - PASO 4 (Respuesta): Entrega el texto exacto del set y añade el CTA si los contadores lo permiten.\n\n  manejo_citas_interno:\n    - ANTES de responder, revisa el historial de chat completo\n    - CONTADOR 1 (Rechazos Explícitos): \"no quiero\", \"no gracias\", \"no me interesa\", \"más adelante\", \"no por ahora\".\n      * LÍMITE: 1 vez. Si llega a 1, NUNCA más CTA.\n    - CONTADOR 2 (Ignoros de CTA): Ofreciste CTA antes -> Usuario hace nueva pregunta sin aceptar ni rechazar.\n      * LÍMITE: 3 veces. Si llega a 3, NUNCA más CTA.\n    - IMPORTANTE: No muestres los contadores al usuario, solo úsala internamente.\n\n  manejo_cta:\n    - Condición: Solo si (rechazos < 1) Y (ignoros < 3).\n    - Formato: Integra la frase en la última oración de la respuesta, no en línea aparte.\n    - Usa rotativamente una de estas 3 variantes sutiles:\n      1. \"...si quieres, podemos agendar una cita o llamada para verlo mejor.\"\n      2. \"...quedo atento si prefieres coordinar una cita o llamada.\"\n      3. \"...un asesor puede explicarte más en una cita o llamada si te interesa.\"\n    - Si se supera cualquier límite: Responde solo la pregunta, SIN ninguna frase de invitación.\n\n  flujo_confirmacion:\n    - Si usuario dice \"si\", \"ok\", \"perfecto\", \"dale\", \"me conviene\" después de ofrecer CTA → Confirma que un ejecutivo contactará.\n    - NO pidas más datos.\n    - Ejemplo: \"Perfecto, un ejecutivo te contactará para coordinar la cita o llamada en breve 😊\"\n\n  formato_listas:\n    - Para la Pregunta 5 (Amenidades), DEBES usar una lista con guiones (-) para cada item.\n    - No uses párrafos compactos para las amenidades, cada una en una línea separada.\n\nactivacion_herramientas:\n    - prices_notification: Solo para Pregunta 11.\n    - send_images: Solo para Pregunta 5 o si piden fotos.\n    - escalation_notification: \n        - OBLIGATORIO en Pregunta 12 (Asesor).\n        - OBLIGATORIO en Pregunta 13 (Mascotas), ya que la respuesta requiere contacto humano.\n        - OBLIGATORIO si la pregunta NO está en el set_preguntas.\n\nejemplos_adicionales:\n  - \"info del proyecto\" → Pregunta 1 + CTA variante 1 (si límites ok)\n  - \"ubicación exacta\" → Pregunta 2 + CTA variante 2 (si límites ok)\n  - \"tipos de aptos\" → Pregunta 3 + CTA variante 3 (si límites ok)\n  - \"cuántos pisos tiene\" → Pregunta 4 + CTA variante 1 (si límites ok)\n  - \"áreas comunes\" → Pregunta 5 + CTA variante 2 (si límites ok) + send_images\n  - \"ventajas de vivir aquí\" → Pregunta 6 + CTA variante 3 (si límites ok)\n  - \"quién construye\" → Pregunta 7 + CTA variante 1 (si límites ok)\n  - \"misión de Spectrum\" → Pregunta 8 + CTA variante 2 (si límites ok)\n  - \"showroom\" → Pregunta 9 + CTA variante 3 (si límites ok)\n  - \"teléfono\" → Pregunta 10 + CTA variante 1 (si límites ok)\n  - \"precios/costos\" → Pregunta 11 + prices_notification + CTA variante 2 (si límites ok)\n  - \"hablar con humano/asesor/persona\" → Pregunta 12 + escalation_notification + CTA variante 3 (si límites ok)\n  - \"mascotas/perros\" → Pregunta 13 + CTA variante 1 (si límites ok)\n  - \"pregunta fuera de tema\" → falta_información + escalation_notification\n\nset_preguntas:\n  - Pregunta 1: \"Quiero conocer el proyecto\", \"quiero información\", \"info del proyecto\", \"cuéntame del proyecto\", \"más información\", \"quiero info\", \"info porfa\", \"información\".\n    Respuesta 1: Claro que sí, Parque Vista Verde es un proyecto residencial diseñado por Spectrum para quienes buscan calidad de vida en una torre única de 18 niveles con 378 apartamentos y más de 10 amenidades. Su eslogan es: \"El lugar donde tus sueños se hacen realidad\". (Integra CTA sutil si límites ok)\n\n  - Pregunta 2: \"¿Dónde se ubica el proyecto?\", \"¿en qué zona queda?\", \"ubicación exacta\", \"dirección del proyecto\", \"¿dónde está?\".\n    Respuesta 2: Parque Vista Verde se ubica en Zona 15, un área de alta plusvalía rodeada de servicios y excelente conectividad. Dirección exacta: https://maps.app.goo.gl/rymbj5wKWm65k9Uc6.   (Integra CTA sutil si límites ok)\n\n  - Pregunta 3: \"¿Qué venden?\", \"¿qué tipo de apartamentos tienen?\", \"tipos de aptos\", \"modelos disponibles\", \"tipologías\".\n    Respuesta 3: Ofrecemos apartamentos de 1, 2 y 3 habitaciones. Todos incluyen cocina, comedor, sala, balcón, lavandería y dormitorios con closet, además de 1 o 2 parqueos según el modelo. (Integra CTA sutil si límites ok)\n\n  - Pregunta 4: \"¿Cuántos niveles y apartamentos tiene el edificio?\", \"cuántos pisos tiene\", \"torres\", \"cantidad de apartamentos\".\n    Respuesta 4: El proyecto cuenta con 18 niveles habitacionales, 378 apartamentos (22 por nivel) y 7 sótanos de parqueo. Todo se desarrolla en una sola fase. (Integra CTA sutil si límites ok)\n\n  - Pregunta 5: \"¿Cuáles son las amenidades?\", \"¿qué áreas comunes tiene el proyecto?\", \"áreas comunes\", \"instalaciones\", \"servicios del edificio\".\n    Respuesta 5: Cuenta con más de 10 amenidades:\n    - Piscina\n    - Gimnasio\n    - Coworking\n    - Salón social\n    - Kid's Play\n    - Family Lounge\n    - Fire pits\n    - Sky Lounge\n    - Chef's Kitchen\n    - Lobby\n    (Integra CTA sutil si límites ok)\n\n  - Pregunta 6: \"¿Qué beneficios ofrece vivir en Parque Vista Verde?\", \"ventajas de vivir aquí\", \"por qué comprar\", \"beneficios\".\n    Respuesta 6: Promueve un estilo de vida activo con espacios integrados para relajación, trabajo y convivencia, fomentando comunidad sin salir de casa. (Integra CTA sutil si límites ok)\n\n  - Pregunta 7: \"¿Quién desarrolla el proyecto?\", \"¿qué es Spectrum?\", \"quién construye\", \"desarrollador\", \"empresa constructora\".\n    Respuesta 7: Es desarrollado por Spectrum, empresa con más de 27 años de experiencia y 11,700 viviendas entregadas en Guatemala y Colombia. (Integra CTA sutil si límites ok)\n\n  - Pregunta 8: \"¿Cuál es la filosofía y valores de Spectrum?\", \"misión de Spectrum\", \"valores\", \"propósito de la empresa\".\n    Respuesta 8: Su propósito es construir ciudades con proyectos innovadores basados en integridad, excelencia y desarrollo responsable. (Integra CTA sutil si límites ok)\n\n  - Pregunta 9: \"¿Dónde está la sala de ventas?\", \"¿dónde puedo ver el apartamento modelo?\", \"showroom\", \"apartamento modelo\", \"sala de ventas\".\n    Respuesta 9: En Oakland Place, Diagonal 6 13-01, Sótano 2, Isla Norte. Lunes a jueves (10:00-20:00), Viernes-Sábado (10:00-21:00), Domingo (10:00-20:00). (Integra CTA sutil si límites ok)\n\n  - Pregunta 10: \"¿Tienen algún contacto?\", \"¿a dónde puedo llamar?\", \"teléfono\", \"número de contacto\", \"whatsapp\".\n    Respuesta 10: El número de contacto es +502 3999-1881. (Integra CTA sutil si límites ok)\n\n  - Pregunta 11: \"¿Cuánto cuestan los apartamentos?\", \"¿Cuáles son los precios/costos/cotizaciones?\", \"¿Qué precios/costos/cotizaciones manejan?\", \"precio\", \"costo\", \"valor\", \"cuánto es\", \"rango de precios\".\n    Respuesta 11: Nuestros precios oscilan entre Q946,000 hasta Q2,064,000, pero varían por modelo y disponibilidad. Para confirmar precios, cuotas y disponibilidad final un asesor te contactará a la brevedad 😊. (Integra CTA sutil si límites ok)\n\n  - Pregunta 12: \"¿Puedo hablar con un asesor?\", \"Quiero hablar con un asesor\", \"¿Pueden darme asesoría?\", \"hablar con humano\", \"atención personalizada\", \"hablar con persona real\", \"no quiero bot\", \"atención humana\", \"conectar con ejecutivo\", \"asesor en línea\", \"persona natural\".\n    Respuesta 12: Para comunicarse con un Asesor, use este número (+502 3999-1881), le estará atendiendo la encargada de Parque Vista Verde. (Integra CTA sutil si límites ok)\n\n  - Pregunta 13: \"¿Aceptan mascotas?\", \"¿política de mascotas?\", \"¿puedo tener perros?\", \"¿pet friendly?\", \"mascotas en el edificio\".\n    Respuesta 13: Para información específica sobre política de mascotas (tipos, tamaños, restricciones), un asesor te puede dar los detalles exactos. (Integra CTA sutil si límites ok)\n\nfalta_información: |\n  Si la respuesta no está en el set:\n  1. Sé honesto: \"Como asistente virtual, no tengo acceso a ese dato específico\"\n  2. Ofrece solución inmediata: \"Pero puedo derivar tu consulta para que un Ejecutivo te contacte\"\n  3. Ofrece CTA unificado (solo si límites ok)\n\n  Ejemplo de respuesta:\n  \"Como soy un asistente virtual, no tengo esa información específica. Derivaré tu consulta para que un Ejecutivo te contacte a la brevedad 😊. Quedo atento si prefieres coordinar una cita o llamada.\"\n\ntools:\n  - name: \"escalation_notification\"\n    description: \"USA ESTE TOOL CUANDO: usuario pide hablar con asesor/ejecutivo/humano (Pregunta 12) o pregunta algo fuera del set. EJECUTA ANTES de responder.\"\n\n  - name: \"prices_notification\"\n    description: \"USA ESTE TOOL CUANDO: usuario pregunta precios, costos, cotizaciones (Pregunta 11). EJECUTA ANTES de responder.\"\n\n  - name: \"send_images\"\n    description: \"USA ESTE TOOL CUANDO: usuario pide fotos, renders, imágenes, amenidades. EJECUTA ANTES de responder.\"\n\n  - name: \"Web Search\"\n    description: \"USA ESTE TOOL CUANDO: necesitas info externa (distancias, tráfico, plusvalía Zona 15). NO usar para info interna del proyecto.\"\n\nprohibiciones:\n  - NUNCA te presentes ni digas tu nombre o rol.\n  - NUNCA respondas que te contacten (ya lo están haciendo).\n  - NUNCA uses frases de cortesía vacía: \"si tienes más dudas\", \"siéntete libre de preguntar\".\n  - NO inventar datos.\n  - Prohibido usar JSON o estructuras de datos en la respuesta final.\n  - No incluyas prefijos como \"Respuesta:\" o \"IA:\".\n  - NUNCA menciones que usarás las herramientas prices_notification o escalation_notification al usuario.\n  - NUNCA intentes resolver solo cuando pidan hablar con persona - SIEMPRE deriva al contacto humano.\n  - NUNCA ofrezcas cita o llamada si (rechazos >= 1) O (ignoros >= 3).\n  - NUNCA pongas el CTA en una línea separada, debe ir integrado en la última frase.\n- PROHIBIDO responder a una solicitud de asesor o pregunta desconocida sin haber ejecutado primero la herramienta escalation_notification.\n  \n  # ⚠️ PROHIBICIONES CRÍTICAS ⚠️\n  - NUNCA pidas nombre, teléfono, email o datos de contacto (ya están en el sistema)\n  - NUNCA respondas pidiendo datos antes de dar la información solicitada\n  - NUNCA saltes la respuesta del set_preguntas para ir directo al CTA\n  - NUNCA digas \"¿me compartes tu nombre?\" o \"¿cuál es tu teléfono?\"\n\npermitido:\n  - Usar guiones (-) para listas de amenidades (OBLIGATORIO en Pregunta 5).\n  - Ser extremadamente directo y breve.\n  - Rotar las 3 variantes del CTA para no sonar repetitivo.\n\nresponse_format:  \n  type: \"text_plain\"  \n  rules: \n    - Sin estructuras markdown complejas (negritas, tablas, etc).\n    - Se permiten guiones simples para listas de amenidades.\n    - Máximo 500 caracteres.\n"
+          "systemMessage": "=# 1. REGLAS DE ORO (PRIORIDAD ALTA)\n- **Veracidad:** Responde ÚNICAMENTE con la información del `SET DE PREGUNTAS`.\n- **CTA Condicional:** Ofrece cita/llamada SOLO si `(rechazos < 1)` Y `(ignoros < 3)`. Revisa el historial para validar.\n- **Privacidad Total:** NUNCA pidas nombre, teléfono o correo. Ya están en el sistema.\n- **Integración Natural:** El CTA debe ser la última oración del párrafo. PROHIBIDO líneas separadas.\n- **Restricción de Formato:** Texto plano. Máximo 500 caracteres. Prohibido usar negritas (**) o JSON. EXCEPCIÓN: las listas (como amenidades) pueden superar ese límite para mantener el formato de lista vertical.\n\n# 2. CONFIGURACIÓN DEL AGENTE\n- **Proyecto:** Parque Vista Verde (Spectrum).\n- **Ubicación:** Zona 15, Ciudad de Guatemala.\n- **Fase:** Única fase de 18 niveles y 378 apartamentos.\n- **Tipologías:** 1, 2 y 3 habitaciones (Desde 40m² hasta 91m²).\n- **Fecha:** {{ $today }} | **Rol:** {{ $('Rol').item.json.rol }}\n\n# 3. FLUJO DE EJECUCIÓN OBLIGATORIO\n1. **Identificar:** Clasificar la pregunta según el `SET DE PREGUNTAS`.\n2. **Accionar Tool:**\n   - Pregunta 5 (Amenidades) -> Ejecutar `send_images`.\n   - Pregunta 11 (Precios) -> Ejecutar `prices_notification`.\n   - Pregunta 12, 13 o Desconocida -> Ejecutar `escalation_notification`.\n3. **Redactar:** Entregar la respuesta exacta e integrar el CTA si los límites de rechazo/ignoro lo permiten.\n\n# 4. SET DE PREGUNTAS (KNOWLEDGE BASE)\n- **P1 (Información):** Parque Vista Verde es un proyecto residencial de Spectrum diseñado para calidad de vida en una torre de 18 niveles con 378 apartamentos y más de 10 amenidades. Eslogan: \"El lugar donde tus sueños se hacen realidad\".\n- **P2 (Ubicación):** Ubicado en Zona 15, área de alta plusvalía. Dirección exacta: https://maps.app.goo.gl/rymbj5wKWm65k9Uc6.\n- **P3 (Modelos/Metrajes):** Apartamentos de 1, 2 y 3 habitaciones con metrajes desde 40mts2 hasta 91mts2. Incluyen cocina, comedor, sala, balcón, lavandería y dormitorios con closet, además de 1 o 2 parqueos según el modelo.\n- **P4 (Edificio):** 18 niveles habitacionales, 378 apartamentos (22 por nivel) y 7 sótanos de parqueo en una sola fase.\n- **P5 (Amenidades):** Contamos con más de 10 amenidades pensadas para tu calidad de vida. OBLIGATORIO: responde con cada ítem en su propia línea, una debajo de otra, usando el mismo símbolo en todos. Formato exacto a usar:\n- Piscina\n- Gimnasio\n- Coworking\n- Salón social\n- Kid's Play\n- Family Lounge\n- Fire pits\n- Sky Lounge\n- Chef's Kitchen\n- Lobby\n- **P11 (Costos):** Precios para modelos de 1 a 3 habitaciones (40mts2 a 91mts2) desde Q946,000 hasta Q2,064,000. Varían según modelo y disponibilidad. Un asesor te contactará para confirmar cuotas exactas 😊.\n- **P12 (Asesor):** Para atención personalizada, contacta al +502 3999-1881 con la encargada de Parque Vista Verde.\n- **P13 (Mascotas):** Para detalles sobre la política de mascotas (razas y tamaños permitidos), un asesor te brindará la información exacta.\n\n# 5. GESTIÓN DE RESPUESTAS ESPECIALES\n- **Si el usuario saluda:** Saluda amablemente y pregunta cómo puedes ayudar. NO te presentes.\n- **Si el usuario acepta CTA (\"si\", \"ok\", \"dale\"):** Responde: \"Perfecto, un ejecutivo te contactará para coordinar la cita o llamada en breve 😊\".\n- **Si la pregunta NO está en el set:** \"Como soy un asistente virtual, no tengo esa información específica. Derivaré tu consulta para que un Ejecutivo te contacte a la brevedad 😊\". (Ejecutar `escalation_notification`).\n\n# 6. VARIANTES DE CTA (ROTACIÓN)\n1. \"...si quieres, podemos agendar una cita o llamada para verlo mejor.\"\n2. \"...quedo atento si prefieres coordinar una cita o llamada.\"\n3. \"...un asesor puede explicarte más en una cita o llamada si te interesa.\"\n\n# 7. PROHIBICIONES ESTRICTAS\n- PROHIBIDO preguntar \"¿Con quién tengo el gusto?\" o \"¿Me dejas tu número?\".\n- PROHIBIDO usar lenguaje robótico o excesivamente formal.\n- PROHIBIDO mencionar el nombre de las funciones/tools al usuario.\n- PROHIBIDO mezclar bullets (•) con guiones (-) en una misma lista.\n- PROHIBIDO colapsar la lista de amenidades en una sola línea separada por comas."
         }
       },
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 2,
       "position": [
-        -17664,
+        -17040,
         2400
       ],
-      "id": "9520c9b1-6705-4f20-bbbf-58fbf3848da3",
+      "id": "e7fe481e-6b67-4bc6-9e1e-8e62e17903bd",
       "name": "GENERAL INFO"
     },
     {
@@ -952,10 +951,10 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        -14784,
+        -14160,
         1440
       ],
-      "id": "197c86cc-864b-4630-beb7-a0a61d2893eb",
+      "id": "4a64e638-ca48-45ab-ab33-d1df8a357b96",
       "name": "RESERVA Response"
     },
     {
@@ -981,10 +980,10 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        -16848,
+        -16224,
         2400
       ],
-      "id": "d14ec200-e44c-4b3f-9861-3e499330cf4d",
+      "id": "ba319f37-154b-4e26-b33f-d78ea68742b2",
       "name": "general_info_response"
     },
     {
@@ -998,10 +997,10 @@
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 2.2,
       "position": [
-        -14128,
+        -13504,
         1776
       ],
-      "id": "b4d89a07-c3f4-439f-8a8d-687647172d16",
+      "id": "229d7842-52b0-4f42-8753-21f2289deb5f",
       "name": "RESPONSE AGENT"
     },
     {
@@ -1011,10 +1010,10 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        -13424,
+        -12800,
         2112
       ],
-      "id": "5d31f03a-cd98-4038-b2b9-7e07f40650aa",
+      "id": "907e8d37-463b-4ed4-9fa8-91d0763f885f",
       "name": "Data to Update Normalization2"
     },
     {
@@ -1024,16 +1023,16 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        -12976,
+        -12352,
         2112
       ],
-      "id": "efe6ae35-bf96-4b83-8874-a036c5e95f35",
+      "id": "892adeb1-83dd-48a0-91d5-90923e182eaf",
       "name": "Code"
     },
     {
       "parameters": {
         "operation": "update",
-        "collection": "users_test",
+        "collection": "users",
         "updateKey": "=_id",
         "fields": "=last_agent_message",
         "options": {}
@@ -1041,15 +1040,15 @@
       "type": "n8n-nodes-base.mongoDb",
       "typeVersion": 1.2,
       "position": [
-        -13200,
+        -12576,
         2112
       ],
-      "id": "13ff3ab2-2061-46aa-ad73-00ef63db74d1",
+      "id": "5116b045-d46c-4de2-8792-93f533258d69",
       "name": "Update Last Agent Message",
       "credentials": {
         "mongoDb": {
-          "id": "al8RU2TlqRrXROGb",
-          "name": "Spectrum - Parque Vista Verde"
+          "id": "hSK9MIPMlFYEbG1O",
+          "name": "Spectrum - Parque Vista Verde TEST"
         }
       }
     },
@@ -1065,35 +1064,35 @@
         -28656,
         1584
       ],
-      "id": "4f69f0d9-a16a-42b5-a94f-6055d2e529ff",
+      "id": "3b8efce5-6ad8-456e-af20-03ce1bda7aed",
       "name": "PARSE Body"
     },
     {
       "parameters": {
-        "collection": "users_test",
+        "collection": "users",
         "options": {},
         "query": "={\"user_id\":\"{{ $('user to use').item.json.user_id }}\"}"
       },
       "type": "n8n-nodes-base.mongoDb",
       "typeVersion": 1.2,
       "position": [
-        -14160,
+        -13536,
         512
       ],
-      "id": "b94afb5a-de0a-4ecc-9037-715ae09f6e38",
+      "id": "b2213524-de2c-46a0-9c94-d2893522dce8",
       "name": "Find user to UPDATE",
       "alwaysOutputData": true,
       "credentials": {
         "mongoDb": {
-          "id": "al8RU2TlqRrXROGb",
-          "name": "Spectrum - Parque Vista Verde"
+          "id": "hSK9MIPMlFYEbG1O",
+          "name": "Spectrum - Parque Vista Verde TEST"
         }
       }
     },
     {
       "parameters": {
         "operation": "update",
-        "collection": "users_test",
+        "collection": "users",
         "updateKey": "=_id",
         "fields": "=has_reservation",
         "options": {}
@@ -1101,15 +1100,15 @@
       "type": "n8n-nodes-base.mongoDb",
       "typeVersion": 1.2,
       "position": [
-        -12944,
+        -12320,
         368
       ],
-      "id": "1c0d2842-88d8-4be8-8a17-2423b6c3c618",
+      "id": "42e223bb-42d6-4f85-89cf-96d138ddf330",
       "name": "Update Has Reservation",
       "credentials": {
         "mongoDb": {
-          "id": "al8RU2TlqRrXROGb",
-          "name": "Spectrum - Parque Vista Verde"
+          "id": "hSK9MIPMlFYEbG1O",
+          "name": "Spectrum - Parque Vista Verde TEST"
         }
       }
     },
@@ -1178,31 +1177,31 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        -13168,
+        -12544,
         144
       ],
-      "id": "97da48c1-6c5a-4e30-9991-66d826cae9ee",
+      "id": "2c83034e-f41b-4abe-b58b-2138986bf0c8",
       "name": "Reservation DATA"
     },
     {
       "parameters": {
         "operation": "insert",
-        "collection": "appointments_test",
+        "collection": "appointments",
         "fields": "mongo_user_id,user_id,email,phone,room_quantity,intencion_compra,preferred_contact,appointment_mode,date",
         "options": {}
       },
       "type": "n8n-nodes-base.mongoDb",
       "typeVersion": 1.2,
       "position": [
-        -12944,
+        -12320,
         144
       ],
-      "id": "740fa09e-affc-4c91-b041-ef99986cc661",
+      "id": "33ab96c1-0d10-422e-8ee7-f380162cd72b",
       "name": "Insert Appointment",
       "credentials": {
         "mongoDb": {
-          "id": "al8RU2TlqRrXROGb",
-          "name": "Spectrum - Parque Vista Verde"
+          "id": "hSK9MIPMlFYEbG1O",
+          "name": "Spectrum - Parque Vista Verde TEST"
         }
       }
     },
@@ -1217,10 +1216,10 @@
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 2,
       "position": [
-        -17808,
+        -17184,
         672
       ],
-      "id": "8f6b8f28-4b4f-45e9-b5ae-25cc25d59e1c",
+      "id": "6f46d60a-8757-4dfb-a129-00fd02d57792",
       "name": "RSVP AGENT2",
       "retryOnFail": true,
       "maxTries": 2
@@ -1238,10 +1237,10 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "typeVersion": 1.2,
       "position": [
-        -17808,
+        -17184,
         896
       ],
-      "id": "78850290-76c1-4f97-bebc-ce88d66ec408",
+      "id": "83183b6b-723e-495c-bbb0-40d8b973a550",
       "name": "OpenAI Chat Model11",
       "credentials": {
         "openAiApi": {
@@ -1273,30 +1272,30 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        -16432,
+        -15808,
         672
       ],
-      "id": "f38b9b78-b1ed-476e-a417-1a6b948ab8f2",
+      "id": "a93ebfc6-bede-465f-b358-bd5061a7db06",
       "name": "RESERVA Response1"
     },
     {
       "parameters": {
-        "collection": "appointments_test",
+        "collection": "appointments",
         "options": {},
         "query": "={\"user_id\":\"{{ $('Find appointment').item.json.user_id }}\"}"
       },
       "type": "n8n-nodes-base.mongoDbTool",
       "typeVersion": 1.2,
       "position": [
-        -17664,
-        896
+        -16992,
+        912
       ],
-      "id": "bcef4dba-5138-44be-8b73-a47da311340e",
+      "id": "c5465156-a367-45c5-8709-16e5b3823dee",
       "name": "find_cita",
       "credentials": {
         "mongoDb": {
-          "id": "al8RU2TlqRrXROGb",
-          "name": "Spectrum - Parque Vista Verde"
+          "id": "hSK9MIPMlFYEbG1O",
+          "name": "Spectrum - Parque Vista Verde TEST"
         }
       }
     },
@@ -1307,10 +1306,10 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        -10496,
+        -9872,
         1440
       ],
-      "id": "4ced0ca8-7ad6-494c-a1b8-ea14ad6ff225",
+      "id": "1bca6427-947c-482b-a3d3-37fe753738cf",
       "name": "Calculate Time",
       "executeOnce": true
     },
@@ -1342,17 +1341,17 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.2,
       "position": [
-        -10272,
+        -9648,
         1440
       ],
-      "id": "0fc184be-000d-4836-8f1e-7a53449d8495",
+      "id": "266cadbb-2178-4b05-84d5-ce06a5e479d7",
       "name": "If First Execution",
       "executeOnce": true
     },
     {
       "parameters": {
         "operation": "update",
-        "collection": "chat_histories_test",
+        "collection": "chat_histories",
         "updateKey": "_id",
         "fields": "execution_time_inSec",
         "options": {}
@@ -1360,36 +1359,36 @@
       "type": "n8n-nodes-base.mongoDb",
       "typeVersion": 1.2,
       "position": [
-        -9600,
+        -8976,
         1296
       ],
-      "id": "88dfeb5c-e316-44b3-801c-774085723471",
+      "id": "a44a9e97-ddd2-4f75-914f-f15207ae7a24",
       "name": "Update First Execution Time",
       "credentials": {
         "mongoDb": {
-          "id": "al8RU2TlqRrXROGb",
-          "name": "Spectrum - Parque Vista Verde"
+          "id": "hSK9MIPMlFYEbG1O",
+          "name": "Spectrum - Parque Vista Verde TEST"
         }
       }
     },
     {
       "parameters": {
-        "collection": "chat_histories_test",
+        "collection": "chat_histories",
         "options": {},
         "query": "={\"sessionId\":\"{{ $('Create Body').item.json.key }}\"}"
       },
       "type": "n8n-nodes-base.mongoDb",
       "typeVersion": 1.2,
       "position": [
-        -10048,
+        -9424,
         1296
       ],
-      "id": "3e58862d-56d0-49a4-9e30-c1eb868eb9fc",
+      "id": "20ee0cee-e32b-46fb-a711-7a571a676f26",
       "name": "Find User Chat History",
       "credentials": {
         "mongoDb": {
-          "id": "al8RU2TlqRrXROGb",
-          "name": "Spectrum - Parque Vista Verde"
+          "id": "hSK9MIPMlFYEbG1O",
+          "name": "Spectrum - Parque Vista Verde TEST"
         }
       }
     },
@@ -1400,10 +1399,10 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        -9824,
+        -9200,
         1296
       ],
-      "id": "afa2e47e-d996-46a8-8a83-2c44c5096fe1",
+      "id": "68f3aa3e-5aa9-4377-8178-f36c32837186",
       "name": "Data Time to Update Normalization"
     },
     {
@@ -1411,10 +1410,10 @@
       "type": "n8n-nodes-base.noOp",
       "typeVersion": 1,
       "position": [
-        -10048,
+        -9424,
         1488
       ],
-      "id": "55e27577-64c9-4e96-9e7a-51a3b1084470",
+      "id": "837076b8-bc02-42af-8670-9351151ad3d5",
       "name": "No Operation, do nothing2"
     },
     {
@@ -1434,10 +1433,10 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        -12176,
+        -11552,
         2112
       ],
-      "id": "079f111d-c774-4381-aca8-6da765f2e85b",
+      "id": "5b1d5a7c-50fe-4ebb-8a61-d4aad235966b",
       "name": "Parameter Type"
     },
     {
@@ -1463,10 +1462,10 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        -11952,
+        -11328,
         2112
       ],
-      "id": "31eb0f1a-9a98-4bba-8f6f-adcb1a57c296",
+      "id": "67bb37a0-2248-4cb9-ba27-8375f8522ec9",
       "name": "RESPOND TO MANYCHAT",
       "credentials": {
         "httpHeaderAuth": {
@@ -1492,10 +1491,10 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        -12752,
+        -12128,
         2112
       ],
-      "id": "7295cb0c-9cc5-470d-bef8-e0f837049d91",
+      "id": "d5d276d3-8dbf-4bdf-b61d-95ceb5838f75",
       "name": "RESPONSE"
     },
     {
@@ -1521,10 +1520,10 @@
       "type": "@n8n/n8n-nodes-langchain.informationExtractor",
       "typeVersion": 1.2,
       "position": [
-        -23968,
+        -23344,
         1472
       ],
-      "id": "cd5596f3-7439-429f-a7a1-274da028f91c",
+      "id": "6e570749-426f-4ed0-97ec-81dea3b52550",
       "name": "Information Extractor Language"
     },
     {
@@ -1541,10 +1540,10 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "typeVersion": 1.3,
       "position": [
-        -23968,
+        -23344,
         1664
       ],
-      "id": "6faab0fd-a7c4-42aa-96c6-20c33e247845",
+      "id": "26b6ab7f-bf69-4a4b-a31b-c2551eefae14",
       "name": "OpenAI Chat Model1",
       "credentials": {
         "openAiApi": {
@@ -1562,16 +1561,16 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        -19424,
+        -18800,
         -848
       ],
-      "id": "b08a6c91-1b3c-4f54-817a-8002cd8447a3",
+      "id": "ca6f8a4c-1d36-4a53-80df-0d00fe773323",
       "name": "Primary RESPONSE"
     },
     {
       "parameters": {
         "operation": "update",
-        "collection": "users_test",
+        "collection": "users",
         "updateKey": "=_id",
         "fields": "name",
         "options": {}
@@ -1579,15 +1578,15 @@
       "type": "n8n-nodes-base.mongoDb",
       "typeVersion": 1.2,
       "position": [
-        -18816,
+        -18192,
         -928
       ],
-      "id": "0f6ba358-8f52-4f13-8844-72e1c7d07852",
+      "id": "2d1fe64b-0338-4291-acd3-22fc51c50b12",
       "name": "Update Name",
       "credentials": {
         "mongoDb": {
-          "id": "al8RU2TlqRrXROGb",
-          "name": "Spectrum - Parque Vista Verde"
+          "id": "hSK9MIPMlFYEbG1O",
+          "name": "Spectrum - Parque Vista Verde TEST"
         }
       }
     },
@@ -1603,21 +1602,11 @@
           "conditions": [
             {
               "id": "ec304d73-82e2-4f94-97f9-e0737091f452",
-              "leftValue": "={{ $json.phone }}",
+              "leftValue": "={{ !!$json.phone && $json.phone !== \"null\" }}",
               "rightValue": false,
               "operator": {
-                "type": "string",
-                "operation": "notEmpty",
-                "singleValue": true
-              }
-            },
-            {
-              "id": "8d4466d4-7cf5-4b76-8fc3-3d2c73b5b861",
-              "leftValue": "={{ $('user to use').item.json.phone }}",
-              "rightValue": "",
-              "operator": {
-                "type": "string",
-                "operation": "empty",
+                "type": "boolean",
+                "operation": "true",
                 "singleValue": true
               }
             }
@@ -1629,10 +1618,10 @@
       "type": "n8n-nodes-base.filter",
       "typeVersion": 2.3,
       "position": [
-        -19040,
+        -18416,
         -736
       ],
-      "id": "6ae9a498-3b70-4985-8088-dabdcbd5469a",
+      "id": "2d2e1e7c-89e1-4f31-8c25-370507b99ec6",
       "name": "Filter Phone"
     },
     {
@@ -1647,21 +1636,11 @@
           "conditions": [
             {
               "id": "ec304d73-82e2-4f94-97f9-e0737091f452",
-              "leftValue": "={{ $json.name }}",
+              "leftValue": "={{ !!$json.name && $json.name !== \"null\" }}",
               "rightValue": false,
               "operator": {
-                "type": "string",
-                "operation": "notEmpty",
-                "singleValue": true
-              }
-            },
-            {
-              "id": "e55e794d-b98a-4211-9605-da884325a7d1",
-              "leftValue": "={{ $('user to use').item.json.name }}",
-              "rightValue": "",
-              "operator": {
-                "type": "string",
-                "operation": "empty",
+                "type": "boolean",
+                "operation": "true",
                 "singleValue": true
               }
             }
@@ -1673,16 +1652,16 @@
       "type": "n8n-nodes-base.filter",
       "typeVersion": 2.3,
       "position": [
-        -19040,
+        -18416,
         -928
       ],
-      "id": "c0fcca11-be09-4a48-97a4-778a921ee1e4",
+      "id": "603c2f8c-e2f3-4fce-8609-d45e9c114491",
       "name": "Filter Name"
     },
     {
       "parameters": {
         "operation": "update",
-        "collection": "users_test",
+        "collection": "users",
         "updateKey": "=_id",
         "fields": "=phone",
         "options": {}
@@ -1690,15 +1669,15 @@
       "type": "n8n-nodes-base.mongoDb",
       "typeVersion": 1.2,
       "position": [
-        -18816,
+        -18192,
         -736
       ],
-      "id": "09ede0e9-7409-4e50-b4b7-28ad2f8ff476",
+      "id": "2e0c8d19-9698-40ce-9254-bab677949a51",
       "name": "Update Phone",
       "credentials": {
         "mongoDb": {
-          "id": "al8RU2TlqRrXROGb",
-          "name": "Spectrum - Parque Vista Verde"
+          "id": "hSK9MIPMlFYEbG1O",
+          "name": "Spectrum - Parque Vista Verde TEST"
         }
       }
     },
@@ -1714,21 +1693,11 @@
           "conditions": [
             {
               "id": "ec304d73-82e2-4f94-97f9-e0737091f452",
-              "leftValue": "={{ $json.email }}",
+              "leftValue": "={{ !!$json.email && $json.email !== \"null\" }}",
               "rightValue": false,
               "operator": {
-                "type": "string",
-                "operation": "notEmpty",
-                "singleValue": true
-              }
-            },
-            {
-              "id": "be60dc23-cac9-4afb-8b0a-bf33077f1396",
-              "leftValue": "={{ $('user to use').item.json.email }}",
-              "rightValue": "",
-              "operator": {
-                "type": "string",
-                "operation": "empty",
+                "type": "boolean",
+                "operation": "true",
                 "singleValue": true
               }
             }
@@ -1740,16 +1709,16 @@
       "type": "n8n-nodes-base.filter",
       "typeVersion": 2.3,
       "position": [
-        -19040,
+        -18416,
         -544
       ],
-      "id": "9c48f91b-8406-47eb-b8b7-8891591315cc",
+      "id": "95294bed-eae7-4281-8fde-bea926e11ef9",
       "name": "Filter Email"
     },
     {
       "parameters": {
         "operation": "update",
-        "collection": "users_test",
+        "collection": "users",
         "updateKey": "=_id",
         "fields": "=email",
         "options": {}
@@ -1757,15 +1726,15 @@
       "type": "n8n-nodes-base.mongoDb",
       "typeVersion": 1.2,
       "position": [
-        -18816,
+        -18192,
         -544
       ],
-      "id": "6f1d477b-2a8b-4603-a902-414791bf57db",
+      "id": "08c99ea9-5a71-4527-9e81-be5e90c0f8e4",
       "name": "Update Email",
       "credentials": {
         "mongoDb": {
-          "id": "al8RU2TlqRrXROGb",
-          "name": "Spectrum - Parque Vista Verde"
+          "id": "hSK9MIPMlFYEbG1O",
+          "name": "Spectrum - Parque Vista Verde TEST"
         }
       }
     },
@@ -1792,10 +1761,10 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        -18368,
+        -17744,
         -1472
       ],
-      "id": "8b464bbe-2a29-49b5-8b5f-f4d7fc629693",
+      "id": "8a4ea9fb-79ea-432c-bfa3-ff85e7a9beed",
       "name": "RESPOND TO MANYCHAT1",
       "credentials": {
         "httpHeaderAuth": {
@@ -1821,10 +1790,10 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        -18592,
+        -17968,
         -1472
       ],
-      "id": "695640ed-4632-49a3-9752-2cacee9b7110",
+      "id": "6c08577e-eec2-43dd-ad71-b604c268f970",
       "name": "Channel Response"
     },
     {
@@ -1844,10 +1813,10 @@
       "type": "n8n-nodes-base.perplexityTool",
       "typeVersion": 1,
       "position": [
-        -17712,
+        -17088,
         2640
       ],
-      "id": "fc074541-ad8b-4705-b80d-0b9b869dda8e",
+      "id": "810a3fe2-97dc-4fe3-9e09-12da8d6b0d7f",
       "name": "Web Search",
       "credentials": {
         "perplexityApi": {
@@ -1880,38 +1849,15 @@
       "type": "n8n-nodes-base.httpRequestTool",
       "typeVersion": 4.3,
       "position": [
-        -17536,
+        -16912,
         2640
       ],
-      "id": "86b54e80-a86b-47ce-b0d7-c762cf96e80b",
+      "id": "3f992595-c0db-4d49-bb9c-fdd6e053033d",
       "name": "send_images",
       "credentials": {
         "httpHeaderAuth": {
           "id": "2KClojasxcPLSibd",
           "name": "Manychat"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "sessionIdType": "customKey",
-        "sessionKey": "={{ $('PARSE Body').item.json.current_body.key }}",
-        "collectionName": "chat_histories_lead_test",
-        "databaseName": "ParqueVerde",
-        "contextWindowLength": 10
-      },
-      "type": "@n8n/n8n-nodes-langchain.memoryMongoDbChat",
-      "typeVersion": 1,
-      "position": [
-        -20688,
-        624
-      ],
-      "id": "8bc8bcb6-d52d-4823-b103-0c38ba2c915e",
-      "name": "MongoDB Chat Memory",
-      "credentials": {
-        "mongoDb": {
-          "id": "al8RU2TlqRrXROGb",
-          "name": "Spectrum - Parque Vista Verde"
         }
       }
     },
@@ -1925,21 +1871,16 @@
         },
         "builtInTools": {},
         "options": {
-          "textFormat": {
-            "textOptions": {
-              "type": "json_object"
-            }
-          },
-          "temperature": 0.3
+          "temperature": 0.1
         }
       },
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "typeVersion": 1.3,
       "position": [
-        -20864,
-        624
+        -20160,
+        608
       ],
-      "id": "487e8654-1e2c-48fa-a082-dcb93bb7c403",
+      "id": "953eea64-5986-4905-a42e-a5054f94f21f",
       "name": "OpenAI Chat Model2",
       "credentials": {
         "openAiApi": {
@@ -1955,10 +1896,10 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        -20400,
+        -19776,
         368
       ],
-      "id": "73ae4d77-3af1-487a-a0ad-24a1a65b2638",
+      "id": "57864520-f9f3-47af-8486-ea7436cc6ff6",
       "name": "PARSE RESPONSE"
     },
     {
@@ -1973,31 +1914,31 @@
           "conditions": [
             {
               "id": "cc86c8d8-ace1-4b34-9e86-606593e9fc2c",
-              "leftValue": "={{ $('PARSE RESPONSE').item.json.nombre }}",
+              "leftValue": "={{ !!$json.name && $json.name !== \"null\" }}",
               "rightValue": "",
               "operator": {
-                "type": "string",
-                "operation": "empty",
+                "type": "boolean",
+                "operation": "false",
                 "singleValue": true
               }
             },
             {
               "id": "bf630c9b-8101-46bb-9ce5-27d082e568d5",
-              "leftValue": "={{ $('PARSE RESPONSE').item.json.telefono }}",
+              "leftValue": "={{ !!$json.phone && $json.phone !== \"null\" }}",
               "rightValue": "",
               "operator": {
-                "type": "string",
-                "operation": "empty",
+                "type": "boolean",
+                "operation": "false",
                 "singleValue": true
               }
             },
             {
               "id": "01592e8e-ed00-413c-8349-bd2a51c8093e",
-              "leftValue": "={{ $('PARSE RESPONSE').item.json.correo }}",
+              "leftValue": "={{ !!$json.email && $json.email !== \"null\" }}",
               "rightValue": "",
               "operator": {
-                "type": "string",
-                "operation": "empty",
+                "type": "boolean",
+                "operation": "false",
                 "singleValue": true
               }
             }
@@ -2009,10 +1950,10 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
       "position": [
-        -19088,
+        -18464,
         -1248
       ],
-      "id": "5d7ccb84-63fc-4d2f-9f18-fab45dfa4b0a",
+      "id": "17be01d1-b9b7-46da-b5dc-660dada4769c",
       "name": "IF Faltan Datos"
     },
     {
@@ -2043,10 +1984,10 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
       "position": [
-        -22384,
+        -21760,
         1456
       ],
-      "id": "8cb693ca-04d0-4bb9-acf0-863357887c12",
+      "id": "bef637d1-bd30-45b9-a28a-055c3df39acb",
       "name": "If No es UPDATE"
     },
     {
@@ -2077,10 +2018,10 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
       "position": [
-        -21248,
+        -20624,
         1728
       ],
-      "id": "e40eed68-65ad-4068-93ba-6d3db92cb59c",
+      "id": "f4e13072-0b3a-404f-9469-9a26083eb3c6",
       "name": "If ES UPDATE"
     },
     {
@@ -2092,11 +2033,11 @@
       },
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        -21088,
+        -20464,
         1408
       ],
       "typeVersion": 1,
-      "id": "a6e25b78-610d-4504-8e9d-f77487dbe235",
+      "id": "9c1539db-3588-4d60-bf60-9d8cffc23476",
       "name": "Sticky Note14"
     },
     {
@@ -2106,16 +2047,16 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        -21008,
+        -20384,
         1504
       ],
-      "id": "6ec97683-e554-4be1-b0e1-545182dec73a",
+      "id": "ebb88d7d-5d5c-4b21-96b9-8980f866f5df",
       "name": "Data to Update Normalization"
     },
     {
       "parameters": {
         "operation": "update",
-        "collection": "users_test",
+        "collection": "users",
         "updateKey": "=_id",
         "fields": "last_interaction,last_message",
         "options": {}
@@ -2123,15 +2064,15 @@
       "type": "n8n-nodes-base.mongoDb",
       "typeVersion": 1.2,
       "position": [
-        -20784,
+        -20160,
         1504
       ],
-      "id": "79fe138c-d21f-4b1a-9585-09a4ddcc7b9d",
+      "id": "ceeeb633-2839-48a1-bc64-f0b2f5b790df",
       "name": "Update user",
       "credentials": {
         "mongoDb": {
-          "id": "al8RU2TlqRrXROGb",
-          "name": "Spectrum - Parque Vista Verde"
+          "id": "hSK9MIPMlFYEbG1O",
+          "name": "Spectrum - Parque Vista Verde TEST"
         }
       }
     },
@@ -2147,31 +2088,31 @@
           "conditions": [
             {
               "id": "4665d755-b9e0-4053-8e98-759c2a8935ac",
-              "leftValue": "={{ $json.nombre }}",
+              "leftValue": "={{ !!$json.nombre && $json.nombre !== \"null\" }}",
               "rightValue": "",
               "operator": {
-                "type": "string",
-                "operation": "empty",
+                "type": "boolean",
+                "operation": "false",
                 "singleValue": true
               }
             },
             {
               "id": "06bec46c-918b-494f-abff-d0a23e078a24",
-              "leftValue": "={{ $json.telefono }}",
+              "leftValue": "={{ !!$json.telefono && $json.telefono !== \"null\" }}",
               "rightValue": "",
               "operator": {
-                "type": "string",
-                "operation": "empty",
+                "type": "boolean",
+                "operation": "false",
                 "singleValue": true
               }
             },
             {
               "id": "f732f794-951e-46c0-9938-7bcd2704d43b",
-              "leftValue": "={{ $json.correo }}",
+              "leftValue": "={{ !!$json.correo && $json.correo !== \"null\" }}",
               "rightValue": "",
               "operator": {
-                "type": "string",
-                "operation": "empty",
+                "type": "boolean",
+                "operation": "false",
                 "singleValue": true
               }
             }
@@ -2183,10 +2124,10 @@
       "type": "n8n-nodes-base.filter",
       "typeVersion": 2.3,
       "position": [
-        -20176,
+        -19472,
         368
       ],
-      "id": "4cf7aa4d-14e6-4018-afc4-261686ca9117",
+      "id": "2b444182-5f0e-46ec-b203-a5af1552e125",
       "name": "Filter si no hay datos"
     },
     {
@@ -2206,10 +2147,10 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        -18208,
+        -17584,
         2208
       ],
-      "id": "cdebfc14-fbf5-4661-9c9f-036c32931acc",
+      "id": "ca66467d-1b0b-45b2-9b41-540be05951fc",
       "name": "INPUT QUESTION"
     },
     {
@@ -2219,7 +2160,7 @@
             {
               "id": "64eb46e3-cef2-497f-85e3-eb4865a161c5",
               "name": "input",
-              "value": "={{ $json.last_message }}",
+              "value": "={{ $json.output.user_question }}",
               "type": "string"
             }
           ]
@@ -2229,10 +2170,10 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        -20480,
-        1520
+        -20208,
+        1136
       ],
-      "id": "982976c5-693f-4327-b39f-37a678a7dc60",
+      "id": "d9392c5d-4e20-4ff8-b3f2-307fe8ac70ae",
       "name": "INPUT1"
     },
     {
@@ -2252,32 +2193,11 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        -20608,
+        -19984,
         1744
       ],
-      "id": "e8a61fb9-aefd-4236-ad32-297201a3dc24",
+      "id": "8d7fdd99-59bd-45c4-b684-d7be005fbcd2",
       "name": "INPUT"
-    },
-    {
-      "parameters": {
-        "collection": "users_test",
-        "options": {},
-        "query": "={\"user_id\":\"{{ $('PARSE Body').item.json.current_body.id }}\"}"
-      },
-      "type": "n8n-nodes-base.mongoDb",
-      "typeVersion": 1.2,
-      "position": [
-        -18128,
-        -1232
-      ],
-      "id": "fe50440e-061b-41e5-b926-4a3db45cb097",
-      "name": "Find User",
-      "credentials": {
-        "mongoDb": {
-          "id": "al8RU2TlqRrXROGb",
-          "name": "Spectrum - Parque Vista Verde"
-        }
-      }
     },
     {
       "parameters": {
@@ -2302,10 +2222,10 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        -18416,
+        -17792,
         -1232
       ],
-      "id": "79f66f42-8f6c-4ea8-a24e-08ac1f085213",
+      "id": "26008d6c-105b-4c42-bb79-7fdc0fd95ead",
       "name": "RESPOND TO MANYCHAT2",
       "credentials": {
         "httpHeaderAuth": {
@@ -2331,10 +2251,10 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        -18640,
+        -18016,
         -1232
       ],
-      "id": "304ff9fa-9731-4d00-b2d2-ac109f530f94",
+      "id": "a61e2ccc-c69c-427a-b330-43fb63197346",
       "name": "Channel Response1"
     },
     {
@@ -2349,31 +2269,31 @@
           "conditions": [
             {
               "id": "7f81fd62-1a58-4693-b002-ba936681f489",
-              "leftValue": "={{ $json.name }}",
+              "leftValue": "={{ !!$json.name && $json.name !== \"null\" }}",
               "rightValue": "",
               "operator": {
-                "type": "string",
-                "operation": "notEmpty",
+                "type": "boolean",
+                "operation": "true",
                 "singleValue": true
               }
             },
             {
               "id": "77652d06-65d5-44d1-9adb-a0559e33618c",
-              "leftValue": "={{ $json.phone }}",
+              "leftValue": "={{ !!$json.phone && $json.phone !== \"null\" }}",
               "rightValue": "",
               "operator": {
-                "type": "string",
-                "operation": "notEmpty",
+                "type": "boolean",
+                "operation": "true",
                 "singleValue": true
               }
             },
             {
               "id": "a12cd474-2249-4e9d-806a-d558ec2824e6",
-              "leftValue": "={{ $json.email }}",
+              "leftValue": "={{ !!$json.email && $json.email !== \"null\" }}",
               "rightValue": "",
               "operator": {
-                "type": "string",
-                "operation": "notEmpty",
+                "type": "boolean",
+                "operation": "true",
                 "singleValue": true
               }
             }
@@ -2385,10 +2305,10 @@
       "type": "n8n-nodes-base.filter",
       "typeVersion": 2.3,
       "position": [
-        -18672,
+        -18048,
         -352
       ],
-      "id": "9a76e655-4aa0-45dc-81d5-759356ba4fa7",
+      "id": "8bb5f8f8-1e12-4f70-85cd-ba37690fa160",
       "name": "DATACOMPLETE"
     },
     {
@@ -2417,10 +2337,10 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        -18048,
+        -17424,
         -352
       ],
-      "id": "5217b5fd-c987-475f-a466-e29fb02b7183",
+      "id": "87472d93-91ee-4a81-99a6-6b86aa51e686",
       "name": "GENERAR LEAD CONTACT",
       "disabled": true
     },
@@ -2431,10 +2351,10 @@
       "type": "n8n-nodes-base.xml",
       "typeVersion": 1,
       "position": [
-        -17840,
+        -17216,
         -352
       ],
-      "id": "62c839da-8866-453c-840c-56575bac082a",
+      "id": "cf5491ef-9f62-48ae-9b8e-a4b52173e8ec",
       "name": "XML BODY",
       "disabled": true
     },
@@ -2455,10 +2375,10 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        -18448,
+        -17824,
         -352
       ],
-      "id": "3240f0d9-a589-449a-a949-1499bb3a2505",
+      "id": "2dbe4585-1a4b-408b-bca4-7d065ca48695",
       "name": "Body"
     },
     {
@@ -2469,30 +2389,30 @@
       "type": "n8n-nodes-base.xml",
       "typeVersion": 1,
       "position": [
-        -18240,
+        -17616,
         -352
       ],
-      "id": "c162fe82-773e-4755-a671-0b79bde8419c",
+      "id": "e53e408e-b344-4eb8-aaf9-06529e693b7d",
       "name": "PARSE BODY"
     },
     {
       "parameters": {
-        "collection": "users_test",
+        "collection": "users",
         "options": {},
         "query": "={\"user_id\":\"{{ $('ID USER').item.json.id_user }}\"}"
       },
       "type": "n8n-nodes-base.mongoDb",
       "typeVersion": 1.2,
       "position": [
-        -16304,
+        -15680,
         1072
       ],
-      "id": "01522240-6855-4fc9-92da-d7d3c5847910",
+      "id": "313ea8b3-da20-4546-8d77-3e0d46dbaea5",
       "name": "Find Updated User",
       "credentials": {
         "mongoDb": {
-          "id": "al8RU2TlqRrXROGb",
-          "name": "Spectrum - Parque Vista Verde"
+          "id": "hSK9MIPMlFYEbG1O",
+          "name": "Spectrum - Parque Vista Verde TEST"
         }
       }
     },
@@ -2522,35 +2442,11 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        -15552,
+        -14928,
         1072
       ],
-      "id": "400ea379-abde-4c6e-9165-6854ec28d1b9",
+      "id": "7f7f413a-a1c6-4ee7-a8af-97b0b7722ffc",
       "name": "GENERAR LEAD - ONLY DATE",
-      "disabled": true
-    },
-    {
-      "parameters": {
-        "assignments": {
-          "assignments": [
-            {
-              "id": "29bc8a2a-9b6e-4b09-ae6d-30b74ab45b94",
-              "name": "body",
-              "value": "=<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<soap:Envelope xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\">\n<soap:Body>\n<CreacionClientePotencialBot xmlns=\"http://tempuri.org/\">\n<_OrigenCliente>100000011</_OrigenCliente>\n<_Proyecto>Proyecto Parque Vista Verde</_Proyecto>\n<_Comentarios>Lead generado desde chatbot</_Comentarios>\n<_UTMSource>100000011</_UTMSource>\n<_UTMCampaing>Campaña_Diciembre_2025</_UTMCampaing>\n<_Nombre>{{ $json.real_name.split(\" \")[0] }}</_Nombre>\n<_Apellido>{{ $json.real_name.split(\" \")[1] }}</_Apellido>\n<_TelefonoMovil>{{ $json.phone }}</_TelefonoMovil>\n<_CorreEletronico>{{ $json.email }}</_CorreEletronico>\n<_CorreoSecundario>{{ $json.email }}</_CorreoSecundario>\n<_MetodocontactoPref>{{ $('IF EXIST DATA').item.json.response.parameters.metodo_contacto_pref }}</_MetodocontactoPref>\n<_NumeroHabitaciones>{{ $('IF EXIST DATA').item.json.response.parameters.numero_habitaciones == \"1\" ? 100000000 : $('IF EXIST DATA').item.json.response.parameters.numero_habitaciones == \"2\" ? 100000001 : 100000002 }}</_NumeroHabitaciones>\n<_FechaCita>{{ $('IF EXIST DATA').item.json.response.parameters.fecha_hora.toDateTime() }}</_FechaCita>\n<_MotivoInteres>{{$if($('IF EXIST DATA').item.json.response.parameters.intencion_compra == \"V\",100000003,100000001)}}</_MotivoInteres>\n</CreacionClientePotencialBot>\n</soap:Body>\n</soap:Envelope>",
-              "type": "string"
-            }
-          ]
-        },
-        "options": {}
-      },
-      "type": "n8n-nodes-base.set",
-      "typeVersion": 3.4,
-      "position": [
-        -17472,
-        784
-      ],
-      "id": "d98ec24e-8879-4231-bcdc-89c92e4a1893",
-      "name": "BODY - ALL DATA",
       "disabled": true
     },
     {
@@ -2570,10 +2466,10 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        -16112,
+        -15488,
         1072
       ],
-      "id": "7d7bbcc7-b595-4beb-9062-af9a65537b20",
+      "id": "ad493cb5-7c7a-417c-a8ec-eb8f475f90de",
       "name": "BODY - DATE Only"
     },
     {
@@ -2630,10 +2526,10 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.2,
       "position": [
-        -17408,
+        -16784,
         1136
       ],
-      "id": "cab3503e-c700-494e-b685-c9cd45cdf39f",
+      "id": "f636049b-b420-4f80-a8f0-553946816815",
       "name": "IF EXIST DATA"
     },
     {
@@ -2643,10 +2539,10 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        -15904,
+        -15280,
         1072
       ],
-      "id": "2474aae1-5c99-4de0-b8d0-fe07c452dd24",
+      "id": "8afe40cc-0b48-4b5e-9a5a-af6c8346a11f",
       "name": "PARSE"
     },
     {
@@ -2666,10 +2562,10 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        -16688,
+        -16064,
         928
       ],
-      "id": "fa1c3e21-64e0-4ef5-a8b0-4884dc6835ce",
+      "id": "8bb8774d-6dc7-4989-8dd2-7dc10f07ff23",
       "name": "FORMAT APPOINTMENT DATE"
     },
     {
@@ -2700,10 +2596,10 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
       "position": [
-        -13872,
+        -13248,
         512
       ],
-      "id": "455ee264-5e61-4a08-977d-3c8417d7dfd7",
+      "id": "41598cbc-bf72-4d20-beaf-8a001d4b7425",
       "name": "If NO HAS APPOINTMENT"
     },
     {
@@ -2713,10 +2609,10 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        -13456,
+        -12832,
         368
       ],
-      "id": "3bfa3fbb-4d44-461a-a211-f8da2ca481b7",
+      "id": "7024722e-9965-4d64-8553-4015a2c2fabd",
       "name": "Data to Update User"
     },
     {
@@ -2790,16 +2686,16 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        -13008,
+        -12384,
         624
       ],
-      "id": "c2c0e0a2-09d0-4da9-840b-70a11c57639e",
+      "id": "9132e1c3-6b2c-45fa-9bba-06c61ec6e1d2",
       "name": "Reservation DATA1"
     },
     {
       "parameters": {
         "operation": "update",
-        "collection": "appointments_test",
+        "collection": "appointments",
         "updateKey": "_id",
         "fields": " mongo_user_id,user_id,email,phone,room_quantity,intencion_compra,preferred_contact,appointment_mode,date",
         "options": {}
@@ -2807,15 +2703,15 @@
       "type": "n8n-nodes-base.mongoDb",
       "typeVersion": 1.2,
       "position": [
-        -12784,
+        -12160,
         624
       ],
-      "id": "d0b7b04c-b0ed-4a91-a9f0-da6a4e9acc01",
+      "id": "d537fcc0-66b5-4ba0-b382-425989391813",
       "name": "Update Appointment",
       "credentials": {
         "mongoDb": {
-          "id": "al8RU2TlqRrXROGb",
-          "name": "Spectrum - Parque Vista Verde"
+          "id": "hSK9MIPMlFYEbG1O",
+          "name": "Spectrum - Parque Vista Verde TEST"
         }
       }
     },
@@ -2826,10 +2722,10 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        -13248,
+        -12624,
         624
       ],
-      "id": "49fe6a70-d74b-4ce7-afaa-86ae8e2ac979",
+      "id": "8d89b49f-e926-4b78-8916-d2c343f1524c",
       "name": "Data to Update"
     },
     {
@@ -2849,10 +2745,10 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        -18688,
+        -18064,
         1056
       ],
-      "id": "84509447-72c8-4241-a232-d1ec7e3f2bed",
+      "id": "db54b57e-6123-4a89-a049-cc5906ff8fe5",
       "name": "INTEREST DATA FULL RECOVERED"
     },
     {
@@ -2883,10 +2779,10 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
       "position": [
-        -18464,
+        -17840,
         1056
       ],
-      "id": "6f931707-1042-4e61-9422-74ed5abc98fe",
+      "id": "0f6b11cd-aa13-4279-a715-23032da31b8d",
       "name": "If CANCEL INTENTION or DATA COMPLETED"
     },
     {
@@ -2896,10 +2792,10 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        -16832,
+        -16208,
         -960
       ],
-      "id": "1f34046a-0347-4a84-b9e1-0008b583ab77",
+      "id": "5b2fb347-823a-4e13-91a7-d7343d608dae",
       "name": "Calculate Time1",
       "executeOnce": true
     },
@@ -2931,16 +2827,16 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.2,
       "position": [
-        -16608,
+        -15984,
         -960
       ],
-      "id": "75d16789-6f54-497a-81e8-8e5c5111434d",
+      "id": "a4b36c31-3e97-4a07-a87a-ab0dc28cab19",
       "name": "If First Execution1"
     },
     {
       "parameters": {
         "operation": "update",
-        "collection": "chat_histories_test",
+        "collection": "chat_histories",
         "updateKey": "_id",
         "fields": "execution_time_inSec",
         "options": {}
@@ -2948,36 +2844,36 @@
       "type": "n8n-nodes-base.mongoDb",
       "typeVersion": 1.2,
       "position": [
-        -15936,
+        -15312,
         -1104
       ],
-      "id": "2090c52c-03b2-47cf-98a8-9df6c3ae1d6c",
+      "id": "4637b398-b949-4e66-8896-6c21e2e780c4",
       "name": "Update First Execution Time1",
       "credentials": {
         "mongoDb": {
-          "id": "al8RU2TlqRrXROGb",
-          "name": "Spectrum - Parque Vista Verde"
+          "id": "hSK9MIPMlFYEbG1O",
+          "name": "Spectrum - Parque Vista Verde TEST"
         }
       }
     },
     {
       "parameters": {
-        "collection": "chat_histories_lead_test",
+        "collection": "chat_histories_lead",
         "options": {},
         "query": "={\"sessionId\":\"{{ $('Create Body').item.json.key }}\"}"
       },
       "type": "n8n-nodes-base.mongoDb",
       "typeVersion": 1.2,
       "position": [
-        -16384,
+        -15760,
         -1104
       ],
-      "id": "faecc42d-201b-4bb7-849c-26a17d16febe",
+      "id": "ad7e705c-4d0e-427a-823c-6cd4ddef1a25",
       "name": "Find User Chat History1",
       "credentials": {
         "mongoDb": {
-          "id": "al8RU2TlqRrXROGb",
-          "name": "Spectrum - Parque Vista Verde"
+          "id": "hSK9MIPMlFYEbG1O",
+          "name": "Spectrum - Parque Vista Verde TEST"
         }
       }
     },
@@ -2988,10 +2884,10 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        -16160,
+        -15536,
         -1104
       ],
-      "id": "25c46225-0e64-4e20-a4e7-7eead31a9109",
+      "id": "d7d6ba60-b769-4a63-9454-13caf7895970",
       "name": "Data Time to Update Normalization1"
     },
     {
@@ -2999,10 +2895,10 @@
       "type": "n8n-nodes-base.noOp",
       "typeVersion": 1,
       "position": [
-        -16384,
+        -15760,
         -912
       ],
-      "id": "6036e830-9ee2-411e-bf35-b47fb568d784",
+      "id": "f268d736-51ee-496c-9f29-191bc04ef2ec",
       "name": "No Operation, do nothing3"
     },
     {
@@ -3022,10 +2918,10 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        -16320,
+        -15696,
         1376
       ],
-      "id": "92a800dc-b0a7-43d6-a93d-5d6c56984249",
+      "id": "ef9f94cc-e7cf-4802-9d11-61dbd86e53b8",
       "name": "BODY - DATE Only1",
       "disabled": true
     },
@@ -3057,10 +2953,10 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
       "position": [
-        -23232,
+        -22608,
         1472
       ],
-      "id": "01e97aa7-7785-48f5-94b0-f6d32cab6a0c",
+      "id": "9ccfec9f-de76-400a-9ac4-489ac6d726b5",
       "name": "If"
     },
     {
@@ -3090,32 +2986,32 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
       "position": [
-        -23712,
+        -23088,
         1776
       ],
-      "id": "6054dedf-ac4d-4ec4-b6fc-1a3e6341a393",
+      "id": "c6b1071b-8e36-4b16-badf-c91f48b53c35",
       "name": "If WHATSAPP"
     },
     {
       "parameters": {
-        "collection": "users_test",
+        "collection": "users",
         "options": {},
         "query": "={\"phone\":\"{{ $('PARSE Body').item.json.current_body.phone }}\"}"
       },
       "type": "n8n-nodes-base.mongoDb",
       "typeVersion": 1.2,
       "position": [
-        -23520,
+        -22896,
         1792
       ],
-      "id": "d04eb020-1a6a-4732-9481-1c84ab3c8a31",
+      "id": "d9aa7da3-871b-4903-a3ed-d83650d1becb",
       "name": "Find user by Phone",
       "alwaysOutputData": true,
       "executeOnce": false,
       "credentials": {
         "mongoDb": {
-          "id": "al8RU2TlqRrXROGb",
-          "name": "Spectrum - Parque Vista Verde"
+          "id": "hSK9MIPMlFYEbG1O",
+          "name": "Spectrum - Parque Vista Verde TEST"
         }
       }
     },
@@ -3126,16 +3022,16 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        -23040,
+        -22416,
         1808
       ],
-      "id": "8e9ffe91-91d2-4f5e-b9e7-f4a2e9a80035",
+      "id": "7e6e3256-51e8-4040-9cc5-8959921409e5",
       "name": "Code in JavaScript"
     },
     {
       "parameters": {
         "operation": "update",
-        "collection": "users_test",
+        "collection": "users",
         "updateKey": "_id",
         "fields": "user_id",
         "options": {}
@@ -3143,36 +3039,36 @@
       "type": "n8n-nodes-base.mongoDb",
       "typeVersion": 1.2,
       "position": [
-        -22864,
+        -22240,
         1808
       ],
-      "id": "65ebc67c-c883-4b64-9e6a-0a7b828a7b91",
+      "id": "1c605f80-bdbd-4d9c-8d0a-2dd6897285f4",
       "name": "Update Client",
       "credentials": {
         "mongoDb": {
-          "id": "al8RU2TlqRrXROGb",
-          "name": "Spectrum - Parque Vista Verde"
+          "id": "hSK9MIPMlFYEbG1O",
+          "name": "Spectrum - Parque Vista Verde TEST"
         }
       }
     },
     {
       "parameters": {
-        "collection": "users_test",
+        "collection": "users",
         "options": {},
         "query": "={\"phone\":\"{{ $('PARSE Body').item.json.current_body.phone }}\"}"
       },
       "type": "n8n-nodes-base.mongoDb",
       "typeVersion": 1.2,
       "position": [
-        -22688,
+        -22064,
         1808
       ],
-      "id": "ac2d3500-961a-47dd-a57c-c8255a1dc462",
+      "id": "47e3d2d0-b567-40fe-9d98-982cea58df54",
       "name": "Find Modified Client",
       "credentials": {
         "mongoDb": {
-          "id": "al8RU2TlqRrXROGb",
-          "name": "Spectrum - Parque Vista Verde"
+          "id": "hSK9MIPMlFYEbG1O",
+          "name": "Spectrum - Parque Vista Verde TEST"
         }
       }
     },
@@ -3204,10 +3100,10 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
       "position": [
-        -23296,
+        -22672,
         1792
       ],
-      "id": "4781395d-674c-4a31-a6ee-cad9158c255b",
+      "id": "d87a7ba9-534e-4883-b1e1-ab910d7a9c6d",
       "name": "If1"
     },
     {
@@ -3217,10 +3113,10 @@
       "type": "n8n-nodes-base.html",
       "typeVersion": 1.2,
       "position": [
-        -17664,
+        -17040,
         -352
       ],
-      "id": "f1732822-a2fc-4d45-b61b-9aaa8e5b94c7",
+      "id": "4b35a340-3399-4d29-95dc-14a3da96da57",
       "name": "HTML"
     },
     {
@@ -3243,12 +3139,12 @@
         -26560,
         1488
       ],
-      "id": "711784f9-d752-4247-8a53-a68362615cd7",
+      "id": "89f0666f-03d6-4108-b24e-b4d928b560a0",
       "name": "Pregunta FInal"
     },
     {
       "parameters": {
-        "sendTo": "jorge.menzel@garooinc.com",
+        "sendTo": "jorge.calderon@garooinc.com",
         "subject": "NUEVO LEAD!",
         "message": "={{ $json.html }}",
         "options": {
@@ -3258,12 +3154,12 @@
       "type": "n8n-nodes-base.gmail",
       "typeVersion": 2.2,
       "position": [
-        -17328,
+        -16704,
         -944
       ],
-      "id": "6bd5bd45-6544-4d34-9b9b-56173d3d27b8",
+      "id": "d09aa6db-7cd2-4884-aace-0708e2254a04",
       "name": "Notificacion Jorge Menzel",
-      "webhookId": "65bf544b-8ae2-44c3-8a3b-3bd78cf46ee3",
+      "webhookId": "beb59e40-75d1-4d35-a827-34c6d1c370f7",
       "credentials": {
         "gmailOAuth2": {
           "id": "H8Qx7NlrthXmHUiy",
@@ -3283,12 +3179,12 @@
       "type": "n8n-nodes-base.gmail",
       "typeVersion": 2.2,
       "position": [
-        -17328,
+        -16704,
         -752
       ],
-      "id": "d41be4a6-a0a2-46a8-a2db-bb8132922bc0",
+      "id": "1fcc4245-517d-41c0-8a55-312fa2e3e290",
       "name": "Notificacion Harim",
-      "webhookId": "65bf544b-8ae2-44c3-8a3b-3bd78cf46ee3",
+      "webhookId": "f0bea92b-25d9-4ebb-b637-d68550a59a84",
       "credentials": {
         "gmailOAuth2": {
           "id": "H8Qx7NlrthXmHUiy",
@@ -3299,7 +3195,7 @@
     },
     {
       "parameters": {
-        "sendTo": "dmartinez@spectrum.com.gt",
+        "sendTo": "vramirez@spectrum.com.gt",
         "subject": "NUEVO LEAD!",
         "message": "={{ $json.html }}",
         "options": {
@@ -3309,12 +3205,12 @@
       "type": "n8n-nodes-base.gmail",
       "typeVersion": 2.2,
       "position": [
-        -17328,
+        -16704,
         -544
       ],
-      "id": "7fd59c2a-4557-424d-8322-23f963377ece",
+      "id": "0abfd06e-24e7-46e4-8214-3945e8a1ef88",
       "name": "Notificacion dmartinez@spectrum.com.gt",
-      "webhookId": "65bf544b-8ae2-44c3-8a3b-3bd78cf46ee3",
+      "webhookId": "6fc76362-555c-4645-b792-1b14cdf0dbd7",
       "credentials": {
         "gmailOAuth2": {
           "id": "H8Qx7NlrthXmHUiy",
@@ -3325,7 +3221,7 @@
     },
     {
       "parameters": {
-        "sendTo": "dmartinez@spectrum.com.gt",
+        "sendTo": "lrivas@spectrum.com.gt",
         "subject": "NUEVO LEAD!",
         "message": "={{ $json.html }}",
         "options": {
@@ -3335,12 +3231,12 @@
       "type": "n8n-nodes-base.gmail",
       "typeVersion": 2.2,
       "position": [
-        -17328,
+        -16704,
         -352
       ],
-      "id": "67e6acaa-3eb3-4f56-962d-983f909c7b43",
+      "id": "4ab1dcdd-7500-4e8f-b96c-313614e6b945",
       "name": "Notificacion avelasquez@spectrum.com.gt",
-      "webhookId": "65bf544b-8ae2-44c3-8a3b-3bd78cf46ee3",
+      "webhookId": "3ac78573-7eec-44fc-bb95-95c5c0ed3ed4",
       "credentials": {
         "gmailOAuth2": {
           "id": "H8Qx7NlrthXmHUiy",
@@ -3354,10 +3250,10 @@
       "type": "n8n-nodes-base.noOp",
       "typeVersion": 1,
       "position": [
-        -17008,
+        -16384,
         -624
       ],
-      "id": "f7907090-9b3b-4c9b-a7d6-0f615643d76d",
+      "id": "e8d1b23e-868c-42d6-89b8-c6fb98ebc878",
       "name": "No Operation, do nothing4",
       "executeOnce": true
     },
@@ -3370,16 +3266,16 @@
       "type": "n8n-nodes-base.mongoDb",
       "typeVersion": 1.2,
       "position": [
-        -26352,
+        -26144,
         1488
       ],
-      "id": "1868e82b-bf2d-4393-b4ac-519bbbf25fdb",
+      "id": "fcc0f618-a7d8-41af-8d38-d70a3afdb801",
       "name": "Find Messages",
       "alwaysOutputData": true,
       "credentials": {
         "mongoDb": {
-          "id": "al8RU2TlqRrXROGb",
-          "name": "Spectrum - Parque Vista Verde"
+          "id": "hSK9MIPMlFYEbG1O",
+          "name": "Spectrum - Parque Vista Verde TEST"
         }
       }
     },
@@ -3411,10 +3307,10 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
       "position": [
-        -26112,
+        -25904,
         1488
       ],
-      "id": "b7aae47e-d818-4d4b-9d24-3110ddda7288",
+      "id": "a9189107-1688-40c4-abf2-15c29baa4e40",
       "name": "If NO Messages"
     },
     {
@@ -3446,10 +3342,10 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        -25872,
+        -25664,
         1536
       ],
-      "id": "b1a6fe72-d159-4cc0-ab3b-689493be4edf",
+      "id": "9988c1d7-c053-47c6-a37a-a7febc214181",
       "name": "Messages Data UPD"
     },
     {
@@ -3475,10 +3371,10 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        -25872,
+        -25664,
         1328
       ],
-      "id": "426ca6bf-161f-459f-88dc-7d50a9358b0d",
+      "id": "ffc95f97-c163-4d20-b00b-7e692be3c490",
       "name": "Messages Data ADD"
     },
     {
@@ -3492,15 +3388,15 @@
       "type": "n8n-nodes-base.mongoDb",
       "typeVersion": 1.2,
       "position": [
-        -25664,
+        -25456,
         1536
       ],
-      "id": "0b7bb1af-660c-43c7-a49e-23c51d57fbc3",
+      "id": "b35f6bec-4cc8-4d26-8b05-890f551f98c5",
       "name": "Update Messages",
       "credentials": {
         "mongoDb": {
-          "id": "al8RU2TlqRrXROGb",
-          "name": "Spectrum - Parque Vista Verde"
+          "id": "hSK9MIPMlFYEbG1O",
+          "name": "Spectrum - Parque Vista Verde TEST"
         }
       }
     },
@@ -3514,15 +3410,15 @@
       "type": "n8n-nodes-base.mongoDb",
       "typeVersion": 1.2,
       "position": [
-        -25680,
+        -25472,
         1328
       ],
-      "id": "30a57a6a-7a60-4cbe-9a1b-2d06bb1999dd",
+      "id": "e0816017-74df-4525-aa40-6a90a9cb6217",
       "name": "Save Messages",
       "credentials": {
         "mongoDb": {
-          "id": "al8RU2TlqRrXROGb",
-          "name": "Spectrum - Parque Vista Verde"
+          "id": "hSK9MIPMlFYEbG1O",
+          "name": "Spectrum - Parque Vista Verde TEST"
         }
       }
     },
@@ -3533,12 +3429,12 @@
       "type": "n8n-nodes-base.wait",
       "typeVersion": 1.1,
       "position": [
-        -25376,
+        -25168,
         1424
       ],
-      "id": "0b805b30-5da0-4b69-b69e-720096beba16",
+      "id": "870f88e6-7cce-4c89-925c-62cba0db0471",
       "name": "Waiting...15sec",
-      "webhookId": "460cf35c-0551-4978-bcee-6805411e3096"
+      "webhookId": "3ab81268-d98d-41a6-8855-952d31427034"
     },
     {
       "parameters": {
@@ -3549,16 +3445,16 @@
       "type": "n8n-nodes-base.mongoDb",
       "typeVersion": 1.2,
       "position": [
-        -25120,
+        -24912,
         1424
       ],
-      "id": "7a27699d-5996-43f7-8683-88dde9c440ea",
+      "id": "1a234e81-a651-429f-ae5a-d216d227a329",
       "name": "Find All Messages ",
       "alwaysOutputData": true,
       "credentials": {
         "mongoDb": {
-          "id": "al8RU2TlqRrXROGb",
-          "name": "Spectrum - Parque Vista Verde"
+          "id": "hSK9MIPMlFYEbG1O",
+          "name": "Spectrum - Parque Vista Verde TEST"
         }
       }
     },
@@ -3579,10 +3475,10 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        -24912,
+        -24704,
         1424
       ],
-      "id": "5a75dc7b-fbb8-41e0-a420-61e2143dcde5",
+      "id": "d15aca4b-6bd6-4e77-8ebe-f2702fa8e5fa",
       "name": "Last Message"
     },
     {
@@ -3612,10 +3508,10 @@
       "type": "n8n-nodes-base.filter",
       "typeVersion": 2.3,
       "position": [
-        -24688,
+        -24480,
         1424
       ],
-      "id": "e78181ba-99d3-4658-a16c-2faeb49223c5",
+      "id": "103449b9-d9dd-48c1-b36f-18f565ae980f",
       "name": "Filter"
     },
     {
@@ -3627,15 +3523,15 @@
       "type": "n8n-nodes-base.mongoDb",
       "typeVersion": 1.2,
       "position": [
-        -24304,
+        -23680,
         1424
       ],
-      "id": "06793e9b-592b-41b0-846e-78a7d157edf7",
+      "id": "3eb8e9c3-ccdf-407d-ad43-c0b78f082e34",
       "name": "Delete Messages",
       "credentials": {
         "mongoDb": {
-          "id": "al8RU2TlqRrXROGb",
-          "name": "Spectrum - Parque Vista Verde"
+          "id": "hSK9MIPMlFYEbG1O",
+          "name": "Spectrum - Parque Vista Verde TEST"
         }
       }
     },
@@ -3656,16 +3552,16 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        -24512,
+        -23968,
         1424
       ],
-      "id": "c922d156-2ebc-4764-89ca-92a0bf1c792c",
+      "id": "0d68e93b-e83e-4dbf-9cd6-f74d7846a155",
       "name": "JOINING RESPONSE"
     },
     {
       "parameters": {
         "operation": "update",
-        "collection": "users_test",
+        "collection": "users",
         "updateKey": "={{ Object.keys($('interaction quantity').item.json)[0] }}",
         "fields": "data_interaction.quantity.lead_agent",
         "options": {
@@ -3675,15 +3571,15 @@
       "type": "n8n-nodes-base.mongoDb",
       "typeVersion": 1.2,
       "position": [
-        -21056,
+        -20496,
         368
       ],
-      "id": "bf1ad1e5-7be5-4492-8116-9e4d31ce2dfb",
+      "id": "c1553b05-af98-4559-a568-47297ac1aa50",
       "name": "Update Data Interaction",
       "credentials": {
         "mongoDb": {
-          "id": "al8RU2TlqRrXROGb",
-          "name": "Spectrum - Parque Vista Verde"
+          "id": "hSK9MIPMlFYEbG1O",
+          "name": "Spectrum - Parque Vista Verde TEST"
         }
       }
     },
@@ -3710,16 +3606,16 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        -21264,
+        -20704,
         368
       ],
-      "id": "a6ecefd1-c113-4ecb-a666-00e15b985643",
+      "id": "fca584c7-a255-46fb-9833-85d37923b037",
       "name": "interaction quantity"
     },
     {
       "parameters": {
         "operation": "update",
-        "collection": "users_test",
+        "collection": "users",
         "updateKey": "={{ Object.keys($('interaction quantity1').item.json)[0] }}",
         "fields": "data_interaction.quantity.conv_agent",
         "options": {
@@ -3729,15 +3625,15 @@
       "type": "n8n-nodes-base.mongoDb",
       "typeVersion": 1.2,
       "position": [
-        -18656,
+        -18032,
         2112
       ],
-      "id": "feb2bddb-d128-4563-afa4-e051bc685219",
+      "id": "c1302104-5775-40bc-ac45-38571ea39a70",
       "name": "Update Data Interaction1",
       "credentials": {
         "mongoDb": {
-          "id": "al8RU2TlqRrXROGb",
-          "name": "Spectrum - Parque Vista Verde"
+          "id": "hSK9MIPMlFYEbG1O",
+          "name": "Spectrum - Parque Vista Verde TEST"
         }
       }
     },
@@ -3764,16 +3660,16 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        -18864,
+        -18240,
         2112
       ],
-      "id": "b711cda0-c44e-4013-8cf0-3f973478c06a",
+      "id": "43176029-3780-469f-ac62-6976886dc881",
       "name": "interaction quantity1"
     },
     {
       "parameters": {
         "operation": "update",
-        "collection": "users_test",
+        "collection": "users",
         "updateKey": "={{ Object.keys($('interaction quantity2').item.json)[0] }}",
         "fields": "data_interaction.quantity.rsvp_agent",
         "options": {
@@ -3783,15 +3679,15 @@
       "type": "n8n-nodes-base.mongoDb",
       "typeVersion": 1.2,
       "position": [
-        -18688,
+        -18064,
         1392
       ],
-      "id": "4c56a4c7-5905-4f50-bfc4-7734eb4a75ae",
+      "id": "a30e4f61-c88d-4548-98c4-fe6fbb05b684",
       "name": "Update Data Interaction2",
       "credentials": {
         "mongoDb": {
-          "id": "al8RU2TlqRrXROGb",
-          "name": "Spectrum - Parque Vista Verde"
+          "id": "hSK9MIPMlFYEbG1O",
+          "name": "Spectrum - Parque Vista Verde TEST"
         }
       }
     },
@@ -3818,10 +3714,10 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        -18880,
+        -18256,
         1392
       ],
-      "id": "a58ec4de-6cd4-4d3f-a8c5-c3aed3e2a81d",
+      "id": "dd5a04b4-65d7-4d4e-94b8-35d0872643ee",
       "name": "interaction quantity2"
     },
     {
@@ -3872,10 +3768,10 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.2,
       "position": [
-        -21744,
-        1472
+        -20960,
+        1392
       ],
-      "id": "c34c0697-e646-4bf7-9138-18de776e2b7f",
+      "id": "68da6049-05dd-4a82-8271-3cb9c75230b7",
       "name": "if FALTAN DATOS"
     },
     {
@@ -3887,10 +3783,10 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        -22528,
+        -21904,
         1456
       ],
-      "id": "d97e2179-cd7a-4932-a39e-8ec40922264a",
+      "id": "39f4a125-77a0-4a0a-9c24-c18aeca0a7a5",
       "name": "user to use",
       "alwaysOutputData": true
     },
@@ -3903,10 +3799,10 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        -22080,
-        1472
+        -21504,
+        1568
       ],
-      "id": "6729cef2-33e1-4d1e-87e6-79077116946a",
+      "id": "3dbdc2f0-8cd1-4b48-9683-412ccac11328",
       "name": "USER"
     },
     {
@@ -3917,10 +3813,10 @@
       "type": "n8n-nodes-base.xml",
       "typeVersion": 1,
       "position": [
-        -15744,
+        -15120,
         1072
       ],
-      "id": "baf4d24a-0617-40ca-b450-a096e72db591",
+      "id": "6940c1d0-e97f-4041-8d43-8ae55a5a80d7",
       "name": "XML to JSON"
     },
     {
@@ -3928,16 +3824,16 @@
       "type": "n8n-nodes-base.noOp",
       "typeVersion": 1,
       "position": [
-        -11072,
+        -10448,
         400
       ],
-      "id": "a7ebb209-4cd4-4e71-929a-404101665862",
+      "id": "f689b084-0779-4ece-b9a1-b8f7bafa82b2",
       "name": "No Operation, do nothing5",
       "executeOnce": true
     },
     {
       "parameters": {
-        "sendTo": "dmartinez@spectrum.com.gt",
+        "sendTo": "lrivas@spectrum.com.gt",
         "subject": "NUEVO LEAD!",
         "message": "={{ $json.html }}",
         "options": {
@@ -3947,12 +3843,12 @@
       "type": "n8n-nodes-base.gmail",
       "typeVersion": 2.2,
       "position": [
-        -12144,
-        144
+        -11136,
+        208
       ],
-      "id": "f7ef79c1-e91a-46a2-b72d-a179f0104778",
+      "id": "e7eef3e6-a3a5-4685-b873-a4737b75ef60",
       "name": "Notificacion avelasquez@spectrum.com.gt1",
-      "webhookId": "65bf544b-8ae2-44c3-8a3b-3bd78cf46ee3",
+      "webhookId": "16093842-33dd-44cc-9ea8-4c65a3c14e21",
       "credentials": {
         "gmailOAuth2": {
           "id": "H8Qx7NlrthXmHUiy",
@@ -3963,7 +3859,7 @@
     },
     {
       "parameters": {
-        "sendTo": "dmartinez@spectrum.com.gt",
+        "sendTo": "vramirez@spectrum.com.gt",
         "subject": "NUEVO LEAD!",
         "message": "={{ $json.html }}",
         "options": {
@@ -3973,12 +3869,12 @@
       "type": "n8n-nodes-base.gmail",
       "typeVersion": 2.2,
       "position": [
-        -12144,
-        -48
+        -11152,
+        -32
       ],
-      "id": "2bf3e6ad-1012-4a8e-8925-27fcafae07f8",
+      "id": "f0162bc7-40a7-4819-bf99-7a6275892b22",
       "name": "Notificacion dmartinez@spectrum.com.gt1",
-      "webhookId": "65bf544b-8ae2-44c3-8a3b-3bd78cf46ee3",
+      "webhookId": "18056332-28f4-4a9a-948c-e9bf816fd9e7",
       "credentials": {
         "gmailOAuth2": {
           "id": "H8Qx7NlrthXmHUiy",
@@ -3999,12 +3895,12 @@
       "type": "n8n-nodes-base.gmail",
       "typeVersion": 2.2,
       "position": [
-        -11776,
+        -11152,
         -256
       ],
-      "id": "36ed64a7-42f4-4517-9dae-a79f245889f2",
+      "id": "95e082d1-d13e-4da9-bc85-da7993f89e42",
       "name": "Notificacion Harim1",
-      "webhookId": "65bf544b-8ae2-44c3-8a3b-3bd78cf46ee3",
+      "webhookId": "e0f5ff46-3a53-428f-a6e7-810afe6cba19",
       "credentials": {
         "gmailOAuth2": {
           "id": "H8Qx7NlrthXmHUiy",
@@ -4015,7 +3911,7 @@
     },
     {
       "parameters": {
-        "sendTo": "jorge.menzel@garooinc.com",
+        "sendTo": "jorge.calderon@garooinc.com",
         "subject": "NUEVA CiTA REGISTRADA!",
         "message": "={{ $json.html }}",
         "options": {
@@ -4025,12 +3921,12 @@
       "type": "n8n-nodes-base.gmail",
       "typeVersion": 2.2,
       "position": [
-        -11776,
+        -11152,
         -448
       ],
-      "id": "e43506b1-c962-4634-adc3-8c5c78d619d1",
+      "id": "ac1e0890-13d7-4de5-aa97-544604e93fda",
       "name": "Notificacion Jorge Menzel1",
-      "webhookId": "65bf544b-8ae2-44c3-8a3b-3bd78cf46ee3",
+      "webhookId": "cd45e35c-d1fc-4f76-9ee0-671afb6a726a",
       "credentials": {
         "gmailOAuth2": {
           "id": "H8Qx7NlrthXmHUiy",
@@ -4045,18 +3941,17 @@
       "type": "n8n-nodes-base.html",
       "typeVersion": 1.2,
       "position": [
-        -12656,
+        -11920,
         144
       ],
-      "id": "72805e72-e28e-456d-acf8-66c5ce22a915",
+      "id": "ad8f7308-0921-468c-b96b-cce673e945f9",
       "name": "HTML1"
     },
     {
       "parameters": {
-        "sendTo": "jorge.menzel@garooinc.com",
+        "sendTo": "jorge.calderon@garooinc.com",
         "subject": "Lead interesado en precios - Parque Vista Verde",
-        "emailType": "text",
-        "message": "=Cliente {{ $('USER').item.json.name }} preguntó por precios de apartamentos.\n\nSu teléfono es: {{ $('USER').item.json.phone }}",
+        "message": "=<!doctype html>\n<html lang=\"es\">\n  <head>\n    <meta charset=\"utf-8\" />\n    <meta name=\"viewport\" content=\"width=device-width,initial-scale=1\" />\n    <meta name=\"x-apple-disable-message-reformatting\" />\n    <title>Consulta de precios · Apartamentos</title>\n    <style>\n      body, table, td, a { -webkit-text-size-adjust:100%; -ms-text-size-adjust:100%; }\n      table, td { mso-table-lspace:0pt; mso-table-rspace:0pt; }\n      img { -ms-interpolation-mode:bicubic; border:0; outline:none; text-decoration:none; }\n      table { border-collapse:collapse !important; }\n      body { margin:0 !important; padding:0 !important; width:100% !important; height:100% !important; }\n    </style>\n  </head>\n\n  <body style=\"background:#f7f7f8; margin:0; padding:0;\">\n    <!-- Preheader -->\n    <div style=\"display:none; font-size:1px; line-height:1px; max-height:0; max-width:0; opacity:0; overflow:hidden; mso-hide:all;\">\n      Un cliente pidió precios de apartamentos. Seguimiento recomendado inmediato.\n    </div>\n\n    <table role=\"presentation\" width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" style=\"background:#f7f7f8;\">\n      <tr>\n        <td align=\"center\" style=\"padding:28px 16px;\">\n          <table role=\"presentation\" width=\"600\" cellpadding=\"0\" cellspacing=\"0\" style=\"width:600px; max-width:600px;\">\n\n            <!-- Header -->\n            <tr>\n              <td style=\"padding:0 0 16px 0;\">\n                <table role=\"presentation\" width=\"100%\" cellpadding=\"0\" cellspacing=\"0\">\n                  <tr>\n                    <td align=\"left\" style=\"font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;\">\n                      <img\n                        src=\"https://drive.google.com/uc?export=view&id=1GvaiLW9wZtrHTrGQuu2RbSfvi8TdCM2n\"\n                        alt=\"RedTec\"\n                        height=\"28\"\n                        style=\"display:block; max-height:28px;\"\n                      />\n                    </td>\n                    <td align=\"right\" style=\"font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;\">\n                      <span style=\"font-size:12px; color:#9b1c1c;\">Notificación automática</span>\n                    </td>\n                  </tr>\n                </table>\n              </td>\n            </tr>\n\n            <!-- Card -->\n            <tr>\n              <td style=\"background:#ffffff; border:1px solid #f1d4d4; border-radius:14px; padding:22px;\">\n                <div style=\"font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; color:#111827;\">\n\n                  <div style=\"font-size:18px; color:#9b1c1c; margin-bottom:4px;\">\n                    Solicitud de información\n                  </div>\n\n                  <div style=\"font-size:18px; font-weight:700; color:#9b1c1c; margin-bottom:6px;\">\n                    Consulta de precios · Apartamentos\n                  </div>\n\n                  <div style=\"font-size:14px; color:#9b1c1c; line-height:1.6;\">\n                    Cliente <strong>{{ $('USER').item.json.name }}</strong> preguntó por precios de apartamentos.\n                  </div>\n\n                  <div style=\"height:14px;\"></div>\n\n                  <!-- Client details -->\n                  <table role=\"presentation\" width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" style=\"border:1px solid #fde8e8; border-radius:12px;\">\n                    <tr>\n                      <td style=\"padding:12px 14px 8px 14px;\">\n                        <div style=\"font-size:14px; color:#dc2626; text-transform:uppercase; letter-spacing:0.6px; font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;\">\n                          Datos del cliente\n                        </div>\n                      </td>\n                    </tr>\n\n                    <tr>\n                      <td style=\"padding:0 14px 14px 14px;\">\n                        <table role=\"presentation\" width=\"100%\" cellpadding=\"0\" cellspacing=\"0\">\n                          <tr>\n                            <td style=\"padding:10px 0; border-top:1px solid #fde8e8;\">\n                              <div style=\"font-size:12px; color:#6b7280;\">Nombre</div>\n                              <div style=\"font-size:15px; font-weight:600; color:#dc2626;\">\n                                {{ $('USER').item.json.name }}\n                              </div>\n                            </td>\n                          </tr>\n\n                          <tr>\n                            <td style=\"padding:10px 0; border-top:1px solid #fde8e8;\">\n                              <div style=\"font-size:12px; color:#6b7280;\">Teléfono</div>\n                              <div style=\"font-size:15px; font-weight:600;\">\n                                <a href=\"tel:{{ $('USER').item.json.phone }}\" style=\"color:#dc2626; text-decoration:none;\">\n                                  {{ $('USER').item.json.phone }}\n                                </a>\n                              </div>\n                            </td>\n                          </tr>\n\n                          <tr>\n                            <td style=\"padding:10px 0; border-top:1px solid #fde8e8;\">\n                              <div style=\"font-size:12px; color:#6b7280;\">Motivo</div>\n                              <div style=\"font-size:15px; font-weight:600; color:#111827;\">\n                                Preguntó por precios de apartamentos\n                              </div>\n                            </td>\n                          </tr>\n                        </table>\n                      </td>\n                    </tr>\n                  </table>\n\n                  <!-- CTA -->\n                  <div style=\"height:18px;\"></div>\n\n                  <table role=\"presentation\" cellpadding=\"0\" cellspacing=\"0\">\n                    <tr>\n                      <td style=\"background:#dc2626;\">\n                        <a href=\"tel:{{ $('USER').item.json.phone }}\"\n                           style=\"display:inline-block; padding:12px 16px; font-size:14px; font-weight:600; color:#ffffff; text-decoration:none; font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;\">\n                          Llamar al cliente\n                        </a>\n                      </td>\n                    </tr>\n                  </table>\n\n                </div>\n              </td>\n            </tr>\n\n            <!-- Footer -->\n            <tr>\n              <td style=\"padding:14px 6px 0 6px; font-size:12px; color:#6b7280; font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; line-height:1.6;\">\n                Enviado por <strong style=\"color:#9b1c1c;\">RedTec</strong> · Notificación automática  \n                <br/>Recomendación: responder rápido para no perder intención de compra.\n              </td>\n            </tr>\n\n          </table>\n        </td>\n      </tr>\n    </table>\n  </body>\n</html>",
         "options": {
           "appendAttribution": false,
           "senderName": "Soporte de Redtec"
@@ -4065,12 +3960,12 @@
       "type": "n8n-nodes-base.gmailTool",
       "typeVersion": 2.2,
       "position": [
-        -17392,
+        -16752,
         2640
       ],
-      "id": "1db7c419-4402-4bb7-97f5-ac70170e5c46",
+      "id": "abe65531-fdde-4f98-a93a-064500a5d6f6",
       "name": "prices_notification",
-      "webhookId": "08c15df1-60d2-4c76-adc6-f58ad4d786f1",
+      "webhookId": "e9380758-e3d6-4f7e-9447-7c850054ed59",
       "credentials": {
         "gmailOAuth2": {
           "id": "H8Qx7NlrthXmHUiy",
@@ -4082,10 +3977,9 @@
       "parameters": {
         "descriptionType": "manual",
         "toolDescription": "=Usa esta herramienta EXCLUSIVAMENTE cuando el usuario pida hablar con un asesor/humano o cuando la pregunta sea totalmente ajena a la información del proyecto inmobiliario proporcionada en el set oficial.",
-        "sendTo": "jorge.menzel@garooinc.com",
+        "sendTo": "jorge.calderon@garooinc.com",
         "subject": "Solicitud de contacto - Parque Vista Verde",
-        "emailType": "text",
-        "message": "=Cliente {{ $('USER').item.json.name }} hizo pregunta fuera del set. Requiere contacto de Ejecutivo. \n\nPregunta: {{ $json.input }}\nSu teléfono es: {{ $('USER').item.json.phone }}",
+        "message": "=<!doctype html>\n<html lang=\"es\">\n  <head>\n    <meta charset=\"utf-8\" />\n    <meta name=\"viewport\" content=\"width=device-width,initial-scale=1\" />\n    <meta name=\"x-apple-disable-message-reformatting\" />\n    <title>Escalación a Ejecutivo · Pregunta fuera del set</title>\n    <style>\n      body, table, td, a { -webkit-text-size-adjust:100%; -ms-text-size-adjust:100%; }\n      table, td { mso-table-lspace:0pt; mso-table-rspace:0pt; }\n      img { -ms-interpolation-mode:bicubic; border:0; outline:none; text-decoration:none; }\n      table { border-collapse:collapse !important; }\n      body { margin:0 !important; padding:0 !important; width:100% !important; height:100% !important; }\n    </style>\n  </head>\n\n  <body style=\"background:#f7f7f8; margin:0; padding:0;\">\n    <!-- Preheader -->\n    <div style=\"display:none; font-size:1px; line-height:1px; max-height:0; max-width:0; opacity:0; overflow:hidden; mso-hide:all;\">\n      Escalación requerida: pregunta fuera del set. Contacto de Ejecutivo recomendado.\n    </div>\n\n    <table role=\"presentation\" width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" style=\"background:#f7f7f8;\">\n      <tr>\n        <td align=\"center\" style=\"padding:28px 16px;\">\n          <table role=\"presentation\" width=\"600\" cellpadding=\"0\" cellspacing=\"0\" style=\"width:600px; max-width:600px;\">\n\n            <!-- Header -->\n            <tr>\n              <td style=\"padding:0 0 16px 0;\">\n                <table role=\"presentation\" width=\"100%\" cellpadding=\"0\" cellspacing=\"0\">\n                  <tr>\n                    <td align=\"left\" style=\"font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;\">\n                      <img\n                        src=\"https://drive.google.com/uc?export=view&id=1GvaiLW9wZtrHTrGQuu2RbSfvi8TdCM2n\"\n                        alt=\"RedTec\"\n                        height=\"28\"\n                        style=\"display:block; max-height:28px;\"\n                      />\n                    </td>\n                    <td align=\"right\" style=\"font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;\">\n                      <span style=\"font-size:12px; color:#9b1c1c;\">Notificación automática</span>\n                    </td>\n                  </tr>\n                </table>\n              </td>\n            </tr>\n\n            <!-- Card -->\n            <tr>\n              <td style=\"background:#ffffff; border:1px solid #f1d4d4; border-radius:14px; padding:22px;\">\n                <div style=\"font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; color:#111827;\">\n\n                  <div style=\"font-size:18px; color:#9b1c1c; margin-bottom:4px;\">\n                    Escalación requerida\n                  </div>\n\n                  <div style=\"font-size:18px; font-weight:700; color:#9b1c1c; margin-bottom:6px;\">\n                    Pregunta fuera del set · Requiere Ejecutivo\n                  </div>\n\n                  <div style=\"font-size:14px; color:#9b1c1c; line-height:1.6;\">\n                    Cliente <strong>{{ $('USER').item.json.name }}</strong> hizo una pregunta fuera del set y requiere contacto de Ejecutivo.\n                  </div>\n\n                  <div style=\"height:14px;\"></div>\n\n                  <!-- Details -->\n                  <table role=\"presentation\" width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" style=\"border:1px solid #fde8e8; border-radius:12px;\">\n                    <tr>\n                      <td style=\"padding:12px 14px 8px 14px;\">\n                        <div style=\"font-size:14px; color:#dc2626; text-transform:uppercase; letter-spacing:0.6px; font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;\">\n                          Detalles del caso\n                        </div>\n                      </td>\n                    </tr>\n\n                    <tr>\n                      <td style=\"padding:0 14px 14px 14px;\">\n                        <table role=\"presentation\" width=\"100%\" cellpadding=\"0\" cellspacing=\"0\">\n                          <tr>\n                            <td style=\"padding:10px 0; border-top:1px solid #fde8e8;\">\n                              <div style=\"font-size:12px; color:#6b7280;\">Nombre</div>\n                              <div style=\"font-size:15px; font-weight:600; color:#dc2626;\">\n                                {{ $('USER').item.json.name }}\n                              </div>\n                            </td>\n                          </tr>\n\n                          <tr>\n                            <td style=\"padding:10px 0; border-top:1px solid #fde8e8;\">\n                              <div style=\"font-size:12px; color:#6b7280;\">Teléfono</div>\n                              <div style=\"font-size:15px; font-weight:600;\">\n                                <a href=\"tel:{{ $('USER').item.json.phone }}\" style=\"color:#dc2626; text-decoration:none;\">\n                                  {{ $('USER').item.json.phone }}\n                                </a>\n                              </div>\n                            </td>\n                          </tr>\n\n                          <tr>\n                            <td style=\"padding:10px 0; border-top:1px solid #fde8e8;\">\n                              <div style=\"font-size:12px; color:#6b7280;\">Pregunta</div>\n                              <div style=\"font-size:15px; font-weight:600; color:#111827; line-height:1.6;\">\n                                {{ $json.input }}\n                              </div>\n                            </td>\n                          </tr>\n\n                          <tr>\n                            <td style=\"padding:10px 0; border-top:1px solid #fde8e8;\">\n                              <div style=\"font-size:12px; color:#6b7280;\">Acción requerida</div>\n                              <div style=\"font-size:15px; font-weight:600; color:#111827;\">\n                                Contacto de Ejecutivo (prioridad alta)\n                              </div>\n                            </td>\n                          </tr>\n                        </table>\n                      </td>\n                    </tr>\n                  </table>\n\n                  <!-- CTA -->\n                  <div style=\"height:18px;\"></div>\n\n                  <table role=\"presentation\" cellpadding=\"0\" cellspacing=\"0\">\n                    <tr>\n                      <td style=\"background:#dc2626;\">\n                        <a href=\"tel:{{ $('USER').item.json.phone }}\"\n                           style=\"display:inline-block; padding:12px 16px; font-size:14px; font-weight:600; color:#ffffff; text-decoration:none; font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;\">\n                          Llamar al cliente\n                        </a>\n                      </td>\n                    </tr>\n                  </table>\n\n                </div>\n              </td>\n            </tr>\n\n            <!-- Footer -->\n            <tr>\n              <td style=\"padding:14px 6px 0 6px; font-size:12px; color:#6b7280; font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; line-height:1.6;\">\n                Enviado por <strong style=\"color:#9b1c1c;\">RedTec</strong> · Notificación automática  \n                <br/>Recomendación: contactar al cliente lo antes posible para no perder momentum.\n              </td>\n            </tr>\n\n          </table>\n        </td>\n      </tr>\n    </table>\n  </body>\n</html>",
         "options": {
           "appendAttribution": false,
           "senderName": "Soporte de Redtec"
@@ -4094,12 +3988,12 @@
       "type": "n8n-nodes-base.gmailTool",
       "typeVersion": 2.2,
       "position": [
-        -17216,
+        -16592,
         2640
       ],
-      "id": "79942690-7984-4304-a843-56af3374c5bb",
+      "id": "f252454a-c247-4fe6-9c95-9bc36b09c1a8",
       "name": "escalation_notification",
-      "webhookId": "08c15df1-60d2-4c76-adc6-f58ad4d786f1",
+      "webhookId": "216953de-79f8-41e9-973e-364367851bad",
       "credentials": {
         "gmailOAuth2": {
           "id": "H8Qx7NlrthXmHUiy",
@@ -4114,10 +4008,10 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        -20016,
+        -19392,
         1744
       ],
-      "id": "f76a20ac-86d5-4f6b-9381-b083ca67e47d",
+      "id": "84833ab6-eb5d-41e0-8e02-9574bd57f6b1",
       "name": "PARSE JUEZ RESPONSE"
     },
     {
@@ -4148,10 +4042,10 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
       "position": [
-        -17104,
+        -16480,
         1056
       ],
-      "id": "48d6b33e-99a4-40ee-956c-9e2036bf1747",
+      "id": "4a8a602e-7edc-4f3d-813c-f40cb2185643",
       "name": "If date EXIST"
     },
     {
@@ -4182,11 +4076,169 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
       "position": [
-        -16832,
+        -16208,
         1088
       ],
-      "id": "386ce1fe-1e80-4e05-826b-99839aea3f09",
+      "id": "ba3cdcc4-ffd8-4a08-9fa6-33f8e472c6c9",
       "name": "If Appointment EXIST"
+    },
+    {
+      "parameters": {
+        "jsCode": "const id = $('user to use').first().json._id || $('Insert user').first().json._id;\n\nconst last_interaction = new Date($('Create Body').first().json.timestamp);\n\nconst last_message = $('PARSE RESPONSE').first().json.transferir_agente == 0 \n  ?\n  $('PARSE Body').first().json.current_body.last_input_text\n  :\n  $input.first().json.output.user_question;\n\nconst transfer_agent = $('PARSE RESPONSE').first().json.transferir_agente;\n  \n// Si viene como objeto con $oid\nif (typeof id === \"object\" && id !== null && id.$oid) {\n  return [{ json: { _id: id.$oid } }];\n}\n// Si ya es una cadena\nelse if (typeof id === \"string\") {\n  return [\n    {\n      json: {\n        _id: id,\n        last_interaction: last_interaction,\n        last_message: last_message,\n        transfer_agent: transfer_agent\n      },\n    },\n  ];\n}\n// Si es otro tipo (poco común), conviértelo a string\nelse {\n  return [\n    {\n      json: {\n        _id: String(id),\n        last_interaction: last_interaction,\n        last_message: last_message,\n        transfer_agent: transfer_agent\n      },\n    },\n  ];\n}\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -19312,
+        368
+      ],
+      "id": "93ed0c5e-2cd8-4b68-aa50-2cd4ddf17e4f",
+      "name": "Data Normalization"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "collection": "users",
+        "updateKey": "=_id",
+        "fields": "last_interaction,last_message,transfer_agent",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.mongoDb",
+      "typeVersion": 1.2,
+      "position": [
+        -19152,
+        368
+      ],
+      "id": "f54d5460-c1a1-4166-b02a-51eda40bb756",
+      "name": "Update User Data",
+      "credentials": {
+        "mongoDb": {
+          "id": "hSK9MIPMlFYEbG1O",
+          "name": "Spectrum - Parque Vista Verde TEST"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $('JOINING RESPONSE').item.json.MESSAGE }}",
+        "options": {
+          "systemMessage": "=### ROLE ###\nEres Sof-IA, agente virtual de Parque Vista Verde. Identidad amable, español neutro.\nObjetivo: Calificar leads (Nombre, Correo, Teléfono) máximo 3 intentos. Si no es posible, activar bandera para proceso interno.\n\n### CONTEXTO DINÁMICO ###\n- CANAL: {{ $node[\"PARSE Body\"].json[\"current_body\"][\"custom_fields\"][\"canal_ingreso\"] }}\n- TEL_SISTEMA: {{ $node[\"PARSE Body\"].json[\"current_body\"][\"whatsapp_phone\"] }}\n\n### REGLA DE ORO — ANTI-REPETICIÓN ###\nAntes de generar cualquier respuesta, revisa el historial de conversación que tienes disponible.\nSi ya existe algún mensaje tuyo anterior en el historial:\n- PROHIBIDO escribir \"Hola\", \"Soy Sof-IA\", ni ninguna variante de presentación o saludo inicial.\n- PROHIBIDO repetir el listado de datos solicitados si ya lo pediste antes.\n- Continúa la conversación de forma natural desde donde quedó.\n- Ve directo al ESCENARIO que corresponda según los datos que aún faltan.\n\nSolo te presentas si el historial está completamente vacío (primera interacción).\n\n### REGLAS DE LÓGICA ###\n1. EXTRACCIÓN: Identifica nombre, teléfono y correo en el mensaje actual.\n   - VALIDACIÓN DE CORREO: válido solo si tiene \"@\", nombre antes del \"@\", y dominio con punto después (ej: usuario@dominio.com).\n   - Si el correo no cumple ese formato, trátalo como dato FALTANTE. No lo menciones técnicamente.\n\n2. LÓGICA POR CANAL:\n   - CANAL == 'WhatsApp': NO pidas el número. Usa TEL_SISTEMA. Confírmalo después de tener Nombre y Correo válidos.\n   - CANAL != 'WhatsApp': Solicita número junto con Nombre y Correo.\n\n3. CONTEO DE INTENTOS: Analiza el historial. Cada vez que solicitaste datos cuenta como intento, incluyendo solicitudes por correo inválido.\n\n4. BANDERA transferir_agente:\n   - 3er intento de solicitud O negativa explícita del usuario → 1\n   - Datos completos y teléfono confirmado → 0\n   - Cualquier otro caso → 0\n\n### ESCENARIOS ###\n\nESCENARIO 1 — Historial vacío + mensaje es solo saludo:\n\"¡Hola! Soy Sof-IA, agente virtual de Parque Vista Verde. ¿En qué puedo ayudarte hoy? 😊\"\n\nESCENARIO 2 — SOLO cuando el historial está VACÍO (primera interacción):\nAplica siempre que no existan mensajes previos en el historial, independientemente del contenido del mensaje actual.\n- WhatsApp: \"¡Hola! Soy Sof-IA, agente virtual de Parque Vista Verde. Para brindarte información, ¿podrías indicarme por favor?:\\n\\n- tu nombre\\n- tu correo electrónico\\n\\nYo te resolveré dudas mientras un asesor te contacta 😊.\"\n- Otro canal: igual pero añade \"\\n- tu número de teléfono\"\nExcepción: si el mensaje es SOLO un saludo sin intención, usa ESCENARIO 1.\n\nESCENARIO 3 — SOLO cuando el historial tiene mensajes previos + datos incompletos + intentos < 3:\nNUNCA uses este escenario si el historial está vacío.\n- Falta nombre o correo: \"Para brindarte la información, ¿podrías indicarme por favor?:\\n\\n- tu nombre\\n- tu correo electrónico\"\n- Solo falta teléfono (no WhatsApp): \"Solo me falta tu número de teléfono. ¿Me lo podrías compartir?\"\n\nESCENARIO 3.1 — Correo con formato inválido detectado:\n\"Parece que hubo un problema con tu correo electrónico. ¿Podrías verificarlo e ingresarlo nuevamente? (Ejemplo: nombre@dominio.com) 😊\"\n\nESCENARIO 3.5 — WhatsApp + nombre y correo válidos listos + teléfono sin confirmar:\n\"¡Gracias! Un último detalle. ¿Este es tu número TEL_SISTEMA? 😊\"\n\nESCENARIO 3.6 — WhatsApp + usuario niega el número:\n\"Entiendo. ¿Cuál es el número correcto para contactarte?\"\nSi tampoco provee número alternativo en este intento: aplica ESCENARIO 5.\n\nESCENARIO 4 — Datos completos + teléfono confirmado o entregado:\n\"¡Muchas gracias, {nombre}! Ya recibimos tus datos 😊.\"\n\nESCENARIO 5 — Intentos >= 3 o negativa explícita:\n\"Entiendo. Déjame revisar esa información para ti un momento 😊.\"\n\n### RESTRICCIÓN DE SALIDA ###\nResponde ÚNICAMENTE con un objeto JSON en una sola línea.\nSin bloques de código, sin texto fuera del JSON, sin introducciones.\nFormato exacto: {\"nombre\": \"string|null\", \"telefono\": \"string|null\", \"correo\": \"string|null\", \"transferir_agente\": 0|1, \"response\": \"tu_respuesta_aqui\"}\n\nREGLAS DE CAMPOS JSON:\n- \"correo\": null si el formato es inválido.\n- \"telefono\" en WhatsApp: null hasta confirmación explícita del usuario. Solo entonces usa TEL_SISTEMA.\n- \"telefono\" en otro canal: solo cuando el usuario lo escriba textualmente."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3,
+      "position": [
+        -20160,
+        368
+      ],
+      "id": "60bc0ce9-e10a-4e3e-817e-0526001c60e2",
+      "name": "Lead Agent"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "97f85a0b-cff6-4061-bd4b-d4a1256ad5ad",
+              "leftValue": "={{ $json.transfer_agent == 0 }}",
+              "rightValue": 0,
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "or"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        -21120,
+        1648
+      ],
+      "id": "52948e77-2973-4c04-99b6-1afd26c715dd",
+      "name": "If Transfer Agent EXIST"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "91a44055-6619-42cd-a480-a39fa47145f4",
+              "leftValue": "={{ $json.transfer_agent }}",
+              "rightValue": "",
+              "operator": {
+                "type": "number",
+                "operation": "notExists",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        -21344,
+        1568
+      ],
+      "id": "f981c5bc-84d8-48b4-b243-ec3cfd1915ae",
+      "name": "If TRANSFER NOT EXIST"
+    },
+    {
+      "parameters": {
+        "amount": 2
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        -26352,
+        1488
+      ],
+      "id": "6b7efe04-1bdf-4314-a3a7-ad77359541b9",
+      "name": "Wait1",
+      "webhookId": "cdb0079e-c83f-4099-9560-259184b785dc"
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $('PARSE Body').item.json.current_body.key }}",
+        "collectionName": "chat_histories_lead",
+        "databaseName": "ParqueVerde_Test",
+        "contextWindowLength": 10
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryMongoDbChat",
+      "typeVersion": 1,
+      "position": [
+        -19968,
+        608
+      ],
+      "id": "697c0145-e363-444f-89f7-5cc5649e8d21",
+      "name": "MongoDB Chat Memory",
+      "credentials": {
+        "mongoDb": {
+          "id": "hSK9MIPMlFYEbG1O",
+          "name": "Spectrum - Parque Vista Verde TEST"
+        }
+      }
     },
     {
       "parameters": {
@@ -4202,10 +4254,10 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "typeVersion": 1.3,
       "position": [
-        -19648,
-        704
+        -17360,
+        -928
       ],
-      "id": "31d13858-babf-4442-8c25-fc9edf1c3dd4",
+      "id": "e6feb79b-29b9-4664-887e-c1c40606d9a6",
       "name": "OpenAI Chat Model3",
       "credentials": {
         "openAiApi": {
@@ -4216,22 +4268,22 @@
     },
     {
       "parameters": {
-        "collection": "chat_histories_lead_test",
+        "collection": "chat_histories_lead",
         "options": {},
         "query": "={\"sessionId\":\"{{ $('PARSE Body').item.json.current_body.key }}\"}"
       },
       "type": "n8n-nodes-base.mongoDb",
       "typeVersion": 1.2,
       "position": [
-        -19840,
-        496
+        -17584,
+        -1232
       ],
-      "id": "7721fc9f-5d53-4970-9a09-92e7a822c882",
+      "id": "8ba5ca84-bd41-4d7b-a225-62574e7bc775",
       "name": "Find Conversation",
       "credentials": {
         "mongoDb": {
-          "id": "al8RU2TlqRrXROGb",
-          "name": "Spectrum - Parque Vista Verde"
+          "id": "hSK9MIPMlFYEbG1O",
+          "name": "Spectrum - Parque Vista Verde TEST"
         }
       }
     },
@@ -4242,7 +4294,7 @@
           "attributes": [
             {
               "name": "user_question",
-              "description": "=que quiere saber el cliente?",
+              "description": "=Analiza la conversación entre el agente y el cliente y extrae de la misma que es lo que quería saber el cliente acerca del proyecto.",
               "required": true
             }
           ]
@@ -4252,115 +4304,11 @@
       "type": "@n8n/n8n-nodes-langchain.informationExtractor",
       "typeVersion": 1.2,
       "position": [
-        -19680,
-        496
+        -17360,
+        -1232
       ],
-      "id": "1750b33b-8fe4-484c-83d8-0a93826d30ac",
+      "id": "46695c52-f3c8-42a6-a0cd-f134653ec01a",
       "name": "RESSUME"
-    },
-    {
-      "parameters": {
-        "jsCode": "const id = $('user to use').first().json._id || $('Insert user').first().json._id;\n\nconst last_interaction = new Date($('Create Body').first().json.timestamp);\n\nconst last_message = $('PARSE RESPONSE').first().json.transferir_agente == 0 \n  ?\n  $('PARSE Body').first().json.current_body.last_input_text\n  :\n  $input.first().json.output.user_question;\n  \n// Si viene como objeto con $oid\nif (typeof id === \"object\" && id !== null && id.$oid) {\n  return [{ json: { _id: id.$oid } }];\n}\n// Si ya es una cadena\nelse if (typeof id === \"string\") {\n  return [\n    {\n      json: {\n        _id: id,\n        last_interaction: last_interaction,\n        last_message: last_message,\n      },\n    },\n  ];\n}\n// Si es otro tipo (poco común), conviértelo a string\nelse {\n  return [\n    {\n      json: {\n        _id: String(id),\n        last_interaction: last_interaction,\n        last_message: last_message,\n      },\n    },\n  ];\n}\n"
-      },
-      "type": "n8n-nodes-base.code",
-      "typeVersion": 2,
-      "position": [
-        -19344,
-        352
-      ],
-      "id": "22eb9b54-6d97-4273-84b7-ce47882392f0",
-      "name": "Data Normalization"
-    },
-    {
-      "parameters": {
-        "conditions": {
-          "options": {
-            "caseSensitive": true,
-            "leftValue": "",
-            "typeValidation": "strict",
-            "version": 3
-          },
-          "conditions": [
-            {
-              "id": "aaf77102-3b23-4f79-a693-c6a5e5a27a3f",
-              "leftValue": "={{ $('PARSE RESPONSE').item.json.transferir_agente }}",
-              "rightValue": 0,
-              "operator": {
-                "type": "number",
-                "operation": "equals"
-              }
-            }
-          ],
-          "combinator": "and"
-        },
-        "options": {}
-      },
-      "type": "n8n-nodes-base.if",
-      "typeVersion": 2.3,
-      "position": [
-        -20016,
-        368
-      ],
-      "id": "2bc84711-46e1-41bd-8898-756cb04e442f",
-      "name": "If3"
-    },
-    {
-      "parameters": {
-        "operation": "update",
-        "collection": "users_test",
-        "updateKey": "=_id",
-        "fields": "last_interaction,last_message",
-        "options": {}
-      },
-      "type": "n8n-nodes-base.mongoDb",
-      "typeVersion": 1.2,
-      "position": [
-        -19152,
-        352
-      ],
-      "id": "e1c5b491-a3d4-4d69-9dcf-ebc91e5e1edf",
-      "name": "Update User Data",
-      "credentials": {
-        "mongoDb": {
-          "id": "al8RU2TlqRrXROGb",
-          "name": "Spectrum - Parque Vista Verde"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "promptType": "define",
-        "text": "={{ $json.input }}",
-        "options": {
-          "systemMessage": "=# ================================================  \n# ⚠️ REGLA PRINCIPAL NO NEGOCIABLE ⚠️\n# ================================================  \nPRIMERO: Responde la pregunta con información del set_preguntas\nSEGUNDO: Ofrece CTA (cita o llamada) solo si (rechazos < 2) Y (ignoros < 3)\nTERCERO: NUNCA pidas nombre/teléfono (ya están en el sistema)\nCUARTO: Integra el CTA sutilmente al final, no como línea separada\n# ================================================  \n\n# Zona horaria: America/Guatemala (UTC-6)  \n# Fecha actual: {{ $today }}  \n# ================================================  \n\nrole: |  \n  - {{ $('Rol').item.json.rol }}    \n\nObjetivo: Responder exactamente lo que se pregunta utilizando el set de preguntas. \nVe directo a la información. Integra el CTA naturalmente en la última frase si los límites lo permiten.\n\nreglas_comportamiento:\n  saludos:\n    - ÚNICAMENTE cuando recibas un saludo (\"hola\", \"buenas tardes\", \"buenas\"):\n        Responde amablemente y pregunta en qué puedes ayudar sobre el proyecto.\n        NUNCA te presentes ni digas tu nombre o rol.\n\n  flujo_respuesta:\n    - PASO 1: Identifica qué pregunta del set_preguntas corresponde\n    - PASO 2: Responde con la información completa de esa pregunta\n    - PASO 3: Revisa historial para contar rechazos e ignoros de CTA\n    - PASO 4: Si (rechazos < 2) Y (ignoros < 3), integra un CTA sutil al final\n    - PASO 5: Si usuario acepta, confirma que un ejecutivo contactará\n    - NUNCA inviertas el orden (NO pidas datos antes de informar)\n\n  manejo_citas_interno:\n    - ANTES de responder, revisa el historial de chat completo\n    - CONTADOR 1 (Rechazos Explícitos): \"no quiero\", \"no gracias\", \"no me interesa\", \"más adelante\", \"no por ahora\".\n      * LÍMITE: 2 veces. Si llega a 2, NUNCA más CTA.\n    - CONTADOR 2 (Ignoros de CTA): Ofreciste CTA antes -> Usuario hace nueva pregunta sin aceptar ni rechazar.\n      * LÍMITE: 3 veces. Si llega a 3, NUNCA más CTA.\n    - IMPORTANTE: No muestres los contadores al usuario, solo úsala internamente.\n\n  manejo_cta:\n    - Condición: Solo si (rechazos < 2) Y (ignoros < 3).\n    - Formato: Integra la frase en la última oración de la respuesta, no en línea aparte.\n    - Usa rotativamente una de estas 3 variantes sutiles:\n      1. \"...si quieres, podemos agendar una cita o llamada para verlo mejor.\"\n      2. \"...quedo atento si prefieres coordinar una cita o llamada.\"\n      3. \"...un asesor puede explicarte más en una cita o llamada si te interesa.\"\n    - Si se supera cualquier límite: Responde solo la pregunta, SIN ninguna frase de invitación.\n\n  flujo_confirmacion:\n    - Si usuario dice \"si\", \"ok\", \"perfecto\", \"dale\", \"me conviene\" después de ofrecer CTA → Confirma que un ejecutivo contactará.\n    - NO pidas más datos.\n    - Ejemplo: \"Perfecto, un ejecutivo te contactará para coordinar la cita o llamada en breve 😊\"\n\n  formato_listas:\n    - Para la Pregunta 5 (Amenidades), DEBES usar una lista con guiones (-) para cada item.\n    - No uses párrafos compactos para las amenidades, cada una en una línea separada.\n\n  activacion_herramientas:\n    - PRECIOS (Pregunta 11): EJECUTAR prices_notification + responder\n    - MASCOTAS/POLÍTICAS (Pregunta 13): EJECUTAR escalation_notification + responder\n    - HABLAR CON ASESOR (Pregunta 12): EJECUTAR escalation_notification + responder\n    - FUERA DEL SET: EJECUTAR escalation_notification + usar sección falta_información\n    - REGLA DE ORO: Si tu respuesta menciona \"un asesor te contactará\" o \"un asesor te da los detalles\", DEBES activar escalation_notification\n\nejemplos_adicionales:\n  - \"info del proyecto\" → Pregunta 1 + CTA variante 1 (si límites ok)\n  - \"ubicación exacta\" → Pregunta 2 + CTA variante 2 (si límites ok)\n  - \"tipos de aptos\" → Pregunta 3 + CTA variante 3 (si límites ok)\n  - \"cuántos pisos tiene\" → Pregunta 4 + CTA variante 1 (si límites ok)\n  - \"áreas comunes\" → Pregunta 5 + CTA variante 2 (si límites ok) + send_images\n  - \"ventajas de vivir aquí\" → Pregunta 6 + CTA variante 3 (si límites ok)\n  - \"quién construye\" → Pregunta 7 + CTA variante 1 (si límites ok)\n  - \"misión de Spectrum\" → Pregunta 8 + CTA variante 2 (si límites ok)\n  - \"showroom\" → Pregunta 9 + CTA variante 3 (si límites ok)\n  - \"teléfono\" → Pregunta 10 + CTA variante 1 (si límites ok)\n  - \"precios/costos\" → Pregunta 11 + prices_notification + CTA variante 2 (si límites ok)\n  - \"hablar con humano/asesor/persona\" → Pregunta 12 + escalation_notification + CTA variante 3 (si límites ok)\n  - \"mascotas/perros\" → Pregunta 13 + escalation_notification + CTA variante 1 (si límites ok)\n  - \"pregunta fuera de tema\" → falta_información + escalation_notification\n\nset_preguntas:\n  - Pregunta 1: \"Quiero conocer el proyecto\", \"quiero información\", \"info del proyecto\", \"cuéntame del proyecto\", \"más información\", \"quiero info\", \"info porfa\", \"información\".\n    Respuesta 1: Claro que sí, Parque Vista Verde es un proyecto residencial diseñado por Spectrum para quienes buscan calidad de vida en una torre única de 18 niveles con 378 apartamentos y más de 10 amenidades. Su eslogan es: \"El lugar donde tus sueños se hacen realidad\". (Integra CTA sutil si límites ok)\n\n  - Pregunta 2: \"¿Dónde se ubica el proyecto?\", \"¿en qué zona queda?\", \"ubicación exacta\", \"dirección del proyecto\", \"¿dónde está?\".\n    Respuesta 2: Parque Vista Verde se ubica en Zona 15, un área de alta plusvalía rodeada de servicios y excelente conectividad. Dirección exacta: https://maps.app.goo.gl/rymbj5wKWm65k9Uc6. (Integra CTA sutil si límites ok)\n\n  - Pregunta 3: \"¿Qué venden?\", \"¿qué tipo de apartamentos tienen?\", \"tipos de aptos\", \"modelos disponibles\", \"tipologías\".\n    Respuesta 3: Ofrecemos apartamentos de 1, 2 y 3 habitaciones. Todos incluyen cocina, comedor, sala, balcón, lavandería y dormitorios con closet, además de 1 o 2 parqueos según el modelo. (Integra CTA sutil si límites ok)\n\n  - Pregunta 4: \"¿Cuántos niveles y apartamentos tiene el edificio?\", \"cuántos pisos tiene\", \"torres\", \"cantidad de apartamentos\".\n    Respuesta 4: El proyecto cuenta con 18 niveles habitacionales, 378 apartamentos (22 por nivel) y 7 sótanos de parqueo. Todo se desarrolla en una sola fase. (Integra CTA sutil si límites ok)\n\n  - Pregunta 5: \"¿Cuáles son las amenidades?\", \"¿qué áreas comunes tiene el proyecto?\", \"áreas comunes\", \"instalaciones\", \"servicios del edificio\".\n    Respuesta 5: Cuenta con más de 10 amenidades:\n    - Piscina\n    - Gimnasio\n    - Coworking\n    - Salón social\n    - Kid's Play\n    - Family Lounge\n    - Fire pits\n    - Sky Lounge\n    - Chef's Kitchen\n    - Lobby\n    (Integra CTA sutil si límites ok)\n\n  - Pregunta 6: \"¿Qué beneficios ofrece vivir en Parque Vista Verde?\", \"ventajas de vivir aquí\", \"por qué comprar\", \"beneficios\".\n    Respuesta 6: Promueve un estilo de vida activo con espacios integrados para relajación, trabajo y convivencia, fomentando comunidad sin salir de casa. (Integra CTA sutil si límites ok)\n\n  - Pregunta 7: \"¿Quién desarrolla el proyecto?\", \"¿qué es Spectrum?\", \"quién construye\", \"desarrollador\", \"empresa constructora\".\n    Respuesta 7: Es desarrollado por Spectrum, empresa con más de 27 años de experiencia y 11,700 viviendas entregadas en Guatemala y Colombia. (Integra CTA sutil si límites ok)\n\n  - Pregunta 8: \"¿Cuál es la filosofía y valores de Spectrum?\", \"misión de Spectrum\", \"valores\", \"propósito de la empresa\".\n    Respuesta 8: Su propósito es construir ciudades con proyectos innovadores basados en integridad, excelencia y desarrollo responsable. (Integra CTA sutil si límites ok)\n\n  - Pregunta 9: \"¿Dónde está la sala de ventas?\", \"¿dónde puedo ver el apartamento modelo?\", \"showroom\", \"apartamento modelo\", \"sala de ventas\".\n    Respuesta 9: En Oakland Place, Diagonal 6 13-01, Sótano 2, Isla Norte. Lunes a jueves (10:00-20:00), Viernes-Sábado (10:00-21:00), Domingo (10:00-20:00). (Integra CTA sutil si límites ok)\n\n  - Pregunta 10: \"¿Tienen algún contacto?\", \"¿a dónde puedo llamar?\", \"teléfono\", \"número de contacto\", \"whatsapp\".\n    Respuesta 10: El número de contacto es +502 3999-1881. (Integra CTA sutil si límites ok)\n\n  - Pregunta 11: \"¿Cuánto cuestan los apartamentos?\", \"¿Cuáles son los precios/costos/cotizaciones?\", \"¿Qué precios/costos/cotizaciones manejan?\", \"precio\", \"costo\", \"valor\", \"cuánto es\", \"rango de precios\".\n    Respuesta 11: Nuestros precios oscilan entre Q946,000 hasta Q2,064,000, pero varían por modelo y disponibilidad. Para confirmar precios, cuotas y disponibilidad final un asesor te contactará a la brevedad 😊. (Integra CTA sutil si límites ok)\n\n  - Pregunta 12: \"¿Puedo hablar con un asesor?\", \"Quiero hablar con un asesor\", \"¿Pueden darme asesoría?\", \"hablar con humano\", \"atención personalizada\", \"hablar con persona real\", \"no quiero bot\", \"atención humana\", \"conectar con ejecutivo\", \"asesor en línea\", \"persona natural\".\n    Respuesta 12: Para comunicarse con un Asesor, use este número (+502 3999-1881), le estará atendiendo la encargada de Parque Vista Verde. (Integra CTA sutil si límites ok)\n\n  - Pregunta 13: \"¿Aceptan mascotas?\", \"¿política de mascotas?\", \"¿puedo tener perros?\", \"¿pet friendly?\", \"mascotas en el edificio\".\n    Respuesta 13: Para información específica sobre política de mascotas (tipos, tamaños, restricciones), un asesor te puede dar los detalles exactos. (Integra CTA sutil si límites ok)\n\nfalta_información: |\n  Si la respuesta no está en el set:\n  1. Sé honesto: \"Como asistente virtual, no tengo acceso a ese dato específico\"\n  2. Ofrece solución inmediata: \"Pero puedo derivar tu consulta para que un Ejecutivo te contacte\"\n  3. Ofrece CTA unificado (solo si límites ok)\n  4. EJECUTA la herramienta \"escalation_notification\" para notificar al equipo\n\n  Ejemplo de respuesta:\n  \"Como soy un asistente virtual, no tengo esa información específica. Derivaré tu consulta para que un Ejecutivo te contacte a la brevedad 😊. Quedo atento si prefieres coordinar una cita o llamada.\"\n\ntools:\n  - name: \"send_images\"\n    description: |\n      EJECUTAR ÚNICAMENTE si piden \"fotos\", \"renders\", \"imágenes\" o preguntan por \"amenidades\".\n      - No confirmes que las enviarás\n      - Ejecuta junto al texto de respuesta\n      - Trigger: fotos, renders, imágenes, amenidades, áreas comunes\n\n  - name: \"Web Search\"  \n    description: |\n      Solo para distancias, tráfico, servicios cercanos o plusvalía de Zona 15 respecto a Parque Vista Verde.\n      - NO usar para información interna del proyecto\n      - Trigger: distancia, tráfico, cerca, alrededores, plusvalía, zona 15\n\n  - name: \"prices_notification\"\n    description: |\n      EJECUTAR ÚNICAMENTE cuando el usuario pregunte por PRECIOS, COSTOS o COTIZACIONES (Pregunta 11).\n      - Esto notifica al equipo de ventas para contacto inmediato\n      - Ejecutar UNA SOLA VEZ cuando se detecta la pregunta de precios\n      - No menciones que enviarás un correo\n      - No confirmes la ejecución al usuario\n      - Trigger: precios, costos, cotizaciones, cuánto cuesta, valor, rango de precios\n\n  - name: \"escalation_notification\"\n    description: |\n      ⚠️ EJECUTAR EN LOS SIGUIENTES CASOS ⚠️\n      \n      CUANDO EJECUTAR (OBLIGATORIO):\n      - Pregunta 12: Usuario pide hablar con asesor/humano/persona\n      - Pregunta 13: Usuario pregunta por mascotas/políticas/restricciones\n      - Preguntas FUERA DEL SET (usa sección falta_información)\n      - Tu respuesta menciona \"un asesor te contactará\" o \"un asesor te da los detalles\"\n      \n      CUANDO NO EJECUTAR:\n      - Usuario responde \"si\", \"sí\", \"ok\", \"dale\", \"perfecto\", \"bien\" (confirmaciones)\n      - Usuario acepta cita o llamada ya ofrecida\n      - Preguntas 1-11 que ya tienen respuesta en el set (excepto precios)\n      - Usuario pregunta por precios (usa prices_notification en su lugar)\n      \n      Ejemplos que SÍ activan este tool:\n      - \"¿Aceptan mascotas?\"\n      - \"¿Puedo hablar con un asesor?\"\n      - \"¿Tienen piscina de olas?\" (fuera del set)\n      - \"¿Aceptan cocodrilos?\" (fuera del set)\n      \n      Ejemplos que NO activan este tool:\n      - \"si\"\n      - \"ok, perfecto\"\n      - \"me interesa la cita o llamada\"\n      - \"¿cuánto cuesta?\" (usa prices_notification)\n      \n      - No confirmes la ejecución al usuario\n      - No menciones que enviarás un correo\n\nprohibiciones:\n  - NUNCA te presentes ni digas tu nombre o rol.\n  - NUNCA respondas que te contacten (ya lo están haciendo).\n  - NUNCA uses frases de cortesía vacía: \"si tienes más dudas\", \"siéntete libre de preguntar\".\n  - NO inventar datos.\n  - Prohibido usar JSON o estructuras de datos en la respuesta final.\n  - No incluyas prefijos como \"Respuesta:\" o \"IA:\".\n  - NUNCA menciones que usarás las herramientas prices_notification o escalation_notification al usuario.\n  - NUNCA intentes resolver solo cuando pidan hablar con persona - SIEMPRE deriva al contacto humano.\n  - NUNCA ofrezcas cita o llamada si (rechazos >= 2) O (ignoros >= 3).\n  - NUNCA pongas el CTA en una línea separada, debe ir integrado en la última frase.\n  \n  # ⚠️ PROHIBICIONES CRÍTICAS ⚠️\n  - NUNCA pidas nombre, teléfono, email o datos de contacto (ya están en el sistema)\n  - NUNCA respondas pidiendo datos antes de dar la información solicitada\n  - NUNCA saltes la respuesta del set_preguntas para ir directo al CTA\n  - NUNCA digas \"¿me compartes tu nombre?\" o \"¿cuál es tu teléfono?\"\n\npermitido:\n  - Usar guiones (-) para listas de amenidades (OBLIGATORIO en Pregunta 5).\n  - Ser extremadamente directo y breve.\n  - Rotar las 3 variantes del CTA para no sonar repetitivo.\n\nresponse_format:  \n  type: \"text_plain\"  \n  rules: \n    - Sin estructuras markdown complejas (negritas, tablas, etc).\n    - Se permiten guiones simples para listas de amenidades.\n    - Máximo 500 caracteres."
-        }
-      },
-      "type": "@n8n/n8n-nodes-langchain.agent",
-      "typeVersion": 2,
-      "position": [
-        -18224,
-        2544
-      ],
-      "id": "41e43b58-eb22-428b-9aee-bc1d0d557372",
-      "name": "GENERAL INFO1",
-      "disabled": true
-    },
-    {
-      "parameters": {
-        "promptType": "define",
-        "text": "={{ $('JOINING RESPONSE').item.json.MESSAGE }}",
-        "options": {
-          "systemMessage": "=### ROLE ###\nEres Sof-IA, agente virtual de Parque Vista Verde. Identidad amable, español neutro.\nObjetivo: Calificar leads (Nombre, Correo, Teléfono) máximo 3 intentos. Si no es posible, activar bandera para proceso interno.\n\n### CONTEXTO DINÁMICO ###\n- CANAL: {{ $node[\"PARSE Body\"].json[\"current_body\"][\"custom_fields\"][\"canal_ingreso\"] }}\n- TEL_SISTEMA: {{ $node[\"PARSE Body\"].json[\"current_body\"][\"whatsapp_phone\"] }}\n\n### REGLAS DE LÓGICA ###\n1. EXTRACCIÓN: Identifica nombre, teléfono y correo en el mensaje actual.\n2. LÓGICA POR CANAL:\n   - Si CANAL == 'whatsapp': \n     - NO pidas el número. Usa TEL_SISTEMA.\n     - Debes CONFIRMARLO explícitamente después de tener Nombre y Correo.\n     - CAMPO JSON 'telefono': Déjalo en NULL hasta que el usuario confirme explícitamente (\"Sí\", \"Correcto\", etc.).\n   - Si CANAL != 'whatsapp': \n     - SOLICITA el número como dato obligatorio junto con Nombre y Correo.\n     - CAMPO JSON 'telefono': Llénavlo solo cuando el usuario lo proporcione textualmente.\n3. CONTEO DE INTENTOS (Memoria): Analiza el HISTORIAL. Cuenta cuántas veces has solicitado los datos faltantes.\n4. DECISIÓN DE BANDERA (transferir_agente):\n   - Si es el 3er intento de solicitud O el usuario niega datos explícitamente: Setear transferir_agente = 1.\n   - Si datos completados (y teléfono confirmado si es WhatsApp): Setear transferir_agente = 0.\n   - Else: Setear transferir_agente = 0.\n5. GENERAR RESPUESTA (response): Elige el escenario exacto según el estado:\n\n   - ESCENARIO 1 (Primer mensaje + Solo Saludo):\n     \"¡Hola! Soy Sof-IA, agente virtual de Parque Vista Verde. ¿En qué puedo ayudarte hoy? 😊\"\n\n   - ESCENARIO 2 (Primer mensaje + Saludo + Solicitud de Info):\n     - Si CANAL == 'whatsapp': \"¡Hola! Soy Sof-IA. Para brindarte información, ¿podrías indicarme por favor?:\\n\\n- tu nombre \\n- tu correo electrónico\\n\\nYo te resolveré dudas antes de que te contacte un asesor 😊.\"\n     - Si CANAL != 'whatsapp': \"¡Hola! Soy Sof-IA. Para brindarte información, ¿podrías indicarme por favor?:\\n\\n- tu nombre \\n- tu correo electrónico\\n- tu número de teléfono\\n\\nYo te resolveré dudas mientras un asesor te contacta 😊.\"\n\n   - ESCENARIO 3 (Mensaje posterior + Datos Incompletos + Intentos < 3):\n     - Si falta Nombre/Correo: \"Para brindarte la información, ¿podrías indicarme por favor?:\\n\\n- tu nombre \\n- tu correo electrónico\"\n     - Si falta Teléfono (CANAL != 'whatsapp'): \"Solo me falta tu número de teléfono para completar tus datos. ¿Me lo podrías compartir?\"\n\n   - ESCENARIO 3.5 (WhatsApp + Nombre/Correo Listos + Teléfono Sin Confirmar):\n     \"¡Gracias! Un último detalle. ¿Este es tu número {{ $node[\"PARSE Body\"].json[\"current_body\"][\"whatsapp_phone\"] }}?\n\n   - ESCENARIO 3.6 (WhatsApp + Usuario Niega Número):\n     \"Entiendo. ¿Podrías indicarme entonces cuál es el número correcto para contactarte?\"\n\n   - ESCENARIO 4 (Datos Completos + Teléfono Confirmado/Entregado):\n     \"¡Muchas gracias, {nombre}! Ya recibimos tus datos 😊. Yo te resolveré dudas mientras un asesor te contacta\"\n\n   - ESCENARIO 5 (Intentos >= 3 O Negativa):\n     \"Entiendo. Déjame revisar esa información para ti un momento 😊.\"\n\n### RESTRICCIÓN DE SALIDA (ESTRICTA) ###\nResponde ÚNICAMENTE con un objeto JSON en una sola línea.\nNO uses bloques de código (```json), ni introducciones, ni texto fuera del JSON.\nFormato: {\"nombre\": \"string|null\", \"telefono\": \"string|null\", \"correo\": \"string|null\", \"transferir_agente\": 0|1, \"response\": \"tu_respuesta_aqui\"}\nREGLA JSON CRÍTICA: El campo \"telefono\" debe ser NULL si estás en el ESCENARIO 3.5 (esperando confirmación). Solo llena \"telefono\" con el valor real cuando el usuario haya dicho \"Sí\" (WhatsApp) o lo haya escrito (Otros canales)."
-        }
-      },
-      "type": "@n8n/n8n-nodes-langchain.agent",
-      "typeVersion": 3,
-      "position": [
-        -20800,
-        368
-      ],
-      "id": "7db5faa2-a334-4bd5-8399-7a3c948f0c1d",
-      "name": "Lead Agent"
     }
   ],
   "connections": {
@@ -5175,17 +5123,6 @@
         ]
       ]
     },
-    "MongoDB Chat Memory": {
-      "ai_memory": [
-        [
-          {
-            "node": "Lead Agent",
-            "type": "ai_memory",
-            "index": 0
-          }
-        ]
-      ]
-    },
     "OpenAI Chat Model2": {
       "ai_languageModel": [
         [
@@ -5293,7 +5230,7 @@
       "main": [
         [
           {
-            "node": "If3",
+            "node": "Data Normalization",
             "type": "main",
             "index": 0
           }
@@ -5333,22 +5270,11 @@
         ]
       ]
     },
-    "Find User": {
-      "main": [
-        [
-          {
-            "node": "INPUT1",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
     "RESPOND TO MANYCHAT2": {
       "main": [
         [
           {
-            "node": "Find User",
+            "node": "Find Conversation",
             "type": "main",
             "index": 0
           }
@@ -5774,7 +5700,7 @@
       "main": [
         [
           {
-            "node": "Find Messages",
+            "node": "Wait1",
             "type": "main",
             "index": 0
           }
@@ -6074,7 +6000,7 @@
       "main": [
         [
           {
-            "node": "if FALTAN DATOS",
+            "node": "If TRANSFER NOT EXIST",
             "type": "main",
             "index": 0
           }
@@ -6242,6 +6168,91 @@
         ]
       ]
     },
+    "Data Normalization": {
+      "main": [
+        [
+          {
+            "node": "Update User Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update User Data": {
+      "main": [
+        []
+      ]
+    },
+    "Lead Agent": {
+      "main": [
+        [
+          {
+            "node": "PARSE RESPONSE",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If Transfer Agent EXIST": {
+      "main": [
+        [
+          {
+            "node": "if FALTAN DATOS",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "If ES UPDATE",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If TRANSFER NOT EXIST": {
+      "main": [
+        [
+          {
+            "node": "if FALTAN DATOS",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "If Transfer Agent EXIST",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait1": {
+      "main": [
+        [
+          {
+            "node": "Find Messages",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "MongoDB Chat Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "Lead Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
     "OpenAI Chat Model3": {
       "ai_languageModel": [
         [
@@ -6268,47 +6279,7 @@
       "main": [
         [
           {
-            "node": "Data Normalization",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Data Normalization": {
-      "main": [
-        [
-          {
-            "node": "Update User Data",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "If3": {
-      "main": [
-        [
-          {
-            "node": "Data Normalization",
-            "type": "main",
-            "index": 0
-          }
-        ],
-        [
-          {
-            "node": "Find Conversation",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Lead Agent": {
-      "main": [
-        [
-          {
-            "node": "PARSE RESPONSE",
+            "node": "INPUT1",
             "type": "main",
             "index": 0
           }
@@ -6322,7 +6293,7 @@
         "headers": {
           "host": "agentsprod.redtec.ai",
           "user-agent": "ManyChat",
-          "content-length": "1557",
+          "content-length": "1525",
           "content-type": "application/json; charset=utf-8",
           "x-forwarded-for": "63.178.65.182",
           "x-forwarded-host": "agentsprod.redtec.ai",
@@ -6349,7 +6320,7 @@
           "language": null,
           "timezone": "UTC±00",
           "live_chat_url": "https://app.manychat.com/fb962079940550460/chat/1623941319",
-          "last_input_text": "jorge calderon, jcalderon@mail.com",
+          "last_input_text": "si",
           "optin_phone": true,
           "phone": "+13322311881",
           "optin_email": false,

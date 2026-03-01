@@ -1,34 +1,35 @@
 {
-  "name": "COACH INMOBILIARIO",
   "nodes": [
     {
       "parameters": {
         "rule": {
           "interval": [
-            {}
+            {
+              "field": "minutes"
+            }
           ]
         }
       },
       "type": "n8n-nodes-base.scheduleTrigger",
       "typeVersion": 1.3,
       "position": [
-        -672,
-        112
+        -2528,
+        368
       ],
       "id": "4e41dd34-5c31-4b7d-8326-f6937a4a7463",
       "name": "Schedule Trigger"
     },
     {
       "parameters": {
-        "collection": "users_test",
+        "collection": "users",
         "options": {},
-        "query": "={\n  \"last_interaction\": {\n    \"$lt\": \"{{ $now.minus({ minutes: 15 }).toISO() }}\"\n  }\n}"
+        "query": "={\n  \"last_interaction\": {\n    \"$lt\": \"{{ $now.minus({ minutes: 15 }).toISO() }}\"\n  },\n  \"conversation_analysis\": {\n    \"$exists\": false\n  }\n}"
       },
       "type": "n8n-nodes-base.mongoDb",
       "typeVersion": 1.2,
       "position": [
-        -448,
-        112
+        -2304,
+        368
       ],
       "id": "206e5223-4569-4b50-a363-59df1901cfd9",
       "name": "Find documents",
@@ -41,14 +42,14 @@
     },
     {
       "parameters": {
-        "collection": "chat_histories_lead_test",
+        "collection": "chat_histories_lead",
         "options": {},
-        "query": "={\"sessionId\": \"user:{{ $('Loop Over Users').item.json.user_id }}\"}"
+        "query": "={\"sessionId\": \"user:{{ $('Manychat User ID').item.json.manychat_user_id }}\"}"
       },
       "type": "n8n-nodes-base.mongoDb",
       "typeVersion": 1.2,
       "position": [
-        0,
+        -960,
         16
       ],
       "id": "f4f2563a-7458-46ef-b55f-bde5ecabc50b",
@@ -63,15 +64,15 @@
     },
     {
       "parameters": {
-        "collection": "chat_histories_test",
+        "collection": "chat_histories",
         "options": {},
-        "query": "={\"sessionId\": \"user:{{ $('Loop Over Users').item.json.user_id }}\"}"
+        "query": "={\"sessionId\": \"user:{{ $('Manychat User ID').item.json.manychat_user_id }}\"}"
       },
       "type": "n8n-nodes-base.mongoDb",
       "typeVersion": 1.2,
       "position": [
-        0,
-        208
+        -960,
+        224
       ],
       "id": "d37d4241-ffca-4c05-8295-05fd7de91ba4",
       "name": "Find Chat Histories",
@@ -90,8 +91,8 @@
       "type": "n8n-nodes-base.splitInBatches",
       "typeVersion": 3,
       "position": [
-        -224,
-        112
+        -2080,
+        368
       ],
       "id": "5b001bd2-f7a0-4bf8-ba5c-8d24a5c6c090",
       "name": "Loop Over Users"
@@ -102,13 +103,13 @@
         "text": "=Conversación del Agente con el cliente:\n{{ $json.lead_messages }}.\n{{ $json.user_messages }}",
         "hasOutputParser": true,
         "options": {
-          "systemMessage": "=Rol: Eres un Sales Coach inmobiliario para el desarrollo \"Parque Vista Verde\". Tu objetivo es analizar la conversación adjunta y generar una estrategia táctica para el vendedor.\n\nReglas de Oro:\n\nNo inventes datos. Si falta información, usa estrictamente el valor \"DATO_FALTANTE\".\n\nDetección de Intención: Si el cliente ya solicitó una cita o mostró intención clara de visita, marca modo_cierre: true.\n\nSé directo y práctico. Los argumentos deben estar listos para ser usados en un chat de ventas.\n\nConversación a analizar:\n{{ $json.lead_messages }}\n{{ $json.user_messages }}"
+          "systemMessage": "=Rol: Eres un Sales Coach inmobiliario para el desarrollo \"Parque Vista Verde\". Tu objetivo es analizar la conversación adjunta y generar una estrategia táctica para el vendedor.\n\nReglas de Oro:\n\nNo inventes datos. Si falta información, usa estrictamente el valor \"DATO_FALTANTE\".\n\nDetección de Intención: Si el cliente ya solicitó una cita o mostró intención clara de visita, marca modo_cierre: true.\n\nSé directo y práctico. Los argumentos deben estar listos para ser usados en un chat de ventas."
         }
       },
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 3.1,
       "position": [
-        704,
+        -256,
         112
       ],
       "id": "79fb1e0f-654c-4687-be5b-3fcade9cf3c0",
@@ -137,7 +138,7 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        448,
+        -512,
         112
       ],
       "id": "a1111a84-9659-49f4-9d01-213dc503b23d",
@@ -153,7 +154,7 @@
       "type": "n8n-nodes-base.merge",
       "typeVersion": 3.2,
       "position": [
-        224,
+        -736,
         112
       ],
       "id": "ee765a60-61e1-4bb7-8d46-7968b16b59ff",
@@ -173,7 +174,7 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "typeVersion": 1.3,
       "position": [
-        672,
+        -288,
         336
       ],
       "id": "60b56d24-353a-479f-a215-d7287b533e21",
@@ -194,7 +195,7 @@
       "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
       "typeVersion": 1.3,
       "position": [
-        800,
+        -160,
         336
       ],
       "id": "dae1c3c6-f171-49f4-8c65-89b242d233c1",
@@ -204,9 +205,9 @@
       "parameters": {
         "model": {
           "__rl": true,
-          "value": "gpt-4.1-mini",
+          "value": "gpt-4o-mini",
           "mode": "list",
-          "cachedResultName": "gpt-4.1-mini"
+          "cachedResultName": "gpt-4o-mini"
         },
         "builtInTools": {},
         "options": {}
@@ -214,7 +215,7 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "typeVersion": 1.3,
       "position": [
-        880,
+        -80,
         544
       ],
       "id": "48287415-05e1-48b1-b73b-2ee0ddc7e205",
@@ -228,17 +229,145 @@
     },
     {
       "parameters": {
-        "jsCode": "const leadMsgs = $input.first().json.lead_messages;\nconst userMsgs = $input.first().json.user_messages;\n\nfunction clean(raw) {\n  if (!raw || raw === \"[]\") return [];\n  \n  // Parseamos si es string, si ya es objeto lo usamos directo\n  const parsed = typeof raw === 'string' ? JSON.parse(raw) : raw;\n\n  return parsed.map(m => {\n    let content = m.data?.content || \"\";\n    \n    // Si el contenido es el JSON de la IA, extraemos solo la respuesta\n    if (m.type === 'ai' && content.includes('{\"')) {\n      try {\n        const inner = JSON.parse(content);\n        content = inner.response || content;\n      } catch (e) {}\n    }\n\n    const label = m.type === 'human' ? 'Lead' : 'Agente';\n    return `${label}: ${content}`;\n  });\n}\n\n// Unimos ambos arrays y luego los convertimos en un solo texto\nconst fullChat = [...clean(leadMsgs), ...clean(userMsgs)].join('\\n');\n\nreturn {\n  historial_limpio: fullChat || \"Sin conversación\"\n};"
+        "sendTo": "jorge.menzel@garooinc.com",
+        "subject": "=Conversación con cliente: {{ $('Loop Over Users').item.json.name }}",
+        "message": "={{ $json.html }}",
+        "options": {
+          "appendAttribution": false,
+          "senderName": "Soporte de Garoo"
+        }
       },
-      "type": "n8n-nodes-base.code",
-      "typeVersion": 2,
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
       "position": [
-        -672,
-        -320
+        656,
+        224
       ],
-      "id": "a3289f4d-6eaf-4ec8-86b9-ec6d25e5fe71",
-      "name": "Clean Conversation",
-      "disabled": true
+      "id": "1979d15c-efe8-439f-9d76-e772d6d3b61b",
+      "name": "Send a message",
+      "webhookId": "89bec9e5-70fb-43a0-baaa-1561cd4ab920",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "H8Qx7NlrthXmHUiy",
+          "name": "Soporte Garoo"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "html": "<!doctype html>\n<html lang=\"es\">\n\n<head>\n    <meta charset=\"utf-8\" />\n    <meta name=\"viewport\" content=\"width=device-width,initial-scale=1\" />\n    <meta name=\"x-apple-disable-message-reformatting\" />\n    <title>Informe · {{ $('Loop Over Users').item.json.name }}</title>\n    <style>\n        body,\n        table,\n        td,\n        a {\n            -webkit-text-size-adjust: 100%;\n            -ms-text-size-adjust: 100%;\n        }\n\n        table,\n        td {\n            mso-table-lspace: 0pt;\n            mso-table-rspace: 0pt;\n        }\n\n        img {\n            -ms-interpolation-mode: bicubic;\n            border: 0;\n            outline: none;\n            text-decoration: none;\n        }\n\n        table {\n            border-collapse: collapse !important;\n        }\n\n        body {\n            margin: 0 !important;\n            padding: 0 !important;\n            width: 100% !important;\n            background-color: #f7f7f8;\n            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;\n        }\n\n        /* Ocultar chips — compatible Gmail + web */\n        .chip-hidden {\n            display: none !important;\n            mso-hide: all;\n            font-size: 0;\n            line-height: 0;\n            max-height: 0;\n            overflow: hidden;\n        }\n\n        /* Contenedor principal */\n        .email-container {\n            width: 680px;\n            max-width: 680px;\n        }\n\n        .outer-td   { padding: 28px 16px; }\n        .card-td    { padding: 22px; }\n\n        .prospect-name  { font-size: 20px; }\n        .section-title  { font-size: 14px; }\n        .main-need      { font-size: 15px; }\n        .list-ul        { font-size: 14px; }\n        .guion-text     { font-size: 14px; }\n        .next-steps     { font-size: 14px; }\n\n        @media only screen and (max-width: 700px) {\n            .email-container    { width: 100% !important; max-width: 100% !important; }\n            .outer-td           { padding: 16px 8px !important; }\n            .card-td            { padding: 14px !important; }\n            .prospect-name      { font-size: 17px !important; }\n            .section-title      { font-size: 12px !important; }\n            .main-need          { font-size: 13px !important; }\n            .list-ul            { font-size: 13px !important; }\n            .guion-text         { font-size: 13px !important; }\n            .next-steps         { font-size: 13px !important; }\n        }\n    </style>\n</head>\n\n<body style=\"background:#f7f7f8; margin:0; padding:0;\">\n    <table role=\"presentation\" width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" style=\"background:#f7f7f8;\">\n        <tr>\n            <td align=\"center\" class=\"outer-td\" style=\"padding:28px 16px;\">\n                <table role=\"presentation\" cellpadding=\"0\" cellspacing=\"0\"\n                    class=\"email-container\" style=\"width:680px; max-width:680px;\">\n\n                    <!-- Logo -->\n                    <tr>\n                        <td style=\"padding:0 0 14px 0;\">\n                            <img src=\"https://drive.google.com/uc?export=view&id=1GvaiLW9wZtrHTrGQuu2RbSfvi8TdCM2n\"\n                                alt=\"RedTec\" height=\"26\"\n                                style=\"display:block; max-height:26px; max-width:100%; height:auto;\" />\n                        </td>\n                    </tr>\n\n                    <!-- Header -->\n                    <tr>\n                        <td style=\"padding:0 0 14px 0;\">\n                            <div style=\"font-size:12px; letter-spacing:0.6px; text-transform:uppercase; color:#6b7280;\">\n                                Informe de conversación con:</div>\n                            <div class=\"prospect-name\"\n                                style=\"font-size:20px; font-weight:800; color:#111827; margin-top:4px; margin-bottom:5px; line-height:1.2;\">\n                                {{ $('Loop Over Users').item.json.name }}</div>\n                            <div style=\"font-size:10px; color:#6b7280;\">{{ $today.format('dd LLL yyyy') }}</div>\n                        </td>\n                    </tr>\n\n                    <!-- Card -->\n                    <tr>\n                        <td class=\"card-td\"\n                            style=\"background:#ffffff; border:1px solid #f1d4d4; border-radius:16px; padding:22px;\">\n\n                            <!-- ── CHIPS (columna única, se ocultan si faltan) ── -->\n\n                            <!-- Chip: Presupuesto -->\n                            <div class=\"{{ $json.conversation_analysis.analisis_prospecto.presupuesto === 'DATO_FALTANTE' || !$json.conversation_analysis.analisis_prospecto.presupuesto ? 'chip-hidden' : '' }}\"\n                                style=\"{{ $json.conversation_analysis.analisis_prospecto.presupuesto === 'DATO_FALTANTE' || !$json.conversation_analysis.analisis_prospecto.presupuesto ? 'display:none;mso-hide:all;font-size:0;line-height:0;max-height:0;overflow:hidden;' : 'margin-bottom:8px;' }}\">\n                                <div style=\"border:1px solid #fde8e8; border-radius:12px; background:#fff7f7; padding:10px 12px;\">\n                                    <div style=\"font-size:11px; color:#6b7280;\">Presupuesto</div>\n                                    <div style=\"font-size:13px; font-weight:800; color:#9b1c1c;\">\n                                        {{ $json.conversation_analysis.analisis_prospecto.presupuesto }}</div>\n                                </div>\n                            </div>\n\n                            <!-- Chip: Timeline -->\n                            <div class=\"{{ $json.conversation_analysis.analisis_prospecto.timeline === 'DATO_FALTANTE' || !$json.conversation_analysis.analisis_prospecto.timeline ? 'chip-hidden' : '' }}\"\n                                style=\"{{ $json.conversation_analysis.analisis_prospecto.timeline === 'DATO_FALTANTE' || !$json.conversation_analysis.analisis_prospecto.timeline ? 'display:none;mso-hide:all;font-size:0;line-height:0;max-height:0;overflow:hidden;' : 'margin-bottom:8px;' }}\">\n                                <div style=\"border:1px solid #fde8e8; border-radius:12px; background:#fff7f7; padding:10px 12px;\">\n                                    <div style=\"font-size:11px; color:#6b7280;\">Timeline</div>\n                                    <div style=\"font-size:13px; font-weight:800; color:#9b1c1c;\">\n                                        {{ $json.conversation_analysis.analisis_prospecto.timeline }}</div>\n                                </div>\n                            </div>\n\n                            <!-- Chip: Motivación -->\n                            <div class=\"{{ $json.conversation_analysis.analisis_prospecto.motivacion === 'DATO_FALTANTE' || !$json.conversation_analysis.analisis_prospecto.motivacion ? 'chip-hidden' : '' }}\"\n                                style=\"{{ $json.conversation_analysis.analisis_prospecto.motivacion === 'DATO_FALTANTE' || !$json.conversation_analysis.analisis_prospecto.motivacion ? 'display:none;mso-hide:all;font-size:0;line-height:0;max-height:0;overflow:hidden;' : 'margin-bottom:8px;' }}\">\n                                <div style=\"border:1px solid #fde8e8; border-radius:12px; background:#fff7f7; padding:10px 12px;\">\n                                    <div style=\"font-size:11px; color:#6b7280;\">Motivación</div>\n                                    <div style=\"font-size:13px; font-weight:800; color:#111827;\">\n                                        {{ $json.conversation_analysis.analisis_prospecto.motivacion }}</div>\n                                </div>\n                            </div>\n\n                            <!-- Chip: Decisores -->\n                            <div class=\"{{ $json.conversation_analysis.analisis_prospecto.decisores === 'DATO_FALTANTE' || !$json.conversation_analysis.analisis_prospecto.decisores ? 'chip-hidden' : '' }}\"\n                                style=\"{{ $json.conversation_analysis.analisis_prospecto.decisores === 'DATO_FALTANTE' || !$json.conversation_analysis.analisis_prospecto.decisores ? 'display:none;mso-hide:all;font-size:0;line-height:0;max-height:0;overflow:hidden;' : 'margin-bottom:18px;' }}\">\n                                <div style=\"border:1px solid #fde8e8; border-radius:12px; background:#fff7f7; padding:10px 12px;\">\n                                    <div style=\"font-size:11px; color:#6b7280;\">Decisores</div>\n                                    <div style=\"font-size:13px; font-weight:800; color:#111827;\">\n                                        {{ $json.conversation_analysis.analisis_prospecto.decisores }}</div>\n                                </div>\n                            </div>\n\n                            <!-- ── SECCIÓN 1: Contexto y señales ── -->\n                            <div style=\"margin-bottom:22px;\">\n                                <div class=\"section-title\"\n                                    style=\"font-size:14px; font-weight:900; color:#dc2626; text-transform:uppercase; letter-spacing:0.6px; margin-bottom:10px;\">\n                                    1) Contexto y señales</div>\n                                <div style=\"border:1px solid #fde8e8; border-radius:14px; padding:14px;\">\n                                    <div style=\"font-size:12px; color:#6b7280;\">Necesidad principal</div>\n                                    <div class=\"main-need\"\n                                        style=\"font-size:15px; font-weight:700; color:#111827; line-height:1.6; margin-top:4px;\">\n                                        {{ $json.conversation_analysis.analisis_prospecto.necesidades }}\n                                    </div>\n                                    <div style=\"height:12px;\"></div>\n                                    <div style=\"font-size:12px; color:#6b7280;\">Objeciones detectadas</div>\n                                    <div style=\"margin-top:8px; background:#fff7f7; border:1px solid #fde8e8; border-radius:12px; padding:12px;\">\n                                        <ul class=\"list-ul\" style=\"margin:0; padding-left:18px; color:#111827; font-size:14px;\">\n                                            {{ Array.isArray($json.conversation_analysis.analisis_prospecto.objeciones_detectadas)\n                                              ? ($json.conversation_analysis.analisis_prospecto.objeciones_detectadas.length\n                                                  ? $json.conversation_analysis.analisis_prospecto.objeciones_detectadas.map(i => '<li>' + i + '</li>').join('')\n                                                  : '<li>Ninguna</li>')\n                                              : ($json.conversation_analysis.analisis_prospecto.objeciones_detectadas\n                                                  ? '<li>' + $json.conversation_analysis.analisis_prospecto.objeciones_detectadas + '</li>'\n                                                  : '<li>Ninguna</li>') }}\n                                        </ul>\n                                    </div>\n                                </div>\n                            </div>\n\n                            <!-- ── SECCIÓN 2: Estrategia recomendada ── -->\n                            <div style=\"margin-bottom:22px;\">\n                                <div class=\"section-title\"\n                                    style=\"font-size:14px; font-weight:900; color:#dc2626; text-transform:uppercase; letter-spacing:0.6px; margin-bottom:10px;\">\n                                    2) Estrategia recomendada</div>\n                                <div style=\"border:1px solid #fde8e8; border-radius:14px; padding:14px;\">\n\n                                    <!-- Guion sugerido -->\n                                    <div style=\"margin-bottom:12px;\">\n                                        <div style=\"font-size:12px; color:#6b7280; margin-bottom:4px;\">Guion sugerido</div>\n                                        <div class=\"guion-text\"\n                                            style=\"font-size:14px; font-style:italic; color:#374151; background:#f9fafb; border-left:3px solid #dc2626; padding:10px 12px; border-radius:0 8px 8px 0;\">\n                                            {{ $json.conversation_analysis.estrategia_venta.guion_sugerido_corto }}\n                                        </div>\n                                    </div>\n\n                                    <!-- Preguntas para calificar -->\n                                    <div style=\"margin-bottom:12px;\">\n                                        <div style=\"font-size:12px; color:#6b7280;\">Preguntas para calificar</div>\n                                        <div style=\"margin-top:8px; background:#fff; border:1px solid #fde8e8; border-radius:12px; padding:12px;\">\n                                            <ul class=\"list-ul\" style=\"margin:0; padding-left:18px; color:#111827; font-size:14px;\">\n                                                {{ Array.isArray($json.conversation_analysis.estrategia_venta.preguntas_para_calificar)\n                                                  ? ($json.conversation_analysis.estrategia_venta.preguntas_para_calificar.length\n                                                      ? $json.conversation_analysis.estrategia_venta.preguntas_para_calificar.map(q => '<li>' + q + '</li>').join('')\n                                                      : '<li>Ninguna</li>')\n                                                  : ($json.conversation_analysis.estrategia_venta.preguntas_para_calificar\n                                                      ? '<li>' + $json.conversation_analysis.estrategia_venta.preguntas_para_calificar + '</li>'\n                                                      : '<li>Ninguna</li>') }}\n                                            </ul>\n                                        </div>\n                                    </div>\n\n                                    <!-- Argumentos clave -->\n                                    <div style=\"margin-bottom:12px;\">\n                                        <div style=\"font-size:12px; color:#6b7280;\">Argumentos clave</div>\n                                        <div style=\"margin-top:8px; background:#fff; border:1px solid #fde8e8; border-radius:12px; padding:12px;\">\n                                            <ul class=\"list-ul\" style=\"margin:0; padding-left:18px; color:#111827; font-size:14px;\">\n                                                {{ Array.isArray($json.conversation_analysis.estrategia_venta.argumentos_clave)\n                                                  ? ($json.conversation_analysis.estrategia_venta.argumentos_clave.length\n                                                      ? $json.conversation_analysis.estrategia_venta.argumentos_clave.map(a => '<li>' + a + '</li>').join('')\n                                                      : '<li>Ninguno</li>')\n                                                  : ($json.conversation_analysis.estrategia_venta.argumentos_clave\n                                                      ? '<li>' + $json.conversation_analysis.estrategia_venta.argumentos_clave + '</li>'\n                                                      : '<li>Ninguno</li>') }}\n                                            </ul>\n                                        </div>\n                                    </div>\n\n                                    <!-- Próximos pasos -->\n                                    <div>\n                                        <div style=\"font-size:12px; color:#6b7280;\">Próximos pasos</div>\n                                        <div class=\"next-steps\"\n                                            style=\"font-size:14px; font-weight:700; color:#111827; margin-top:4px;\">\n                                            {{ $json.conversation_analysis.estrategia_venta.proximos_pasos }}\n                                        </div>\n                                    </div>\n\n                                </div>\n                            </div>\n\n                        </td>\n                    </tr>\n\n                    <!-- Footer -->\n                    <tr>\n                        <td style=\"padding:14px 6px 0 6px; font-size:12px; color:#6b7280; text-align:center;\">\n                            Redtec</td>\n                    </tr>\n\n                </table>\n            </td>\n        </tr>\n    </table>\n</body>\n\n</html>"
+      },
+      "type": "n8n-nodes-base.html",
+      "typeVersion": 1.2,
+      "position": [
+        432,
+        224
+      ],
+      "id": "408c9ac8-8157-4be6-804f-ab766f68d7ce",
+      "name": "HTML"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "178c403b-ba9c-40f4-bee3-e3b9921e62c1",
+              "leftValue": "={{ $json.date.toDateTime() }}",
+              "rightValue": "={{ $now }}",
+              "operator": {
+                "type": "dateTime",
+                "operation": "after"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        -1424,
+        448
+      ],
+      "id": "8338fd72-04d2-414c-a40b-77b3089f0380",
+      "name": "If CITA no ha Ocurrido"
+    },
+    {
+      "parameters": {
+        "collection": "appointments",
+        "options": {},
+        "query": "={\"user_id\": \"{{ $json.user_id }}\"}"
+      },
+      "type": "n8n-nodes-base.mongoDb",
+      "typeVersion": 1.2,
+      "position": [
+        -1856,
+        288
+      ],
+      "id": "93f49560-f715-41b2-b842-63f03ed427fb",
+      "name": "Find Appointment",
+      "alwaysOutputData": true,
+      "credentials": {
+        "mongoDb": {
+          "id": "al8RU2TlqRrXROGb",
+          "name": "Spectrum - Parque Vista Verde"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "6bd5a430-f8e5-42e7-8e1a-9867981329dd",
+              "leftValue": "={{ $('Find Appointment').item.json.isEmpty() }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        -1632,
+        288
+      ],
+      "id": "4873830a-270c-4b25-a5eb-4b7070c7ef9a",
+      "name": "If CITA NO Existe"
+    },
+    {
+      "parameters": {
+        "amount": 25
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        880,
+        464
+      ],
+      "id": "5c5fc221-caa9-49e8-a977-36034b649b3e",
+      "name": "Wait",
+      "webhookId": "feea33e2-cd91-49b5-b9e5-ca28269cad9d"
     },
     {
       "parameters": {
@@ -263,16 +392,16 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        1168,
+        208,
         112
       ],
       "id": "2bf643c0-557d-4c42-8ebc-56ff92b63371",
-      "name": "Edit Fields"
+      "name": "AGENT RESPONSE"
     },
     {
       "parameters": {
         "operation": "update",
-        "collection": "users_test",
+        "collection": "users",
         "updateKey": "_id",
         "fields": "conversation_analysis",
         "options": {}
@@ -280,20 +409,43 @@
       "type": "n8n-nodes-base.mongoDb",
       "typeVersion": 1.2,
       "position": [
-        1392,
-        112
+        432,
+        16
       ],
-      "id": "48b71240-55e1-4177-91d2-59e943db5178",
+      "id": "b94d8244-cd7f-4448-b532-b8650d7f8bb5",
       "name": "Update User Conversation Analysis",
       "credentials": {
         "mongoDb": {
           "id": "al8RU2TlqRrXROGb",
           "name": "Spectrum - Parque Vista Verde"
         }
-      }
+      },
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "333ef0a2-5347-49b3-9a2e-94f8780dec53",
+              "name": "manychat_user_id",
+              "value": "={{ $('Loop Over Users').item.json.user_id }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -1184,
+        112
+      ],
+      "id": "3d72cdea-f3d6-4be9-bef9-694b3a5ae803",
+      "name": "Manychat User ID"
     }
   ],
-  "pinData": {},
   "connections": {
     "Schedule Trigger": {
       "main": [
@@ -311,23 +463,6 @@
         [
           {
             "node": "Loop Over Users",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Loop Over Users": {
-      "main": [
-        [],
-        [
-          {
-            "node": "Find Chat Histories Lead",
-            "type": "main",
-            "index": 0
-          },
-          {
-            "node": "Find Chat Histories",
             "type": "main",
             "index": 0
           }
@@ -356,6 +491,40 @@
         ]
       ]
     },
+    "Loop Over Users": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Find Appointment",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "AGENT RESPONSE",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Messages": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
     "Merge": {
       "main": [
         [
@@ -373,17 +542,6 @@
           {
             "node": "AI Agent",
             "type": "ai_languageModel",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Messages": {
-      "main": [
-        [
-          {
-            "node": "AI Agent",
-            "type": "main",
             "index": 0
           }
         ]
@@ -411,29 +569,76 @@
         ]
       ]
     },
-    "AI Agent": {
+    "Send a message": {
       "main": [
         [
           {
-            "node": "Edit Fields",
+            "node": "Wait",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Edit Fields": {
+    "HTML": {
       "main": [
         [
           {
-            "node": "Update User Conversation Analysis",
+            "node": "Send a message",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Update User Conversation Analysis": {
+    "If CITA no ha Ocurrido": {
+      "main": [
+        [
+          {
+            "node": "Manychat User ID",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Find Appointment": {
+      "main": [
+        [
+          {
+            "node": "If CITA NO Existe",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If CITA NO Existe": {
+      "main": [
+        [
+          {
+            "node": "Manychat User ID",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "If CITA no ha Ocurrido",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait": {
       "main": [
         [
           {
@@ -443,19 +648,43 @@
           }
         ]
       ]
+    },
+    "AGENT RESPONSE": {
+      "main": [
+        [
+          {
+            "node": "HTML",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Update User Conversation Analysis",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Manychat User ID": {
+      "main": [
+        [
+          {
+            "node": "Find Chat Histories Lead",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Find Chat Histories",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
-  "active": false,
-  "settings": {
-    "executionOrder": "v1",
-    "binaryMode": "separate",
-    "availableInMCP": false
-  },
-  "versionId": "2d2fe5cf-1759-4eaa-9884-84ba4e9df376",
+  "pinData": {},
   "meta": {
     "templateCredsSetupCompleted": true,
     "instanceId": "d4ab02fb1ef8b6ca2c1c5c1f280ee696b0514d7d92cee5fb0da1784dbe393998"
-  },
-  "id": "XZCWfL7yTIkq2Waq",
-  "tags": []
+  }
 }
