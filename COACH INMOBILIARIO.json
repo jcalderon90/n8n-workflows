@@ -5,7 +5,8 @@
         "rule": {
           "interval": [
             {
-              "field": "minutes"
+              "field": "minutes",
+              "minutesInterval": 10
             }
           ]
         }
@@ -13,32 +14,11 @@
       "type": "n8n-nodes-base.scheduleTrigger",
       "typeVersion": 1.3,
       "position": [
-        -2528,
-        368
+        -2784,
+        464
       ],
       "id": "4e41dd34-5c31-4b7d-8326-f6937a4a7463",
       "name": "Schedule Trigger"
-    },
-    {
-      "parameters": {
-        "collection": "users",
-        "options": {},
-        "query": "={\n  \"last_interaction\": {\n    \"$lt\": \"{{ $now.minus({ minutes: 15 }).toISO() }}\"\n  },\n  \"conversation_analysis\": {\n    \"$exists\": false\n  }\n}"
-      },
-      "type": "n8n-nodes-base.mongoDb",
-      "typeVersion": 1.2,
-      "position": [
-        -2304,
-        368
-      ],
-      "id": "206e5223-4569-4b50-a363-59df1901cfd9",
-      "name": "Find documents",
-      "credentials": {
-        "mongoDb": {
-          "id": "al8RU2TlqRrXROGb",
-          "name": "Spectrum - Parque Vista Verde"
-        }
-      }
     },
     {
       "parameters": {
@@ -49,16 +29,16 @@
       "type": "n8n-nodes-base.mongoDb",
       "typeVersion": 1.2,
       "position": [
-        -960,
-        16
+        -992,
+        192
       ],
       "id": "f4f2563a-7458-46ef-b55f-bde5ecabc50b",
       "name": "Find Chat Histories Lead",
       "alwaysOutputData": true,
       "credentials": {
         "mongoDb": {
-          "id": "al8RU2TlqRrXROGb",
-          "name": "Spectrum - Parque Vista Verde"
+          "id": "hSK9MIPMlFYEbG1O",
+          "name": "Spectrum - Parque Vista Verde - Produccion"
         }
       }
     },
@@ -71,16 +51,16 @@
       "type": "n8n-nodes-base.mongoDb",
       "typeVersion": 1.2,
       "position": [
-        -960,
-        224
+        -992,
+        392
       ],
       "id": "d37d4241-ffca-4c05-8295-05fd7de91ba4",
       "name": "Find Chat Histories",
       "alwaysOutputData": true,
       "credentials": {
         "mongoDb": {
-          "id": "al8RU2TlqRrXROGb",
-          "name": "Spectrum - Parque Vista Verde"
+          "id": "hSK9MIPMlFYEbG1O",
+          "name": "Spectrum - Parque Vista Verde - Produccion"
         }
       }
     },
@@ -91,8 +71,8 @@
       "type": "n8n-nodes-base.splitInBatches",
       "typeVersion": 3,
       "position": [
-        -2080,
-        368
+        -2112,
+        464
       ],
       "id": "5b001bd2-f7a0-4bf8-ba5c-8d24a5c6c090",
       "name": "Loop Over Users"
@@ -109,8 +89,8 @@
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 3.1,
       "position": [
-        -256,
-        112
+        -288,
+        288
       ],
       "id": "79fb1e0f-654c-4687-be5b-3fcade9cf3c0",
       "name": "AI Agent"
@@ -138,8 +118,8 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        -512,
-        112
+        -544,
+        288
       ],
       "id": "a1111a84-9659-49f4-9d01-213dc503b23d",
       "name": "Messages",
@@ -154,8 +134,8 @@
       "type": "n8n-nodes-base.merge",
       "typeVersion": 3.2,
       "position": [
-        -736,
-        112
+        -768,
+        288
       ],
       "id": "ee765a60-61e1-4bb7-8d46-7968b16b59ff",
       "name": "Merge"
@@ -174,8 +154,8 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "typeVersion": 1.3,
       "position": [
-        -288,
-        336
+        -320,
+        512
       ],
       "id": "60b56d24-353a-479f-a215-d7287b533e21",
       "name": "OpenAI Chat Model",
@@ -195,8 +175,8 @@
       "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
       "typeVersion": 1.3,
       "position": [
-        -160,
-        336
+        -192,
+        512
       ],
       "id": "dae1c3c6-f171-49f4-8c65-89b242d233c1",
       "name": "Structured Output Parser"
@@ -215,8 +195,8 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "typeVersion": 1.3,
       "position": [
-        -80,
-        544
+        -112,
+        720
       ],
       "id": "48287415-05e1-48b1-b73b-2ee0ddc7e205",
       "name": "OpenAI Chat Model1",
@@ -240,8 +220,8 @@
       "type": "n8n-nodes-base.gmail",
       "typeVersion": 2.2,
       "position": [
-        656,
-        224
+        624,
+        392
       ],
       "id": "1979d15c-efe8-439f-9d76-e772d6d3b61b",
       "name": "Send a message",
@@ -260,8 +240,8 @@
       "type": "n8n-nodes-base.html",
       "typeVersion": 1.2,
       "position": [
-        432,
-        224
+        400,
+        392
       ],
       "id": "408c9ac8-8157-4be6-804f-ab766f68d7ce",
       "name": "HTML"
@@ -293,8 +273,8 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
       "position": [
-        -1424,
-        448
+        -1440,
+        392
       ],
       "id": "8338fd72-04d2-414c-a40b-77b3089f0380",
       "name": "If CITA no ha Ocurrido"
@@ -308,7 +288,7 @@
       "type": "n8n-nodes-base.mongoDb",
       "typeVersion": 1.2,
       "position": [
-        -1856,
+        -1888,
         288
       ],
       "id": "93f49560-f715-41b2-b842-63f03ed427fb",
@@ -316,8 +296,8 @@
       "alwaysOutputData": true,
       "credentials": {
         "mongoDb": {
-          "id": "al8RU2TlqRrXROGb",
-          "name": "Spectrum - Parque Vista Verde"
+          "id": "hSK9MIPMlFYEbG1O",
+          "name": "Spectrum - Parque Vista Verde - Produccion"
         }
       }
     },
@@ -349,7 +329,7 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
       "position": [
-        -1632,
+        -1664,
         288
       ],
       "id": "4873830a-270c-4b25-a5eb-4b7070c7ef9a",
@@ -357,17 +337,18 @@
     },
     {
       "parameters": {
-        "amount": 25
+        "amount": 10
       },
       "type": "n8n-nodes-base.wait",
       "typeVersion": 1.1,
       "position": [
-        880,
-        464
+        848,
+        568
       ],
       "id": "5c5fc221-caa9-49e8-a977-36034b649b3e",
       "name": "Wait",
-      "webhookId": "feea33e2-cd91-49b5-b9e5-ca28269cad9d"
+      "webhookId": "feea33e2-cd91-49b5-b9e5-ca28269cad9d",
+      "executeOnce": true
     },
     {
       "parameters": {
@@ -392,8 +373,8 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        208,
-        112
+        176,
+        288
       ],
       "id": "2bf643c0-557d-4c42-8ebc-56ff92b63371",
       "name": "AGENT RESPONSE"
@@ -409,18 +390,17 @@
       "type": "n8n-nodes-base.mongoDb",
       "typeVersion": 1.2,
       "position": [
-        432,
-        16
+        400,
+        192
       ],
       "id": "b94d8244-cd7f-4448-b532-b8650d7f8bb5",
       "name": "Update User Conversation Analysis",
       "credentials": {
         "mongoDb": {
-          "id": "al8RU2TlqRrXROGb",
-          "name": "Spectrum - Parque Vista Verde"
+          "id": "hSK9MIPMlFYEbG1O",
+          "name": "Spectrum - Parque Vista Verde - Produccion"
         }
-      },
-      "disabled": true
+      }
     },
     {
       "parameters": {
@@ -439,11 +419,46 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        -1184,
-        112
+        -1216,
+        288
       ],
       "id": "3d72cdea-f3d6-4be9-bef9-694b3a5ae803",
       "name": "Manychat User ID"
+    },
+    {
+      "parameters": {
+        "collection": "users",
+        "options": {},
+        "query": "={\n  \"$expr\": {\n    \"$lt\": [\n      \"$last_interaction\",\n      { \"$toDate\": \"{{ $('Time-15min').item.json.cutoff }}\" }\n    ]\n  },\n  \"conversation_analysis\": false\n}"
+      },
+      "type": "n8n-nodes-base.mongoDb",
+      "typeVersion": 1.2,
+      "position": [
+        -2336,
+        464
+      ],
+      "id": "206e5223-4569-4b50-a363-59df1901cfd9",
+      "name": "Find Inactive 15min Users without Analysis",
+      "alwaysOutputData": false,
+      "credentials": {
+        "mongoDb": {
+          "id": "hSK9MIPMlFYEbG1O",
+          "name": "Spectrum - Parque Vista Verde - Produccion"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "return [{\n  json: {\n    cutoff: new Date(Date.now() - 15 * 60 * 1000).toISOString()\n  }\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -2560,
+        464
+      ],
+      "id": "6fbb10c6-5a60-4716-ad4e-79b779a75604",
+      "name": "Time-15min"
     }
   ],
   "connections": {
@@ -451,18 +466,7 @@
       "main": [
         [
           {
-            "node": "Find documents",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Find documents": {
-      "main": [
-        [
-          {
-            "node": "Loop Over Users",
+            "node": "Time-15min",
             "type": "main",
             "index": 0
           }
@@ -600,13 +604,7 @@
             "index": 0
           }
         ],
-        [
-          {
-            "node": "Wait",
-            "type": "main",
-            "index": 0
-          }
-        ]
+        []
       ]
     },
     "Find Appointment": {
@@ -653,16 +651,21 @@
       "main": [
         [
           {
-            "node": "HTML",
+            "node": "Update User Conversation Analysis",
             "type": "main",
             "index": 0
           },
           {
-            "node": "Update User Conversation Analysis",
+            "node": "HTML",
             "type": "main",
             "index": 0
           }
         ]
+      ]
+    },
+    "Update User Conversation Analysis": {
+      "main": [
+        []
       ]
     },
     "Manychat User ID": {
@@ -675,6 +678,28 @@
           },
           {
             "node": "Find Chat Histories",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Find Inactive 15min Users without Analysis": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Users",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Time-15min": {
+      "main": [
+        [
+          {
+            "node": "Find Inactive 15min Users without Analysis",
             "type": "main",
             "index": 0
           }
