@@ -418,7 +418,7 @@
             "type": "n8n-nodes-base.set",
             "typeVersion": 3.4,
             "position": [
-                2544,
+                2944,
                 -304
             ],
             "id": "f1f89ed4-3ae5-466d-a813-6962c7eaab6e",
@@ -484,6 +484,58 @@
             ],
             "id": "855f5d35-21f4-4a10-9f9b-bd18574d0314",
             "name": "HTML PURO"
+        },
+        {
+            "parameters": {
+                "operation": "update",
+                "collection": "users",
+                "updateKey": "_id",
+                "fields": "has_reservation",
+                "options": {}
+            },
+            "type": "n8n-nodes-base.mongoDb",
+            "typeVersion": 1.2,
+            "position": [
+                2736,
+                -496
+            ],
+            "id": "61f908ba-535d-47b9-a34d-8f05daec4b48",
+            "name": "Update User",
+            "credentials": {
+                "mongoDb": {
+                    "id": "UzcANqeDFO1QLbfd",
+                    "name": "SPECTRUM - CENTRALIZADO"
+                }
+            }
+        },
+        {
+            "parameters": {
+                "assignments": {
+                    "assignments": [
+                        {
+                            "id": "4a52d8ad-da2c-4760-9834-ac9e439b4841",
+                            "name": "_id",
+                            "value": "={{ \n  $('Update Appointment').isExecuted\n    ? \n    $('Find Appointment').item.json._id.toJsonString().replace(/^\"(.*)\"$/, '$1')\n    : \n    $('Insert Appointment').item.json._id.toJsonString().replace(/^\"(.*)\"$/, '$1')\n}}",
+                            "type": "string"
+                        },
+                        {
+                            "id": "1660f796-d040-4c8c-9bd3-e26e6eda9daf",
+                            "name": "has_reservation",
+                            "value": true,
+                            "type": "boolean"
+                        }
+                    ]
+                },
+                "options": {}
+            },
+            "type": "n8n-nodes-base.set",
+            "typeVersion": 3.4,
+            "position": [
+                2544,
+                -496
+            ],
+            "id": "1978661c-f3fa-4f3b-860c-4b1351aa0f80",
+            "name": "reservation update"
         }
     ],
     "connections": {
@@ -626,7 +678,7 @@
             "main": [
                 [
                     {
-                        "node": "RESPONSE FINAL",
+                        "node": "reservation update",
                         "type": "main",
                         "index": 0
                     }
@@ -711,6 +763,28 @@
                 [
                     {
                         "node": "Send a message",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Update User": {
+            "main": [
+                [
+                    {
+                        "node": "RESPONSE FINAL",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "reservation update": {
+            "main": [
+                [
+                    {
+                        "node": "Update User",
                         "type": "main",
                         "index": 0
                     }

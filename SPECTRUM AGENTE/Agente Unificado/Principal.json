@@ -23,7 +23,7 @@
             "type": "n8n-nodes-base.httpRequest",
             "typeVersion": 4.2,
             "position": [
-                1088,
+                1296,
                 32
             ],
             "id": "8f8690ed-229d-4be2-8f87-344cd3bd793b",
@@ -52,7 +52,7 @@
             "type": "n8n-nodes-base.set",
             "typeVersion": 3.4,
             "position": [
-                864,
+                1072,
                 32
             ],
             "id": "e44bfda5-7a81-428a-b49d-ea6bb9ba20fb",
@@ -364,6 +364,30 @@
                             "name": "consulta_pendiente",
                             "value": "={{ null }}",
                             "type": "string"
+                        },
+                        {
+                            "id": "06aad59e-59d6-404b-a8f0-4b0c72f2c1c3",
+                            "name": "first_interaction",
+                            "value": "={{ $now.toISO() }}",
+                            "type": "string"
+                        },
+                        {
+                            "id": "7436bc68-ba4c-4c48-8ac0-bea988b3079d",
+                            "name": "last_interaction",
+                            "value": "={{ $now.toISO() }}",
+                            "type": "string"
+                        },
+                        {
+                            "id": "c7a21713-70b5-4357-84ce-854bcbaed33b",
+                            "name": "last_message",
+                            "value": "={{ $('CONTEXT 1').item.json.entrada_usuario }}",
+                            "type": "string"
+                        },
+                        {
+                            "id": "d424a476-8d63-449f-acc2-09a69f158a8f",
+                            "name": "has_reservation",
+                            "value": false,
+                            "type": "boolean"
                         }
                     ]
                 },
@@ -434,6 +458,18 @@
                             "id": "3e5c849b-5282-4ab3-aafc-72f1a05bf25c",
                             "name": "consulta_pendiente",
                             "value": "={{ $('Find User').item.json.consulta_pendiente || null }}",
+                            "type": "string"
+                        },
+                        {
+                            "id": "cf7d7f35-fa61-4954-93ff-0a23be16a4b8",
+                            "name": "last_interaction",
+                            "value": "={{ $now.toISO() }}",
+                            "type": "string"
+                        },
+                        {
+                            "id": "6aa9fc9f-3f93-4831-b5f6-81f0ad660c2b",
+                            "name": "last_message",
+                            "value": "={{ $('CONTEXT 1').item.json.entrada_usuario }}",
                             "type": "string"
                         }
                     ]
@@ -1044,7 +1080,7 @@
                 "sessionKey": "={{ $('PARSE BODY').item.json.current_body.id }}",
                 "collectionName": "chat_histories",
                 "databaseName": "Centralizado",
-                "contextWindowLength": 40
+                "contextWindowLength": 20
             },
             "type": "@n8n/n8n-nodes-langchain.memoryMongoDbChat",
             "typeVersion": 1,
@@ -1252,7 +1288,7 @@
             "type": "n8n-nodes-base.if",
             "typeVersion": 2.3,
             "position": [
-                192,
+                400,
                 32
             ],
             "id": "a42aeeac-c4e6-48c7-8707-d92bf2199798",
@@ -1323,7 +1359,7 @@
             "type": "n8n-nodes-base.set",
             "typeVersion": 3.4,
             "position": [
-                416,
+                624,
                 -64
             ],
             "id": "517b152d-5284-428e-8239-823cb8358c03",
@@ -1346,7 +1382,7 @@
             "type": "n8n-nodes-base.set",
             "typeVersion": 3.4,
             "position": [
-                -32,
+                176,
                 32
             ],
             "id": "4147c2d4-4818-4253-b976-276c939aa5c4",
@@ -1363,7 +1399,7 @@
             "type": "n8n-nodes-base.mongoDb",
             "typeVersion": 1.2,
             "position": [
-                640,
+                848,
                 -64
             ],
             "id": "cc724503-4f6c-4a71-ab8e-641bdea22223",
@@ -1380,7 +1416,7 @@
             "type": "n8n-nodes-base.noOp",
             "typeVersion": 1,
             "position": [
-                640,
+                848,
                 128
             ],
             "id": "29008664-9a25-40a7-8bd3-c17ecd24cc71",
@@ -1552,6 +1588,124 @@
             ],
             "id": "fcb1049d-7f6c-4e17-8ca7-beb408f124ef",
             "name": "rsvp"
+        },
+        {
+            "parameters": {
+                "workflowId": {
+                    "__rl": true,
+                    "value": "trGBkUrQpOtDH9K6",
+                    "mode": "list",
+                    "cachedResultUrl": "/workflow/trGBkUrQpOtDH9K6",
+                    "cachedResultName": "ESCALATION"
+                },
+                "workflowInputs": {
+                    "mappingMode": "defineBelow",
+                    "value": {
+                        "proyecto_codigo": "={{ $('User Data').item.json.proyecto || 'Ninguno' }}",
+                        "telefono_lead": "={{ $('User Data').item.json.telefono || 'Sin teléfono' }}",
+                        "nombre_lead": "={{ $('User Data').item.json.nombre || 'Desconocido' }}",
+                        "manychat_id": "={{ $('User Data').item.json.manychat_id }}",
+                        "ultima_consulta": "={{ $('CONTEXT 1').item.json.entrada_usuario }}"
+                    },
+                    "matchingColumns": [],
+                    "schema": [
+                        {
+                            "id": "manychat_id",
+                            "displayName": "manychat_id",
+                            "required": false,
+                            "defaultMatch": false,
+                            "display": true,
+                            "canBeUsedToMatch": true,
+                            "type": "string",
+                            "removed": false
+                        },
+                        {
+                            "id": "nombre_lead",
+                            "displayName": "nombre_lead",
+                            "required": false,
+                            "defaultMatch": false,
+                            "display": true,
+                            "canBeUsedToMatch": true,
+                            "type": "string",
+                            "removed": false
+                        },
+                        {
+                            "id": "telefono_lead",
+                            "displayName": "telefono_lead",
+                            "required": false,
+                            "defaultMatch": false,
+                            "display": true,
+                            "canBeUsedToMatch": true,
+                            "type": "string",
+                            "removed": false
+                        },
+                        {
+                            "id": "proyecto_codigo",
+                            "displayName": "proyecto_codigo",
+                            "required": false,
+                            "defaultMatch": false,
+                            "display": true,
+                            "canBeUsedToMatch": true,
+                            "type": "string",
+                            "removed": false
+                        },
+                        {
+                            "id": "ultima_consulta",
+                            "displayName": "ultima_consulta",
+                            "required": false,
+                            "defaultMatch": false,
+                            "display": true,
+                            "canBeUsedToMatch": true,
+                            "type": "string",
+                            "removed": false
+                        }
+                    ],
+                    "attemptToConvertTypes": false,
+                    "convertFieldsToString": true
+                },
+                "options": {}
+            },
+            "type": "n8n-nodes-base.executeWorkflow",
+            "typeVersion": 1.3,
+            "position": [
+                192,
+                240
+            ],
+            "id": "80eebb91-8e68-479c-a301-18e56678b0a5",
+            "name": "Call 'ESCALATION'"
+        },
+        {
+            "parameters": {
+                "conditions": {
+                    "options": {
+                        "caseSensitive": true,
+                        "leftValue": "",
+                        "typeValidation": "strict",
+                        "version": 3
+                    },
+                    "conditions": [
+                        {
+                            "id": "3844950b-1b47-4238-a3d7-70fd891a129f",
+                            "leftValue": "={{ $json.transferir }}",
+                            "rightValue": 1,
+                            "operator": {
+                                "type": "number",
+                                "operation": "equals"
+                            }
+                        }
+                    ],
+                    "combinator": "and"
+                },
+                "options": {}
+            },
+            "type": "n8n-nodes-base.filter",
+            "typeVersion": 2.3,
+            "position": [
+                -32,
+                240
+            ],
+            "id": "96e6bd98-b8e1-439f-bcc3-855fa7515820",
+            "name": "Filter IF TRANSFER"
         }
     ],
     "connections": {
@@ -2057,6 +2211,11 @@
                         "node": "Hay Cambios?",
                         "type": "main",
                         "index": 0
+                    },
+                    {
+                        "node": "Filter IF TRANSFER",
+                        "type": "main",
+                        "index": 0
                     }
                 ]
             ]
@@ -2140,6 +2299,17 @@
                     {
                         "node": "PRINCIPAL",
                         "type": "ai_tool",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Filter IF TRANSFER": {
+            "main": [
+                [
+                    {
+                        "node": "Call 'ESCALATION'",
+                        "type": "main",
                         "index": 0
                     }
                 ]
