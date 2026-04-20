@@ -1,0 +1,233 @@
+[
+    {
+        "id": "pvv_resumen_general",
+        "categoria": "proyecto",
+        "tags": ["resumen", "general", "spectrum", "zona15", "torre", "apartamentos", "parque vista verde"],
+        "pregunta": "¿Qué es Parque Vista Verde?",
+        "respuesta": "Parque Vista Verde es un proyecto residencial vertical desarrollado por Spectrum, ubicado en Zona 15, Ciudad de Guatemala. Diseñado para calidad de vida con el eslogan \"El lugar donde tus sueños se hacen realidad\". Cuenta con 1 torre de 18 niveles habitacionales, 7 sótanos de estacionamiento y 378 apartamentos en total (22 por nivel). Ofrece tipologías de 1, 2 y 3 habitaciones y más de 10 amenidades. Teléfono de atención: +502 3999-1881. ⚠️ DATO PENDIENTE: sitio web y dirección exacta — confirmar con equipo comercial."
+    },
+    {
+        "id": "pvv_ubicacion_direccion",
+        "categoria": "ubicacion",
+        "tags": ["ubicacion", "direccion", "zona15", "como llegar", "donde queda", "vista hermosa"],
+        "pregunta": "¿Dónde está ubicado Parque Vista Verde? ¿Cuál es la dirección?",
+        "respuesta": "Parque Vista Verde está ubicado en Zona 15, Ciudad de Guatemala, una de las zonas de mayor plusvalía y crecimiento de la capital. Ver ubicación: https://maps.app.goo.gl/rymbj5wKWm65k9Uc6. El Showroom de ventas se encuentra en el Sótano 2 de Oakland Place, Zona 10 → https://share.google/2JzGPsBAtLmghi3U5. ⚠️ DATO PENDIENTE: dirección exacta del proyecto — confirmar con equipo comercial."
+    },
+    {
+        "id": "pvv_ubicacion_accesos",
+        "categoria": "ubicacion",
+        "tags": ["accesos", "rutas", "boulevard", "carretera el salvador", "zona10", "zona14", "zona15"],
+        "pregunta": "¿Cómo se llega a Parque Vista Verde? ¿Qué accesos tiene?",
+        "respuesta": "Parque Vista Verde se ubica en Zona 15, con acceso desde el Boulevard Vista Hermosa, conexión rápida con la Carretera a El Salvador (CA-1), y cercanía a Zonas 10 y 14. La zona tiene múltiples rutas de acceso que facilitan la circulación hacia el centro financiero de la ciudad. ⚠️ DATO PENDIENTE: accesos específicos — confirmar con equipo comercial."
+    },
+    {
+        "id": "pvv_ubicacion_puntos_interes",
+        "categoria": "ubicacion",
+        "tags": ["puntos de interes", "oakland mall", "oakland place", "zona15", "zona10", "hospitales", "colegios", "restaurantes"],
+        "pregunta": "¿Qué hay cerca de Parque Vista Verde?",
+        "respuesta": "Parque Vista Verde está en una de las zonas más consolidadas de la capital. Cerca se encuentran: Centros Comerciales (Oakland Place, Oakland Mall), Educación (Colegio San Patricio, Colegio Monte María y otros colegios del sector), Salud (Hospital Herrera Llerandi, clínicas privadas), amplia oferta de restaurantes, servicios bancarios y empresas. La zona 15 es reconocida por su ambiente seguro, tranquilo y residencial de alto nivel. ⚠️ DATO PENDIENTE: lista completa de puntos de interés — confirmar con equipo comercial."
+    },
+    {
+        "id": "pvv_ubicacion_vistas",
+        "categoria": "ubicacion",
+        "tags": ["vistas", "volcanes", "zona10", "zona14", "zona15", "panoramica"],
+        "pregunta": "¿Qué vistas tiene el edificio de Parque Vista Verde?",
+        "respuesta": "⚠️ DATO PENDIENTE: descripción de vistas por orientación (norte, sur, este, oeste) — confirmar con equipo comercial. Dado que el proyecto está en Zona 15, se espera que ofrezca vistas hacia el corredor financiero de Zona 10-14 y posibles vistas a volcanes dependiendo del nivel."
+    },
+    {
+        "id": "pvv_desarrollador_spectrum",
+        "categoria": "desarrollador",
+        "tags": ["spectrum", "desarrollador", "trayectoria", "proyectos", "confianza", "experiencia"],
+        "pregunta": "¿Quién desarrolla Parque Vista Verde? ¿Qué experiencia tiene Spectrum?",
+        "respuesta": "Spectrum es el desarrollador de Parque Vista Verde. Tiene amplia trayectoria con 16 proyectos en Guatemala distribuidos en 3 líneas: Línea Parque (11 proyectos: Parque 7, 10, 11, 14, 15, San Ángel, Mateo, Mariscal, San Jorge, Vista Verde y Portales), Línea Reserva (3 proyectos: Reserva Oakland, Reserva Diez, Reserva 5ta Avenida) y Línea Parque Boutique (2 proyectos: Polanco Parque Boutique y Sotobosque Parque Boutique)."
+    },
+    {
+        "id": "pvv_desarrollador_avales",
+        "categoria": "desarrollador",
+        "tags": ["aval", "fha", "garantia", "bancos", "confianza", "inspeccion", "seguro"],
+        "pregunta": "¿Parque Vista Verde tiene avales o garantías? ¿Es un proyecto seguro?",
+        "respuesta": "Sí. Parque Vista Verde está avalado por el FHA (Instituto de Fomento de Hipotecas Aseguradas), que realiza inspecciones durante el proceso constructivo para asegurar Obra Civil, Instalaciones y Acabados. Cumple con normativas del Gobierno de Guatemala, cuenta con el aval de las principales entidades bancarias del país, incluye certificado de garantía para las unidades y tiene proceso de atención post-entrega."
+    },
+    {
+        "id": "pvv_programa_conviviendo",
+        "categoria": "desarrollador",
+        "tags": ["conviviendo", "comunidad", "valor propiedad", "areas comunes", "gestion social"],
+        "pregunta": "¿Qué es Conviviendo by Spectrum?",
+        "respuesta": "Conviviendo by Spectrum es un programa de gestión social que impulsa comunidades organizadas, funcionales y sostenibles. Fortalece la convivencia y el buen uso de áreas comunes, mejora la estabilidad operativa del proyecto y contribuye a que el valor de la propiedad crezca con el tiempo."
+    },
+    {
+        "id": "pvv_programa_sostenible",
+        "categoria": "desarrollador",
+        "tags": ["sostenible", "medio ambiente", "energia", "agua", "green building", "desechos"],
+        "pregunta": "¿Parque Vista Verde tiene algún programa de sostenibilidad?",
+        "respuesta": "Sí. Spectrum Sostenible es un programa de gestión responsable de desechos con el objetivo de implementar eficiencia en energía y agua, bienestar ambiental, naturaleza nativa y comunidad mejor conectada. Cuenta con apoyo técnico de Guatemala Green Building Council."
+    },
+    {
+        "id": "pvv_modelos_general",
+        "categoria": "modelos",
+        "tags": ["modelos", "tipologias", "habitaciones", "metrajes", "resumen", "cual elegir"],
+        "pregunta": "¿Cuáles son los modelos disponibles en Parque Vista Verde?",
+        "respuesta": "Parque Vista Verde ofrece apartamentos de 1, 2 y 3 habitaciones con metrajes desde 40 m² hasta 91 m². Todos los modelos incluyen: cocina, comedor, sala, balcón, lavandería y dormitorios con closet. Los parqueos son 1 o 2 según el modelo. ⚠️ DATO PENDIENTE: nombres específicos de modelos (códigos), precios por modelo y niveles disponibles — confirmar con equipo comercial."
+    },
+    {
+        "id": "pvv_modelo_1hab",
+        "categoria": "modelos",
+        "tags": ["1 habitacion", "1 dormitorio", "modelo pequeño", "profesionales", "inversion", "40m2"],
+        "pregunta": "¿Tienen apartamentos de 1 habitación en Parque Vista Verde?",
+        "respuesta": "Sí. Parque Vista Verde ofrece modelos de 1 habitación. El metraje exacto parte desde 40 m². Incluye cocina, sala-comedor, balcón, lavandería y dormitorio con closet. Viene con 1 parqueo. Ideal para jóvenes profesionales o como inversión. ⚠️ DATO PENDIENTE: nombre/código del modelo, precio exacto, cuota bancaria y niveles disponibles — confirmar con equipo comercial."
+    },
+    {
+        "id": "pvv_modelo_2hab",
+        "categoria": "modelos",
+        "tags": ["2 habitaciones", "2 dormitorios", "modelo mediano", "parejas", "familia pequeña"],
+        "pregunta": "¿Tienen apartamentos de 2 habitaciones en Parque Vista Verde?",
+        "respuesta": "Sí. Parque Vista Verde ofrece modelos de 2 habitaciones en metrajes intermedios. Incluyen 2 dormitorios, 2 baños, cocina, sala-comedor, balcón y lavandería. Ideal para parejas o familias pequeñas. ⚠️ DATO PENDIENTE: nombre/código del modelo, metraje exacto, precio, cuota bancaria, parqueos incluidos y niveles disponibles — confirmar con equipo comercial."
+    },
+    {
+        "id": "pvv_modelo_3hab",
+        "categoria": "modelos",
+        "tags": ["3 habitaciones", "3 dormitorios", "modelo grande", "familia", "91m2"],
+        "pregunta": "¿Tienen apartamentos de 3 habitaciones en Parque Vista Verde?",
+        "respuesta": "Sí. Parque Vista Verde ofrece modelos de 3 habitaciones con metrajes de hasta 91 m², los más amplios del proyecto. Incluyen 3 dormitorios con closet, 2 baños, cocina, sala-comedor, balcón, lavandería y 2 parqueos. Ideal para familias. ⚠️ DATO PENDIENTE: nombre/código del modelo, precio exacto, cuota bancaria y niveles disponibles — confirmar con equipo comercial."
+    },
+    {
+        "id": "pvv_precio_general",
+        "categoria": "precios",
+        "tags": ["precio", "costo", "cuanto cuesta", "valor", "quetzales", "rango"],
+        "pregunta": "¿Cuánto cuesta un apartamento en Parque Vista Verde?",
+        "respuesta": "Los precios en Parque Vista Verde van desde Q946,000 hasta Q2,064,000 con IVA incluido, dependiendo del modelo, metraje y nivel. Para conocer el precio exacto de una unidad específica, contactar al asesor al +502 3999-1881."
+    },
+    {
+        "id": "pvv_precio_reserva",
+        "categoria": "precios",
+        "tags": ["reserva", "costo reserva", "apartar", "bloquear"],
+        "pregunta": "¿Cuánto cuesta reservar un apartamento en Parque Vista Verde?",
+        "respuesta": "⚠️ DATO PENDIENTE: monto de reserva y proceso — confirmar con equipo comercial. Para más información contactar al +502 3999-1881."
+    },
+    {
+        "id": "pvv_financiamiento_general",
+        "categoria": "precios",
+        "tags": ["financiamiento", "credito", "banco", "hipoteca", "enganche", "mensualidad", "cuota"],
+        "pregunta": "¿Con qué bancos se puede financiar un apartamento en Parque Vista Verde?",
+        "respuesta": "⚠️ DATO PENDIENTE: entidades bancarias y condiciones específicas (% de enganche, plazo, ingreso mínimo requerido) — confirmar con equipo comercial. Como referencia general, los proyectos Spectrum trabajan con las principales entidades financieras de Guatemala incluyendo FHA, BAC Credomatic, GyT Continental, Banrural y Banco Industrial. Un asesor puede orientarte sobre el esquema más conveniente para tu caso al +502 3999-1881."
+    },
+    {
+        "id": "pvv_edificio_estructura",
+        "categoria": "proyecto",
+        "tags": ["torre", "niveles", "pisos", "sotanos", "estructura", "cuantos apartamentos", "altura"],
+        "pregunta": "¿Cuántas torres tiene Parque Vista Verde? ¿Cuántos niveles y apartamentos?",
+        "respuesta": "Parque Vista Verde es un proyecto de una sola fase con una torre de 18 niveles habitacionales y 7 sótanos de estacionamiento. Cuenta con 378 apartamentos en total, con 22 unidades por nivel."
+    },
+    {
+        "id": "pvv_fecha_entrega",
+        "categoria": "proyecto",
+        "tags": ["entrega", "cuando", "fecha", "listo", "mudarse", "construccion"],
+        "pregunta": "¿Cuándo es la fecha de entrega de Parque Vista Verde? ¿En qué estado está la construcción?",
+        "respuesta": "⚠️ DATO PENDIENTE: fecha estimada de entrega y estado actual de construcción — confirmar con equipo comercial. Para más información contactar al +502 3999-1881."
+    },
+    {
+        "id": "pvv_disponibilidad",
+        "categoria": "proyecto",
+        "tags": ["disponibilidad", "unidades disponibles", "cuantos quedan", "niveles disponibles"],
+        "pregunta": "¿Cuántas unidades están disponibles en Parque Vista Verde?",
+        "respuesta": "⚠️ DATO PENDIENTE: número de unidades disponibles y niveles en venta — la disponibilidad cambia constantemente. Contactar al asesor al +502 3999-1881 para conocer las unidades actuales."
+    },
+    {
+        "id": "pvv_amenidades_lista",
+        "categoria": "amenidades",
+        "tags": ["amenidades", "que tiene", "servicios", "comodidades", "lista", "10 amenidades"],
+        "pregunta": "¿Qué amenidades tiene Parque Vista Verde?",
+        "respuesta": "Parque Vista Verde cuenta con más de 10 amenidades:\n- Piscina\n- Gimnasio\n- Coworking\n- Salón social\n- Kid's Play\n- Family Lounge\n- Fire pits\n- Sky Lounge\n- Chef's Kitchen\n- Lobby"
+    },
+    {
+        "id": "pvv_amenidades_piscina",
+        "categoria": "amenidades",
+        "tags": ["piscina", "nadar", "agua", "descanso"],
+        "pregunta": "¿Parque Vista Verde tiene piscina?",
+        "respuesta": "Sí. Parque Vista Verde cuenta con piscina como parte de sus amenidades. ⚠️ DATO PENDIENTE: nivel donde se ubica, si es climatizada y detalles adicionales — confirmar con equipo comercial."
+    },
+    {
+        "id": "pvv_amenidades_gimnasio",
+        "categoria": "amenidades",
+        "tags": ["gimnasio", "ejercicio", "fitness", "gym"],
+        "pregunta": "¿Parque Vista Verde tiene gimnasio?",
+        "respuesta": "Sí. Parque Vista Verde cuenta con gimnasio como amenidad incluida para los residentes. ⚠️ DATO PENDIENTE: nivel donde se ubica y equipamiento disponible — confirmar con equipo comercial."
+    },
+    {
+        "id": "pvv_amenidades_skylounge",
+        "categoria": "amenidades",
+        "tags": ["sky lounge", "rooftop", "vistas", "terraza", "lounge"],
+        "pregunta": "¿Parque Vista Verde tiene Sky Lounge?",
+        "respuesta": "Sí. Parque Vista Verde tiene Sky Lounge, un espacio de descanso con vistas panorámicas. ⚠️ DATO PENDIENTE: nivel exacto y descripción completa — confirmar con equipo comercial."
+    },
+    {
+        "id": "pvv_amenidades_coworking",
+        "categoria": "amenidades",
+        "tags": ["coworking", "trabajo", "home office", "oficina", "escritorio"],
+        "pregunta": "¿Parque Vista Verde tiene área de coworking?",
+        "respuesta": "Sí. Parque Vista Verde cuenta con área de Coworking, ideal para residentes que trabajan desde casa o necesitan un espacio profesional sin salir del edificio. ⚠️ DATO PENDIENTE: nivel y capacidad — confirmar con equipo comercial."
+    },
+    {
+        "id": "pvv_amenidades_kids",
+        "categoria": "amenidades",
+        "tags": ["kids play", "niños", "juegos", "area infantil", "familia"],
+        "pregunta": "¿Parque Vista Verde tiene área para niños?",
+        "respuesta": "Sí. Parque Vista Verde cuenta con Kid's Play, un área diseñada para el entretenimiento y diversión de los niños residentes. ⚠️ DATO PENDIENTE: nivel y descripción — confirmar con equipo comercial."
+    },
+    {
+        "id": "pvv_amenidades_pet_friendly",
+        "categoria": "amenidades",
+        "tags": ["pet friendly", "mascotas", "perros", "gatos", "animales", "permitidos"],
+        "pregunta": "¿Parque Vista Verde es pet friendly? ¿Se permiten mascotas?",
+        "respuesta": "⚠️ DATO PENDIENTE: política de mascotas (razas, tamaños, cantidad permitida y si existe área específica para mascotas) — un asesor brindará los detalles exactos al +502 3999-1881."
+    },
+    {
+        "id": "pvv_seguridad",
+        "categoria": "amenidades",
+        "tags": ["seguridad", "vigilancia", "camaras", "accesos", "24/7"],
+        "pregunta": "¿Qué seguridad tiene Parque Vista Verde?",
+        "respuesta": "⚠️ DATO PENDIENTE: sistema de seguridad (guardias 24/7, cámaras, accesos controlados) — confirmar con equipo comercial. Un asesor puede brindarte todos los detalles al +502 3999-1881."
+    },
+    {
+        "id": "pvv_infraestructura",
+        "categoria": "amenidades",
+        "tags": ["elevadores", "gradas", "planta tratamiento", "pozo", "infraestructura"],
+        "pregunta": "¿Qué infraestructura tiene el edificio de Parque Vista Verde?",
+        "respuesta": "⚠️ DATO PENDIENTE: número de elevadores, gradas de emergencia, planta de tratamiento, pozo propio y otros sistemas — confirmar con equipo comercial."
+    },
+    {
+        "id": "pvv_mantenimiento_monto",
+        "categoria": "mantenimiento",
+        "tags": ["cuota mantenimiento", "monto", "cuanto cuesta", "mensualidad", "cuanto pago"],
+        "pregunta": "¿Cuánto es la cuota de mantenimiento en Parque Vista Verde?",
+        "respuesta": "⚠️ DATO PENDIENTE: monto de cuota de mantenimiento por modelo — confirmar con equipo comercial. Un asesor puede brindarte el detalle exacto al +502 3999-1881."
+    },
+    {
+        "id": "pvv_mantenimiento_que_cubre",
+        "categoria": "mantenimiento",
+        "tags": ["cuota mantenimiento", "que incluye", "que cubre", "areas comunes", "servicios incluidos"],
+        "pregunta": "¿Qué cubre la cuota de mantenimiento en Parque Vista Verde?",
+        "respuesta": "La cuota de mantenimiento cubre el costo de operación y conservación de todas las áreas comunes del edificio, incluyendo: energía eléctrica de áreas comunes, agua, seguridad, limpieza, mantenimiento de amenidades, elevadores, jardinería, administración y seguros del edificio. ⚠️ DATO PENDIENTE: lista completa detallada — confirmar con equipo comercial."
+    },
+    {
+        "id": "pvv_mantenimiento_pago",
+        "categoria": "mantenimiento",
+        "tags": ["donde pagar", "pago mantenimiento", "portal web", "servipagos"],
+        "pregunta": "¿Dónde puedo pagar la cuota de mantenimiento de Parque Vista Verde?",
+        "respuesta": "⚠️ DATO PENDIENTE: canales de pago disponibles (portal web, SerViPagos u otros) — confirmar con equipo comercial."
+    },
+    {
+        "id": "pvv_sala_ventas_horario",
+        "categoria": "contacto",
+        "tags": ["sala de ventas", "horario", "atencion", "cuando atienden", "visitar", "showroom", "oakland place"],
+        "pregunta": "¿Cuál es el horario de atención de la sala de ventas de Parque Vista Verde?",
+        "respuesta": "El Showroom de Parque Vista Verde se encuentra en el Sótano 2 de Oakland Place, Zona 10 → https://share.google/2JzGPsBAtLmghi3U5. ⚠️ DATO PENDIENTE: horario de atención — confirmar con equipo comercial al +502 3999-1881."
+    },
+    {
+        "id": "pvv_contacto",
+        "categoria": "contacto",
+        "tags": ["contacto", "telefono", "whatsapp", "web", "asesor", "comunicacion", "agendar cita"],
+        "pregunta": "¿Cómo puedo contactar a Parque Vista Verde o agendar una cita?",
+        "respuesta": "Puedes contactar a Parque Vista Verde por: Teléfono/WhatsApp: +502 3999-1881 con la encargada del proyecto. Showroom: Sótano 2 de Oakland Place, Zona 10 → https://share.google/2JzGPsBAtLmghi3U5. Ubicación del proyecto en Google Maps: https://maps.app.goo.gl/rymbj5wKWm65k9Uc6. ⚠️ DATO PENDIENTE: sitio web oficial — confirmar con equipo comercial."
+    }
+];

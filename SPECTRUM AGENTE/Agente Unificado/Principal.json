@@ -1,0 +1,2240 @@
+{
+    "nodes": [
+        {
+            "parameters": {
+                "method": "POST",
+                "url": "https://api.manychat.com/fb/sending/sendContent",
+                "authentication": "genericCredentialType",
+                "genericAuthType": "httpHeaderAuth",
+                "sendHeaders": true,
+                "headerParameters": {
+                    "parameters": [
+                        {
+                            "name": "Content-Type",
+                            "value": "application/json"
+                        }
+                    ]
+                },
+                "sendBody": true,
+                "specifyBody": "json",
+                "jsonBody": "={\n  \"subscriber_id\": \"{{ $('User Data').item.json.manychat_id }}\",\n  \"data\": {\n    \"version\": \"v2\",\n    \"content\": {\n      \"type\": \"{{ $json.type.trim() }}\",\n      \"messages\": [\n        {\n          \"type\": \"text\",\n          \"text\": \"{{ $('Parse response').item.json.respuesta.trim() }}\"\n        }\n      ]\n    }\n  }\n}",
+                "options": {}
+            },
+            "type": "n8n-nodes-base.httpRequest",
+            "typeVersion": 4.2,
+            "position": [
+                1088,
+                32
+            ],
+            "id": "8f8690ed-229d-4be2-8f87-344cd3bd793b",
+            "name": "RESPOND TO MANYCHAT",
+            "credentials": {
+                "httpHeaderAuth": {
+                    "id": "2KClojasxcPLSibd",
+                    "name": "Manychat"
+                }
+            }
+        },
+        {
+            "parameters": {
+                "assignments": {
+                    "assignments": [
+                        {
+                            "id": "dcff964b-b8c1-4e8f-9c6d-0a188497de72",
+                            "name": "type",
+                            "value": "={{ \n  $('PARSE BODY').item.json.current_body.custom_fields.canal_ingreso.includes(\"Instagram\")\n    ? \"instagram\"\n    : \n    $('PARSE BODY').item.json.current_body.custom_fields.canal_ingreso.includes(\"Messenger\")\n      ? \"messenger\"\n      : \"whatsapp\" \n}}",
+                            "type": "string"
+                        }
+                    ]
+                },
+                "options": {}
+            },
+            "type": "n8n-nodes-base.set",
+            "typeVersion": 3.4,
+            "position": [
+                864,
+                32
+            ],
+            "id": "e44bfda5-7a81-428a-b49d-ea6bb9ba20fb",
+            "name": "Parameter Type"
+        },
+        {
+            "parameters": {
+                "mode": "raw",
+                "jsonOutput": "={{ \n  $('Find User').item.json.isNotEmpty()\n  ? $('Find User').item.json\n  : $('Insert User').item.json\n}}",
+                "options": {}
+            },
+            "type": "n8n-nodes-base.set",
+            "typeVersion": 3.4,
+            "position": [
+                -1200,
+                32
+            ],
+            "id": "8ba8d8d7-bdee-49b0-bbcd-c2aed3f86d9a",
+            "name": "User Data"
+        },
+        {
+            "parameters": {},
+            "type": "n8n-nodes-base.noOp",
+            "typeVersion": 1,
+            "position": [
+                -2608,
+                -112
+            ],
+            "id": "b2e666f9-f4bd-414c-83bc-83e05f9090cb",
+            "name": "No Operation, do nothing"
+        },
+        {
+            "parameters": {
+                "conditions": {
+                    "options": {
+                        "caseSensitive": true,
+                        "leftValue": "",
+                        "typeValidation": "strict",
+                        "version": 3
+                    },
+                    "conditions": [
+                        {
+                            "id": "50bd63ca-47f2-4e0f-a347-e81b80b66057",
+                            "leftValue": "={{ $('PARSE BODY').item.json.current_body.custom_fields.canal_ingreso.toLowerCase() }}",
+                            "rightValue": "whatsapp",
+                            "operator": {
+                                "type": "string",
+                                "operation": "notEquals"
+                            }
+                        }
+                    ],
+                    "combinator": "and"
+                },
+                "options": {}
+            },
+            "type": "n8n-nodes-base.if",
+            "typeVersion": 2.3,
+            "position": [
+                -2896,
+                32
+            ],
+            "id": "9dda7064-fb51-47d9-9701-2fa8db5d8997",
+            "name": "If NO WHATSAPP"
+        },
+        {
+            "parameters": {
+                "text": "={{ $('JOINNING MESSAGE').item.json.message }}",
+                "attributes": {
+                    "attributes": [
+                        {
+                            "name": "proyecto",
+                            "description": "=Name: proyecto\n\nDescription:\nDevuelve el código del proyecto SOLO si el cliente menciona explícitamente \nuno de estos por nombre:\n\n{{ Object.values($('PROJECT LIST').item.json.proyectos).join(\"\\n\") }}\n\nDevuelve \"\" (cadena vacía) en TODOS estos casos:\n- El cliente pide ver la lista de proyectos disponibles\n- El cliente pregunta qué opciones hay\n- El cliente saluda o hace preguntas generales\n- El cliente no menciona ningún proyecto por nombre\n\nRequired: false",
+                            "required": true
+                        }
+                    ]
+                },
+                "options": {}
+            },
+            "type": "@n8n/n8n-nodes-langchain.informationExtractor",
+            "typeVersion": 1.2,
+            "position": [
+                -2672,
+                192
+            ],
+            "id": "86a02f5e-c4f0-4b1c-98fd-f94e96445895",
+            "name": "Proyecto"
+        },
+        {
+            "parameters": {
+                "text": "={{ $('JOINNING MESSAGE').item.json.message }}",
+                "attributes": {
+                    "attributes": [
+                        {
+                            "name": "language",
+                            "description": "=Idioma en el que está escrito el texto, devuelve el nombre del idioma, ejemplo, si el texto está en inglés, develves english, si es español, devuelve spanish y así con todos los idiomas.",
+                            "required": true
+                        },
+                        {
+                            "name": "asesoria",
+                            "type": "boolean",
+                            "description": "=Devuelve true si en el texto se solicita un asesor",
+                            "required": true
+                        }
+                    ]
+                },
+                "options": {}
+            },
+            "type": "@n8n/n8n-nodes-langchain.informationExtractor",
+            "typeVersion": 1.2,
+            "position": [
+                -3248,
+                32
+            ],
+            "id": "1076da75-202b-44a1-a575-f097bd777983",
+            "name": "Lenguaje & Asesoria"
+        },
+        {
+            "parameters": {
+                "model": {
+                    "__rl": true,
+                    "value": "gpt-4.1-mini",
+                    "mode": "list",
+                    "cachedResultName": "gpt-4.1-mini"
+                },
+                "responsesApiEnabled": false,
+                "options": {
+                    "temperature": 0.3
+                }
+            },
+            "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+            "typeVersion": 1.3,
+            "position": [
+                -2608,
+                416
+            ],
+            "id": "1182a882-0b4e-4b3b-9caa-bf4395f23ec5",
+            "name": "OpenAI Chat Model2",
+            "credentials": {
+                "openAiApi": {
+                    "id": "74BsdCWEjNoR3imD",
+                    "name": "Spectrum - Parque Portales"
+                }
+            }
+        },
+        {
+            "parameters": {
+                "operation": "update",
+                "collection": "users",
+                "updateKey": "_id",
+                "fields": "={{ Object.keys($json).filter(k => k !== '_id').join(\",\") }}",
+                "options": {
+                    "dateFields": "timestamp"
+                }
+            },
+            "type": "n8n-nodes-base.mongoDb",
+            "typeVersion": 1.2,
+            "position": [
+                -1424,
+                128
+            ],
+            "id": "796c1af0-8df4-4a8c-8db7-60c1a2f73439",
+            "name": "Update User",
+            "credentials": {
+                "mongoDb": {
+                    "id": "UzcANqeDFO1QLbfd",
+                    "name": "SPECTRUM - CENTRALIZADO"
+                }
+            }
+        },
+        {
+            "parameters": {
+                "operation": "insert",
+                "collection": "users",
+                "fields": "={{ Object.keys($json).join(\",\") }}",
+                "options": {}
+            },
+            "type": "n8n-nodes-base.mongoDb",
+            "typeVersion": 1.2,
+            "position": [
+                -1424,
+                -64
+            ],
+            "id": "b43de44d-2fd9-41ad-88cb-0f0777529862",
+            "name": "Insert User",
+            "credentials": {
+                "mongoDb": {
+                    "id": "UzcANqeDFO1QLbfd",
+                    "name": "SPECTRUM - CENTRALIZADO"
+                }
+            }
+        },
+        {
+            "parameters": {
+                "collection": "users",
+                "options": {},
+                "query": "={\"manychat_id\":\"{{ $('PARSE BODY').item.json.current_body.id }}\"}"
+            },
+            "type": "n8n-nodes-base.mongoDb",
+            "typeVersion": 1.2,
+            "position": [
+                -2096,
+                32
+            ],
+            "id": "95ee5898-6a3a-4f5c-bbcd-c9c68e9c181a",
+            "name": "Find User",
+            "alwaysOutputData": true,
+            "credentials": {
+                "mongoDb": {
+                    "id": "UzcANqeDFO1QLbfd",
+                    "name": "SPECTRUM - CENTRALIZADO"
+                }
+            }
+        },
+        {
+            "parameters": {
+                "assignments": {
+                    "assignments": [
+                        {
+                            "id": "46d9906e-3ffe-418b-9c72-f072a9a18907",
+                            "name": "entrada_usuario",
+                            "value": "={{ $('JOINNING MESSAGE').item.json.message }}",
+                            "type": "string"
+                        },
+                        {
+                            "id": "0bdc7c86-7c02-4648-81e1-9e4d955cf0a6",
+                            "name": "lenguaje",
+                            "value": "={{ $('Lenguaje & Asesoria').item.json.output.language }}",
+                            "type": "string"
+                        },
+                        {
+                            "id": "b20e774f-5dea-4852-b5a9-1c0fd99db2ce",
+                            "name": "asesoria",
+                            "value": "={{ $('Lenguaje & Asesoria').item.json.output.asesoria }}",
+                            "type": "boolean"
+                        },
+                        {
+                            "id": "66e47da4-9bbb-4253-bb0a-1eeef66226fc",
+                            "name": "canal",
+                            "value": "={{ $('PARSE BODY').item.json.current_body.custom_fields.canal_ingreso.toLowerCase() }}",
+                            "type": "string"
+                        },
+                        {
+                            "id": "e7c18ee2-ce70-40e2-9dfd-637ec3a5f5e8",
+                            "name": "proyecto",
+                            "value": "={{\n  $('Proyecto').isExecuted\n    ? $json.output.proyecto\n    : 'pvv'\n}}",
+                            "type": "string"
+                        }
+                    ]
+                },
+                "options": {}
+            },
+            "type": "n8n-nodes-base.set",
+            "typeVersion": 3.4,
+            "position": [
+                -2320,
+                32
+            ],
+            "id": "2fcce016-12d1-4ce8-bf91-5f790346f92c",
+            "name": "CONTEXT 1"
+        },
+        {
+            "parameters": {
+                "assignments": {
+                    "assignments": [
+                        {
+                            "id": "9040d88b-dc99-47e3-a6e3-14b8264ae6cb",
+                            "name": "manychat_id",
+                            "value": "={{ $('PARSE BODY').item.json.current_body.id }}",
+                            "type": "string"
+                        },
+                        {
+                            "id": "689aa6e6-0e3f-4aba-8834-1b8f675acaf4",
+                            "name": "proyecto",
+                            "value": "={{ $('CONTEXT 1').item.json.proyecto }}",
+                            "type": "string"
+                        },
+                        {
+                            "id": "d2233cfa-026f-400c-99a9-7f34bd8d58cc",
+                            "name": "last_user_input",
+                            "value": "={{ $('CONTEXT 1').item.json.entrada_usuario }}",
+                            "type": "string"
+                        },
+                        {
+                            "id": "e5358421-99f8-42a6-a9db-2882f3a89206",
+                            "name": "language",
+                            "value": "={{ $('CONTEXT 1').item.json.lenguaje }}",
+                            "type": "string"
+                        },
+                        {
+                            "id": "2a0b8cc0-ba06-41e4-8817-055f4bbb13de",
+                            "name": "asesoria",
+                            "value": "={{ $('CONTEXT 1').item.json.asesoria }}",
+                            "type": "boolean"
+                        },
+                        {
+                            "id": "15532baf-1a9a-439a-9af2-bc6354c701e5",
+                            "name": "input_channel",
+                            "value": "={{ $('CONTEXT 1').item.json.canal }}",
+                            "type": "string"
+                        },
+                        {
+                            "id": "014d3381-ff7e-446b-a7ab-753ca46481ff",
+                            "name": "timestamp",
+                            "value": "={{ $('PARSE BODY').item.json.timestamp }}",
+                            "type": "string"
+                        },
+                        {
+                            "id": "9bb77330-c41a-4137-9ade-35e0d1b2c006",
+                            "name": "consulta_pendiente",
+                            "value": "={{ null }}",
+                            "type": "string"
+                        }
+                    ]
+                },
+                "options": {}
+            },
+            "type": "n8n-nodes-base.set",
+            "typeVersion": 3.4,
+            "position": [
+                -1648,
+                -64
+            ],
+            "id": "8445d767-6cb5-4823-8634-1cc89d4aedc0",
+            "name": "DATA to CREATE"
+        },
+        {
+            "parameters": {
+                "assignments": {
+                    "assignments": [
+                        {
+                            "id": "d90a4768-5969-4cb1-b612-40627b026990",
+                            "name": "_id",
+                            "value": "={{ $('Find User').item.json._id.toJsonString().replace(/^\"(.*)\"$/, '$1') }}",
+                            "type": "string"
+                        },
+                        {
+                            "id": "9040d88b-dc99-47e3-a6e3-14b8264ae6cb",
+                            "name": "manychat_id",
+                            "value": "={{ $('PARSE BODY').item.json.current_body.id }}",
+                            "type": "string"
+                        },
+                        {
+                            "id": "689aa6e6-0e3f-4aba-8834-1b8f675acaf4",
+                            "name": "proyecto",
+                            "value": "={{ $('CONTEXT 1').item.json.proyecto || $('Find User').item.json.proyecto }}",
+                            "type": "string"
+                        },
+                        {
+                            "id": "d2233cfa-026f-400c-99a9-7f34bd8d58cc",
+                            "name": "last_user_input",
+                            "value": "={{ $('CONTEXT 1').item.json.entrada_usuario }}",
+                            "type": "string"
+                        },
+                        {
+                            "id": "e5358421-99f8-42a6-a9db-2882f3a89206",
+                            "name": "language",
+                            "value": "={{ $('CONTEXT 1').item.json.lenguaje }}",
+                            "type": "string"
+                        },
+                        {
+                            "id": "2a0b8cc0-ba06-41e4-8817-055f4bbb13de",
+                            "name": "asesoria",
+                            "value": "={{ $('CONTEXT 1').item.json.asesoria }}",
+                            "type": "boolean"
+                        },
+                        {
+                            "id": "15532baf-1a9a-439a-9af2-bc6354c701e5",
+                            "name": "input_channel",
+                            "value": "={{ $('CONTEXT 1').item.json.canal }}",
+                            "type": "string"
+                        },
+                        {
+                            "id": "014d3381-ff7e-446b-a7ab-753ca46481ff",
+                            "name": "timestamp",
+                            "value": "={{ $('PARSE BODY').item.json.timestamp }}",
+                            "type": "string"
+                        },
+                        {
+                            "id": "3e5c849b-5282-4ab3-aafc-72f1a05bf25c",
+                            "name": "consulta_pendiente",
+                            "value": "={{ $('Find User').item.json.consulta_pendiente || null }}",
+                            "type": "string"
+                        }
+                    ]
+                },
+                "options": {}
+            },
+            "type": "n8n-nodes-base.set",
+            "typeVersion": 3.4,
+            "position": [
+                -1648,
+                128
+            ],
+            "id": "a4a21435-238e-4615-be74-a0b4f84b6aed",
+            "name": "DATA to UPDATE"
+        },
+        {
+            "parameters": {
+                "conditions": {
+                    "options": {
+                        "caseSensitive": true,
+                        "leftValue": "",
+                        "typeValidation": "strict",
+                        "version": 3
+                    },
+                    "conditions": [
+                        {
+                            "id": "13f396d4-0c8b-4099-b87a-4f98c96f9af1",
+                            "leftValue": "={{ $('Find User').item.json.isEmpty() }}",
+                            "rightValue": "",
+                            "operator": {
+                                "type": "boolean",
+                                "operation": "true",
+                                "singleValue": true
+                            }
+                        }
+                    ],
+                    "combinator": "and"
+                },
+                "options": {}
+            },
+            "type": "n8n-nodes-base.if",
+            "typeVersion": 2.3,
+            "position": [
+                -1872,
+                32
+            ],
+            "id": "2f42029a-e99a-419e-bcaf-194f771ed91e",
+            "name": "If USER NOT EXIST"
+        },
+        {
+            "parameters": {
+                "mode": "raw",
+                "jsonOutput": "={{ JSON.parse($('Create Body').item.json.body) }}",
+                "options": {}
+            },
+            "type": "n8n-nodes-base.set",
+            "typeVersion": 3.4,
+            "position": [
+                -7280,
+                32
+            ],
+            "id": "92242806-0a35-46f5-8944-e2cede4269a4",
+            "name": "PARSE BODY"
+        },
+        {
+            "parameters": {
+                "assignments": {
+                    "assignments": [
+                        {
+                            "id": "df6dd35d-a8b7-4ecb-8ef8-5a19ed499cfc",
+                            "name": "message",
+                            "value": "={{ $json.propertyName.join(\", \") }}",
+                            "type": "string"
+                        }
+                    ]
+                },
+                "options": {}
+            },
+            "type": "n8n-nodes-base.set",
+            "typeVersion": 3.4,
+            "position": [
+                -3920,
+                32
+            ],
+            "id": "1f52b2a8-0ef2-4f7b-a704-961bf4948076",
+            "name": "JOINNING MESSAGE"
+        },
+        {
+            "parameters": {
+                "assignments": {
+                    "assignments": [
+                        {
+                            "id": "c0230658-9c5d-4ac7-8851-1b71483100c9",
+                            "name": "proyectos",
+                            "value": "={{ \n  {\n    1:\"Parque Vista Verde -> pvv\",\n    2:\"Parque Mariscal -> pm\",\n    3:\"Parque Portales -> pp\"\n  }\n}}",
+                            "type": "object"
+                        }
+                    ]
+                },
+                "options": {}
+            },
+            "type": "n8n-nodes-base.set",
+            "typeVersion": 3.4,
+            "position": [
+                -3472,
+                32
+            ],
+            "id": "c8f31a48-1d47-4d0a-a172-0c448e90cca1",
+            "name": "PROJECT LIST"
+        },
+        {
+            "parameters": {
+                "conditions": {
+                    "options": {
+                        "caseSensitive": true,
+                        "leftValue": "",
+                        "typeValidation": "strict",
+                        "version": 3
+                    },
+                    "conditions": [
+                        {
+                            "id": "5b5ad242-c6c3-4f2a-9b67-edb92fa424be",
+                            "leftValue": "={{ $json.propertyName.last() }}",
+                            "rightValue": "={{ $('INPUT FINAL').item.json.input }}",
+                            "operator": {
+                                "type": "string",
+                                "operation": "equals"
+                            }
+                        }
+                    ],
+                    "combinator": "and"
+                },
+                "options": {}
+            },
+            "type": "n8n-nodes-base.filter",
+            "typeVersion": 2.3,
+            "position": [
+                -4144,
+                32
+            ],
+            "id": "b4d01aba-1fde-44ee-a35c-84714c31f34c",
+            "name": "Filter1"
+        },
+        {
+            "parameters": {
+                "operation": "delete",
+                "key": "={{ $('PARSE BODY').item.json.current_body.id }}"
+            },
+            "type": "n8n-nodes-base.redis",
+            "typeVersion": 1,
+            "position": [
+                -3696,
+                32
+            ],
+            "id": "de769748-e010-413e-98c1-6cf5b6e32e98",
+            "name": "DELETE MESSAGES",
+            "credentials": {
+                "redis": {
+                    "id": "8EUkwaZixjCH7szY",
+                    "name": "Redis GarooVPS"
+                }
+            }
+        },
+        {
+            "parameters": {
+                "amount": 0
+            },
+            "type": "n8n-nodes-base.wait",
+            "typeVersion": 1.1,
+            "position": [
+                -4592,
+                32
+            ],
+            "id": "8b24c428-e962-441b-944d-9411d502c46f",
+            "name": "Wait",
+            "webhookId": "50ed2939-b8ec-48f7-8c6b-3bf14c2efc58"
+        },
+        {
+            "parameters": {
+                "operation": "get",
+                "key": "={{ $('PARSE BODY').item.json.current_body.id }}",
+                "options": {}
+            },
+            "type": "n8n-nodes-base.redis",
+            "typeVersion": 1,
+            "position": [
+                -4368,
+                32
+            ],
+            "id": "5dfe6799-caff-441a-b1d7-f3ff801c63e8",
+            "name": "GET MESSAGE",
+            "credentials": {
+                "redis": {
+                    "id": "8EUkwaZixjCH7szY",
+                    "name": "Redis GarooVPS"
+                }
+            }
+        },
+        {
+            "parameters": {
+                "operation": "push",
+                "list": "={{ $('PARSE BODY').item.json.current_body.id }}",
+                "messageData": "={{ $json.input }}",
+                "tail": true
+            },
+            "type": "n8n-nodes-base.redis",
+            "typeVersion": 1,
+            "position": [
+                -4816,
+                32
+            ],
+            "id": "f42b94bc-94cd-4c6f-90b7-1a81d870ce49",
+            "name": "SAVE MESSAGE",
+            "credentials": {
+                "redis": {
+                    "id": "8EUkwaZixjCH7szY",
+                    "name": "Redis GarooVPS"
+                }
+            }
+        },
+        {
+            "parameters": {
+                "assignments": {
+                    "assignments": [
+                        {
+                            "id": "c1c4c388-e572-4502-9cf1-51d28b4d022d",
+                            "name": "input",
+                            "value": "={{ $json.mensaje.join(\" \") }}",
+                            "type": "string"
+                        }
+                    ]
+                },
+                "options": {}
+            },
+            "type": "n8n-nodes-base.set",
+            "typeVersion": 3.4,
+            "position": [
+                -5040,
+                32
+            ],
+            "id": "1e622704-f329-44db-bada-4432b251349a",
+            "name": "INPUT FINAL"
+        },
+        {
+            "parameters": {
+                "assignments": {
+                    "assignments": [
+                        {
+                            "id": "ea8c9284-e11f-4e87-a742-4392a692da2a",
+                            "name": "mensaje",
+                            "value": "={{ $json.text }}",
+                            "type": "string"
+                        },
+                        {
+                            "id": "1f2fe528-cff0-4713-9dcb-4221b508c597",
+                            "name": "hora_llegada",
+                            "value": "={{ $json.timestamp }}",
+                            "type": "string"
+                        }
+                    ]
+                },
+                "options": {}
+            },
+            "type": "n8n-nodes-base.set",
+            "typeVersion": 3.4,
+            "position": [
+                -5936,
+                -160
+            ],
+            "id": "19fcebfc-b3e5-4f6e-a0a3-8af64bb5f17d",
+            "name": "audio input"
+        },
+        {
+            "parameters": {
+                "assignments": {
+                    "assignments": [
+                        {
+                            "id": "ea8c9284-e11f-4e87-a742-4392a692da2a",
+                            "name": "mensaje",
+                            "value": "={{ $json.content }}",
+                            "type": "string"
+                        },
+                        {
+                            "id": "1f2fe528-cff0-4713-9dcb-4221b508c597",
+                            "name": "hora_llegada",
+                            "value": "={{ $json.timestamp }}",
+                            "type": "string"
+                        }
+                    ]
+                },
+                "options": {}
+            },
+            "type": "n8n-nodes-base.set",
+            "typeVersion": 3.4,
+            "position": [
+                -5936,
+                32
+            ],
+            "id": "cd02d597-7448-45a2-a52d-25bef28b8192",
+            "name": "image input"
+        },
+        {
+            "parameters": {
+                "assignments": {
+                    "assignments": [
+                        {
+                            "id": "ea8c9284-e11f-4e87-a742-4392a692da2a",
+                            "name": "mensaje",
+                            "value": "={{ $json.current_body.last_input_text }}",
+                            "type": "string"
+                        },
+                        {
+                            "id": "1f2fe528-cff0-4713-9dcb-4221b508c597",
+                            "name": "hora_llegada",
+                            "value": "={{ $json.timestamp }}",
+                            "type": "string"
+                        }
+                    ]
+                },
+                "options": {}
+            },
+            "type": "n8n-nodes-base.set",
+            "typeVersion": 3.4,
+            "position": [
+                -5936,
+                224
+            ],
+            "id": "c5e2c2e1-981e-4a1e-bbc4-7b54ff2fa31f",
+            "name": "text input"
+        },
+        {
+            "parameters": {
+                "url": "={{ $json.current_body.last_input_text }}",
+                "options": {}
+            },
+            "type": "n8n-nodes-base.httpRequest",
+            "typeVersion": 4.2,
+            "position": [
+                -6384,
+                -160
+            ],
+            "id": "8a0586d9-9856-4238-a8d2-a82fed112e34",
+            "name": "HTTP IF AUDIO"
+        },
+        {
+            "parameters": {
+                "resource": "image",
+                "operation": "analyze",
+                "modelId": {
+                    "__rl": true,
+                    "value": "gpt-4o",
+                    "mode": "list",
+                    "cachedResultName": "GPT-4O"
+                },
+                "text": "Eres un experto en describir imagenes para un chatbot responde lo que ves en la imagen de esta manera. \"El usuario envió una imagen etc...\"",
+                "inputType": "base64",
+                "options": {}
+            },
+            "type": "@n8n/n8n-nodes-langchain.openAi",
+            "typeVersion": 1.8,
+            "position": [
+                -6160,
+                32
+            ],
+            "id": "0890ae11-66ff-48be-8d65-d24b665f166f",
+            "name": "ANALIZA IMAGEN",
+            "credentials": {
+                "openAiApi": {
+                    "id": "mwtQQFLfYjj6JZcg",
+                    "name": "Spectrum - Parque Verde"
+                }
+            }
+        },
+        {
+            "parameters": {
+                "model": {
+                    "__rl": true,
+                    "value": "gpt-4.1-mini",
+                    "mode": "list",
+                    "cachedResultName": "gpt-4.1-mini"
+                },
+                "responsesApiEnabled": false,
+                "options": {
+                    "temperature": 0.3
+                }
+            },
+            "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+            "typeVersion": 1.3,
+            "position": [
+                -3184,
+                256
+            ],
+            "id": "7b418519-b035-4605-a375-886650a2b289",
+            "name": "OpenAI Chat Model1",
+            "credentials": {
+                "openAiApi": {
+                    "id": "74BsdCWEjNoR3imD",
+                    "name": "Spectrum - Parque Portales"
+                }
+            }
+        },
+        {
+            "parameters": {
+                "fieldsToAggregate": {
+                    "fieldToAggregate": [
+                        {
+                            "fieldToAggregate": "mensaje"
+                        }
+                    ]
+                },
+                "options": {}
+            },
+            "type": "n8n-nodes-base.aggregate",
+            "typeVersion": 1,
+            "position": [
+                -5264,
+                32
+            ],
+            "id": "edb13274-8f69-4c56-bec1-240dc84962f4",
+            "name": "Aggregate"
+        },
+        {
+            "parameters": {
+                "sortFieldsUi": {
+                    "sortField": [
+                        {
+                            "fieldName": "hora_llegada"
+                        }
+                    ]
+                },
+                "options": {}
+            },
+            "type": "n8n-nodes-base.sort",
+            "typeVersion": 1,
+            "position": [
+                -5488,
+                32
+            ],
+            "id": "120b6bda-a879-446a-8bc3-815c32521240",
+            "name": "Sort"
+        },
+        {
+            "parameters": {
+                "numberInputs": 3
+            },
+            "type": "n8n-nodes-base.merge",
+            "typeVersion": 3.2,
+            "position": [
+                -5712,
+                16
+            ],
+            "id": "b21c901b-7db0-4bd9-87a1-d55c54e2fee8",
+            "name": "Merge"
+        },
+        {
+            "parameters": {
+                "resource": "audio",
+                "operation": "transcribe",
+                "options": {}
+            },
+            "type": "@n8n/n8n-nodes-langchain.openAi",
+            "typeVersion": 1.8,
+            "position": [
+                -6160,
+                -160
+            ],
+            "id": "a700d446-3607-4d53-9969-5e5b094f3b61",
+            "name": "TRANSCRIBE AUDIO",
+            "credentials": {
+                "openAiApi": {
+                    "id": "74BsdCWEjNoR3imD",
+                    "name": "Spectrum - Parque Portales"
+                }
+            }
+        },
+        {
+            "parameters": {
+                "conditions": {
+                    "options": {
+                        "caseSensitive": true,
+                        "leftValue": "",
+                        "typeValidation": "strict",
+                        "version": 2
+                    },
+                    "conditions": [
+                        {
+                            "id": "92200249-f6e4-4f84-bd28-bc36de22beb3",
+                            "leftValue": "={{ $('HTTP Request').item.binary.data.mimeType }}",
+                            "rightValue": "audio/ogg",
+                            "operator": {
+                                "type": "string",
+                                "operation": "contains"
+                            }
+                        },
+                        {
+                            "id": "b5bd48d1-851e-43bc-a097-e16c0dcca59c",
+                            "leftValue": "={{ $('HTTP Request').item.binary.data.mimeType }}",
+                            "rightValue": "video/mp4",
+                            "operator": {
+                                "type": "string",
+                                "operation": "contains"
+                            }
+                        }
+                    ],
+                    "combinator": "or"
+                },
+                "options": {}
+            },
+            "type": "n8n-nodes-base.if",
+            "typeVersion": 2.2,
+            "position": [
+                -6608,
+                -64
+            ],
+            "id": "0fd6a63c-a29f-4396-8638-f03c54b78296",
+            "name": "ES AUDIO / IMAGEN"
+        },
+        {
+            "parameters": {
+                "url": "={{ $json.current_body.last_input_text }}",
+                "options": {}
+            },
+            "type": "n8n-nodes-base.httpRequest",
+            "typeVersion": 4.2,
+            "position": [
+                -6832,
+                -64
+            ],
+            "id": "f3a54366-266b-4d4c-bd76-a41254645cca",
+            "name": "HTTP Request"
+        },
+        {
+            "parameters": {
+                "conditions": {
+                    "options": {
+                        "caseSensitive": true,
+                        "leftValue": "",
+                        "typeValidation": "strict",
+                        "version": 2
+                    },
+                    "conditions": [
+                        {
+                            "id": "92200249-f6e4-4f84-bd28-bc36de22beb3",
+                            "leftValue": "={{ $('PARSE BODY').item.json.current_body.last_input_text }}",
+                            "rightValue": "https://manybot-files",
+                            "operator": {
+                                "type": "string",
+                                "operation": "contains"
+                            }
+                        },
+                        {
+                            "id": "b5bd48d1-851e-43bc-a097-e16c0dcca59c",
+                            "leftValue": "={{ $('PARSE BODY').item.json.current_body.last_input_text }}",
+                            "rightValue": "https://lookaside.fbsbx.com",
+                            "operator": {
+                                "type": "string",
+                                "operation": "contains"
+                            }
+                        }
+                    ],
+                    "combinator": "or"
+                },
+                "options": {}
+            },
+            "type": "n8n-nodes-base.if",
+            "typeVersion": 2.2,
+            "position": [
+                -7056,
+                32
+            ],
+            "id": "388f4dd3-b9fa-4aaa-a40c-73e365937307",
+            "name": "ES ARCHIVO"
+        },
+        {
+            "parameters": {
+                "jsCode": "const current_key = $input.first().json.body.key;\n\nconst current_body = $input.first().json.body;\n\nconst timestamp = new Date().toISOString();\n\nconst start_time = Date.now();\n\nconst result_body = {\n current_body,\n  timestamp\n}\n\nreturn [{\n  key: current_key,\n  body: JSON.stringify(result_body),\n  timestamp,\n  start_time\n}]\n"
+            },
+            "type": "n8n-nodes-base.code",
+            "typeVersion": 2,
+            "position": [
+                -7504,
+                32
+            ],
+            "id": "4fe09ed9-6f9f-4268-b1e1-195e62d87ff8",
+            "name": "Create Body"
+        },
+        {
+            "parameters": {
+                "httpMethod": "POST",
+                "path": "spectrum-agent",
+                "options": {
+                    "allowedOrigins": "*"
+                }
+            },
+            "type": "n8n-nodes-base.webhook",
+            "typeVersion": 2.1,
+            "position": [
+                -7728,
+                32
+            ],
+            "id": "26551efe-abe5-4f9d-9c6f-efd43f371a8a",
+            "name": "Webhook",
+            "webhookId": "bbe94977-7886-4071-a874-e370d3b20c97"
+        },
+        {
+            "parameters": {
+                "sessionIdType": "customKey",
+                "sessionKey": "={{ $('PARSE BODY').item.json.current_body.id }}",
+                "collectionName": "chat_histories",
+                "databaseName": "Centralizado",
+                "contextWindowLength": 40
+            },
+            "type": "@n8n/n8n-nodes-langchain.memoryMongoDbChat",
+            "typeVersion": 1,
+            "position": [
+                -848,
+                256
+            ],
+            "id": "c0e81b81-96e8-42ca-aa21-460754457646",
+            "name": "MongoDB Chat Memory",
+            "credentials": {
+                "mongoDb": {
+                    "id": "UzcANqeDFO1QLbfd",
+                    "name": "SPECTRUM - CENTRALIZADO"
+                }
+            }
+        },
+        {
+            "parameters": {
+                "model": {
+                    "__rl": true,
+                    "value": "gpt-5.4-mini",
+                    "mode": "list",
+                    "cachedResultName": "gpt-5.4-mini"
+                },
+                "responsesApiEnabled": false,
+                "options": {}
+            },
+            "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+            "typeVersion": 1.3,
+            "position": [
+                -976,
+                256
+            ],
+            "id": "d5c65c42-ef7f-4954-9c62-74535d14f708",
+            "name": "OpenAI Chat Model",
+            "credentials": {
+                "openAiApi": {
+                    "id": "mwtQQFLfYjj6JZcg",
+                    "name": "Spectrum - Parque Verde"
+                }
+            }
+        },
+        {
+            "parameters": {
+                "promptType": "define",
+                "text": "=Datos del Lead:\nMensaje del usuario: {{ $('CONTEXT 1').item.json.entrada_usuario }}.\nIdioma: {{ $json.language }}.\nNecesita asesoría?: {{ $('User Data').item.json.asesoria ? \"SI\" : \"NO\" }}.\nProyecto activo en sesión: {{ $('User Data').item.json.proyecto || \"Ninguno\" }}.\nCanal de entrada: {{ $('User Data').item.json.input_channel }}\nTel_sistema: {{ $('PARSE BODY').item.json.current_body.phone || 'No tiene' }}\nContexto: {{ $('CONTEXT 1').item.json.toJsonString() }}",
+                "options": {
+                    "systemMessage": "=## IDENTIDAD ##\nEres Sof-IA, agente virtual oficial de SPECTRUM VIVIENDA, desarrolladora inmobiliaria premium.\nIdentidad: amable, profesional, cercana. Español neutro.\nTu voz es consistente durante toda la conversación. El usuario siempre habla con Sof-IA.\n\n## ROL ##\n- Saludar y atender al usuario de forma conversacional.\n- Identificar qué proyecto le interesa (Parque Vista Verde, Parque Mariscal, Parque Portales).\n- Calificar al lead recolectando sus datos de contacto antes de dar información del proyecto.\n- Responder consultas del proyecto usando la knowledge base via `kb_search`.\n- Escalar a asesor humano solo cuando el usuario lo pide explícitamente.\n\nTienes acceso a información detallada de los proyectos a través de la tool\n`kb_search`. Úsala cuando el lead tenga sus datos completos y haga preguntas\nsobre el proyecto activo.\n\n## CONTEXTO DEL LEAD ##\n- Nombre: {{ $('User Data').item.json.nombre || 'NO DISPONIBLE' }}\n- Correo: {{ $('User Data').item.json.correo || 'NO DISPONIBLE' }}\n- Teléfono: {{ $('User Data').item.json.telefono || 'NO DISPONIBLE' }}\n- Proyecto activo: {{ $('User Data').item.json.proyecto || 'Ninguno' }}\n- Canal: {{ $('User Data').item.json.input_channel }}\n- Consulta pendiente: {{ $('User Data').item.json.consulta_pendiente || 'ninguna' }}\n\n## TOOLS DISPONIBLES ##\n\n**lead_collector**\n- Función: recolectar nombre, correo y teléfono del lead.\n- Cuándo usarla: cuando el usuario expresa intención real (consulta, pregunta, interés) Y faltan datos del lead.\n- Qué devuelve: JSON con los datos recolectados y un mensaje conversacional.\n- Cuándo NO usarla: para saludos simples, confirmaciones, o cuando los datos ya están completos.\n\n**kb_search**\n- Función: buscar y responder preguntas sobre el proyecto activo usando la knowledge base vectorizada.\n- Cuándo usarla: cuando datos_completos es true Y proyecto activo tiene valor Y el usuario hace una pregunta sobre el proyecto.\n- Qué devuelve: JSON con campo `response` (texto conversacional) y `escalate` (boolean).\n- Cuándo NO usarla: cuando faltan datos del lead, cuando el usuario saluda, cuando no hay proyecto activo.\n\n## CLASIFICACIÓN DE MENSAJES ##\n\n**Saludo puro:** \"hola\", \"buenas\", \"qué tal\", \"hey\", \"buenos días\", mensajes solo de cortesía.\n→ Responde directo. NO llames ninguna tool.\n\n**Intención real:** preguntas (¿cuánto cuesta?, ¿dónde queda?), pedidos (quiero información, me interesa), interés en cotizar.\n→ Si faltan datos del lead → llama `lead_collector`, guarda consulta en `consulta_pendiente.guardar`.\n→ Si datos completos Y hay proyecto activo → llama `kb_search`.\n→ Si datos completos Y NO hay proyecto activo → guarda consulta en `consulta_pendiente.guardar` y pregunta cuál proyecto le interesa.\n\n**Elección de proyecto:** usuario menciona nombre de proyecto.\n→ Registra el proyecto en `estado_proyecto.proyecto`.\n→ Si hay consulta pendiente → llama `kb_search` con esa consulta.\n→ Si no hay consulta pendiente → confirma amablemente y pregunta en qué puede ayudar.\n\n**Dato personal del lead:** nombre, correo, teléfono o confirmación.\n→ Llama `lead_collector`.\n\n**Confirmación o mensaje ambiguo:** \"sí\", \"ok\", \"dale\", \"gracias\".\n→ Si hay `lead_collector` activo recolectando datos → llama `lead_collector`.\n→ Si no, responde de forma natural.\n\n## LÓGICA DE CONVERSACIÓN ##\n\n**SALUDO INICIAL (primera interacción, historial vacío):**\n- Responde: \"¡Hola! Soy Sof-IA, asistente virtual de SPECTRUM VIVIENDA. ¿En qué puedo ayudarte hoy? 😊\"\n- No pidas datos todavía.\n- accion.tipo: \"esperar\"\n\n**SALUDO EN CONVERSACIÓN EN CURSO:**\n- No te presentes de nuevo.\n- Responde natural, sin repetir \"Soy Sof-IA\".\n\n**CONSULTA CON DATOS COMPLETOS Y PROYECTO ACTIVO (PRIORIDAD ALTA):**\nSi datos_completos es true Y proyecto activo tiene valor:\n→ Llama INMEDIATAMENTE a `kb_search`\n→ Pásale la pregunta exacta del usuario como `entrada_usuario`\n→ Usa el campo `response` de la tool como tu `respuesta`\n→ accion.tipo: \"consultar_proyecto\"\n→ NUNCA respondas directamente sobre detalles del proyecto\n\n**CONSULTA CON DATOS COMPLETOS SIN PROYECTO ACTIVO:**\nSi datos_completos es true Y proyecto activo es \"Ninguno\":\n→ Guarda la consulta en `consulta_pendiente.guardar`\n→ Pregunta cuál proyecto le interesa\n→ accion.tipo: \"aclarar\"\n→ NO llames ninguna tool\n\n**USUARIO ELIGE PROYECTO:**\nMapea el nombre al código:\n- Vista Verde / Verde / zona 15 / pvv → pvv\n- Mariscal / zona 11 / pm → pm\n- Portales / zona 17 / pp → pp\n\nUna vez identificado:\n- Registra en `estado_proyecto.proyecto` con el código.\n- Si hay `consulta_pendiente` en el contexto → llama `kb_search` con ese texto como `entrada_usuario`.\n  → accion.tipo: \"consultar_proyecto\"\n  → consulta_pendiente.limpiar: true\n- Si no hay consulta pendiente → confirmá amablemente y preguntá en qué podés ayudar.\n  → accion.tipo: \"aclarar\"\n\n## LÓGICA DE CONSULTA PENDIENTE ##\n\n**REGLA GUARDAR:**\nUsuario hace consulta Y faltan datos del lead Y consulta_pendiente es \"ninguna\":\n→ consulta_pendiente.guardar = mensaje original del usuario\n→ consulta_pendiente.limpiar = false\n→ llama lead_collector\n\nUsuario hace consulta Y datos completos Y NO hay proyecto activo Y consulta_pendiente es \"ninguna\":\n→ consulta_pendiente.guardar = mensaje original del usuario\n→ consulta_pendiente.limpiar = false\n→ pregunta cuál proyecto le interesa\n\n**REGLA RETOMO — cuando lead_collector devuelve transferir_agente: 1:**\n\nCASO A — No hay proyecto activo:\n→ IGNORAR response del lead_collector\n→ Responder: agradecimiento breve + preguntar cuál proyecto le interesa\n→ accion.tipo: \"aclarar\"\n→ consulta_pendiente.limpiar: false (mantener hasta que elija proyecto)\n\nCASO B — Ya hay proyecto activo:\n→ IGNORAR response del lead_collector\n→ Llamar `kb_search` con el texto de la consulta pendiente\n→ accion.tipo: \"consultar_proyecto\"\n→ consulta_pendiente.limpiar: true\n\nEJEMPLOS:\n- Pendiente: \"quiero saber precios\" / Sin proyecto → \"¡Gracias, jorge! Para los precios, ¿cuál proyecto te interesa?\"\n- Pendiente: \"quiero saber precios\" / Proyecto: pvv → llama kb_search con \"quiero saber precios\"\n- Usuario dice \"Vista Verde\" / Pendiente: \"quiero saber precios\" → llama kb_search con \"quiero saber precios\"\n\n**REGLA NO TOCAR:**\nSaludo puro, dato personal, confirmación dentro de recolección:\n→ consulta_pendiente.guardar: null\n→ consulta_pendiente.limpiar: false\n→ consulta_pendiente.retomar: null\n\n**REGLA LIMPIAR:**\nUsuario cambia de tema explícitamente:\n→ consulta_pendiente.limpiar: true\n→ consulta_pendiente.guardar: nueva consulta si aplica\n\n## MANEJO DE RESPUESTAS DE TOOLS ##\n\nCuando `lead_collector` devuelva un JSON:\n- Lee su campo `response` y úsalo como `respuesta` en tu output.\n- Sus campos `nombre`, `correo`, `telefono` los reflejas en `estado_lead`.\n- Si devolvió `transferir_agente: 1` → datos completos → aplica REGLA RETOMO.\n- NUNCA pases el JSON crudo al usuario.\n- NUNCA inventes response propio cuando usas la tool, excepto en el RETOMO.\n\nCuando `kb_search` devuelva un JSON:\n- Lee su campo `response` y úsalo como `respuesta` en tu output.\n- Si devolvió `escalate: true` → pon `transferir: 1`.\n- NUNCA pases el JSON crudo al usuario.\n- NUNCA inventes información del proyecto que no venga de kb_search.\n\n## REGLAS DE ESTILO ##\n- Respuestas cortas y naturales.\n- Una sola frase conversacional por turno cuando sea posible.\n- NUNCA menciones \"tools\", \"flujos\", \"agentes internos\" ni procesos del sistema.\n- NUNCA incluyas la lista de proyectos en `respuesta` (se agrega automáticamente).\n- Tono cercano pero profesional.\n\n## MAPEO DE PROYECTOS ##\n- \"Vista Verde\", \"Verde\", \"zona 15\", \"pvv\" → código: pvv\n- \"Mariscal\", \"zona 11\", \"pm\" → código: pm\n- \"Portales\", \"zona 17\", \"pp\" → código: pp\n\n## FORMATO DE SALIDA OBLIGATORIO ##\nResponde ÚNICAMENTE con este JSON, sin bloques de código, sin texto fuera:\n\n{\n  \"respuesta\": \"<texto al usuario>\",\n  \"estado_lead\": {\n    \"nombre\": \"<string|null>\",\n    \"correo\": \"<string|null>\",\n    \"telefono\": \"<string|null>\",\n    \"datos_completos\": <true|false>\n  },\n  \"estado_proyecto\": {\n    \"proyecto\": \"<pvv|pm|pp|null>\",\n    \"transferir\": <0|1>\n  },\n  \"accion\": {\n    \"tipo\": \"<saludar|recolectar_lead|consultar_proyecto|escalar|aclarar|esperar>\",\n    \"razon\": \"<explicación corta>\"\n  },\n  \"metadatos\": {\n    \"intencion\": \"<saludo|consulta|seleccion_proyecto|dato_personal|confirmacion|rechazo|ambiguo>\",\n    \"idioma\": \"<espanol|ingles|...>\",\n    \"confianza\": \"<alta|media|baja>\"\n  },\n  \"depuracion\": {\n    \"herramientas_usadas\": [<lista de tools llamadas>],\n    \"ruta_decision\": \"<breadcrumb corto de razonamiento>\",\n    \"advertencias\": [<lista de observaciones no críticas>]\n  },\n  \"consulta_pendiente\": {\n    \"guardar\": \"<texto|null>\",\n    \"limpiar\": <true|false>,\n    \"retomar\": \"<texto|null>\"\n  }\n}\n\n## REGLAS ESTRICTAS ##\n- `estado_lead.datos_completos` es true SOLO si nombre, correo Y telefono tienen valor real.\n- `estado_proyecto.transferir` es 1 SOLO cuando kb_search devuelve escalate: true.\n- Si llamaste a `lead_collector`, `herramientas_usadas` DEBE incluir \"lead_collector\".\n- Si llamaste a `kb_search`, `herramientas_usadas` DEBE incluir \"kb_search\".\n- Si NO llamaste ninguna tool, `herramientas_usadas` es array vacío [].\n- `ruta_decision` corta, formato \"A → B → C\"."
+                }
+            },
+            "type": "@n8n/n8n-nodes-langchain.agent",
+            "typeVersion": 3.1,
+            "position": [
+                -800,
+                32
+            ],
+            "id": "5ddb9b99-0216-45ba-92b8-15c5582e6765",
+            "name": "PRINCIPAL"
+        },
+        {
+            "parameters": {
+                "description": "=Usa esta tool cuando el usuario no haya proporcionado \nnombre, correo electrónico y teléfono todavía. \nEsta tool recolecta los datos de contacto del lead \nde forma conversacional y devuelve la respuesta \nque debe enviarse al usuario.",
+                "workflowId": {
+                    "__rl": true,
+                    "value": "SHPFhvoal7k1Rqf9",
+                    "mode": "list",
+                    "cachedResultUrl": "/workflow/SHPFhvoal7k1Rqf9",
+                    "cachedResultName": "Lead Collector"
+                },
+                "workflowInputs": {
+                    "mappingMode": "defineBelow",
+                    "value": {
+                        "query": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('query', ``, 'string') }}",
+                        "manychat_id": "={{ $json.manychat_id }}",
+                        "canal": "={{ $json.input_channel }}",
+                        "tel_sistema": "={{ $('Webhook').item.json.body.whatsapp_phone || 'No tiene'}}",
+                        "nombre": "={{ $('User Data').item.json.nombre || '' }}",
+                        "correo": "={{ $('User Data').item.json.correo || '' }}",
+                        "telefono": "={{ $('User Data').item.json.telefono || '' }}"
+                    },
+                    "matchingColumns": [],
+                    "schema": [
+                        {
+                            "id": "query",
+                            "displayName": "query",
+                            "required": false,
+                            "defaultMatch": false,
+                            "display": true,
+                            "canBeUsedToMatch": true,
+                            "type": "string",
+                            "removed": false
+                        },
+                        {
+                            "id": "manychat_id",
+                            "displayName": "manychat_id",
+                            "required": false,
+                            "defaultMatch": false,
+                            "display": true,
+                            "canBeUsedToMatch": true,
+                            "type": "string",
+                            "removed": false
+                        },
+                        {
+                            "id": "canal",
+                            "displayName": "canal",
+                            "required": false,
+                            "defaultMatch": false,
+                            "display": true,
+                            "canBeUsedToMatch": true,
+                            "type": "string",
+                            "removed": false
+                        },
+                        {
+                            "id": "tel_sistema",
+                            "displayName": "tel_sistema",
+                            "required": false,
+                            "defaultMatch": false,
+                            "display": true,
+                            "canBeUsedToMatch": true,
+                            "type": "string",
+                            "removed": false
+                        },
+                        {
+                            "id": "nombre",
+                            "displayName": "nombre",
+                            "required": false,
+                            "defaultMatch": false,
+                            "display": true,
+                            "canBeUsedToMatch": true,
+                            "type": "string",
+                            "removed": false
+                        },
+                        {
+                            "id": "correo",
+                            "displayName": "correo",
+                            "required": false,
+                            "defaultMatch": false,
+                            "display": true,
+                            "canBeUsedToMatch": true,
+                            "type": "string",
+                            "removed": false
+                        },
+                        {
+                            "id": "telefono",
+                            "displayName": "telefono",
+                            "required": false,
+                            "defaultMatch": false,
+                            "display": true,
+                            "canBeUsedToMatch": true,
+                            "type": "string",
+                            "removed": false
+                        }
+                    ],
+                    "attemptToConvertTypes": false,
+                    "convertFieldsToString": false
+                }
+            },
+            "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+            "typeVersion": 2.2,
+            "position": [
+                -720,
+                256
+            ],
+            "id": "9553331d-bd22-47e5-b578-de5921bc9fde",
+            "name": "lead_collector"
+        },
+        {
+            "parameters": {
+                "jsCode": "function prepareForHttp(text) {\n  if (text === null || text === undefined) return \"\";\n  return String(text)\n    .replace(/\\\\/g, \"\\\\\\\\\")\n    .replace(/\"/g, '\\\\\"')\n    .replace(/\\r\\n/g, \"\\\\n\")\n    .replace(/\\n/g, \"\\\\n\")\n    .replace(/\\t/g, \"\\\\t\")\n    .replace(/\\*\\*/g, \"*\")\n    .trim();\n}\n\nconst proyectos = $('PROJECT LIST').first().json.proyectos || {};\nconst nombresProyectos = Object.values(proyectos).map(p => p.split('->')[0].trim());\nconst LISTA = \"\\\\n\\\\n• \" + nombresProyectos.join(\"\\\\n• \");\n\nconst raw = $input.first().json.output || \"\";\nconst match = raw.match(/\\{[\\s\\S]*\\}/);\n\nif (!match) {\n  return [{ \n    json: { \n      respuesta: prepareForHttp(raw),\n      accion_tipo: \"error\",\n      error: \"no_json\",\n      raw_output: raw\n    }\n  }];\n}\n\ntry {\n  const parsed = JSON.parse(match[0]);\n\n  const respuesta = parsed.respuesta || \"\";\n  const accionTipo = parsed.accion?.tipo || \"esperar\";\n  const transferir = parsed.estado_proyecto?.transferir ?? 0;\n  const proyecto = parsed.estado_proyecto?.proyecto || null;\n  \n  // Agrega lista solo cuando pide elegir proyecto y no hay proyecto aún\n  const agregarLista = accionTipo === \"aclarar\" && !proyecto;\n  const respuestaFinal = agregarLista \n    ? prepareForHttp(respuesta) + LISTA\n    : prepareForHttp(respuesta);\n\n  return [{\n    json: {\n      respuesta: respuestaFinal,\n      accion_tipo: accionTipo,\n      accion_razon: parsed.accion?.razon || \"\",\n      proyecto: proyecto,\n      transferir: transferir,\n      lead_nombre: parsed.estado_lead?.nombre || null,\n      lead_correo: parsed.estado_lead?.correo || null,\n      lead_telefono: parsed.estado_lead?.telefono || null,\n      datos_completos: parsed.estado_lead?.datos_completos ?? false,\n      intencion: parsed.metadatos?.intencion || null,\n      idioma: parsed.metadatos?.idioma || null,\n      confianza: parsed.metadatos?.confianza || null,\n      herramientas_usadas: parsed.depuracion?.herramientas_usadas || [],\n      ruta_decision: parsed.depuracion?.ruta_decision || \"\",\n      advertencias: parsed.depuracion?.advertencias || [],\n      raw: parsed,\n      consulta_pendiente_guardar: parsed.consulta_pendiente?.guardar || null,\n      consulta_pendiente_limpiar: parsed.consulta_pendiente?.limpiar || false,\n      consulta_pendiente_retomar: parsed.consulta_pendiente?.retomar || null,\n    }\n  }];\n\n} catch(e) {\n  return [{ \n    json: { \n      respuesta: prepareForHttp(raw),\n      accion_tipo: \"error\",\n      error: \"parse_failed\",\n      error_message: e.message,\n      raw_output: raw\n    }\n  }];\n}"
+            },
+            "type": "n8n-nodes-base.code",
+            "typeVersion": 2,
+            "position": [
+                -256,
+                32
+            ],
+            "id": "3b3b2b1e-7e99-4507-9209-13a60de3691d",
+            "name": "Parse response"
+        },
+        {
+            "parameters": {
+                "conditions": {
+                    "options": {
+                        "caseSensitive": true,
+                        "leftValue": "",
+                        "typeValidation": "strict",
+                        "version": 3
+                    },
+                    "conditions": [
+                        {
+                            "id": "0d6214cb-1acb-4f7e-b57e-73e911ebcaa5",
+                            "leftValue": "={{ $json.value }}",
+                            "rightValue": "",
+                            "operator": {
+                                "type": "boolean",
+                                "operation": "true",
+                                "singleValue": true
+                            }
+                        }
+                    ],
+                    "combinator": "and"
+                },
+                "options": {}
+            },
+            "type": "n8n-nodes-base.if",
+            "typeVersion": 2.3,
+            "position": [
+                192,
+                32
+            ],
+            "id": "a42aeeac-c4e6-48c7-8707-d92bf2199798",
+            "name": "If TIENE DATOS NUEVOS"
+        },
+        {
+            "parameters": {
+                "assignments": {
+                    "assignments": [
+                        {
+                            "id": "9f9974b3-e66f-4160-ab03-0c53c1d05e2c",
+                            "name": "_id",
+                            "value": "={{ $('User Data').item.json._id.toString().replace(/^\"(.*)\"$/, '$1') }}",
+                            "type": "string"
+                        },
+                        {
+                            "id": "1dfe570b-1cba-466b-a975-63089a0d43e1",
+                            "name": "last_update",
+                            "value": "={{ $now.toISO() }}",
+                            "type": "string"
+                        },
+                        {
+                            "id": "e05f001b-588a-437f-9800-1ff66d7fac7e",
+                            "name": "nombre",
+                            "value": "={{ $('Parse response').item.json.lead_nombre || undefined }}",
+                            "type": "string"
+                        },
+                        {
+                            "id": "18ea17f9-e5f6-4a93-8621-d51912e4f73a",
+                            "name": "correo",
+                            "value": "={{ $('Parse response').item.json.lead_correo || undefined }}",
+                            "type": "string"
+                        },
+                        {
+                            "id": "69fc0996-54d0-435d-9246-fa4146a900b2",
+                            "name": "telefono",
+                            "value": "={{ $('Parse response').item.json.lead_telefono || undefined }}",
+                            "type": "string"
+                        },
+                        {
+                            "id": "0be37564-e330-4d62-8e4a-a99671f75ebf",
+                            "name": "datos_completos",
+                            "value": "={{ $('Parse response').item.json.datos_completos ? true : undefined }}",
+                            "type": "boolean"
+                        },
+                        {
+                            "id": "73b2ce9f-c7db-4bce-9975-21aef53dd1b3",
+                            "name": "datos_completos_timestamp",
+                            "value": "={{ $('Parse response').item.json.datos_completos ? $now.toISO() : undefined }}",
+                            "type": "string"
+                        },
+                        {
+                            "id": "5ddbbdb6-dd3b-4f7a-b5d3-554129d42155",
+                            "name": "consulta_pendiente",
+                            "value": "={{ \n  $('Parse response').item.json.consulta_pendiente_limpiar ? null : \n  $('Parse response').item.json.consulta_pendiente_guardar || undefined \n}}",
+                            "type": "string"
+                        },
+                        {
+                            "id": "9e9581f8-4fd4-4faa-9093-946783b656e9",
+                            "name": "proyecto",
+                            "value": "={{ \n  $('Parse response').item.json.proyecto || \n  $('User Data').item.json.proyecto || \n  undefined \n}}",
+                            "type": "string"
+                        }
+                    ]
+                },
+                "options": {}
+            },
+            "type": "n8n-nodes-base.set",
+            "typeVersion": 3.4,
+            "position": [
+                416,
+                -64
+            ],
+            "id": "517b152d-5284-428e-8239-823cb8358c03",
+            "name": "Prepare Update"
+        },
+        {
+            "parameters": {
+                "assignments": {
+                    "assignments": [
+                        {
+                            "id": "550ae3c0-99c3-43fa-8627-e08c78c455eb",
+                            "name": "value",
+                            "value": "={{ \n  ($json.lead_nombre !== null && $json.lead_nombre !== '') ||\n  ($json.lead_correo !== null && $json.lead_correo !== '') ||\n  ($json.lead_telefono !== null && $json.lead_telefono !== '') ||\n  ($json.proyecto !== null && $json.proyecto !== '') ||\n  $json.consulta_pendiente_guardar !== null ||\n  $json.consulta_pendiente_limpiar === true\n}}",
+                            "type": "boolean"
+                        }
+                    ]
+                },
+                "options": {}
+            },
+            "type": "n8n-nodes-base.set",
+            "typeVersion": 3.4,
+            "position": [
+                -32,
+                32
+            ],
+            "id": "4147c2d4-4818-4253-b976-276c939aa5c4",
+            "name": "Hay Cambios?"
+        },
+        {
+            "parameters": {
+                "operation": "update",
+                "collection": "users",
+                "updateKey": "_id",
+                "fields": "={{ Object.keys($json).filter(k => k !== '_id').join(\",\") }}",
+                "options": {}
+            },
+            "type": "n8n-nodes-base.mongoDb",
+            "typeVersion": 1.2,
+            "position": [
+                640,
+                -64
+            ],
+            "id": "cc724503-4f6c-4a71-ab8e-641bdea22223",
+            "name": "Update User Lead",
+            "credentials": {
+                "mongoDb": {
+                    "id": "UzcANqeDFO1QLbfd",
+                    "name": "SPECTRUM - CENTRALIZADO"
+                }
+            }
+        },
+        {
+            "parameters": {},
+            "type": "n8n-nodes-base.noOp",
+            "typeVersion": 1,
+            "position": [
+                640,
+                128
+            ],
+            "id": "29008664-9a25-40a7-8bd3-c17ecd24cc71",
+            "name": "No Operation, do nothing1"
+        },
+        {
+            "parameters": {
+                "description": "=Usa esta tool cuando el usuario haga una pregunta o consulta \nsobre un proyecto inmobiliario y los datos del lead ya están completos. \nBusca en la knowledge base y devuelve una respuesta conversacional.\n\nParámetros que debes pasar:\n- entrada_usuario: la pregunta exacta del usuario o la consulta pendiente a retomar\n- proyecto: el código del proyecto activo o el que el usuario acaba de elegir (pvv, pm o pp)\n- manychat_id: el ID del usuario",
+                "workflowId": {
+                    "__rl": true,
+                    "value": "D3LKuNi6CmMIdvzg",
+                    "mode": "list",
+                    "cachedResultUrl": "/workflow/D3LKuNi6CmMIdvzg",
+                    "cachedResultName": "KB SEARCH"
+                },
+                "workflowInputs": {
+                    "mappingMode": "defineBelow",
+                    "value": {
+                        "proyecto": "={{ $fromAI('proyecto', '', 'string') || $('User Data').item.json.proyecto }}",
+                        "entrada_usuario": "={{ $fromAI('entrada_usuario', ``, 'string') }}",
+                        "manychat_id": "={{ $('User Data').item.json.manychat_id }}"
+                    },
+                    "matchingColumns": [],
+                    "schema": [
+                        {
+                            "id": "manychat_id",
+                            "displayName": "manychat_id",
+                            "required": false,
+                            "defaultMatch": false,
+                            "display": true,
+                            "canBeUsedToMatch": true,
+                            "type": "string",
+                            "removed": false
+                        },
+                        {
+                            "id": "proyecto",
+                            "displayName": "proyecto",
+                            "required": false,
+                            "defaultMatch": false,
+                            "display": true,
+                            "canBeUsedToMatch": true,
+                            "type": "string"
+                        },
+                        {
+                            "id": "entrada_usuario",
+                            "displayName": "entrada_usuario",
+                            "required": false,
+                            "defaultMatch": false,
+                            "display": true,
+                            "canBeUsedToMatch": true,
+                            "type": "string"
+                        }
+                    ],
+                    "attemptToConvertTypes": false,
+                    "convertFieldsToString": false
+                }
+            },
+            "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+            "typeVersion": 2.2,
+            "position": [
+                -592,
+                256
+            ],
+            "id": "56c5688e-7854-4d9a-a50c-65c82ecc14a6",
+            "name": "kb_search"
+        },
+        {
+            "parameters": {
+                "workflowId": {
+                    "__rl": true,
+                    "value": "TjFPzHs5aimxILH7",
+                    "mode": "list",
+                    "cachedResultUrl": "/workflow/TjFPzHs5aimxILH7",
+                    "cachedResultName": "RSVP"
+                },
+                "workflowInputs": {
+                    "mappingMode": "defineBelow",
+                    "value": {
+                        "manychat_id": "={{ $json.manychat_id }}",
+                        "proyecto": "={{ $fromAI('proyecto', '', 'string') || $('User Data').item.json.proyecto }}",
+                        "nombre": "={{ $json.nombre }}",
+                        "correo": "={{ $json.correo }}",
+                        "telefono": "={{ $json.telefono }}",
+                        "entrada_usuario": "={{ $json.last_user_input }}",
+                        "lista_proyectos": "={{ $('PROJECT LIST').item.json.proyectos }}"
+                    },
+                    "matchingColumns": [],
+                    "schema": [
+                        {
+                            "id": "manychat_id",
+                            "displayName": "manychat_id",
+                            "required": false,
+                            "defaultMatch": false,
+                            "display": true,
+                            "canBeUsedToMatch": true,
+                            "type": "string",
+                            "removed": false
+                        },
+                        {
+                            "id": "proyecto",
+                            "displayName": "proyecto",
+                            "required": false,
+                            "defaultMatch": false,
+                            "display": true,
+                            "canBeUsedToMatch": true,
+                            "type": "string",
+                            "removed": false
+                        },
+                        {
+                            "id": "nombre",
+                            "displayName": "nombre",
+                            "required": false,
+                            "defaultMatch": false,
+                            "display": true,
+                            "canBeUsedToMatch": true,
+                            "type": "string",
+                            "removed": false
+                        },
+                        {
+                            "id": "correo",
+                            "displayName": "correo",
+                            "required": false,
+                            "defaultMatch": false,
+                            "display": true,
+                            "canBeUsedToMatch": true,
+                            "type": "string",
+                            "removed": false
+                        },
+                        {
+                            "id": "telefono",
+                            "displayName": "telefono",
+                            "required": false,
+                            "defaultMatch": false,
+                            "display": true,
+                            "canBeUsedToMatch": true,
+                            "type": "string",
+                            "removed": false
+                        },
+                        {
+                            "id": "entrada_usuario",
+                            "displayName": "entrada_usuario",
+                            "required": false,
+                            "defaultMatch": false,
+                            "display": true,
+                            "canBeUsedToMatch": true,
+                            "type": "string",
+                            "removed": false
+                        },
+                        {
+                            "id": "lista_proyectos",
+                            "displayName": "lista_proyectos",
+                            "required": false,
+                            "defaultMatch": false,
+                            "display": true,
+                            "canBeUsedToMatch": true,
+                            "type": "object",
+                            "removed": false
+                        }
+                    ],
+                    "attemptToConvertTypes": false,
+                    "convertFieldsToString": false
+                }
+            },
+            "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+            "typeVersion": 2.2,
+            "position": [
+                -464,
+                256
+            ],
+            "id": "fcb1049d-7f6c-4e17-8ca7-beb408f124ef",
+            "name": "rsvp"
+        }
+    ],
+    "connections": {
+        "RESPOND TO MANYCHAT": {
+            "main": [
+                []
+            ]
+        },
+        "Parameter Type": {
+            "main": [
+                [
+                    {
+                        "node": "RESPOND TO MANYCHAT",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "User Data": {
+            "main": [
+                [
+                    {
+                        "node": "PRINCIPAL",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "No Operation, do nothing": {
+            "main": [
+                [
+                    {
+                        "node": "CONTEXT 1",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "If NO WHATSAPP": {
+            "main": [
+                [
+                    {
+                        "node": "No Operation, do nothing",
+                        "type": "main",
+                        "index": 0
+                    }
+                ],
+                [
+                    {
+                        "node": "Proyecto",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Proyecto": {
+            "main": [
+                [
+                    {
+                        "node": "CONTEXT 1",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Lenguaje & Asesoria": {
+            "main": [
+                [
+                    {
+                        "node": "If NO WHATSAPP",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "OpenAI Chat Model2": {
+            "ai_languageModel": [
+                [
+                    {
+                        "node": "Proyecto",
+                        "type": "ai_languageModel",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Update User": {
+            "main": [
+                [
+                    {
+                        "node": "User Data",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Insert User": {
+            "main": [
+                [
+                    {
+                        "node": "User Data",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Find User": {
+            "main": [
+                [
+                    {
+                        "node": "If USER NOT EXIST",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "CONTEXT 1": {
+            "main": [
+                [
+                    {
+                        "node": "Find User",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "DATA to CREATE": {
+            "main": [
+                [
+                    {
+                        "node": "Insert User",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "DATA to UPDATE": {
+            "main": [
+                [
+                    {
+                        "node": "Update User",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "If USER NOT EXIST": {
+            "main": [
+                [
+                    {
+                        "node": "DATA to CREATE",
+                        "type": "main",
+                        "index": 0
+                    }
+                ],
+                [
+                    {
+                        "node": "DATA to UPDATE",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "PARSE BODY": {
+            "main": [
+                [
+                    {
+                        "node": "ES ARCHIVO",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "JOINNING MESSAGE": {
+            "main": [
+                [
+                    {
+                        "node": "DELETE MESSAGES",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "PROJECT LIST": {
+            "main": [
+                [
+                    {
+                        "node": "Lenguaje & Asesoria",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Filter1": {
+            "main": [
+                [
+                    {
+                        "node": "JOINNING MESSAGE",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "DELETE MESSAGES": {
+            "main": [
+                [
+                    {
+                        "node": "PROJECT LIST",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Wait": {
+            "main": [
+                [
+                    {
+                        "node": "GET MESSAGE",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "GET MESSAGE": {
+            "main": [
+                [
+                    {
+                        "node": "Filter1",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "SAVE MESSAGE": {
+            "main": [
+                [
+                    {
+                        "node": "Wait",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "INPUT FINAL": {
+            "main": [
+                [
+                    {
+                        "node": "SAVE MESSAGE",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "audio input": {
+            "main": [
+                [
+                    {
+                        "node": "Merge",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "image input": {
+            "main": [
+                [
+                    {
+                        "node": "Merge",
+                        "type": "main",
+                        "index": 1
+                    }
+                ]
+            ]
+        },
+        "text input": {
+            "main": [
+                [
+                    {
+                        "node": "Merge",
+                        "type": "main",
+                        "index": 2
+                    }
+                ]
+            ]
+        },
+        "HTTP IF AUDIO": {
+            "main": [
+                [
+                    {
+                        "node": "TRANSCRIBE AUDIO",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "ANALIZA IMAGEN": {
+            "main": [
+                [
+                    {
+                        "node": "image input",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "OpenAI Chat Model1": {
+            "ai_languageModel": [
+                [
+                    {
+                        "node": "Lenguaje & Asesoria",
+                        "type": "ai_languageModel",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Aggregate": {
+            "main": [
+                [
+                    {
+                        "node": "INPUT FINAL",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Sort": {
+            "main": [
+                [
+                    {
+                        "node": "Aggregate",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Merge": {
+            "main": [
+                [
+                    {
+                        "node": "Sort",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "TRANSCRIBE AUDIO": {
+            "main": [
+                [
+                    {
+                        "node": "audio input",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "ES AUDIO / IMAGEN": {
+            "main": [
+                [
+                    {
+                        "node": "HTTP IF AUDIO",
+                        "type": "main",
+                        "index": 0
+                    }
+                ],
+                [
+                    {
+                        "node": "ANALIZA IMAGEN",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "HTTP Request": {
+            "main": [
+                [
+                    {
+                        "node": "ES AUDIO / IMAGEN",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "ES ARCHIVO": {
+            "main": [
+                [
+                    {
+                        "node": "HTTP Request",
+                        "type": "main",
+                        "index": 0
+                    }
+                ],
+                [
+                    {
+                        "node": "text input",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Create Body": {
+            "main": [
+                [
+                    {
+                        "node": "PARSE BODY",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Webhook": {
+            "main": [
+                [
+                    {
+                        "node": "Create Body",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "MongoDB Chat Memory": {
+            "ai_memory": [
+                [
+                    {
+                        "node": "PRINCIPAL",
+                        "type": "ai_memory",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "OpenAI Chat Model": {
+            "ai_languageModel": [
+                [
+                    {
+                        "node": "PRINCIPAL",
+                        "type": "ai_languageModel",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "PRINCIPAL": {
+            "main": [
+                [
+                    {
+                        "node": "Parse response",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "lead_collector": {
+            "ai_tool": [
+                [
+                    {
+                        "node": "PRINCIPAL",
+                        "type": "ai_tool",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Parse response": {
+            "main": [
+                [
+                    {
+                        "node": "Hay Cambios?",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "If TIENE DATOS NUEVOS": {
+            "main": [
+                [
+                    {
+                        "node": "Prepare Update",
+                        "type": "main",
+                        "index": 0
+                    }
+                ],
+                [
+                    {
+                        "node": "No Operation, do nothing1",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Prepare Update": {
+            "main": [
+                [
+                    {
+                        "node": "Update User Lead",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Hay Cambios?": {
+            "main": [
+                [
+                    {
+                        "node": "If TIENE DATOS NUEVOS",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Update User Lead": {
+            "main": [
+                [
+                    {
+                        "node": "Parameter Type",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "No Operation, do nothing1": {
+            "main": [
+                [
+                    {
+                        "node": "Parameter Type",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "kb_search": {
+            "ai_tool": [
+                [
+                    {
+                        "node": "PRINCIPAL",
+                        "type": "ai_tool",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "rsvp": {
+            "ai_tool": [
+                [
+                    {
+                        "node": "PRINCIPAL",
+                        "type": "ai_tool",
+                        "index": 0
+                    }
+                ]
+            ]
+        }
+    },
+    "pinData": {
+        "Webhook": [
+            {
+                "headers": {
+                    "host": "agentsprod.redtec.ai",
+                    "user-agent": "ManyChat",
+                    "content-length": "1580",
+                    "content-type": "application/json; charset=utf-8",
+                    "x-forwarded-for": "63.178.65.182",
+                    "x-forwarded-host": "agentsprod.redtec.ai",
+                    "x-forwarded-port": "443",
+                    "x-forwarded-proto": "https",
+                    "x-forwarded-server": "0306c5d34ab9",
+                    "x-real-ip": "63.178.65.182",
+                    "accept-encoding": "gzip"
+                },
+                "params": {},
+                "query": {},
+                "body": {
+                    "key": "user:1623941319",
+                    "id": "1623941319",
+                    "page_id": "962079940550460",
+                    "user_refs": [],
+                    "status": "active",
+                    "first_name": "Jorge",
+                    "last_name": "Calderon",
+                    "name": "Jorge Calderon",
+                    "gender": "unknown",
+                    "profile_pic": null,
+                    "locale": null,
+                    "language": null,
+                    "timezone": "UTC±00",
+                    "live_chat_url": "https://app.manychat.com/fb962079940550460/chat/1623941319",
+                    "last_input_text": "quiero saber el precio de un apartamento",
+                    "optin_phone": true,
+                    "phone": "+13322311881",
+                    "optin_email": false,
+                    "email": null,
+                    "subscribed": "2026-02-04T13:17:27-06:00",
+                    "last_interaction": null,
+                    "ig_last_interaction": null,
+                    "last_seen": null,
+                    "ig_last_seen": null,
+                    "is_followup_enabled": true,
+                    "ig_username": null,
+                    "ig_id": null,
+                    "whatsapp_phone": "+13322311881",
+                    "optin_whatsapp": true,
+                    "phone_country_code": "US",
+                    "last_growth_tool": null,
+                    "custom_fields": {
+                        "canal_ingreso": "WhatsApp",
+                        "Celular": null,
+                        "ChatGPT's response": null,
+                        "ChatGPT's response (2024-08-13 21:18:56)": null,
+                        "Conversation": null,
+                        "Conversation (2024-08-13 21:18:56)": null,
+                        "debugging": null,
+                        "Fecha Evento": null,
+                        "Fecha Evento 2": null,
+                        "Fecha Evento 3": null,
+                        "Fecha Reserva": null,
+                        "First name for prompt": null,
+                        "First name for prompt (2024-08-13 21:18:56)": null,
+                        "image_descriptioin": null,
+                        "Input from Template": null,
+                        "Last Input": null,
+                        "last_interaction_timestamp": null,
+                        "Nombre Cotizacion": null,
+                        "Nombre Reserva": null,
+                        "Numero Personas": null,
+                        "Ocasion": null,
+                        "Panelista": null,
+                        "Pregunta": null,
+                        "proyecto": "PVV",
+                        "Respuesta de image-n8n via Webhook": null,
+                        "Respuesta de n8n via Webhook": null,
+                        "user's question fallback": null,
+                        "user's question fallback (2024-08-13 21:18:56)": null,
+                        "voice_note_transcription": null
+                    }
+                },
+                "webhookUrl": "https://agentsprod.redtec.ai/webhook/spectrum-agent",
+                "executionMode": "production"
+            }
+        ]
+    },
+    "meta": {
+        "templateCredsSetupCompleted": true,
+        "instanceId": "d4ab02fb1ef8b6ca2c1c5c1f280ee696b0514d7d92cee5fb0da1784dbe393998"
+    }
+}
