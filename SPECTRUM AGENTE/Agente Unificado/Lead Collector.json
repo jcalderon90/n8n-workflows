@@ -90,7 +90,7 @@
             "type": "@n8n/n8n-nodes-langchain.agent",
             "typeVersion": 3.1,
             "position": [
-                -3840,
+                -3824,
                 1328
             ],
             "id": "7aec5093-d7f8-41b2-91f4-6ce6982ce762",
@@ -112,8 +112,8 @@
             "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
             "typeVersion": 1.3,
             "position": [
-                -3872,
-                1536
+                -3824,
+                1552
             ],
             "id": "5622b04d-a44c-4db7-8ba9-01712146cd80",
             "name": "OpenAI Chat Model",
@@ -135,8 +135,8 @@
             "type": "@n8n/n8n-nodes-langchain.memoryMongoDbChat",
             "typeVersion": 1,
             "position": [
-                -3728,
-                1536
+                -3696,
+                1552
             ],
             "id": "a6339ab2-88d0-4e55-aede-2726d65d3152",
             "name": "MongoDB Chat Memory",
@@ -154,11 +154,136 @@
             "type": "n8n-nodes-base.code",
             "typeVersion": 2,
             "position": [
-                -3488,
+                -3472,
                 1328
             ],
             "id": "b89059ce-4690-475d-803b-0f17e406f460",
             "name": "Parse Response"
+        },
+        {
+            "parameters": {
+                "method": "POST",
+                "url": "https://crm.spectrum.com.gt:8055/Spectrum_WS_GeneracionLead/service.asmx",
+                "sendHeaders": true,
+                "headerParameters": {
+                    "parameters": [
+                        {
+                            "name": "SOAPAction",
+                            "value": "http://tempuri.org/CreacionClientePotencialBot"
+                        },
+                        {
+                            "name": "Content-Type",
+                            "value": "text/xml; charset=utf-8"
+                        }
+                    ]
+                },
+                "sendBody": true,
+                "contentType": "raw",
+                "rawContentType": "text/xml; charset=utf-8",
+                "body": "={{ $json.body }}",
+                "options": {}
+            },
+            "type": "n8n-nodes-base.httpRequest",
+            "typeVersion": 4.2,
+            "position": [
+                -2352,
+                1232
+            ],
+            "id": "78e96111-da1b-4797-a674-631aaca53c77",
+            "name": "GENERAR LEAD CONTACT",
+            "onError": "continueRegularOutput"
+        },
+        {
+            "parameters": {
+                "assignments": {
+                    "assignments": [
+                        {
+                            "id": "4a0a3f53-7243-4b47-b0d9-f6b38c15ff91",
+                            "name": "body",
+                            "value": "={{ \n  {\n    \"soap:Envelope\": {\n      \"xmlns:soap\": \"http://schemas.xmlsoap.org/soap/envelope/\",\n      \"soap:Body\": {\n        \"CreacionClientePotencialBot\": {\n          \"xmlns\": \"http://tempuri.org/\",\n          \"_OrigenCliente\": \"100000001\",\n          \"_Proyecto\": \"PVV\",\n          \"_Comentarios\": \"Lead generado desde chatbot\",\n          \"_UTMSource\": $('SET CONTEXT').item.json.canal.toLowerCase() == 'whatsapp' ? 100000004 : $('SET CONTEXT').item.json.canal.toLowerCase() == 'instagram' ? 100000012 : 100000005,\n          \"_UTMCampaing\": \"Cliente atendido desde Chatbot\",\n          \"_Nombre\": $('LEAD DATA').item.json.nombre.split(\" \")[0] || \"N/A\",\n          \"_Apellido\": $('LEAD DATA').item.json.nombre.split(\" \")[1] || \"N/A\",\n          \"_TelefonoMovil\": $('LEAD DATA').item.json.telefono || \"N/A\",\n          \"_CorreEletronico\": $('LEAD DATA').item.json.correo || \"N/A\",\n          \"_MetodocontactoPref\": \"5\"\n        }\n      }\n    }\n  }\n}}",
+                            "type": "object"
+                        }
+                    ]
+                },
+                "options": {}
+            },
+            "type": "n8n-nodes-base.set",
+            "typeVersion": 3.4,
+            "position": [
+                -2800,
+                1232
+            ],
+            "id": "03926a89-2e66-49e8-9830-4b838db1c5c1",
+            "name": "JSON Body"
+        },
+        {
+            "parameters": {
+                "mode": "jsonToxml",
+                "dataPropertyName": "body",
+                "options": {}
+            },
+            "type": "n8n-nodes-base.xml",
+            "typeVersion": 1,
+            "position": [
+                -2576,
+                1232
+            ],
+            "id": "76c14928-565f-4c5c-a367-ebb234fc172f",
+            "name": "XML BODY"
+        },
+        {
+            "parameters": {
+                "conditions": {
+                    "options": {
+                        "caseSensitive": true,
+                        "leftValue": "",
+                        "typeValidation": "strict",
+                        "version": 3
+                    },
+                    "conditions": [
+                        {
+                            "id": "996ea7a0-c4f4-4a4b-956c-c78d485df9cf",
+                            "leftValue": "={{ !!$json.nombre && $json.nombre !== \"null\" }}",
+                            "rightValue": "",
+                            "operator": {
+                                "type": "boolean",
+                                "operation": "true",
+                                "singleValue": true
+                            }
+                        },
+                        {
+                            "id": "7ec296d0-2e82-4753-bb09-f8eedc652674",
+                            "leftValue": "={{ !!$json.correo && $json.correo !== \"null\" }}",
+                            "rightValue": "",
+                            "operator": {
+                                "type": "boolean",
+                                "operation": "true",
+                                "singleValue": true
+                            }
+                        },
+                        {
+                            "id": "7b660a01-58c0-49c9-b1c1-95464ddc7f22",
+                            "leftValue": "={{ !!$json.telefono && $json.telefono !== \"null\" }}",
+                            "rightValue": "",
+                            "operator": {
+                                "type": "boolean",
+                                "operation": "true",
+                                "singleValue": true
+                            }
+                        }
+                    ],
+                    "combinator": "and"
+                },
+                "options": {}
+            },
+            "type": "n8n-nodes-base.if",
+            "typeVersion": 2.3,
+            "position": [
+                -3024,
+                1328
+            ],
+            "id": "9a392841-5b88-4e88-8b3b-63786a1f30da",
+            "name": "IF DATA COMPLETED"
         },
         {
             "parameters": {
@@ -201,11 +326,45 @@
             "type": "n8n-nodes-base.set",
             "typeVersion": 3.4,
             "position": [
-                -3280,
+                -3248,
                 1328
             ],
             "id": "7de1a548-7a3f-4ad5-bea8-cbae081812d0",
-            "name": "Edit Fields"
+            "name": "LEAD DATA"
+        },
+        {
+            "parameters": {},
+            "type": "n8n-nodes-base.noOp",
+            "typeVersion": 1,
+            "position": [
+                -2352,
+                1424
+            ],
+            "id": "a4786140-246a-4d59-9d63-0b0269798066",
+            "name": "No Operation, do nothing"
+        },
+        {
+            "parameters": {
+                "assignments": {
+                    "assignments": [
+                        {
+                            "id": "23996fe8-b2af-4a8a-b8b0-2c04562a2098",
+                            "name": "response",
+                            "value": "={{ $('LEAD DATA').item.json }}",
+                            "type": "string"
+                        }
+                    ]
+                },
+                "options": {}
+            },
+            "type": "n8n-nodes-base.set",
+            "typeVersion": 3.4,
+            "position": [
+                -2128,
+                1328
+            ],
+            "id": "dd3340cd-3661-49d1-b443-63ecbb565ec3",
+            "name": "RESPONSE"
         }
     ],
     "connections": {
@@ -268,7 +427,80 @@
             "main": [
                 [
                     {
-                        "node": "Edit Fields",
+                        "node": "LEAD DATA",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "GENERAR LEAD CONTACT": {
+            "main": [
+                [
+                    {
+                        "node": "RESPONSE",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "JSON Body": {
+            "main": [
+                [
+                    {
+                        "node": "XML BODY",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "XML BODY": {
+            "main": [
+                [
+                    {
+                        "node": "GENERAR LEAD CONTACT",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "IF DATA COMPLETED": {
+            "main": [
+                [
+                    {
+                        "node": "JSON Body",
+                        "type": "main",
+                        "index": 0
+                    }
+                ],
+                [
+                    {
+                        "node": "No Operation, do nothing",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "LEAD DATA": {
+            "main": [
+                [
+                    {
+                        "node": "IF DATA COMPLETED",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "No Operation, do nothing": {
+            "main": [
+                [
+                    {
+                        "node": "RESPONSE",
                         "type": "main",
                         "index": 0
                     }
@@ -276,19 +508,7 @@
             ]
         }
     },
-    "pinData": {
-        "START": [
-            {
-                "query": "quiero info.",
-                "manychat_id": "1623941319",
-                "canal": "whatsapp",
-                "tel_sistema": "+13322311881",
-                "nombre": "",
-                "correo": "",
-                "telefono": ""
-            }
-        ]
-    },
+    "pinData": {},
     "meta": {
         "templateCredsSetupCompleted": true,
         "instanceId": "d4ab02fb1ef8b6ca2c1c5c1f280ee696b0514d7d92cee5fb0da1784dbe393998"

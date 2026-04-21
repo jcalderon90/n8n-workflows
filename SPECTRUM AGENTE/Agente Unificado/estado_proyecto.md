@@ -47,6 +47,11 @@ Para alcanzar el nivel de madurez, trazabilidad y analítica de datos del antigu
    - El orquestador inyecta variables de bitácora detallada y latencia de respuesta tabulada vía `$now.toMillis()` en la base `analytics_logs` de control corporativo.
 4. **Sincronización con Servidor de Producción:**
    - Se validaron satisfactoriamente mediante auditoría MCP los componentes frente al servidor activo `agentsprod.redtec.ai`, alineando por completo los requerimientos.
+5. **Optimización de Flujo de Datos y Persistencia:**
+   - **Mapeo Robusto de Variables:** Se corrigieron los mapeos en el nodo Principal para que las herramientas (`Lead Collector`, `RSVP`) reciban consistentemente datos del canal (WhatsApp/IG) y teléfono del sistema, evitando que se soliciten datos que la plataforma ya posee.
+   - **Regla de Preservación de Memoria:** Se implementó una lógica de "Memoria de Intención" que evita que el agente olvide la consulta original del usuario (ej. precios) mientras este se identifica.
+   - **Interactividad Dinámica de Proyectos:** Se habilitó un comando inteligente para "rever proyectos" que resetea el estado visual, permitiendo al usuario cambiar de proyecto y recibir la información correspondiente de forma proactiva.
+   - **RSVP Proactivo:** El agente RSVP ahora encadena preguntas de forma más humana (ej. pide fecha/hora inmediatamente después de confirmar el tipo de visita), reduciendo turnos de conversación.
 
 ---
 
