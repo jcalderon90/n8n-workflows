@@ -1,0 +1,143 @@
+{
+  "nodes": [
+    {
+      "parameters": {
+        "workflowInputs": {
+          "values": [
+            {
+              "name": "tipo_media",
+              "type": "string",
+              "description": "El tipo de archivo solicitado (amenidades, renders, planos, brochure)"
+            },
+            {
+              "name": "proyecto",
+              "type": "string"
+            },
+            {
+              "name": "canal",
+              "type": "string"
+            },
+            {
+              "name": "manychat_id",
+              "type": "string"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "eec86ad6-c1eb-4c91-9e28-1b6c867df3c9",
+      "name": "START Send Media"
+    },
+    {
+      "parameters": {
+        "jsCode": "const proyecto = $input.item.json.proyecto || \"PVV\";\nconst tipo = ($input.item.json.tipo_media || \"amenidades\").toLowerCase().trim();\nconst canal = ($input.item.json.canal || \"whatsapp\").toLowerCase().trim();\n\n// Mapeo inicial de recursos multimedia por proyecto.\n// Debes cambiar estos URLs por los oficiales de cada proyecto.\nconst database = {\n  \"PVV\": {\n    \"amenidades\": \"https://res.cloudinary.com/dif0pqsok/image/upload/v1763745364/amenidades_dble4k.png\",\n    \"renders\": \"https://res.cloudinary.com/dif0pqsok/image/upload/v1763745364/amenidades_dble4k.png\", // Reemplazar\n    \"planos\": \"https://res.cloudinary.com/dif0pqsok/image/upload/v1763745364/amenidades_dble4k.png\", // Reemplazar\n    \"brochure\": \"https://res.cloudinary.com/dif0pqsok/image/upload/v1763745364/amenidades_dble4k.png\" // Reemplazar\n  },\n  \"PMAR\": {\n    \"amenidades\": \"https://link-de-prueba.com/amenidades.png\",\n    \"renders\": \"https://link-de-prueba.com/renders.png\",\n    \"planos\": \"https://link-de-prueba.com/planos.png\",\n    \"brochure\": \"https://link-de-prueba.com/brochure.png\"\n  },\n  \"PPO\": {\n    \"amenidades\": \"https://link-de-prueba.com/amenidades.png\",\n    \"renders\": \"https://link-de-prueba.com/renders.png\",\n    \"planos\": \"https://link-de-prueba.com/planos.png\",\n    \"brochure\": \"https://link-de-prueba.com/brochure.png\"\n  }\n};\n\nconst projectData = database[proyecto] || database[\"PVV\"];\nlet url = projectData[tipo];\n\n// Fallback: si piden algo que no está en la lista, mandamos amenidades por defecto\nif (!url) {\n  url = projectData[\"amenidades\"];\n}\n\n// Lógica extraída del flujo antiguo: Si es whatsapp y la cuenta manda urls en vez de imagen pura, \n// mantenemos esa estructura (envíar como texto en whatsapp, o como imagen en IG/FB).\nconst objectType = canal === 'whatsapp' ? 'text' : 'image';\nconst keyName = canal === 'whatsapp' ? 'text' : 'url';\n\nreturn [{\n  json: {\n    manychat_id: $input.item.json.manychat_id,\n    canal: canal,\n    url: url,\n    objectType: objectType,\n    keyName: keyName\n  }\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        220,
+        0
+      ],
+      "id": "e4ed1d50-d4fc-4b53-b27b-2878cefb20f5",
+      "name": "Map Media Resources"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.manychat.com/fb/sending/sendContent",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"subscriber_id\": \"{{ $json.manychat_id }}\",\n  \"data\": {\n    \"version\": \"v2\",\n    \"content\": {\n      \"type\": \"{{ $json.canal }}\",\n      \"messages\": [\n        {\n          \"type\": \"{{ $json.objectType }}\",\n          \"{{ $json.keyName }}\": \"{{ $json.url }}\"\n        }\n      ]\n    }\n  }\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        460,
+        0
+      ],
+      "id": "6cb1b2ab-deff-4e94-8e3b-9a4f4d2f07ab",
+      "name": "Send API ManyChat",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "2KClojasxcPLSibd",
+          "name": "Manychat"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "b3e21820-2c70-4976-8051-789a6be3db9d",
+              "name": "response",
+              "value": "Media enviada. Dile al usuario con entusiasmo que ya le enviaste lo que solicitó y pregúntale qué le parece el proyecto.",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        680,
+        0
+      ],
+      "id": "f51c1075-f55a-4e20-bfba-da66bde1c73f",
+      "name": "Response To Agent"
+    }
+  ],
+  "connections": {
+    "START Send Media": {
+      "main": [
+        [
+          {
+            "node": "Map Media Resources",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Map Media Resources": {
+      "main": [
+        [
+          {
+            "node": "Send API ManyChat",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send API ManyChat": {
+      "main": [
+        [
+          {
+            "node": "Response To Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  }
+}
