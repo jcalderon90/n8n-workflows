@@ -1,5 +1,5 @@
 # 🏢 SPECTRUM VIVIENDA: Agente Unificado — Estado del Proyecto
-> Última actualización: 2026-04-22
+> Última actualización: 2026-04-22 (Sesión Actual)
 
 ## 🎯 Objetivo General
 Arquitectura de agente conversacional modular para SPECTRUM VIVIENDA. Un orquestador central (*Sof-IA*) delega tareas a sub-workflows especializados (Tools), con persistencia centralizada en MongoDB y sincronización diferida al CRM Dynamics 365 vía SOAP.
@@ -39,6 +39,8 @@ Arquitectura de agente conversacional modular para SPECTRUM VIVIENDA. Un orquest
 - Parsea el JSON del LLM, actualiza MongoDB y envía respuesta a ManyChat.
 
 **Cambios recientes:**
+- **Integración de `send_media`:** Tool añadida formalmente al orquestador con prompts específicos para envío de material gráfico.
+- **Refinamiento de `rsvp`:** Descripción de la tool mejorada para capturar de inmediato intenciones de visita o agendamiento, incluyendo el parámetro `proyecto`.
 - REGLA RETOMO CASO A reforzada: el agente genera su propia respuesta conectando con `consulta_pendiente` en lugar de copiar el mensaje del `lead_collector`.
 - Capitalización automática del nombre del lead en mensajes.
 
@@ -94,11 +96,11 @@ Arquitectura de agente conversacional modular para SPECTRUM VIVIENDA. Un orquest
 ---
 
 ### 5. 🖼️ Entrega de Media — `Send Media.json`
-**Estado: ✅ Activo — simplificado hoy**
+**Estado: ✅ Activo e Integrado**
 
 - Mapea solicitudes (`amenidades`, `renders`, `planos`, `brochure`) al recurso en Cloudinary según proyecto.
 - Multi-canal: imagen nativa en Instagram/Facebook, link en WhatsApp.
-- Nodo START renombrado de `START Send Media` a `START` (estandarizado).
+- Integrado como Tool en el Orquestador Principal.
 
 **Estado de URLs por proyecto:**
 | Proyecto | amenidades | renders | planos | brochure |
@@ -175,10 +177,11 @@ db.quality_logs.find().sort({ fecha_analisis: -1 }).limit(10)
 ---
 
 ### 9. ↗️ Escalación — `escalation.json`
-**Estado: ⚠️ Presente — no documentado aún**
+**Estado: ✅ Funcional**
 
-- Archivo detectado en el directorio pero no revisado en detalle.
-- Pendiente: revisar función, conexiones y si está integrado al flujo principal.
+- Workflow especializado para envío de alertas críticas vía Gmail.
+- Parámetros: `manychat_id`, `nombre_lead`, `telefono_lead`, `proyecto_codigo`, `ultima_consulta`.
+- Destinatario: Soporte Técnico / Ventas (`jorge.calderon@garooinc.com`).
 
 ---
 
@@ -206,7 +209,7 @@ db.quality_logs.find().sort({ fecha_analisis: -1 }).limit(10)
 | `SPECTRUM - CENTRALIZADO` | MongoDB (todos los módulos) |
 | `Manychat` | Principal (respuestas y media) |
 | `Redis GarooVPS` | Principal (buffer) |
-| `Soporte Garoo` | RSVP (Gmail) |
+| `Soporte Garoo` | RSVP (Gmail), Escalation (Gmail) |
 
 ---
 
@@ -226,11 +229,12 @@ db.quality_logs.find().sort({ fecha_analisis: -1 }).limit(10)
 - [x] Mensaje de cierre post-cita incluye canal de contacto y próximos pasos
 - [x] Capitalización automática del nombre del lead
 - [x] **Auditor de Calidad** por conversación → colección `quality_logs` en MongoDB
+- [x] **Integración de tool `send_media`** en el orquestador
+- [x] **Documentación y validación de `escalation.json`**
 
 ### 🔜 Pendiente
 - [ ] Cargar URLs reales en `Send Media.json` para PMAR y PPO (renders, planos, brochure)
 - [ ] Confirmar URL productiva del endpoint SOAP con Spectrum (sin `_Dev`)
-- [ ] Documentar y conectar `escalation.json` al flujo principal si aplica
 - [ ] Prueba end-to-end del flujo completo con los cambios de hoy
 - [ ] Web Search Fallback (Tavily/Perplexity) para dudas macroeconómicas
 - [ ] Lógica de Memoria de Largo Plazo entre sesiones

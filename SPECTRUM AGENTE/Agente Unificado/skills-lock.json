@@ -1,0 +1,40 @@
+{
+  "version": 1,
+  "skills": {
+    "n8n-code-javascript": {
+      "source": "czlonkowski/n8n-skills",
+      "sourceType": "github",
+      "computedHash": "ddfc5d9c4117cb39e10baf26f556d9b77024f41e8e26404ef24a6336de82c24e"
+    },
+    "n8n-code-python": {
+      "source": "czlonkowski/n8n-skills",
+      "sourceType": "github",
+      "computedHash": "ec65ba7cc344b569682a3f62068ff5a4f08e54ef22eb8ee1c64e619a445270c4"
+    },
+    "n8n-expression-syntax": {
+      "source": "czlonkowski/n8n-skills",
+      "sourceType": "github",
+      "computedHash": "6b0b60cb50ca1adcca21939cbf3cf73f47a923ff37ed827d80f6da06f98ffd81"
+    },
+    "n8n-mcp-tools-expert": {
+      "source": "czlonkowski/n8n-skills",
+      "sourceType": "github",
+      "computedHash": "6c3e9d7e128aa61002b926d75aac12a1897f7aadd4ac4080f11f45101dbe462b"
+    },
+    "n8n-node-configuration": {
+      "source": "czlonkowski/n8n-skills",
+      "sourceType": "github",
+      "computedHash": "1fab14df68c5e2bbed187fe4de55062326c23c09c782ff1e124b08657e9f2143"
+    },
+    "n8n-validation-expert": {
+      "source": "czlonkowski/n8n-skills",
+      "sourceType": "github",
+      "computedHash": "81452177a63b5654f5412bb70db4bae1f3227da554818b61097bd9e62ebcc37c"
+    },
+    "n8n-workflow-patterns": {
+      "source": "czlonkowski/n8n-skills",
+      "sourceType": "github",
+      "computedHash": "cf28d3c39ca33cc380e065e5c31dbd7dd83cc8d154b1bf1797353cee6b84db47"
+    }
+  }
+}
