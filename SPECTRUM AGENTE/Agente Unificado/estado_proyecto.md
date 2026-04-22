@@ -1,62 +1,237 @@
-# 🏢 SPECTRUM VIVIENDA: Agente Unificado (Estado del Proyecto)
+# 🏢 SPECTRUM VIVIENDA: Agente Unificado — Estado del Proyecto
+> Última actualización: 2026-04-22
 
 ## 🎯 Objetivo General
-Migrar la lógica avanzada y segmentada del flujo monolítico (`flujo de muestra.json`) hacia una arquitectura moderna, orientada a Agentes, escalable y modular ("Agente Unificado"). Esto se logra separando las responsabilidades en herramientas (Tools) especializadas bajo el mando de un único Agente Orquestador.
-
-## 🏗️ Arquitectura Actual (Componentes)
-El ecosistema actual en n8n se compone de 7 piezas fundamentales integradas dinámicamente:
-
-1. **`Principal.json` (El Orquestador - *Sof-IA*)**
-   - **Función:** Actúa como recepcionista central. Clasifica la intención del usuario y "llama" a diferentes herramientas.
-   - **Integración:** Entiende saludos, filtra por canal (WhatsApp/IG/Messenger), graba la base en MongoDB y gestiona el flujo de "Consultas Pendientes" para "acordarse" de responder la pregunta de alguien justo después de obligarle a identificarse.
-
-2. **`Lead Collector.json` (Tool)**
-   - **Función:** Extrae el nombre, teléfono y correo del usuario conversacionalmente.
-   - **Integración:** Bloquea gentilmente el avance de un usuario anónimo asegurando que el CRM tenga su información antes de usar tokens respondiendo dudas sobre los proyectos en el RAG.
-
-3. **`KB_Search.json` (Tool)**
-   - **Función:** Base de datos Vectorial Inteligente (RAG sobre MongoDB).
-   - **Integración:** El Agente asume el rol de experto inmobiliario, respondiendo únicamente dudas técnicas (layout, amenidades, financiamiento) respecto al proyecto específicamente seleccionado por el lead (`pvv`, `pm`, `pp`).
-
-4. **`RSVP.json` (Tool)**
-   - **Función:** Motor estructurado de Citas y Cualificación Avanzada de Leads.
-   - **Integración:** Recoge parámetros críticos antes de asentar la cita: tipo (presencial/virtual/llamada), fecha y hora dictadas, interés financiero (Vivir vs Invertir) y el canal preferido para contacto posterior. Inserta su propio registro atómico en `appointments`.
-
-5. **`Send Media.json` (Tool)**
-   - **Función:** Módulo de entrega automatizada de material audiovisual (Imágenes, renders, planos, brochure).
-   - **Integración:** Interpreta solicitudes directas de multimedia en la conversación, mapea el proyecto deseado al repositorio central, e invoca nativamente los endpoints de *Messenger / WhatsApp / Instagram* enviando ficheros ricos para retención visual directa en la App del prospecto.
-
-6. **`Sync_CRM.json` (Motor Pasivo de Sincronización)**
-   - **Función:** Gestor asíncrono de inyección a CRM por inactividad.
-   - **Integración:** Cronjob agendado que se activa a los 15 minutos en *Schedule Trigger*. Realiza un barrido en MongoDB en busca de prospectos "en pausa", evalúa la conversación total y extrae mediante LLM sub-objetos `Resumen` y `Dudas` finales, construyendo una única llamada XML (SOAP) integral para el CRM de Spectrum.
-
-7. **`Notifications.json` (Sub-Workflow de Escalación)**
-   - **Función:** Enrutador y Notificador a Soporte en Vivo (Red de Seguridad).
-   - **Integración:** Se lanza de fondo si el Orquestador o un Tool determina que el usuario no puede ser atendido por la IA o solicita expresamente comunicación.
+Arquitectura de agente conversacional modular para SPECTRUM VIVIENDA. Un orquestador central (*Sof-IA*) delega tareas a sub-workflows especializados (Tools), con persistencia centralizada en MongoDB y sincronización diferida al CRM Dynamics 365 vía SOAP.
 
 ---
 
-## 🚀 Últimos Cambios Implementados (Migración Fina)
-Para alcanzar el nivel de madurez, trazabilidad y analítica de datos del antiguo *flujo de muestra*, se incorporaron los siguientes hitos de inteligencia de negocio:
+## 🛠️ Stack Tecnológico
 
-1. **Adopción de Sub-agentes Completamente Acoplados:**
-   - La inclusión de las tools `RSVP`, `Send Media`, `KB_Search` y `Lead Collector` quedó asegurada dentro del bucle del Agente en `Principal.json`. Se inyectaron correctamente las descripciones de las tools para garantizar invocaciones precisas por parte del LLM.
-2. **Sincronización SOAP Madura y Diferida:**
-   - En lugar de enviar fragmentos instantáneos, se habilitó `Sync_CRM` que recopila la interacción completa del prospecto, resume la conversación con OpenAI, empaqueta todos sus datos calificados e inyecta la venta con contexto rico al CRM vía `CreacionClientePotencialBot` en una única llamada eficiente.
-3. **Métricas Estrictas Forenses y Analíticas (Response Time BI):**
-   - El orquestador inyecta variables de bitácora detallada y latencia de respuesta tabulada vía `$now.toMillis()` en la base `analytics_logs` de control corporativo.
-4. **Sincronización con Servidor de Producción:**
-   - Se validaron satisfactoriamente mediante auditoría MCP los componentes frente al servidor activo `agentsprod.redtec.ai`, alineando por completo los requerimientos.
-5. **Optimización de Flujo de Datos y Persistencia:**
-   - **Mapeo Robusto de Variables:** Se corrigieron los mapeos en el nodo Principal para que las herramientas (`Lead Collector`, `RSVP`) reciban consistentemente datos del canal (WhatsApp/IG) y teléfono del sistema, evitando que se soliciten datos que la plataforma ya posee.
-   - **Regla de Preservación de Memoria:** Se implementó una lógica de "Memoria de Intención" que evita que el agente olvide la consulta original del usuario (ej. precios) mientras este se identifica.
-   - **Interactividad Dinámica de Proyectos:** Se habilitó un comando inteligente para "rever proyectos" que resetea el estado visual, permitiendo al usuario cambiar de proyecto y recibir la información correspondiente de forma proactiva.
-   - **RSVP Proactivo:** El agente RSVP ahora encadena preguntas de forma más humana (ej. pide fecha/hora inmediatamente después de confirmar el tipo de visita), reduciendo turnos de conversación.
+| Componente | Detalle |
+|---|---|
+| **Orquestación** | n8n — workflows modulares vinculados via `Execute Workflow` |
+| **Modelos IA** | `gpt-4.1-mini` (lógica principal y tools), `gpt-4o` (análisis de imágenes y audio) |
+| **Base de Datos** | MongoDB Atlas — colecciones `users`, `appointments`, `chat_histories`, `chat_histories_lead`, `chat_histories_rsvp` |
+| **Vector Search** | MongoDB Atlas Vector Index (`spectrum_vector_index`) — RAG por proyecto |
+| **Buffer/Cache** | Redis — Message Debouncing (agrupa mensajes rápidos antes de procesar) |
+| **CDN** | Cloudinary — renders, brochures, amenidades |
+| **CRM** | Dynamics 365 via SOAP (endpoint: `crm.spectrum.com.gt:8055`) |
+| **Canales** | ManyChat (WhatsApp, Instagram, Messenger) |
+| **Notificaciones** | Gmail (HTML corporativo) vía OAuth |
 
 ---
 
-## ⏸️ Casos Pendientes / "Nice-to-Have" (Por Autorización)
-Se establecen funcionalidades que previenen alucinaciones y expanden la capacidad analítica que se explorarán para el pipeline a futuro:
+## 📦 Módulos (Workflows)
 
-1. **Web Search Fallback (Contexto de Economía/Área)**
-   - Conexión del agente secundario a motores tipo *Perplexity* o *Tavily*. Garantiza que el bot brinde respuestas educadas macro-económicas (ej. "Tasa de crédito FHA promedio") previniendo una alucinación originada porque el Vector RAG no posee data genérica fuera del proyecto inmobiliario base en curso.
+### 1. 🧠 Orquestador Central — `Principal.json`
+**Estado: ✅ Activo y funcional**
+
+- Recibe Webhook de ManyChat, detecta tipo de entrada (texto/audio/imagen/archivo).
+- Buffer Redis para agrupar mensajes rápidos del usuario.
+- Consulta/crea perfil en MongoDB (`users`).
+- **Agente Sof-IA** clasifica intención y delega a tools:
+  - `lead_collector` — cuando faltan datos del lead
+  - `kb_search` — cuando hay datos completos y proyecto activo
+  - `rsvp` — cuando el usuario quiere agendar
+  - `send_media` — cuando el usuario pide material visual
+- **Memoria de Intención (`consulta_pendiente`):** guarda la consulta original del usuario mientras se capturan sus datos; la retoma automáticamente al completar el perfil.
+- Parsea el JSON del LLM, actualiza MongoDB y envía respuesta a ManyChat.
+
+**Cambios recientes:**
+- REGLA RETOMO CASO A reforzada: el agente genera su propia respuesta conectando con `consulta_pendiente` en lugar de copiar el mensaje del `lead_collector`.
+- Capitalización automática del nombre del lead en mensajes.
+
+---
+
+### 2. 👤 Captador de Leads — `Lead Collector.json`
+**Estado: ✅ Activo**
+
+- Recolecta Nombre, Correo y Teléfono de forma conversacional.
+- En WhatsApp confirma el teléfono del sistema en lugar de pedirlo.
+- Validación de formato de correo electrónico.
+- Al completar datos: guarda `CRM_Data` en MongoDB (`users`) para sincronización diferida.
+- **Nota:** El nodo de envío SOAP directo (`GENERAR LEAD CONTACT`) está **deshabilitado**. El CRM se alimenta exclusivamente vía `Sync_CRM.json`.
+- Memoria conversacional: colección `chat_histories_lead` (ventana: 10 mensajes).
+
+---
+
+### 3. 📚 Experto en Proyectos — `KB_Search.json`
+**Estado: ✅ Activo — mejorado hoy**
+
+- Búsqueda vectorial en MongoDB Atlas filtrando por código de proyecto (`pvv`, `pm`, `pp`).
+- Responde únicamente con información del Knowledge Base (anti-alucinaciones).
+- Modelo: `gpt-4.1-mini` (temperatura 0.1).
+
+**Cambios recientes:**
+- CTAs actualizados: presentan las 3 opciones directamente (presencial/virtual/llamada) en lugar de preguntas sí/no ambiguas.
+- Formato de amenidades: instrucción explícita de lista vertical con bullet `•` (prohibido colapsar en línea).
+- Eliminado el bloque hardcodeado "Usuario acepta el CTA" que cortocircuitaba el RSVP.
+
+---
+
+### 4. 🗓️ Motor de Citas — `RSVP.json`
+**Estado: ✅ Activo — mejorado hoy**
+
+- Identifica tipo de agendamiento: `cita_presencial`, `cita_virtual` o `llamada`.
+- Si el usuario pide llamada, ofrece primero la opción de cita virtual.
+- Recolección secuencial (un dato por mensaje).
+- Crea/actualiza registros en colección `appointments`.
+- Envía notificación HTML por correo al confirmar cita.
+- Memoria conversacional: colección `chat_histories_rsvp` (ventana: 20 mensajes).
+
+**Orden de recolección (cita_presencial / cita_virtual):**
+1. `fecha_hora` → ISO 8601, lunes–sábado 9:00–18:00
+2. `numero_habitaciones` → 1, 2 o 3
+3. `intencion_compra` → Vivir (V) / Invertir (I)
+4. `estado_civil` → Pregunta: *"¿Vivirías solo/a o lo compartirías con alguien?"*
+5. `metodo_contacto_pref` → correo / llamada / WhatsApp
+
+**Cambios recientes:**
+- `estado_civil` ahora se pregunta explícitamente (antes solo por inferencia).
+- Mensaje de cierre post-cita incluye el canal de contacto elegido y próximos pasos.
+
+---
+
+### 5. 🖼️ Entrega de Media — `Send Media.json`
+**Estado: ✅ Activo — simplificado hoy**
+
+- Mapea solicitudes (`amenidades`, `renders`, `planos`, `brochure`) al recurso en Cloudinary según proyecto.
+- Multi-canal: imagen nativa en Instagram/Facebook, link en WhatsApp.
+- Nodo START renombrado de `START Send Media` a `START` (estandarizado).
+
+**Estado de URLs por proyecto:**
+| Proyecto | amenidades | renders | planos | brochure |
+|---|---|---|---|---|
+| PVV (Vista Verde) | ✅ Cloudinary real | ⚠️ Placeholder | ⚠️ Placeholder | ⚠️ Placeholder |
+| PMAR (Mariscal) | ⚠️ Placeholder | ⚠️ Placeholder | ⚠️ Placeholder | ⚠️ Placeholder |
+| PPO (Portales) | ⚠️ Placeholder | ⚠️ Placeholder | ⚠️ Placeholder | ⚠️ Placeholder |
+
+---
+
+### 6. 🔄 Sincronización CRM — `Sync_CRM.json`
+**Estado: ✅ Activo — SOAP habilitado**
+
+- Cronjob cada 15 minutos.
+- Filtra usuarios con `CRM_Data` existente, `conversation_analysis: false` e inactivos por 15+ min.
+- Genera `Resumen` y `Dudas` de la conversación con LLM.
+- Guarda resumen en MongoDB (`conversation_ressume`).
+- Construye envelope SOAP con datos de `CRM_Data` y envía al endpoint de Spectrum.
+- Marca `conversation_analysis: true` al finalizar (evita reprocesamiento).
+- Después del SOAP lanza el **Quality Auditor** para análisis de calidad del agente.
+
+**Flujo final (secuencial):**
+```
+Schedule → Time-15min → Find Users to Sync → Loop Over Users
+  → Find Appointment → Manychat User ID
+  → Chat Lead / Chat RSVP / Chat (paralelo) → LEAD / RSVP / PRINCIPAL
+  → Merge → Aggregate → Messages → Information Extractor
+  → EXTRACTOR RESPONSE → Update Conversation Analysis
+  → Body → PARSE BODY → GENERAR LEAD CONTACT → XML BODY
+  → Quality Auditor → Build Quality Log → Insert quality_logs
+  → No Operation → Loop Over Users
+```
+
+**⚠️ Pendiente confirmar:** URL del endpoint (`crm.spectrum.com.gt:8055`) sin sufijo `_Dev`. Validar con Spectrum que es el endpoint productivo.
+
+---
+
+### 7. 🔍 Auditor de Calidad — integrado en `Sync_CRM.json`
+**Estado: ✅ Activo (nuevo)**
+
+Corre **después del SOAP** al final de cada ciclo de sincronización. Evalúa la performance del agente por conversación y guarda el resultado en MongoDB.
+
+**Colección:** `quality_logs`
+
+| Campo | Descripción |
+|---|---|
+| `manychat_id` | ID del usuario analizado |
+| `nombre` / `proyecto` | Datos del lead |
+| `fecha_analisis` | Timestamp del análisis |
+| `resumen_conversacion` | Resumen generado por el Information Extractor |
+| `funnel_stage` | Etapa donde quedó el lead (nuevo/identificado/consultando/en_rsvp/cita_confirmada/escalado) |
+| `intencion_detectada` | Qué buscaba el usuario |
+| `tools_correctas` | Evaluación del uso de tools |
+| `errores_detectados` | Errores de lógica del agente |
+| `oportunidades_perdidas` | Conversiones no realizadas |
+| `tono_agente` | Tono de las respuestas |
+| `puntuacion` | Score 1–10 |
+| `recomendacion` | Sugerencia accionable para el desarrollador |
+
+**Query de consulta para el desarrollador:**
+```js
+db.quality_logs.find().sort({ fecha_analisis: -1 }).limit(10)
+```
+
+---
+
+### 8. 🚨 Notificador — `Notifications.json`
+**Estado: ✅ Activo**
+
+- Enrutador de alertas para el equipo de ventas.
+- Tipos: Nuevo Lead, Interés en Precios, Cita Confirmada, Escalación Humana.
+- Genera correos HTML con diseño corporativo (datos del lead + contexto).
+
+---
+
+### 9. ↗️ Escalación — `escalation.json`
+**Estado: ⚠️ Presente — no documentado aún**
+
+- Archivo detectado en el directorio pero no revisado en detalle.
+- Pendiente: revisar función, conexiones y si está integrado al flujo principal.
+
+---
+
+## 📊 Modelo de Datos (MongoDB)
+
+| Colección | Uso |
+|---|---|
+| `users` | Perfil del lead: datos, proyecto activo, `consulta_pendiente`, `CRM_Data`, flags |
+| `appointments` | Citas agendadas: tipo, fecha, habitaciones, intención, estado_civil, contacto |
+| `chat_histories` | Memoria conversacional del agente principal (ventana: 20) |
+| `chat_histories_lead` | Memoria del Lead Collector (ventana: 10) |
+| `chat_histories_rsvp` | Memoria del agente RSVP (ventana: 20) |
+| `documents` | Vector Store para RAG (filtrado por campo `proyecto`) |
+| `quality_logs` | Análisis de calidad del agente por conversación (nuevo) |
+
+---
+
+## 🔑 Credenciales en uso
+
+| Credential | Usado en |
+|---|---|
+| `Spectrum - Parque Verde` | Lead Collector, KB_Search, Sync_CRM, RSVP |
+| `Spectrum - Parque Portales` | Principal (LLM extractors) |
+| `Vectorizer Agent - Knowledge Bases` | KB_Search (embeddings) |
+| `SPECTRUM - CENTRALIZADO` | MongoDB (todos los módulos) |
+| `Manychat` | Principal (respuestas y media) |
+| `Redis GarooVPS` | Principal (buffer) |
+| `Soporte Garoo` | RSVP (Gmail) |
+
+---
+
+## 🚀 Roadmap
+
+### ✅ Completado
+- [x] Arquitectura modular con orquestador + tools
+- [x] Memoria de intención (`consulta_pendiente`)
+- [x] Buffer Redis para mensajes rápidos
+- [x] RSVP con persistencia en MongoDB y notificación por correo
+- [x] RAG vectorial por proyecto
+- [x] Sincronización SOAP al CRM (Sync_CRM activo)
+- [x] `estado_civil` recolectado en flujo RSVP
+- [x] CTAs mejorados en KB_Search (3 opciones claras: presencial/virtual/llamada)
+- [x] Formato vertical de amenidades (bullet `•` por ítem)
+- [x] REGLA RETOMO: bot conecta confirmación de datos con consulta original
+- [x] Mensaje de cierre post-cita incluye canal de contacto y próximos pasos
+- [x] Capitalización automática del nombre del lead
+- [x] **Auditor de Calidad** por conversación → colección `quality_logs` en MongoDB
+
+### 🔜 Pendiente
+- [ ] Cargar URLs reales en `Send Media.json` para PMAR y PPO (renders, planos, brochure)
+- [ ] Confirmar URL productiva del endpoint SOAP con Spectrum (sin `_Dev`)
+- [ ] Documentar y conectar `escalation.json` al flujo principal si aplica
+- [ ] Prueba end-to-end del flujo completo con los cambios de hoy
+- [ ] Web Search Fallback (Tavily/Perplexity) para dudas macroeconómicas
+- [ ] Lógica de Memoria de Largo Plazo entre sesiones
+- [ ] Dashboard o query estándar para consultar `quality_logs` (Power BI / Metabase)

@@ -1,516 +1,608 @@
 {
-    "nodes": [
-        {
-            "parameters": {
-                "inputSource": "jsonExample",
-                "jsonExample": "{\n  \"query\": \"hola\",\n  \"manychat_id\": \"287867895\",\n  \"canal\": \"whatsapp\",\n  \"tel_sistema\": \"+17736106610\",\n  \"nombre\": \"\",\n  \"correo\": \"\",\n  \"telefono\": \"\"\n}"
-            },
-            "type": "n8n-nodes-base.executeWorkflowTrigger",
-            "typeVersion": 1.1,
-            "position": [
-                -4272,
-                1328
-            ],
-            "id": "1f2b51cb-741a-4c1f-ab0d-dcb9d1028b85",
-            "name": "START"
-        },
-        {
-            "parameters": {
-                "assignments": {
-                    "assignments": [
-                        {
-                            "id": "392c7ca8-f659-4620-97d1-8dc575b91d82",
-                            "name": "canal",
-                            "value": "={{ $json.canal || '' }}",
-                            "type": "string"
-                        },
-                        {
-                            "id": "8cec27d2-e3a4-4d04-9391-882e65c855db",
-                            "name": "tel_sistema",
-                            "value": "={{ $json.tel_sistema || '' }}",
-                            "type": "string"
-                        },
-                        {
-                            "id": "3a86f300-d7c1-4b6f-9e14-6fff8706c783",
-                            "name": "manychat_id",
-                            "value": "={{ $json.manychat_id || '' }}",
-                            "type": "string"
-                        },
-                        {
-                            "id": "e033031f-27bc-4afb-888b-207e5e0a5c02",
-                            "name": "usuario_input",
-                            "value": "={{ $('START').item.json.query }}",
-                            "type": "string"
-                        },
-                        {
-                            "id": "29e7bf5a-a14e-4989-b510-f639ce4fc59a",
-                            "name": "nombre",
-                            "value": "={{ $json.nombre || '' }}",
-                            "type": "string"
-                        },
-                        {
-                            "id": "41bf5e11-24aa-42b7-b89e-011a5490109b",
-                            "name": "apellido",
-                            "value": "={{ $json.apellido || '' }}",
-                            "type": "string"
-                        },
-                        {
-                            "id": "22b27e42-4ca7-4c3b-b9cb-91f48e38cc16",
-                            "name": "correo",
-                            "value": "={{ $json.correo || '' }}",
-                            "type": "string"
-                        },
-                        {
-                            "id": "75bc176e-ff2f-4d1f-8506-23ea8794bf70",
-                            "name": "telefono",
-                            "value": "={{ $json.telefono || '' }}",
-                            "type": "string"
-                        }
-                    ]
-                },
-                "options": {}
-            },
-            "type": "n8n-nodes-base.set",
-            "typeVersion": 3.4,
-            "position": [
-                -4048,
-                1328
-            ],
-            "id": "6fafc23f-ccdb-49a7-b7ff-517cc1a0c910",
-            "name": "SET CONTEXT"
-        },
-        {
-            "parameters": {
-                "promptType": "define",
-                "text": "=canal: {{ $json.canal }}\ntel_sistema: {{ $json.tel_sistema }}\nmanychat_id: {{ $json.manychat_id }}\nusuario_input: {{ $json.usuario_input }}\nnombre: {{ $json.nombre || \"no aparece\" }}\napellido: {{ $json.apellido || \"no aparece\" }}\ncorreo: {{ $json.correo || \"no aparece\" }}\ntelefono: {{ $json.telefono || \"no aparece\" }}",
-                "options": {
-                    "systemMessage": "=### ROL ###\nSos un extractor de datos de contacto del lead para SPECTRUM VIVIENDA.\nNO sos un chatbot conversacional. NO saludás. NO te presentás. NO ofrecés ayuda.\nTu única función: pedir y recibir Nombre, Correo y Teléfono.\n\n### CONTEXTO ###\n- CANAL: {{ $('SET CONTEXT').item.json.canal }}\n- TEL_SISTEMA: {{ $('SET CONTEXT').item.json.tel_sistema }}\n- Nombre actual: {{ $('SET CONTEXT').item.json.nombre }}\n- Correo actual: {{ $('SET CONTEXT').item.json.correo }}\n- Teléfono actual: {{ $('SET CONTEXT').item.json.telefono }}\n\n### REGLAS DE LÓGICA ###\n\n1. EXTRACCIÓN: Identificá nombre, correo y teléfono en el mensaje actual del usuario.\n   - VALIDACIÓN DE CORREO: válido solo si tiene \"@\", nombre antes del \"@\" y dominio con punto después.\n   - Si el correo no cumple ese formato, tratalo como dato FALTANTE.\n\n2. LÓGICA POR CANAL:\n   - CANAL == 'whatsapp': NO pidas el número. Usá TEL_SISTEMA. Confirmalo después de tener Nombre y Correo válidos.\n   - CANAL != 'whatsapp': Solicitá número junto con Nombre y Correo.\n\n3. CONTEO DE INTENTOS: Cada solicitud de datos en el historial = 1 intento.\n   Al 3er intento o negativa explícita → transferir_agente: 1.\n\n4. DATOS YA CONOCIDOS: Si algún campo tiene valor en el CONTEXTO, no lo volvás a pedir.\n   Mantenelo en el output aunque el usuario no lo repita.\n\n### ESCENARIOS ###\n\nESCENARIO 1 — Faltan nombre o correo:\n- WhatsApp: \"Para brindarte información, ¿podrías indicarme por favor?:\\n\\n- tu nombre\\n- tu correo electrónico\"\n- Otro canal: agregar \"\\n- tu número de teléfono\" después del correo.\n\nESCENARIO 2 — Correo con formato inválido:\n\"Parece que hubo un problema con tu correo. ¿Podrías verificarlo e ingresarlo nuevamente? (Ejemplo: nombre@dominio.com) 😊\"\n\nESCENARIO 3 — WhatsApp + nombre y correo listos + teléfono sin confirmar:\n\"¡Gracias! Un último detalle. ¿Este es tu número {{ $('SET CONTEXT').item.json.tel_sistema }}? 😊\"\n\nESCENARIO 4 — WhatsApp + usuario niega el número:\n\"Entiendo. ¿Cuál es el número correcto para contactarte?\"\nSi tampoco provee alternativa: aplica ESCENARIO 6.\n\nESCENARIO 5 — Datos completos + teléfono confirmado:\n\"¡Muchas gracias, {nombre}! Ya recibimos tus datos 😊.\"\n→ transferir_agente: 1\n\nESCENARIO 6 — Intentos >= 3 o negativa explícita:\n\"Entiendo. Déjame revisar esa información para ti un momento 😊.\"\n→ transferir_agente: 1\n\n### PROHIBICIONES ABSOLUTAS ###\n- NUNCA digas \"Hola\", \"Soy Sof-IA\" ni ninguna variante de saludo o presentación.\n- NUNCA preguntes \"¿en qué te puedo ayudar?\".\n- NUNCA ofrezcas información del proyecto, precios, ubicación ni nada externo a los datos de contacto.\n- NUNCA respondas preguntas del usuario. Tu único output son los escenarios de arriba.\n\n### RESTRICCIÓN DE SALIDA ###\nResponde ÚNICAMENTE con un objeto JSON en una sola línea, sin bloques de código:\n\n{\"nombre\": \"string|null\", \"telefono\": \"string|null\", \"correo\": \"string|null\", \"transferir_agente\": 0|1, \"response\": \"tu_respuesta_aqui\"}\n\nREGLAS DE CAMPOS JSON:\n- \"correo\": null si el formato es inválido.\n- \"telefono\" en WhatsApp: null hasta confirmación explícita. Solo entonces usá TEL_SISTEMA.\n- \"telefono\" en otro canal: solo cuando el usuario lo escriba.\n- Campos con valor del CONTEXTO: mantenelos aunque el usuario no los repita."
-                }
-            },
-            "type": "@n8n/n8n-nodes-langchain.agent",
-            "typeVersion": 3.1,
-            "position": [
-                -3824,
-                1328
-            ],
-            "id": "7aec5093-d7f8-41b2-91f4-6ce6982ce762",
-            "name": "Lead Agent"
-        },
-        {
-            "parameters": {
-                "model": {
-                    "__rl": true,
-                    "value": "gpt-4.1-mini",
-                    "mode": "list",
-                    "cachedResultName": "gpt-4.1-mini"
-                },
-                "responsesApiEnabled": false,
-                "options": {
-                    "temperature": 0.1
-                }
-            },
-            "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
-            "typeVersion": 1.3,
-            "position": [
-                -3824,
-                1552
-            ],
-            "id": "5622b04d-a44c-4db7-8ba9-01712146cd80",
-            "name": "OpenAI Chat Model",
-            "credentials": {
-                "openAiApi": {
-                    "id": "mwtQQFLfYjj6JZcg",
-                    "name": "Spectrum - Parque Verde"
-                }
-            }
-        },
-        {
-            "parameters": {
-                "sessionIdType": "customKey",
-                "sessionKey": "={{ $('START').item.json.manychat_id }}",
-                "collectionName": "chat_histories_lead",
-                "databaseName": "Centralizado",
-                "contextWindowLength": 10
-            },
-            "type": "@n8n/n8n-nodes-langchain.memoryMongoDbChat",
-            "typeVersion": 1,
-            "position": [
-                -3696,
-                1552
-            ],
-            "id": "a6339ab2-88d0-4e55-aede-2726d65d3152",
-            "name": "MongoDB Chat Memory",
-            "credentials": {
-                "mongoDb": {
-                    "id": "UzcANqeDFO1QLbfd",
-                    "name": "SPECTRUM - CENTRALIZADO"
-                }
-            }
-        },
-        {
-            "parameters": {
-                "jsCode": "const raw = $input.first().json.output || '';\n\ntry {\n  const inicio = raw.indexOf('{');\n  const fin = raw.lastIndexOf('}') + 1;\n  if (inicio === -1 || fin === 0) throw new Error('No JSON');\n\n  const parsed = JSON.parse(\n    raw.substring(inicio, fin).replace(/[\\n\\r]/g, ' ')\n  );\n\n  return [{\n    json: {\n      nombre: parsed.nombre || null,\n      correo: parsed.correo || null,\n      telefono: parsed.telefono || null,\n      transferir_agente: parsed.transferir_agente ?? 0,\n      response: parsed.response || ''\n    }\n  }];\n} catch(e) {\n  return [{\n    json: {\n      nombre: null,\n      correo: null,\n      telefono: null,\n      transferir_agente: 1,\n      response: raw\n    }\n  }];\n}"
-            },
-            "type": "n8n-nodes-base.code",
-            "typeVersion": 2,
-            "position": [
-                -3472,
-                1328
-            ],
-            "id": "b89059ce-4690-475d-803b-0f17e406f460",
-            "name": "Parse Response"
-        },
-        {
-            "parameters": {
-                "method": "POST",
-                "url": "https://crm.spectrum.com.gt:8055/Spectrum_WS_GeneracionLead/service.asmx",
-                "sendHeaders": true,
-                "headerParameters": {
-                    "parameters": [
-                        {
-                            "name": "SOAPAction",
-                            "value": "http://tempuri.org/CreacionClientePotencialBot"
-                        },
-                        {
-                            "name": "Content-Type",
-                            "value": "text/xml; charset=utf-8"
-                        }
-                    ]
-                },
-                "sendBody": true,
-                "contentType": "raw",
-                "rawContentType": "text/xml; charset=utf-8",
-                "body": "={{ $json.body }}",
-                "options": {}
-            },
-            "type": "n8n-nodes-base.httpRequest",
-            "typeVersion": 4.2,
-            "position": [
-                -2352,
-                1232
-            ],
-            "id": "78e96111-da1b-4797-a674-631aaca53c77",
-            "name": "GENERAR LEAD CONTACT",
-            "onError": "continueRegularOutput"
-        },
-        {
-            "parameters": {
-                "assignments": {
-                    "assignments": [
-                        {
-                            "id": "4a0a3f53-7243-4b47-b0d9-f6b38c15ff91",
-                            "name": "body",
-                            "value": "={{ \n  {\n    \"soap:Envelope\": {\n      \"xmlns:soap\": \"http://schemas.xmlsoap.org/soap/envelope/\",\n      \"soap:Body\": {\n        \"CreacionClientePotencialBot\": {\n          \"xmlns\": \"http://tempuri.org/\",\n          \"_OrigenCliente\": \"100000001\",\n          \"_Proyecto\": \"PVV\",\n          \"_Comentarios\": \"Lead generado desde chatbot\",\n          \"_UTMSource\": $('SET CONTEXT').item.json.canal.toLowerCase() == 'whatsapp' ? 100000004 : $('SET CONTEXT').item.json.canal.toLowerCase() == 'instagram' ? 100000012 : 100000005,\n          \"_UTMCampaing\": \"Cliente atendido desde Chatbot\",\n          \"_Nombre\": $('LEAD DATA').item.json.nombre.split(\" \")[0] || \"N/A\",\n          \"_Apellido\": $('LEAD DATA').item.json.nombre.split(\" \")[1] || \"N/A\",\n          \"_TelefonoMovil\": $('LEAD DATA').item.json.telefono || \"N/A\",\n          \"_CorreEletronico\": $('LEAD DATA').item.json.correo || \"N/A\",\n          \"_MetodocontactoPref\": \"5\"\n        }\n      }\n    }\n  }\n}}",
-                            "type": "object"
-                        }
-                    ]
-                },
-                "options": {}
-            },
-            "type": "n8n-nodes-base.set",
-            "typeVersion": 3.4,
-            "position": [
-                -2800,
-                1232
-            ],
-            "id": "03926a89-2e66-49e8-9830-4b838db1c5c1",
-            "name": "JSON Body"
-        },
-        {
-            "parameters": {
-                "mode": "jsonToxml",
-                "dataPropertyName": "body",
-                "options": {}
-            },
-            "type": "n8n-nodes-base.xml",
-            "typeVersion": 1,
-            "position": [
-                -2576,
-                1232
-            ],
-            "id": "76c14928-565f-4c5c-a367-ebb234fc172f",
-            "name": "XML BODY"
-        },
-        {
-            "parameters": {
-                "conditions": {
-                    "options": {
-                        "caseSensitive": true,
-                        "leftValue": "",
-                        "typeValidation": "strict",
-                        "version": 3
-                    },
-                    "conditions": [
-                        {
-                            "id": "996ea7a0-c4f4-4a4b-956c-c78d485df9cf",
-                            "leftValue": "={{ !!$json.nombre && $json.nombre !== \"null\" }}",
-                            "rightValue": "",
-                            "operator": {
-                                "type": "boolean",
-                                "operation": "true",
-                                "singleValue": true
-                            }
-                        },
-                        {
-                            "id": "7ec296d0-2e82-4753-bb09-f8eedc652674",
-                            "leftValue": "={{ !!$json.correo && $json.correo !== \"null\" }}",
-                            "rightValue": "",
-                            "operator": {
-                                "type": "boolean",
-                                "operation": "true",
-                                "singleValue": true
-                            }
-                        },
-                        {
-                            "id": "7b660a01-58c0-49c9-b1c1-95464ddc7f22",
-                            "leftValue": "={{ !!$json.telefono && $json.telefono !== \"null\" }}",
-                            "rightValue": "",
-                            "operator": {
-                                "type": "boolean",
-                                "operation": "true",
-                                "singleValue": true
-                            }
-                        }
-                    ],
-                    "combinator": "and"
-                },
-                "options": {}
-            },
-            "type": "n8n-nodes-base.if",
-            "typeVersion": 2.3,
-            "position": [
-                -3024,
-                1328
-            ],
-            "id": "9a392841-5b88-4e88-8b3b-63786a1f30da",
-            "name": "IF DATA COMPLETED"
-        },
-        {
-            "parameters": {
-                "assignments": {
-                    "assignments": [
-                        {
-                            "id": "5e1c8eb0-a9f4-4676-b693-db378cd7f353",
-                            "name": "nombre",
-                            "value": "={{ $json.nombre }}",
-                            "type": "string"
-                        },
-                        {
-                            "id": "4860ba1b-1522-44b2-8fc3-9b8a48123c88",
-                            "name": "correo",
-                            "value": "={{ $json.correo }}",
-                            "type": "string"
-                        },
-                        {
-                            "id": "9b59f5ef-bbd2-45e8-81b5-b9575012212e",
-                            "name": "telefono",
-                            "value": "={{ $json.telefono }}",
-                            "type": "string"
-                        },
-                        {
-                            "id": "136c724c-6660-4eb9-a104-ac6748398e79",
-                            "name": "transferir_agente",
-                            "value": "={{ $json.transferir_agente }}",
-                            "type": "number"
-                        },
-                        {
-                            "id": "b1cfb4f5-a775-49c7-84d0-6bf8288b9bf0",
-                            "name": "response",
-                            "value": "={{ $json.response }}",
-                            "type": "string"
-                        }
-                    ]
-                },
-                "options": {}
-            },
-            "type": "n8n-nodes-base.set",
-            "typeVersion": 3.4,
-            "position": [
-                -3248,
-                1328
-            ],
-            "id": "7de1a548-7a3f-4ad5-bea8-cbae081812d0",
-            "name": "LEAD DATA"
-        },
-        {
-            "parameters": {},
-            "type": "n8n-nodes-base.noOp",
-            "typeVersion": 1,
-            "position": [
-                -2352,
-                1424
-            ],
-            "id": "a4786140-246a-4d59-9d63-0b0269798066",
-            "name": "No Operation, do nothing"
-        },
-        {
-            "parameters": {
-                "assignments": {
-                    "assignments": [
-                        {
-                            "id": "23996fe8-b2af-4a8a-b8b0-2c04562a2098",
-                            "name": "response",
-                            "value": "={{ $('LEAD DATA').item.json }}",
-                            "type": "string"
-                        }
-                    ]
-                },
-                "options": {}
-            },
-            "type": "n8n-nodes-base.set",
-            "typeVersion": 3.4,
-            "position": [
-                -2128,
-                1328
-            ],
-            "id": "dd3340cd-3661-49d1-b443-63ecbb565ec3",
-            "name": "RESPONSE"
-        }
-    ],
-    "connections": {
-        "START": {
-            "main": [
-                [
-                    {
-                        "node": "SET CONTEXT",
-                        "type": "main",
-                        "index": 0
-                    }
-                ]
-            ]
-        },
-        "SET CONTEXT": {
-            "main": [
-                [
-                    {
-                        "node": "Lead Agent",
-                        "type": "main",
-                        "index": 0
-                    }
-                ]
-            ]
-        },
-        "Lead Agent": {
-            "main": [
-                [
-                    {
-                        "node": "Parse Response",
-                        "type": "main",
-                        "index": 0
-                    }
-                ]
-            ]
-        },
-        "OpenAI Chat Model": {
-            "ai_languageModel": [
-                [
-                    {
-                        "node": "Lead Agent",
-                        "type": "ai_languageModel",
-                        "index": 0
-                    }
-                ]
-            ]
-        },
-        "MongoDB Chat Memory": {
-            "ai_memory": [
-                [
-                    {
-                        "node": "Lead Agent",
-                        "type": "ai_memory",
-                        "index": 0
-                    }
-                ]
-            ]
-        },
-        "Parse Response": {
-            "main": [
-                [
-                    {
-                        "node": "LEAD DATA",
-                        "type": "main",
-                        "index": 0
-                    }
-                ]
-            ]
-        },
-        "GENERAR LEAD CONTACT": {
-            "main": [
-                [
-                    {
-                        "node": "RESPONSE",
-                        "type": "main",
-                        "index": 0
-                    }
-                ]
-            ]
-        },
-        "JSON Body": {
-            "main": [
-                [
-                    {
-                        "node": "XML BODY",
-                        "type": "main",
-                        "index": 0
-                    }
-                ]
-            ]
-        },
-        "XML BODY": {
-            "main": [
-                [
-                    {
-                        "node": "GENERAR LEAD CONTACT",
-                        "type": "main",
-                        "index": 0
-                    }
-                ]
-            ]
-        },
-        "IF DATA COMPLETED": {
-            "main": [
-                [
-                    {
-                        "node": "JSON Body",
-                        "type": "main",
-                        "index": 0
-                    }
-                ],
-                [
-                    {
-                        "node": "No Operation, do nothing",
-                        "type": "main",
-                        "index": 0
-                    }
-                ]
-            ]
-        },
-        "LEAD DATA": {
-            "main": [
-                [
-                    {
-                        "node": "IF DATA COMPLETED",
-                        "type": "main",
-                        "index": 0
-                    }
-                ]
-            ]
-        },
-        "No Operation, do nothing": {
-            "main": [
-                [
-                    {
-                        "node": "RESPONSE",
-                        "type": "main",
-                        "index": 0
-                    }
-                ]
-            ]
-        }
+  "nodes": [
+    {
+      "parameters": {
+        "inputSource": "jsonExample",
+        "jsonExample": "{\n  \"query\": \"hola\",\n  \"manychat_id\": \"287867895\",\n  \"mongo_id\": \"69e79f75d70385587e6424f3\",\n  \"canal\": \"whatsapp\",\n  \"tel_sistema\": \"+17736106610\",\n  \"nombre\": \"\",\n  \"correo\": \"\",\n  \"telefono\": \"\"\n}"
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -4272,
+        1248
+      ],
+      "id": "1f2b51cb-741a-4c1f-ab0d-dcb9d1028b85",
+      "name": "START"
     },
-    "pinData": {},
-    "meta": {
-        "templateCredsSetupCompleted": true,
-        "instanceId": "d4ab02fb1ef8b6ca2c1c5c1f280ee696b0514d7d92cee5fb0da1784dbe393998"
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "392c7ca8-f659-4620-97d1-8dc575b91d82",
+              "name": "canal",
+              "value": "={{ $json.canal || '' }}",
+              "type": "string"
+            },
+            {
+              "id": "8cec27d2-e3a4-4d04-9391-882e65c855db",
+              "name": "tel_sistema",
+              "value": "={{ $json.tel_sistema || '' }}",
+              "type": "string"
+            },
+            {
+              "id": "3a86f300-d7c1-4b6f-9e14-6fff8706c783",
+              "name": "manychat_id",
+              "value": "={{ $json.manychat_id || '' }}",
+              "type": "string"
+            },
+            {
+              "id": "55129296-f352-4004-9036-76e980d1bef2",
+              "name": "mongo_id",
+              "value": "={{ $json.mongo_id }}",
+              "type": "string"
+            },
+            {
+              "id": "e033031f-27bc-4afb-888b-207e5e0a5c02",
+              "name": "usuario_input",
+              "value": "={{ $('START').item.json.query }}",
+              "type": "string"
+            },
+            {
+              "id": "29e7bf5a-a14e-4989-b510-f639ce4fc59a",
+              "name": "nombre",
+              "value": "={{ $json.nombre || '' }}",
+              "type": "string"
+            },
+            {
+              "id": "41bf5e11-24aa-42b7-b89e-011a5490109b",
+              "name": "apellido",
+              "value": "={{ $json.apellido || '' }}",
+              "type": "string"
+            },
+            {
+              "id": "22b27e42-4ca7-4c3b-b9cb-91f48e38cc16",
+              "name": "correo",
+              "value": "={{ $json.correo || '' }}",
+              "type": "string"
+            },
+            {
+              "id": "75bc176e-ff2f-4d1f-8506-23ea8794bf70",
+              "name": "telefono",
+              "value": "={{ $json.telefono || '' }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -4048,
+        1248
+      ],
+      "id": "6fafc23f-ccdb-49a7-b7ff-517cc1a0c910",
+      "name": "SET CONTEXT"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=canal: {{ $json.canal }}\ntel_sistema: {{ $json.tel_sistema }}\nmanychat_id: {{ $json.manychat_id }}\nusuario_input: {{ $json.usuario_input }}\nnombre: {{ $json.nombre || \"no aparece\" }}\napellido: {{ $json.apellido || \"no aparece\" }}\ncorreo: {{ $json.correo || \"no aparece\" }}\ntelefono: {{ $json.telefono || \"no aparece\" }}",
+        "options": {
+          "systemMessage": "=### ROL ###\nSos un extractor de datos de contacto del lead para SPECTRUM VIVIENDA.\nNO sos un chatbot conversacional. NO saludás. NO te presentás. NO ofrecés ayuda.\nTu única función: pedir y recibir Nombre, Correo y Teléfono.\n\n### CONTEXTO ###\n- CANAL: {{ $('SET CONTEXT').item.json.canal }}\n- TEL_SISTEMA: {{ $('SET CONTEXT').item.json.tel_sistema }}\n- Nombre actual: {{ $('SET CONTEXT').item.json.nombre }}\n- Correo actual: {{ $('SET CONTEXT').item.json.correo }}\n- Teléfono actual: {{ $('SET CONTEXT').item.json.telefono }}\n\n### REGLAS DE LÓGICA ###\n\n1. EXTRACCIÓN: Identificá nombre, correo y teléfono en el mensaje actual del usuario.\n   - VALIDACIÓN DE CORREO: válido solo si tiene \"@\", nombre antes del \"@\" y dominio con punto después.\n   - Si el correo no cumple ese formato, tratalo como dato FALTANTE.\n\n2. LÓGICA POR CANAL:\n   - CANAL == 'whatsapp': NO pidas el número. Usá TEL_SISTEMA. Confirmalo después de tener Nombre y Correo válidos.\n   - CANAL != 'whatsapp': Solicitá número junto con Nombre y Correo.\n\n3. CONTEO DE INTENTOS: Cada solicitud de datos en el historial = 1 intento.\n   Al 3er intento o negativa explícita → transferir_agente: 1.\n\n4. DATOS YA CONOCIDOS: Si algún campo tiene valor en el CONTEXTO, no lo volvás a pedir.\n   Mantenelo en el output aunque el usuario no lo repita.\n\n### ESCENARIOS ###\n\nESCENARIO 1 — Faltan nombre o correo:\n- WhatsApp: \"Para brindarte información, ¿podrías indicarme por favor?:\\n\\n- tu nombre\\n- tu correo electrónico\"\n- Otro canal: agregar \"\\n- tu número de teléfono\" después del correo.\n\nESCENARIO 2 — Correo con formato inválido:\n\"Parece que hubo un problema con tu correo. ¿Podrías verificarlo e ingresarlo nuevamente? (Ejemplo: nombre@dominio.com) 😊\"\n\nESCENARIO 3 — WhatsApp + nombre y correo listos + teléfono sin confirmar:\n\"¡Gracias! Un último detalle. ¿Este es tu número {{ $('SET CONTEXT').item.json.tel_sistema }}? 😊\"\n\nESCENARIO 4 — WhatsApp + usuario niega el número:\n\"Entiendo. ¿Cuál es el número correcto para contactarte?\"\nSi tampoco provee alternativa: aplica ESCENARIO 6.\n\nESCENARIO 5 — Datos completos + teléfono confirmado:\n\"¡Muchas gracias, {nombre}! Ya recibimos tus datos 😊.\"\n→ transferir_agente: 1\n\nESCENARIO 6 — Intentos >= 3 o negativa explícita:\n\"Entiendo. Déjame revisar esa información para ti un momento 😊.\"\n→ transferir_agente: 1\n\n### PROHIBICIONES ABSOLUTAS ###\n- NUNCA digas \"Hola\", \"Soy Sof-IA\" ni ninguna variante de saludo o presentación.\n- NUNCA preguntes \"¿en qué te puedo ayudar?\".\n- NUNCA ofrezcas información del proyecto, precios, ubicación ni nada externo a los datos de contacto.\n- NUNCA respondas preguntas del usuario. Tu único output son los escenarios de arriba.\n\n### RESTRICCIÓN DE SALIDA ###\nResponde ÚNICAMENTE con un objeto JSON en una sola línea, sin bloques de código:\n\n{\"nombre\": \"string|null\", \"telefono\": \"string|null\", \"correo\": \"string|null\", \"transferir_agente\": 0|1, \"response\": \"tu_respuesta_aqui\"}\n\nREGLAS DE CAMPOS JSON:\n- \"correo\": null si el formato es inválido.\n- \"telefono\" en WhatsApp: null hasta confirmación explícita. Solo entonces usá TEL_SISTEMA.\n- \"telefono\" en otro canal: solo cuando el usuario lo escriba.\n- Campos con valor del CONTEXTO: mantenelos aunque el usuario no los repita."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        -3824,
+        1248
+      ],
+      "id": "7aec5093-d7f8-41b2-91f4-6ce6982ce762",
+      "name": "Lead Agent"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4.1-mini",
+          "mode": "list",
+          "cachedResultName": "gpt-4.1-mini"
+        },
+        "responsesApiEnabled": false,
+        "options": {
+          "temperature": 0.1
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        -3824,
+        1472
+      ],
+      "id": "5622b04d-a44c-4db7-8ba9-01712146cd80",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "mwtQQFLfYjj6JZcg",
+          "name": "Spectrum - Parque Verde"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $('START').item.json.manychat_id }}",
+        "collectionName": "chat_histories_lead",
+        "databaseName": "Centralizado",
+        "contextWindowLength": 10
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryMongoDbChat",
+      "typeVersion": 1,
+      "position": [
+        -3696,
+        1472
+      ],
+      "id": "a6339ab2-88d0-4e55-aede-2726d65d3152",
+      "name": "MongoDB Chat Memory",
+      "credentials": {
+        "mongoDb": {
+          "id": "UzcANqeDFO1QLbfd",
+          "name": "SPECTRUM - CENTRALIZADO"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const raw = $input.first().json.output || '';\n\ntry {\n  const inicio = raw.indexOf('{');\n  const fin = raw.lastIndexOf('}') + 1;\n  if (inicio === -1 || fin === 0) throw new Error('No JSON');\n\n  const parsed = JSON.parse(\n    raw.substring(inicio, fin).replace(/[\\n\\r]/g, ' ')\n  );\n\n  return [{\n    json: {\n      nombre: parsed.nombre || null,\n      correo: parsed.correo || null,\n      telefono: parsed.telefono || null,\n      transferir_agente: parsed.transferir_agente ?? 0,\n      response: parsed.response || ''\n    }\n  }];\n} catch(e) {\n  return [{\n    json: {\n      nombre: null,\n      correo: null,\n      telefono: null,\n      transferir_agente: 1,\n      response: raw\n    }\n  }];\n}"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -3472,
+        1248
+      ],
+      "id": "b89059ce-4690-475d-803b-0f17e406f460",
+      "name": "Parse Response"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://crm.spectrum.com.gt:8055/Spectrum_WS_GeneracionLead/service.asmx",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "SOAPAction",
+              "value": "http://tempuri.org/CreacionClientePotencialBot"
+            },
+            {
+              "name": "Content-Type",
+              "value": "text/xml; charset=utf-8"
+            }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "raw",
+        "rawContentType": "text/xml; charset=utf-8",
+        "body": "={{ $('Body').item.json.body }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -2352,
+        1152
+      ],
+      "id": "78e96111-da1b-4797-a674-631aaca53c77",
+      "name": "GENERAR LEAD CONTACT",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "996ea7a0-c4f4-4a4b-956c-c78d485df9cf",
+              "leftValue": "={{ !!$json.nombre && $json.nombre !== \"null\" }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            },
+            {
+              "id": "7ec296d0-2e82-4753-bb09-f8eedc652674",
+              "leftValue": "={{ !!$json.correo && $json.correo !== \"null\" }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            },
+            {
+              "id": "7b660a01-58c0-49c9-b1c1-95464ddc7f22",
+              "leftValue": "={{ !!$json.telefono && $json.telefono !== \"null\" }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        -3024,
+        1248
+      ],
+      "id": "9a392841-5b88-4e88-8b3b-63786a1f30da",
+      "name": "IF DATA COMPLETED"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "5e1c8eb0-a9f4-4676-b693-db378cd7f353",
+              "name": "nombre",
+              "value": "={{ $json.nombre }}",
+              "type": "string"
+            },
+            {
+              "id": "4860ba1b-1522-44b2-8fc3-9b8a48123c88",
+              "name": "correo",
+              "value": "={{ $json.correo }}",
+              "type": "string"
+            },
+            {
+              "id": "9b59f5ef-bbd2-45e8-81b5-b9575012212e",
+              "name": "telefono",
+              "value": "={{ $json.telefono }}",
+              "type": "string"
+            },
+            {
+              "id": "136c724c-6660-4eb9-a104-ac6748398e79",
+              "name": "transferir_agente",
+              "value": "={{ $json.transferir_agente }}",
+              "type": "number"
+            },
+            {
+              "id": "b1cfb4f5-a775-49c7-84d0-6bf8288b9bf0",
+              "name": "response",
+              "value": "={{ $json.response }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -3248,
+        1248
+      ],
+      "id": "7de1a548-7a3f-4ad5-bea8-cbae081812d0",
+      "name": "LEAD DATA"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        -1904,
+        1344
+      ],
+      "id": "a4786140-246a-4d59-9d63-0b0269798066",
+      "name": "No Operation, do nothing"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "23996fe8-b2af-4a8a-b8b0-2c04562a2098",
+              "name": "response",
+              "value": "={{ $('LEAD DATA').item.json }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -1680,
+        1248
+      ],
+      "id": "dd3340cd-3661-49d1-b443-63ecbb565ec3",
+      "name": "RESPONSE"
+    },
+    {
+      "parameters": {
+        "dataPropertyName": "body",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.xml",
+      "typeVersion": 1,
+      "position": [
+        -2576,
+        1152
+      ],
+      "id": "2800eaeb-32cd-47d7-8896-633a46a2e039",
+      "name": "PARSE BODY"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "29bc8a2a-9b6e-4b09-ae6d-30b74ab45b94",
+              "name": "body",
+              "value": "=<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<soap:Envelope xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\">\n  <soap:Body>\n    <CreacionClientePotencialBot xmlns=\"http://tempuri.org/\">\n      <_OrigenCliente>100000001</_OrigenCliente>\n      <_Proyecto>PMAR</_Proyecto>\n      <_Comentarios>Lead generado desde chatbot</_Comentarios>\n      <_UTMSource>{{ $('SET CONTEXT').item.json.canal.toLowerCase() == 'whatsapp' ? 100000004 : $('SET CONTEXT').item.json.canal.toLowerCase() == 'instagram' ? 100000012 : 100000005 }}</_UTMSource>\n      <_UTMCampaing>Cliente atendido desde Chatbot</_UTMCampaing>\n      <_Nombre>{{ $json.nombre.split(\" \")[0] }}</_Nombre>\n      <_Apellido>{{ $json.nombre.split(\" \")[1] || \"N/A\" }}</_Apellido>\n      <_TelefonoMovil>{{ $json.telefono }}</_TelefonoMovil>\n      <_CorreEletronico>{{ $json.correo }}</_CorreEletronico>\n      <_MetodocontactoPref>5</_MetodocontactoPref>\n    </CreacionClientePotencialBot>\n  </soap:Body>\n</soap:Envelope>",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -2800,
+        1152
+      ],
+      "id": "0f4f93d3-ad39-4292-9b55-9b1fd6162ca5",
+      "name": "Body"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "collection": "users",
+        "updateKey": "_id",
+        "fields": "CRM_Data",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.mongoDb",
+      "typeVersion": 1.2,
+      "position": [
+        -1904,
+        1152
+      ],
+      "id": "200b4cf3-edf4-4cfe-95b0-0f9defd497a5",
+      "name": "Update User",
+      "credentials": {
+        "mongoDb": {
+          "id": "UzcANqeDFO1QLbfd",
+          "name": "SPECTRUM - CENTRALIZADO"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "449990f8-c46e-4e56-a8c2-7db326cd1cc5",
+              "name": "_id",
+              "value": "={{ $('SET CONTEXT').item.json.mongo_id }}",
+              "type": "string"
+            },
+            {
+              "id": "5f13904a-87ae-4879-b79f-ab9fccb8c378",
+              "name": "CRM_Data",
+              "value": "={{ $('PARSE BODY').item.json['soap:Envelope']['soap:Body'].CreacionClientePotencialBot }}",
+              "type": "object"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -2128,
+        1152
+      ],
+      "id": "506136ca-f17e-41e9-880b-3fac8af5bf9e",
+      "name": "CRM Data"
     }
+  ],
+  "connections": {
+    "START": {
+      "main": [
+        [
+          {
+            "node": "SET CONTEXT",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "SET CONTEXT": {
+      "main": [
+        [
+          {
+            "node": "Lead Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Lead Agent": {
+      "main": [
+        [
+          {
+            "node": "Parse Response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Lead Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "MongoDB Chat Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "Lead Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parse Response": {
+      "main": [
+        [
+          {
+            "node": "LEAD DATA",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "GENERAR LEAD CONTACT": {
+      "main": [
+        [
+          {
+            "node": "CRM Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "IF DATA COMPLETED": {
+      "main": [
+        [
+          {
+            "node": "Body",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "No Operation, do nothing",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "LEAD DATA": {
+      "main": [
+        [
+          {
+            "node": "IF DATA COMPLETED",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "No Operation, do nothing": {
+      "main": [
+        [
+          {
+            "node": "RESPONSE",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "PARSE BODY": {
+      "main": [
+        [
+          {
+            "node": "GENERAR LEAD CONTACT",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Body": {
+      "main": [
+        [
+          {
+            "node": "PARSE BODY",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update User": {
+      "main": [
+        [
+          {
+            "node": "RESPONSE",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "CRM Data": {
+      "main": [
+        [
+          {
+            "node": "Update User",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {
+    "START": [
+      {
+        "query": "Si",
+        "manychat_id": "168742877",
+        "mongo_id": "69e79f75d70385587e6424f3",
+        "canal": "whatsapp",
+        "tel_sistema": "+50259661548",
+        "nombre": "Jorge Menzel",
+        "correo": "jgabriel@ufm.edu",
+        "telefono": ""
+      }
+    ]
+  },
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "d4ab02fb1ef8b6ca2c1c5c1f280ee696b0514d7d92cee5fb0da1784dbe393998"
+  }
 }
