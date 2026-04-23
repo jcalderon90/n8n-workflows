@@ -26,7 +26,7 @@
     {
       "parameters": {
         "dataType": "string",
-        "value1": "={{ $json.datos.tipo_alerta }}",
+        "value1": "={{ $json.tipo_alerta }}",
         "rules": {
           "rules": [
             {
@@ -213,6 +213,7 @@
       "parameters": {
         "sendTo": "={{ true ? \"jorge.calderon@garooinc.com\" : $json.sendTo }}",
         "subject": "={{ $json.subject }}",
+        "emailType": "text",
         "message": "TEST",
         "options": {
           "appendAttribution": false,
@@ -228,12 +229,7 @@
       "id": "19bb35a2-2dc0-4f19-9bbf-9fade3e52f06",
       "name": "Send Gmail Notification",
       "webhookId": "bea4c899-a024-4a95-b8cf-4d862abd51f2",
-      "credentials": {
-        "gmailOAuth2": {
-          "id": "H8Qx7NlrthXmHUiy",
-          "name": "Soporte Garoo"
-        }
-      }
+      "credentials": {}
     }
   ],
   "connections": {

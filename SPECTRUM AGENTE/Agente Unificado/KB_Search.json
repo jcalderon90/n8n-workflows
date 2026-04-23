@@ -275,15 +275,7 @@
       ]
     }
   },
-  "pinData": {
-    "START": [
-      {
-        "manychat_id": "1623941319",
-        "proyecto": "pvv",
-        "entrada_usuario": "¿cuánto cuesta un apartamento?"
-      }
-    ]
-  },
+  "pinData": {},
   "meta": {
     "templateCredsSetupCompleted": true,
     "instanceId": "d4ab02fb1ef8b6ca2c1c5c1f280ee696b0514d7d92cee5fb0da1784dbe393998"

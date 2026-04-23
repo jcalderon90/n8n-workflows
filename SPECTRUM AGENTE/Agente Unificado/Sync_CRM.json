@@ -1,970 +1,909 @@
 {
-  "nodes": [
-    {
-      "parameters": {
-        "rule": {
-          "interval": [
-            {
-              "field": "minutes",
-              "minutesInterval": 10
+    "nodes": [
+        {
+            "parameters": {
+                "rule": {
+                    "interval": [
+                        {
+                            "field": "minutes",
+                            "minutesInterval": 10
+                        }
+                    ]
+                }
+            },
+            "type": "n8n-nodes-base.scheduleTrigger",
+            "typeVersion": 1.3,
+            "position": [304, -376],
+            "id": "0024f6c2-22d6-45b7-9fea-198fb319573a",
+            "name": "Schedule Trigger"
+        },
+        {
+            "parameters": {
+                "options": {}
+            },
+            "type": "n8n-nodes-base.splitInBatches",
+            "typeVersion": 3,
+            "position": [976, -376],
+            "id": "b123dbba-991c-431a-b32c-dcd3546766f3",
+            "name": "Loop Over Users"
+        },
+        {
+            "parameters": {
+                "assignments": {
+                    "assignments": [
+                        {
+                            "id": "ad37ff15-8600-45b7-b912-b284a9e0157d",
+                            "name": "lead_messages",
+                            "value": "={{ $('LEAD').item.json.lead_messages ?? \"No hay\" }}",
+                            "type": "string"
+                        },
+                        {
+                            "id": "2ec7f63b-931b-4b46-aaa9-001b6c2e93b4",
+                            "name": "rsvp_messages",
+                            "value": "={{ $('RSVP').item.json.RSVP_messages ?? \"No hay\" }}",
+                            "type": "string"
+                        },
+                        {
+                            "id": "6fb0062c-596a-478f-aebb-25416e4aa396",
+                            "name": "principal_messages",
+                            "value": "={{ $('PRINCIPAL').item.json.principal_messages ?? \"No hay\" }}",
+                            "type": "string"
+                        }
+                    ]
+                },
+                "options": {}
+            },
+            "type": "n8n-nodes-base.set",
+            "typeVersion": 3.4,
+            "position": [2544, -544],
+            "id": "be84b166-609b-4528-8e4c-a4c1f082f047",
+            "name": "Messages",
+            "executeOnce": false
+        },
+        {
+            "parameters": {
+                "numberInputs": 3
+            },
+            "type": "n8n-nodes-base.merge",
+            "typeVersion": 3.2,
+            "position": [2096, -560],
+            "id": "80bbd7e0-bcd8-4a55-aa6a-eea1048221c3",
+            "name": "Merge"
+        },
+        {
+            "parameters": {
+                "model": {
+                    "__rl": true,
+                    "value": "gpt-4.1-mini",
+                    "mode": "list",
+                    "cachedResultName": "gpt-4.1-mini"
+                },
+                "responsesApiEnabled": false,
+                "options": {}
+            },
+            "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+            "typeVersion": 1.3,
+            "position": [2840, -320],
+            "id": "aadc8604-e273-45cc-8003-7ee94212303b",
+            "name": "OpenAI Chat Model",
+            "credentials": {
+                "openAiApi": {
+                    "id": "mwtQQFLfYjj6JZcg",
+                    "name": "Spectrum - Parque Verde"
+                }
             }
-          ]
-        }
-      },
-      "type": "n8n-nodes-base.scheduleTrigger",
-      "typeVersion": 1.3,
-      "position": [
-        304,
-        -376
-      ],
-      "id": "0024f6c2-22d6-45b7-9fea-198fb319573a",
-      "name": "Schedule Trigger"
-    },
-    {
-      "parameters": {
-        "options": {}
-      },
-      "type": "n8n-nodes-base.splitInBatches",
-      "typeVersion": 3,
-      "position": [
-        976,
-        -376
-      ],
-      "id": "b123dbba-991c-431a-b32c-dcd3546766f3",
-      "name": "Loop Over Users"
-    },
-    {
-      "parameters": {
-        "assignments": {
-          "assignments": [
-            {
-              "id": "ad37ff15-8600-45b7-b912-b284a9e0157d",
-              "name": "lead_messages",
-              "value": "={{ $('LEAD').item.json.lead_messages ?? \"No hay\" }}",
-              "type": "string"
+        },
+        {
+            "parameters": {
+                "collection": "appointments",
+                "options": {},
+                "query": "={\"manychat_id\": \"{{ $json.manychat_id }}\"}"
             },
-            {
-              "id": "2ec7f63b-931b-4b46-aaa9-001b6c2e93b4",
-              "name": "rsvp_messages",
-              "value": "={{ $('RSVP').item.json.RSVP_messages ?? \"No hay\" }}",
-              "type": "string"
-            },
-            {
-              "id": "6fb0062c-596a-478f-aebb-25416e4aa396",
-              "name": "principal_messages",
-              "value": "={{ $('PRINCIPAL').item.json.principal_messages ?? \"No hay\" }}",
-              "type": "string"
+            "type": "n8n-nodes-base.mongoDb",
+            "typeVersion": 1.2,
+            "position": [1200, -596],
+            "id": "b21bc5bd-7257-4818-804d-62837956c3fd",
+            "name": "Find Appointment",
+            "alwaysOutputData": true,
+            "credentials": {
+                "mongoDb": {
+                    "id": "UzcANqeDFO1QLbfd",
+                    "name": "SPECTRUM - CENTRALIZADO"
+                }
             }
-          ]
         },
-        "options": {}
-      },
-      "type": "n8n-nodes-base.set",
-      "typeVersion": 3.4,
-      "position": [
-        2544,
-        -544
-      ],
-      "id": "be84b166-609b-4528-8e4c-a4c1f082f047",
-      "name": "Messages",
-      "executeOnce": false
-    },
-    {
-      "parameters": {
-        "numberInputs": 3
-      },
-      "type": "n8n-nodes-base.merge",
-      "typeVersion": 3.2,
-      "position": [
-        2096,
-        -560
-      ],
-      "id": "80bbd7e0-bcd8-4a55-aa6a-eea1048221c3",
-      "name": "Merge"
-    },
-    {
-      "parameters": {
-        "model": {
-          "__rl": true,
-          "value": "gpt-5-mini",
-          "mode": "list",
-          "cachedResultName": "gpt-5-mini"
+        {
+            "parameters": {
+                "assignments": {
+                    "assignments": [
+                        {
+                            "id": "333ef0a2-5347-49b3-9a2e-94f8780dec53",
+                            "name": "manychat_user_id",
+                            "value": "={{ $('Loop Over Users').item.json.manychat_id }}",
+                            "type": "string"
+                        }
+                    ]
+                },
+                "options": {}
+            },
+            "type": "n8n-nodes-base.set",
+            "typeVersion": 3.4,
+            "position": [1424, -596],
+            "id": "3bf694cd-8dab-42aa-b1ef-9f283cda2c43",
+            "name": "Manychat User ID"
         },
-        "responsesApiEnabled": false,
-        "options": {}
-      },
-      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
-      "typeVersion": 1.3,
-      "position": [
-        2840,
-        -320
-      ],
-      "id": "aadc8604-e273-45cc-8003-7ee94212303b",
-      "name": "OpenAI Chat Model",
-      "credentials": {
-        "openAiApi": {
-          "id": "mwtQQFLfYjj6JZcg",
-          "name": "Spectrum - Parque Verde"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "collection": "appointments",
-        "options": {},
-        "query": "={\"user_id\": \"{{ $json.manychat_id }}\"}"
-      },
-      "type": "n8n-nodes-base.mongoDb",
-      "typeVersion": 1.2,
-      "position": [
-        1200,
-        -596
-      ],
-      "id": "b21bc5bd-7257-4818-804d-62837956c3fd",
-      "name": "Find Appointment",
-      "alwaysOutputData": true,
-      "credentials": {
-        "mongoDb": {
-          "id": "UzcANqeDFO1QLbfd",
-          "name": "SPECTRUM - CENTRALIZADO"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "assignments": {
-          "assignments": [
-            {
-              "id": "333ef0a2-5347-49b3-9a2e-94f8780dec53",
-              "name": "manychat_user_id",
-              "value": "={{ $('Loop Over Users').item.json.manychat_id }}",
-              "type": "string"
+        {
+            "parameters": {
+                "jsCode": "return [{\n  json: {\n    cutoff: new Date(Date.now() - 15 * 60 * 1000).toISOString()\n  }\n}];"
+            },
+            "type": "n8n-nodes-base.code",
+            "typeVersion": 2,
+            "position": [528, -376],
+            "id": "e6d4664e-d331-4391-a3fa-b955b6b610c8",
+            "name": "Time-15min"
+        },
+        {
+            "parameters": {
+                "text": "=Historial del lead agent:{{ Array.isArray($json.lead_messages) ? $json.lead_messages.map(m => m.role + ': ' + m.content).join('\\\\n') : $json.lead_messages }} \n\nHistorial del rsvp agent: \n{{ Array.isArray($json.rsvp_messages) ? $json.rsvp_messages.map(m => m.role + ': ' + m.content).join('\\\\n') : $json.rsvp_messages }}\n\nHistorial del principal agent: \n{{ Array.isArray($json.principal_messages) ? $json.principal_messages.map(m => m.role + ': ' + m.content).join('\\\\n') : $json.principal_messages }}",
+                "attributes": {
+                    "attributes": [
+                        {
+                            "name": "Resumen",
+                            "description": "=Resumen breve (máximo 3 oraciones) del desarrollo de la conversación: qué preguntó el cliente, qué información se le dio y en qué punto quedó la conversación.",
+                            "required": true
+                        },
+                        {
+                            "name": "Dudas",
+                            "description": "=Lista numerada de todas las preguntas o dudas que expresó el cliente durante la conversación. Si no hay dudas explícitas, escribe 'Ninguna'. Formato: 1. ... 2. ... 3. ...",
+                            "required": true
+                        }
+                    ]
+                },
+                "options": {}
+            },
+            "type": "@n8n/n8n-nodes-langchain.informationExtractor",
+            "typeVersion": 1.2,
+            "position": [2768, -544],
+            "id": "c63ba235-70bb-483e-97e0-76025e6be5ee",
+            "name": "Information Extractor"
+        },
+        {
+            "parameters": {
+                "assignments": {
+                    "assignments": [
+                        {
+                            "id": "29811091-f623-46a3-920e-a37d4484e9f2",
+                            "name": "_id",
+                            "value": "={{ $('Loop Over Users').item.json._id.toJsonString().replace(/^\"(.*)\"$/, '$1') }}",
+                            "type": "string"
+                        },
+                        {
+                            "id": "fd8c37c0-b8b9-4e6d-8514-43839e17ca8e",
+                            "name": "conversation_analysis",
+                            "value": true,
+                            "type": "boolean"
+                        },
+                        {
+                            "id": "ab7c37c0-b8b9-4e6d-8514-43839e17ca8f",
+                            "name": "conversation_ressume",
+                            "value": "={{ $json.output }}",
+                            "type": "object"
+                        }
+                    ]
+                },
+                "options": {}
+            },
+            "type": "n8n-nodes-base.set",
+            "typeVersion": 3.4,
+            "position": [3120, -544],
+            "id": "7a49c62d-bc3e-4c68-8482-ac49fbef08e4",
+            "name": "EXTRACTOR RESPONSE"
+        },
+        {
+            "parameters": {
+                "method": "POST",
+                "url": "https://crm.spectrum.com.gt:8055/Spectrum_WS_GeneracionLead/Service.asmx",
+                "sendHeaders": true,
+                "headerParameters": {
+                    "parameters": [
+                        {
+                            "name": "SOAPAction",
+                            "value": "http://tempuri.org/CreacionClientePotencialBot"
+                        },
+                        {
+                            "name": "Content-Type",
+                            "value": "text/xml; charset=utf-8"
+                        }
+                    ]
+                },
+                "sendBody": true,
+                "contentType": "raw",
+                "rawContentType": "text/xml; charset=utf-8",
+                "body": "={{ $('Body').item.json.body }}",
+                "options": {}
+            },
+            "type": "n8n-nodes-base.httpRequest",
+            "typeVersion": 4.2,
+            "position": [3792, -544],
+            "id": "171688cb-e8c0-419f-ab35-94fa35dbed6c",
+            "name": "GENERAR LEAD CONTACT"
+        },
+        {
+            "parameters": {
+                "options": {}
+            },
+            "type": "n8n-nodes-base.xml",
+            "typeVersion": 1,
+            "position": [4016, -544],
+            "id": "0569f7b6-cbf2-430f-b959-503c567c50f8",
+            "name": "XML BODY"
+        },
+        {
+            "parameters": {
+                "assignments": {
+                    "assignments": [
+                        {
+                            "id": "29bc8a2a-9b6e-4b09-ae6d-30b74ab45b94",
+                            "name": "body",
+                            "value": "=<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<soap:Envelope xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\">\n<soap:Body>\n<CreacionClientePotencialBot xmlns=\"http://tempuri.org/\">\n<_OrigenCliente>{{ $('Loop Over Users').item.json.CRM_Data?._OrigenCliente || 100000001 }}</_OrigenCliente>\n<_Proyecto>{{ \n  ($('Loop Over Users').item.json.proyecto == 'pvv' || $('Loop Over Users').item.json.CRM_Data?._Proyecto == 'pvv' ? 'PVV' : \n   $('Loop Over Users').item.json.proyecto == 'pm' || $('Loop Over Users').item.json.CRM_Data?._Proyecto == 'pm' ? 'PMAR' : \n   $('Loop Over Users').item.json.proyecto == 'pp' || $('Loop Over Users').item.json.CRM_Data?._Proyecto == 'pp' ? 'PPO' : \n   $('Loop Over Users').item.json.CRM_Data?._Proyecto || \"PPO\") \n}}</_Proyecto>\n<_Nombre>{{ $('Loop Over Users').item.json.nombre?.split(\" \")[0] || \"Cliente\" }}</_Nombre>\n<_Apellido>{{ $('Loop Over Users').item.json.nombre?.split(\" \").slice(1).join(\" \") || \"N/A\" }}</_Apellido>\n<_TelefonoMovil>{{ $('Loop Over Users').item.json.telefono || \"\" }}</_TelefonoMovil>\n<_CorreEletronico>{{ $('Loop Over Users').item.json.correo || \"\" }}</_CorreEletronico>\n{{ $('Loop Over Users').item.json.correo_secundario ? '<_CorreoSecundario>' + $('Loop Over Users').item.json.correo_secundario + '</_CorreoSecundario>' : '' }}\n<_UTMSource>{{ $('Loop Over Users').item.json.CRM_Data?._UTMSource || 100000004 }}</_UTMSource>\n<_UTMCampaing>{{ $('Loop Over Users').item.json.CRM_Data?._UTMCampaing || \"Cliente atendido desde Chatbot\" }}</_UTMCampaing>\n<_MetodocontactoPref>{{ \n  ($('Find Appointment').item.json?.contacto_pref == \"correo\" ? 2 : \n   $('Find Appointment').item.json?.contacto_pref == \"llamada\" ? 3 : \n   $('Find Appointment').item.json?.contacto_pref == \"whatsapp\" ? 4 : \n   $('Find Appointment').item.json?.contacto_pref == \"cualquier_forma\" ? 5 : \n   Number($('Loop Over Users').item.json.CRM_Data?._MetodocontactoPref || 5)) \n}}</_MetodocontactoPref>\n<_Comentarios>{{ $('Loop Over Users').item.json.CRM_Data?._Comentarios || \"\" }}</_Comentarios>\n{{ \n  ($('Find Appointment').item.json?.habitaciones == \"1\" ? '<_NumeroHabitaciones>100000000</_NumeroHabitaciones>' : \n   $('Find Appointment').item.json?.habitaciones == \"2\" ? '<_NumeroHabitaciones>100000001</_NumeroHabitaciones>' : \n   $('Find Appointment').item.json?.habitaciones == \"3\" ? '<_NumeroHabitaciones>100000002</_NumeroHabitaciones>' : \n   ($('Loop Over Users').item.json.CRM_Data?._NumeroHabitaciones ? '<_NumeroHabitaciones>' + $('Loop Over Users').item.json.CRM_Data._NumeroHabitaciones + '</_NumeroHabitaciones>' : '')) \n}}\n{{ \n  ($('Find Appointment').item.json?.estado_civil == \"soltero\" ? '<_EstadoCivil>100000000</_EstadoCivil>' : \n   $('Find Appointment').item.json?.estado_civil == \"casado\" ? '<_EstadoCivil>100000001</_EstadoCivil>' : \n   $('Find Appointment').item.json?.estado_civil == \"divorciado\" ? '<_EstadoCivil>100000002</_EstadoCivil>' : \n   $('Find Appointment').item.json?.estado_civil == \"union_libre\" ? '<_EstadoCivil>100000003</_EstadoCivil>' : \n   ($('Loop Over Users').item.json.CRM_Data?._EstadoCivil ? '<_EstadoCivil>' + $('Loop Over Users').item.json.CRM_Data._EstadoCivil + '</_EstadoCivil>' : '')) \n}}\n{{ \n  ($('Find Appointment').item.json?.intencion == \"I\" ? '<_MotivoInteres>100000001</_MotivoInteres>' : \n   $('Find Appointment').item.json?.intencion == \"V\" ? '<_MotivoInteres>100000003</_MotivoInteres>' : \n   ($('Loop Over Users').item.json.CRM_Data?._MotivoInteres ? '<_MotivoInteres>' + $('Loop Over Users').item.json.CRM_Data._MotivoInteres + '</_MotivoInteres>' : '')) \n}}\n{{ \n  $('Find Appointment').item.json?.fecha_hora ? '<_FechaCita>' + new Date($('Find Appointment').item.json.fecha_hora).toISOString() + '</_FechaCita>' : \n  ($('Loop Over Users').item.json.CRM_Data?._FechaCita ? '<_FechaCita>' + $('Loop Over Users').item.json.CRM_Data._FechaCita + '</_FechaCita>' : '') \n}}\n{{ \n  ($('Find Appointment').item.json?.tipo == \"cita_presencial\" ? '<_TipoCita>100000000</_TipoCita>' : \n   ['cita_virtual', 'llamada'].includes($('Find Appointment').item.json?.tipo) ? '<_TipoCita>100000001</_TipoCita>' : \n   ($('Loop Over Users').item.json.CRM_Data?._TipoCita ? '<_TipoCita>' + $('Loop Over Users').item.json.CRM_Data._TipoCita + '</_TipoCita>' : '')) \n}}\n<_ResumenConversacion>{{ $json.conversation_ressume?.Resumen || \"\" }}</_ResumenConversacion>\n<_DudasCliente>{{ $json.conversation_ressume?.Dudas || \"\" }}</_DudasCliente>\n</CreacionClientePotencialBot>\n</soap:Body>\n</soap:Envelope>",
+                            "type": "string"
+                        }
+                    ]
+                },
+                "options": {}
+            },
+            "type": "n8n-nodes-base.set",
+            "typeVersion": 3.4,
+            "position": [3344, -544],
+            "id": "29bd7742-e5ac-4f2b-b8b4-82808fd7fed4",
+            "name": "Body"
+        },
+        {
+            "parameters": {
+                "dataPropertyName": "body",
+                "options": {}
+            },
+            "type": "n8n-nodes-base.xml",
+            "typeVersion": 1,
+            "position": [3568, -544],
+            "id": "19b5bf7a-bf04-48b7-9b6b-e63e01ce14c8",
+            "name": "PARSE BODY"
+        },
+        {
+            "parameters": {},
+            "type": "n8n-nodes-base.noOp",
+            "typeVersion": 1,
+            "position": [5488, -376],
+            "id": "44dd0a1c-0dec-44df-8f09-efdf30cc2463",
+            "name": "No Operation, do nothing"
+        },
+        {
+            "parameters": {
+                "collection": "users",
+                "options": {},
+                "query": "={\n  \"CRM_Data\": { \"$exists\": true },\n  \"conversation_analysis\": { \"$ne\": true },\n  \"last_interaction\": { \"$lt\": \"{{ $json.cutoff }}\" }\n}"
+            },
+            "type": "n8n-nodes-base.mongoDb",
+            "typeVersion": 1.2,
+            "position": [752, -376],
+            "id": "3d5d94a3-1414-4229-b19c-3c74ba65e1b5",
+            "name": "Find Users to Sync",
+            "alwaysOutputData": true,
+            "credentials": {
+                "mongoDb": {
+                    "id": "UzcANqeDFO1QLbfd",
+                    "name": "SPECTRUM - CENTRALIZADO"
+                }
             }
-          ]
         },
-        "options": {}
-      },
-      "type": "n8n-nodes-base.set",
-      "typeVersion": 3.4,
-      "position": [
-        1424,
-        -596
-      ],
-      "id": "3bf694cd-8dab-42aa-b1ef-9f283cda2c43",
-      "name": "Manychat User ID"
-    },
-    {
-      "parameters": {
-        "jsCode": "return [{\n  json: {\n    cutoff: new Date(Date.now() - 15 * 60 * 1000).toISOString()\n  }\n}];"
-      },
-      "type": "n8n-nodes-base.code",
-      "typeVersion": 2,
-      "position": [
-        528,
-        -376
-      ],
-      "id": "e6d4664e-d331-4391-a3fa-b955b6b610c8",
-      "name": "Time-15min"
-    },
-    {
-      "parameters": {
-        "text": "=Historial del lead agent:{{ Array.isArray($json.lead_messages) ? $json.lead_messages.map(m => m.role + ': ' + m.content).join('\\\\n') : $json.lead_messages }} \n\nHistorial del rsvp agent: \n{{ Array.isArray($json.rsvp_messages) ? $json.rsvp_messages.map(m => m.role + ': ' + m.content).join('\\\\n') : $json.rsvp_messages }}\n\nHistorial del principal agent: \n{{ Array.isArray($json.principal_messages) ? $json.principal_messages.map(m => m.role + ': ' + m.content).join('\\\\n') : $json.principal_messages }}",
-        "attributes": {
-          "attributes": [
-            {
-              "name": "Resumen",
-              "description": "=Resumen breve (máximo 3 oraciones) del desarrollo de la conversación: qué preguntó el cliente, qué información se le dio y en qué punto quedó la conversación.",
-              "required": true
+        {
+            "parameters": {
+                "collection": "chat_histories_lead",
+                "options": {},
+                "query": "={\"sessionId\": \"{{ $('Manychat User ID').item.json.manychat_user_id }}\"}"
             },
-            {
-              "name": "Dudas",
-              "description": "=Lista numerada de todas las preguntas o dudas que expresó el cliente durante la conversación. Si no hay dudas explícitas, escribe 'Ninguna'. Formato: 1. ... 2. ... 3. ...",
-              "required": true
+            "type": "n8n-nodes-base.mongoDb",
+            "typeVersion": 1.2,
+            "position": [1648, -736],
+            "id": "aedbed79-402c-4261-bbad-0da96b247b07",
+            "name": "Chat Lead",
+            "alwaysOutputData": true,
+            "credentials": {
+                "mongoDb": {
+                    "id": "UzcANqeDFO1QLbfd",
+                    "name": "SPECTRUM - CENTRALIZADO"
+                }
             }
-          ]
         },
-        "options": {}
-      },
-      "type": "@n8n/n8n-nodes-langchain.informationExtractor",
-      "typeVersion": 1.2,
-      "position": [
-        2768,
-        -544
-      ],
-      "id": "c63ba235-70bb-483e-97e0-76025e6be5ee",
-      "name": "Information Extractor"
-    },
-    {
-      "parameters": {
-        "assignments": {
-          "assignments": [
-            {
-              "id": "29811091-f623-46a3-920e-a37d4484e9f2",
-              "name": "_id",
-              "value": "={{ $('Loop Over Users').item.json._id.toJsonString().replace(/^\"(.*)\"$/, '$1') }}",
-              "type": "string"
+        {
+            "parameters": {
+                "collection": "chat_histories_rsvp",
+                "options": {},
+                "query": "={\"sessionId\": \"{{ $('Manychat User ID').item.json.manychat_user_id }}\"}"
             },
-            {
-              "id": "fd8c37c0-b8b9-4e6d-8514-43839e17ca8e",
-              "name": "conversation_analysis",
-              "value": true,
-              "type": "boolean"
-            },
-            {
-              "id": "ab7c37c0-b8b9-4e6d-8514-43839e17ca8f",
-              "name": "conversation_ressume",
-              "value": "={{ $json.output }}",
-              "type": "object"
+            "type": "n8n-nodes-base.mongoDb",
+            "typeVersion": 1.2,
+            "position": [1648, -544],
+            "id": "9d9974b4-8af5-48b5-8ec1-f72cb1673f06",
+            "name": "Chat RSVP",
+            "alwaysOutputData": true,
+            "credentials": {
+                "mongoDb": {
+                    "id": "UzcANqeDFO1QLbfd",
+                    "name": "SPECTRUM - CENTRALIZADO"
+                }
             }
-          ]
         },
-        "options": {}
-      },
-      "type": "n8n-nodes-base.set",
-      "typeVersion": 3.4,
-      "position": [
-        3120,
-        -544
-      ],
-      "id": "7a49c62d-bc3e-4c68-8482-ac49fbef08e4",
-      "name": "EXTRACTOR RESPONSE"
-    },
-    {
-      "parameters": {
-        "method": "POST",
-        "url": "https://crm.spectrum.com.gt:8055/Spectrum_WS_GeneracionLead/service.asmx",
-        "sendHeaders": true,
-        "headerParameters": {
-          "parameters": [
-            {
-              "name": "SOAPAction",
-              "value": "http://tempuri.org/CreacionClientePotencialBot"
+        {
+            "parameters": {
+                "collection": "chat_histories",
+                "options": {},
+                "query": "={\"sessionId\": \"{{ $('Manychat User ID').item.json.manychat_user_id }}\"}"
             },
-            {
-              "name": "Content-Type",
-              "value": "text/xml; charset=utf-8"
+            "type": "n8n-nodes-base.mongoDb",
+            "typeVersion": 1.2,
+            "position": [1648, -352],
+            "id": "6183b44c-c31c-432e-b312-458832ab6e1e",
+            "name": "Chat",
+            "alwaysOutputData": true,
+            "credentials": {
+                "mongoDb": {
+                    "id": "UzcANqeDFO1QLbfd",
+                    "name": "SPECTRUM - CENTRALIZADO"
+                }
             }
-          ]
         },
-        "sendBody": true,
-        "contentType": "raw",
-        "rawContentType": "text/xml; charset=utf-8",
-        "body": "={{ $('Body').item.json.body }}",
-        "options": {}
-      },
-      "type": "n8n-nodes-base.httpRequest",
-      "typeVersion": 4.2,
-      "position": [
-        4016,
-        -544
-      ],
-      "id": "171688cb-e8c0-419f-ab35-94fa35dbed6c",
-      "name": "GENERAR LEAD CONTACT"
-    },
-    {
-      "parameters": {
-        "options": {}
-      },
-      "type": "n8n-nodes-base.xml",
-      "typeVersion": 1,
-      "position": [
-        4240,
-        -544
-      ],
-      "id": "0569f7b6-cbf2-430f-b959-503c567c50f8",
-      "name": "XML BODY"
-    },
-    {
-      "parameters": {
-        "assignments": {
-          "assignments": [
-            {
-              "id": "29bc8a2a-9b6e-4b09-ae6d-30b74ab45b94",
-              "name": "body",
-              "value": "=<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<soap:Envelope xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\">\n<soap:Body>\n<CreacionClientePotencialBot xmlns=\"http://tempuri.org/\">\n<_OrigenCliente>{{ $('Loop Over Users').item.json.CRM_Data._OrigenCliente }}</_OrigenCliente>\n<_Proyecto>{{ $('Loop Over Users').item.json.CRM_Data._Proyecto }}</_Proyecto>\n<_UTMCampaing>{{ $('Loop Over Users').item.json.CRM_Data._UTMCampaing }}</_UTMCampaing>\n<_MetodocontactoPref>{{ Number($('Loop Over Users').item.json.CRM_Data._MetodocontactoPref || 5) }}</_MetodocontactoPref>\n<_Comentarios>{{ $('Loop Over Users').item.json.CRM_Data._Comentarios }}</_Comentarios>\n<_UTMSource>{{ $('Loop Over Users').item.json.CRM_Data._UTMSource || \"\" }}</_UTMSource>\n<_TelefonoMovil>{{ $('Loop Over Users').item.json.telefono || \"\" }}</_TelefonoMovil>\n<_CorreEletronico>{{ $('Loop Over Users').item.json.correo || \"\" }}</_CorreEletronico>\n<_Nombre>{{ $('Loop Over Users').item.json.nombre.split(\" \")[0] }}</_Nombre>\n<_Apellido>{{ $('Loop Over Users').item.json.nombre.split(\" \")[1] || \"N/A\" }}</_Apellido>\n<_ResumenConversacion>{{ $json.conversation_ressume?.Resumen || \"\" }}</_ResumenConversacion>\n<_DudasCliente>{{ $json.conversation_ressume?.Dudas || \"\" }}</_DudasCliente>\n</CreacionClientePotencialBot>\n</soap:Body>\n</soap:Envelope>",
-              "type": "string"
+        {
+            "parameters": {
+                "aggregate": "aggregateAllItemData",
+                "destinationFieldName": "conversation",
+                "options": {}
+            },
+            "type": "n8n-nodes-base.aggregate",
+            "typeVersion": 1,
+            "position": [2320, -544],
+            "id": "349eaf8f-0f43-429c-bdae-2a4364c768e2",
+            "name": "Aggregate"
+        },
+        {
+            "parameters": {
+                "assignments": {
+                    "assignments": [
+                        {
+                            "id": "3607b95d-eec6-47fc-8b07-afdcf62f14ed",
+                            "name": "lead_messages",
+                            "value": "={{ $json.messages }}",
+                            "type": "array"
+                        }
+                    ]
+                },
+                "options": {}
+            },
+            "type": "n8n-nodes-base.set",
+            "typeVersion": 3.4,
+            "position": [1872, -736],
+            "id": "38e6c6c1-aaad-495d-95eb-88c01a4e2e58",
+            "name": "LEAD"
+        },
+        {
+            "parameters": {
+                "assignments": {
+                    "assignments": [
+                        {
+                            "id": "b33f15a9-f6d3-46e7-a874-29c3fd3fc960",
+                            "name": "RSVP_messages",
+                            "value": "={{ $json.messages }}",
+                            "type": "array"
+                        }
+                    ]
+                },
+                "options": {}
+            },
+            "type": "n8n-nodes-base.set",
+            "typeVersion": 3.4,
+            "position": [1872, -544],
+            "id": "3a95b348-5d83-447a-8586-8b1800792045",
+            "name": "RSVP"
+        },
+        {
+            "parameters": {
+                "assignments": {
+                    "assignments": [
+                        {
+                            "id": "2f56ae14-c394-4836-9b6a-1844357a4718",
+                            "name": "principal_messages",
+                            "value": "={{ $json.messages }}",
+                            "type": "array"
+                        }
+                    ]
+                },
+                "options": {}
+            },
+            "type": "n8n-nodes-base.set",
+            "typeVersion": 3.4,
+            "position": [1872, -352],
+            "id": "fc356cf4-7af5-454b-b185-01738371f254",
+            "name": "PRINCIPAL"
+        },
+        {
+            "parameters": {
+                "text": "=Lead Agent:\n{{ Array.isArray($('Messages').item.json.lead_messages) ? $('Messages').item.json.lead_messages.map(m => m.role + ': ' + m.content).join('\\n') : $('Messages').item.json.lead_messages }}\n\nRSVP Agent:\n{{ Array.isArray($('Messages').item.json.rsvp_messages) ? $('Messages').item.json.rsvp_messages.map(m => m.role + ': ' + m.content).join('\\n') : $('Messages').item.json.rsvp_messages }}\n\nPrincipal Agent:\n{{ Array.isArray($('Messages').item.json.principal_messages) ? $('Messages').item.json.principal_messages.map(m => m.role + ': ' + m.content).join('\\n') : $('Messages').item.json.principal_messages }}",
+                "attributes": {
+                    "attributes": [
+                        {
+                            "name": "funnel_stage",
+                            "description": "=Etapa del funnel: 'nuevo' (solo saludó), 'identificado' (dio datos), 'proyecto_activo' (eligió proyecto), 'consultando' (hizo preguntas), 'en_rsvp' (inició agendamiento), 'cita_confirmada' (confirmó cita), 'escalado' (pidió humano)",
+                            "required": true
+                        },
+                        {
+                            "name": "intencion_detectada",
+                            "description": "=En una frase corta, qué buscaba el usuario en esta conversación",
+                            "required": true
+                        },
+                        {
+                            "name": "tools_correctas",
+                            "description": "=¿El agente usó las tools correctas en el momento correcto? Describe brevemente si lead_collector, kb_search, rsvp y send_media se usaron apropiadamente. Si no se usó alguna tool necesaria, indícalo.",
+                            "required": true
+                        },
+                        {
+                            "name": "errores_detectados",
+                            "description": "=Lista numerada de errores en la lógica del agente: respuestas incorrectas, loops, confusión de contexto, preguntas innecesarias. Escribe 'Ninguno' si no hay errores.",
+                            "required": true
+                        },
+                        {
+                            "name": "oportunidades_perdidas",
+                            "description": "=Momentos donde el agente pudo avanzar en el funnel o mejorar la experiencia pero no lo hizo. Escribe 'Ninguna' si no aplica.",
+                            "required": true
+                        },
+                        {
+                            "name": "tono_agente",
+                            "description": "=Evaluación del tono: 'natural y correcto', 'muy formal', 'robotico', 'confuso', 'repetitivo'",
+                            "required": true
+                        },
+                        {
+                            "name": "puntuacion",
+                            "description": "=Puntuación del 1 al 10. Criterios: correcta identificación de intención (20%), uso apropiado de tools (20%), tono natural (20%), avance en el funnel (20%), ausencia de errores (20%).",
+                            "required": true
+                        },
+                        {
+                            "name": "recomendacion",
+                            "description": "=Una recomendación concreta y accionable para el desarrollador sobre cómo mejorar el comportamiento del agente en conversaciones similares a esta.",
+                            "required": true
+                        }
+                    ]
+                },
+                "options": {}
+            },
+            "type": "@n8n/n8n-nodes-langchain.informationExtractor",
+            "typeVersion": 1.2,
+            "position": [4688, -544],
+            "id": "376f53c0-fc41-4241-9795-5ed86115edc2",
+            "name": "Quality Auditor"
+        },
+        {
+            "parameters": {
+                "model": {
+                    "__rl": true,
+                    "value": "gpt-4.1-mini",
+                    "mode": "list",
+                    "cachedResultName": "gpt-4.1-mini"
+                },
+                "responsesApiEnabled": false,
+                "options": {
+                    "temperature": 0.1
+                }
+            },
+            "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+            "typeVersion": 1.3,
+            "position": [4760, -320],
+            "id": "1076b4dc-a83c-4db6-bf23-013d676330a0",
+            "name": "OpenAI Quality Model",
+            "credentials": {
+                "openAiApi": {
+                    "id": "mwtQQFLfYjj6JZcg",
+                    "name": "Spectrum - Parque Verde"
+                }
             }
-          ]
         },
-        "options": {}
-      },
-      "type": "n8n-nodes-base.set",
-      "typeVersion": 3.4,
-      "position": [
-        3568,
-        -544
-      ],
-      "id": "29bd7742-e5ac-4f2b-b8b4-82808fd7fed4",
-      "name": "Body"
-    },
-    {
-      "parameters": {
-        "dataPropertyName": "body",
-        "options": {}
-      },
-      "type": "n8n-nodes-base.xml",
-      "typeVersion": 1,
-      "position": [
-        3792,
-        -544
-      ],
-      "id": "19b5bf7a-bf04-48b7-9b6b-e63e01ce14c8",
-      "name": "PARSE BODY"
-    },
-    {
-      "parameters": {},
-      "type": "n8n-nodes-base.noOp",
-      "typeVersion": 1,
-      "position": [
-        5264,
-        -376
-      ],
-      "id": "44dd0a1c-0dec-44df-8f09-efdf30cc2463",
-      "name": "No Operation, do nothing"
-    },
-    {
-      "parameters": {
-        "collection": "users",
-        "options": {},
-        "query": "={\n  \"CRM_Data\": { \"$exists\": true },\n  \"conversation_analysis\": { \"$ne\": true }\n}"
-      },
-      "type": "n8n-nodes-base.mongoDb",
-      "typeVersion": 1.2,
-      "position": [
-        752,
-        -376
-      ],
-      "id": "3d5d94a3-1414-4229-b19c-3c74ba65e1b5",
-      "name": "Find Users to Sync",
-      "alwaysOutputData": true,
-      "credentials": {
-        "mongoDb": {
-          "id": "UzcANqeDFO1QLbfd",
-          "name": "SPECTRUM - CENTRALIZADO"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "collection": "chat_histories_lead",
-        "options": {},
-        "query": "={\"sessionId\": \"{{ $('Manychat User ID').item.json.manychat_user_id }}\"}"
-      },
-      "type": "n8n-nodes-base.mongoDb",
-      "typeVersion": 1.2,
-      "position": [
-        1648,
-        -736
-      ],
-      "id": "aedbed79-402c-4261-bbad-0da96b247b07",
-      "name": "Chat Lead",
-      "alwaysOutputData": true,
-      "credentials": {
-        "mongoDb": {
-          "id": "UzcANqeDFO1QLbfd",
-          "name": "SPECTRUM - CENTRALIZADO"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "collection": "chat_histories_rsvp",
-        "options": {},
-        "query": "={\"sessionId\": \"{{ $('Manychat User ID').item.json.manychat_user_id }}\"}"
-      },
-      "type": "n8n-nodes-base.mongoDb",
-      "typeVersion": 1.2,
-      "position": [
-        1648,
-        -544
-      ],
-      "id": "9d9974b4-8af5-48b5-8ec1-f72cb1673f06",
-      "name": "Chat RSVP",
-      "alwaysOutputData": true,
-      "credentials": {
-        "mongoDb": {
-          "id": "UzcANqeDFO1QLbfd",
-          "name": "SPECTRUM - CENTRALIZADO"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "collection": "chat_histories",
-        "options": {},
-        "query": "={\"sessionId\": \"{{ $('Manychat User ID').item.json.manychat_user_id }}\"}"
-      },
-      "type": "n8n-nodes-base.mongoDb",
-      "typeVersion": 1.2,
-      "position": [
-        1648,
-        -352
-      ],
-      "id": "6183b44c-c31c-432e-b312-458832ab6e1e",
-      "name": "Chat",
-      "alwaysOutputData": true,
-      "credentials": {
-        "mongoDb": {
-          "id": "UzcANqeDFO1QLbfd",
-          "name": "SPECTRUM - CENTRALIZADO"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "aggregate": "aggregateAllItemData",
-        "destinationFieldName": "conversation",
-        "options": {}
-      },
-      "type": "n8n-nodes-base.aggregate",
-      "typeVersion": 1,
-      "position": [
-        2320,
-        -544
-      ],
-      "id": "349eaf8f-0f43-429c-bdae-2a4364c768e2",
-      "name": "Aggregate"
-    },
-    {
-      "parameters": {
-        "assignments": {
-          "assignments": [
-            {
-              "id": "3607b95d-eec6-47fc-8b07-afdcf62f14ed",
-              "name": "lead_messages",
-              "value": "={{ $json.messages }}",
-              "type": "array"
+        {
+            "parameters": {
+                "jsCode": "const output = $input.first().json.output;\nconst user = $('Loop Over Users').item.json;\nconst resumen = $('EXTRACTOR RESPONSE').item.json.conversation_ressume;\n\nreturn [{\n  json: {\n    manychat_id: user.manychat_id,\n    nombre: user.nombre || 'Desconocido',\n    proyecto: user.proyecto || null,\n    fecha_analisis: $now.toISO(),\n    resumen_conversacion: resumen || null,\n    funnel_stage: output.funnel_stage || null,\n    intencion_detectada: output.intencion_detectada || null,\n    tools_correctas: output.tools_correctas || null,\n    errores_detectados: output.errores_detectados || null,\n    oportunidades_perdidas: output.oportunidades_perdidas || null,\n    tono_agente: output.tono_agente || null,\n    puntuacion: Number(output.puntuacion) || null,\n    recomendacion: output.recomendacion || null\n  }\n}];"
+            },
+            "type": "n8n-nodes-base.code",
+            "typeVersion": 2,
+            "position": [5040, -544],
+            "id": "868f3e6f-a5d7-4d8d-93a4-490b6b9d7907",
+            "name": "Build Quality Log"
+        },
+        {
+            "parameters": {
+                "operation": "insert",
+                "collection": "quality_logs",
+                "fields": "={{ Object.keys($json).join(',') }}",
+                "options": {
+                    "dateFields": "fecha_analisis"
+                }
+            },
+            "type": "n8n-nodes-base.mongoDb",
+            "typeVersion": 1.2,
+            "position": [5264, -544],
+            "id": "9f18ca16-7516-4f19-8b4d-1348a1dccb5e",
+            "name": "Insert quality_logs",
+            "credentials": {
+                "mongoDb": {
+                    "id": "UzcANqeDFO1QLbfd",
+                    "name": "SPECTRUM - CENTRALIZADO"
+                }
             }
-          ]
         },
-        "options": {}
-      },
-      "type": "n8n-nodes-base.set",
-      "typeVersion": 3.4,
-      "position": [
-        1872,
-        -736
-      ],
-      "id": "38e6c6c1-aaad-495d-95eb-88c01a4e2e58",
-      "name": "LEAD"
-    },
-    {
-      "parameters": {
-        "assignments": {
-          "assignments": [
-            {
-              "id": "b33f15a9-f6d3-46e7-a874-29c3fd3fc960",
-              "name": "RSVP_messages",
-              "value": "={{ $json.messages }}",
-              "type": "array"
+        {
+            "parameters": {
+                "operation": "update",
+                "collection": "users",
+                "updateKey": "_id",
+                "fields": "conversation_analysis,conversation_ressume",
+                "options": {}
+            },
+            "type": "n8n-nodes-base.mongoDb",
+            "typeVersion": 1.2,
+            "position": [4464, -544],
+            "id": "dfff4e07-517e-47d6-90e1-2861487e8e0f",
+            "name": "Update Conversation Analysis",
+            "credentials": {
+                "mongoDb": {
+                    "id": "UzcANqeDFO1QLbfd",
+                    "name": "SPECTRUM - CENTRALIZADO"
+                }
             }
-          ]
         },
-        "options": {}
-      },
-      "type": "n8n-nodes-base.set",
-      "typeVersion": 3.4,
-      "position": [
-        1872,
-        -544
-      ],
-      "id": "3a95b348-5d83-447a-8586-8b1800792045",
-      "name": "RSVP"
-    },
-    {
-      "parameters": {
-        "assignments": {
-          "assignments": [
-            {
-              "id": "2f56ae14-c394-4836-9b6a-1844357a4718",
-              "name": "principal_messages",
-              "value": "={{ $json.messages }}",
-              "type": "array"
-            }
-          ]
+        {
+            "parameters": {
+                "mode": "raw",
+                "jsonOutput": "={{ $('EXTRACTOR RESPONSE').item.json }}",
+                "options": {}
+            },
+            "type": "n8n-nodes-base.set",
+            "typeVersion": 3.4,
+            "position": [4240, -544],
+            "id": "f5ae1b05-a153-4ceb-89ee-83fe8e40e660",
+            "name": "DATA to UPDATE"
+        }
+    ],
+    "connections": {
+        "Schedule Trigger": {
+            "main": [
+                [
+                    {
+                        "node": "Time-15min",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
         },
-        "options": {}
-      },
-      "type": "n8n-nodes-base.set",
-      "typeVersion": 3.4,
-      "position": [
-        1872,
-        -352
-      ],
-      "id": "fc356cf4-7af5-454b-b185-01738371f254",
-      "name": "PRINCIPAL"
-    },
-    {
-      "parameters": {
-        "operation": "update",
-        "collection": "users",
-        "updateKey": "_id",
-        "fields": "conversation_analysis,conversation_ressume",
-        "options": {}
-      },
-      "type": "n8n-nodes-base.mongoDb",
-      "typeVersion": 1.2,
-      "position": [
-        3344,
-        -544
-      ],
-      "id": "c1fb70b7-d653-4131-8049-41e59461b974",
-      "name": "Update Conversation Analysis",
-      "credentials": {
-        "mongoDb": {
-          "id": "UzcANqeDFO1QLbfd",
-          "name": "SPECTRUM - CENTRALIZADO"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "text": "=Lead Agent:\n{{ Array.isArray($('Messages').item.json.lead_messages) ? $('Messages').item.json.lead_messages.map(m => m.role + ': ' + m.content).join('\\n') : $('Messages').item.json.lead_messages }}\n\nRSVP Agent:\n{{ Array.isArray($('Messages').item.json.rsvp_messages) ? $('Messages').item.json.rsvp_messages.map(m => m.role + ': ' + m.content).join('\\n') : $('Messages').item.json.rsvp_messages }}\n\nPrincipal Agent:\n{{ Array.isArray($('Messages').item.json.principal_messages) ? $('Messages').item.json.principal_messages.map(m => m.role + ': ' + m.content).join('\\n') : $('Messages').item.json.principal_messages }}",
-        "attributes": {
-          "attributes": [
-            {
-              "name": "funnel_stage",
-              "description": "=Etapa del funnel: 'nuevo' (solo saludó), 'identificado' (dio datos), 'proyecto_activo' (eligió proyecto), 'consultando' (hizo preguntas), 'en_rsvp' (inició agendamiento), 'cita_confirmada' (confirmó cita), 'escalado' (pidió humano)",
-              "required": true
-            },
-            {
-              "name": "intencion_detectada",
-              "description": "=En una frase corta, qué buscaba el usuario en esta conversación",
-              "required": true
-            },
-            {
-              "name": "tools_correctas",
-              "description": "=¿El agente usó las tools correctas en el momento correcto? Describe brevemente si lead_collector, kb_search, rsvp y send_media se usaron apropiadamente. Si no se usó alguna tool necesaria, indícalo.",
-              "required": true
-            },
-            {
-              "name": "errores_detectados",
-              "description": "=Lista numerada de errores en la lógica del agente: respuestas incorrectas, loops, confusión de contexto, preguntas innecesarias. Escribe 'Ninguno' si no hay errores.",
-              "required": true
-            },
-            {
-              "name": "oportunidades_perdidas",
-              "description": "=Momentos donde el agente pudo avanzar en el funnel o mejorar la experiencia pero no lo hizo. Escribe 'Ninguna' si no aplica.",
-              "required": true
-            },
-            {
-              "name": "tono_agente",
-              "description": "=Evaluación del tono: 'natural y correcto', 'muy formal', 'robotico', 'confuso', 'repetitivo'",
-              "required": true
-            },
-            {
-              "name": "puntuacion",
-              "description": "=Puntuación del 1 al 10. Criterios: correcta identificación de intención (20%), uso apropiado de tools (20%), tono natural (20%), avance en el funnel (20%), ausencia de errores (20%).",
-              "required": true
-            },
-            {
-              "name": "recomendacion",
-              "description": "=Una recomendación concreta y accionable para el desarrollador sobre cómo mejorar el comportamiento del agente en conversaciones similares a esta.",
-              "required": true
-            }
-          ]
+        "Loop Over Users": {
+            "main": [
+                [],
+                [
+                    {
+                        "node": "Find Appointment",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
         },
-        "options": {}
-      },
-      "type": "@n8n/n8n-nodes-langchain.informationExtractor",
-      "typeVersion": 1.2,
-      "position": [
-        4464,
-        -544
-      ],
-      "id": "376f53c0-fc41-4241-9795-5ed86115edc2",
-      "name": "Quality Auditor"
-    },
-    {
-      "parameters": {
-        "model": {
-          "__rl": true,
-          "value": "gpt-4.1-mini",
-          "mode": "list",
-          "cachedResultName": "gpt-4.1-mini"
+        "Messages": {
+            "main": [
+                [
+                    {
+                        "node": "Information Extractor",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
         },
-        "responsesApiEnabled": false,
-        "options": {
-          "temperature": 0.1
+        "Merge": {
+            "main": [
+                [
+                    {
+                        "node": "Aggregate",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "OpenAI Chat Model": {
+            "ai_languageModel": [
+                [
+                    {
+                        "node": "Information Extractor",
+                        "type": "ai_languageModel",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Find Appointment": {
+            "main": [
+                [
+                    {
+                        "node": "Manychat User ID",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Manychat User ID": {
+            "main": [
+                [
+                    {
+                        "node": "Chat Lead",
+                        "type": "main",
+                        "index": 0
+                    },
+                    {
+                        "node": "Chat",
+                        "type": "main",
+                        "index": 0
+                    },
+                    {
+                        "node": "Chat RSVP",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Time-15min": {
+            "main": [
+                [
+                    {
+                        "node": "Find Users to Sync",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Information Extractor": {
+            "main": [
+                [
+                    {
+                        "node": "EXTRACTOR RESPONSE",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "EXTRACTOR RESPONSE": {
+            "main": [
+                [
+                    {
+                        "node": "Body",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "GENERAR LEAD CONTACT": {
+            "main": [
+                [
+                    {
+                        "node": "XML BODY",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "XML BODY": {
+            "main": [
+                [
+                    {
+                        "node": "DATA to UPDATE",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Body": {
+            "main": [
+                [
+                    {
+                        "node": "PARSE BODY",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "PARSE BODY": {
+            "main": [
+                [
+                    {
+                        "node": "GENERAR LEAD CONTACT",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "No Operation, do nothing": {
+            "main": [
+                [
+                    {
+                        "node": "Loop Over Users",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Find Users to Sync": {
+            "main": [
+                [
+                    {
+                        "node": "Loop Over Users",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Chat Lead": {
+            "main": [
+                [
+                    {
+                        "node": "LEAD",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Chat RSVP": {
+            "main": [
+                [
+                    {
+                        "node": "RSVP",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Chat": {
+            "main": [
+                [
+                    {
+                        "node": "PRINCIPAL",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Aggregate": {
+            "main": [
+                [
+                    {
+                        "node": "Messages",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "LEAD": {
+            "main": [
+                [
+                    {
+                        "node": "Merge",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "RSVP": {
+            "main": [
+                [
+                    {
+                        "node": "Merge",
+                        "type": "main",
+                        "index": 1
+                    }
+                ]
+            ]
+        },
+        "PRINCIPAL": {
+            "main": [
+                [
+                    {
+                        "node": "Merge",
+                        "type": "main",
+                        "index": 2
+                    }
+                ]
+            ]
+        },
+        "Quality Auditor": {
+            "main": [
+                [
+                    {
+                        "node": "Build Quality Log",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "OpenAI Quality Model": {
+            "ai_languageModel": [
+                [
+                    {
+                        "node": "Quality Auditor",
+                        "type": "ai_languageModel",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Build Quality Log": {
+            "main": [
+                [
+                    {
+                        "node": "Insert quality_logs",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Insert quality_logs": {
+            "main": [
+                [
+                    {
+                        "node": "No Operation, do nothing",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Update Conversation Analysis": {
+            "main": [
+                [
+                    {
+                        "node": "Quality Auditor",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "DATA to UPDATE": {
+            "main": [
+                [
+                    {
+                        "node": "Update Conversation Analysis",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
         }
-      },
-      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
-      "typeVersion": 1.3,
-      "position": [
-        4536,
-        -320
-      ],
-      "id": "1076b4dc-a83c-4db6-bf23-013d676330a0",
-      "name": "OpenAI Quality Model",
-      "credentials": {
-        "openAiApi": {
-          "id": "mwtQQFLfYjj6JZcg",
-          "name": "Spectrum - Parque Verde"
-        }
-      }
     },
-    {
-      "parameters": {
-        "jsCode": "const output = $input.first().json.output;\nconst user = $('Loop Over Users').item.json;\nconst resumen = $('EXTRACTOR RESPONSE').item.json.conversation_ressume;\n\nreturn [{\n  json: {\n    manychat_id: user.manychat_id,\n    nombre: user.nombre || 'Desconocido',\n    proyecto: user.proyecto || null,\n    fecha_analisis: $now.toISO(),\n    resumen_conversacion: resumen || null,\n    funnel_stage: output.funnel_stage || null,\n    intencion_detectada: output.intencion_detectada || null,\n    tools_correctas: output.tools_correctas || null,\n    errores_detectados: output.errores_detectados || null,\n    oportunidades_perdidas: output.oportunidades_perdidas || null,\n    tono_agente: output.tono_agente || null,\n    puntuacion: Number(output.puntuacion) || null,\n    recomendacion: output.recomendacion || null\n  }\n}];"
-      },
-      "type": "n8n-nodes-base.code",
-      "typeVersion": 2,
-      "position": [
-        4816,
-        -544
-      ],
-      "id": "868f3e6f-a5d7-4d8d-93a4-490b6b9d7907",
-      "name": "Build Quality Log"
-    },
-    {
-      "parameters": {
-        "operation": "insert",
-        "collection": "quality_logs",
-        "fields": "={{ Object.keys($json).join(',') }}",
-        "options": {
-          "dateFields": "fecha_analisis"
-        }
-      },
-      "type": "n8n-nodes-base.mongoDb",
-      "typeVersion": 1.2,
-      "position": [
-        5040,
-        -544
-      ],
-      "id": "9f18ca16-7516-4f19-8b4d-1348a1dccb5e",
-      "name": "Insert quality_logs",
-      "credentials": {
-        "mongoDb": {
-          "id": "UzcANqeDFO1QLbfd",
-          "name": "SPECTRUM - CENTRALIZADO"
-        }
-      }
+    "pinData": {},
+    "meta": {
+        "templateCredsSetupCompleted": true,
+        "instanceId": "d4ab02fb1ef8b6ca2c1c5c1f280ee696b0514d7d92cee5fb0da1784dbe393998"
     }
-  ],
-  "connections": {
-    "Schedule Trigger": {
-      "main": [
-        [
-          {
-            "node": "Time-15min",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Loop Over Users": {
-      "main": [
-        [],
-        [
-          {
-            "node": "Find Appointment",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Messages": {
-      "main": [
-        [
-          {
-            "node": "Information Extractor",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Merge": {
-      "main": [
-        [
-          {
-            "node": "Aggregate",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "OpenAI Chat Model": {
-      "ai_languageModel": [
-        [
-          {
-            "node": "Information Extractor",
-            "type": "ai_languageModel",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Find Appointment": {
-      "main": [
-        [
-          {
-            "node": "Manychat User ID",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Manychat User ID": {
-      "main": [
-        [
-          {
-            "node": "Chat Lead",
-            "type": "main",
-            "index": 0
-          },
-          {
-            "node": "Chat",
-            "type": "main",
-            "index": 0
-          },
-          {
-            "node": "Chat RSVP",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Time-15min": {
-      "main": [
-        [
-          {
-            "node": "Find Users to Sync",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Information Extractor": {
-      "main": [
-        [
-          {
-            "node": "EXTRACTOR RESPONSE",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "EXTRACTOR RESPONSE": {
-      "main": [
-        [
-          {
-            "node": "Update Conversation Analysis",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "GENERAR LEAD CONTACT": {
-      "main": [
-        [
-          {
-            "node": "XML BODY",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "XML BODY": {
-      "main": [
-        [
-          {
-            "node": "Quality Auditor",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Body": {
-      "main": [
-        [
-          {
-            "node": "PARSE BODY",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "PARSE BODY": {
-      "main": [
-        [
-          {
-            "node": "GENERAR LEAD CONTACT",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "No Operation, do nothing": {
-      "main": [
-        [
-          {
-            "node": "Loop Over Users",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Find Users to Sync": {
-      "main": [
-        [
-          {
-            "node": "Loop Over Users",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Chat Lead": {
-      "main": [
-        [
-          {
-            "node": "LEAD",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Chat RSVP": {
-      "main": [
-        [
-          {
-            "node": "RSVP",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Chat": {
-      "main": [
-        [
-          {
-            "node": "PRINCIPAL",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Aggregate": {
-      "main": [
-        [
-          {
-            "node": "Messages",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "LEAD": {
-      "main": [
-        [
-          {
-            "node": "Merge",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "RSVP": {
-      "main": [
-        [
-          {
-            "node": "Merge",
-            "type": "main",
-            "index": 1
-          }
-        ]
-      ]
-    },
-    "PRINCIPAL": {
-      "main": [
-        [
-          {
-            "node": "Merge",
-            "type": "main",
-            "index": 2
-          }
-        ]
-      ]
-    },
-    "Update Conversation Analysis": {
-      "main": [
-        [
-          {
-            "node": "Body",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Quality Auditor": {
-      "main": [
-        [
-          {
-            "node": "Build Quality Log",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "OpenAI Quality Model": {
-      "ai_languageModel": [
-        [
-          {
-            "node": "Quality Auditor",
-            "type": "ai_languageModel",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Build Quality Log": {
-      "main": [
-        [
-          {
-            "node": "Insert quality_logs",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Insert quality_logs": {
-      "main": [
-        [
-          {
-            "node": "No Operation, do nothing",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    }
-  },
-  "pinData": {},
-  "meta": {
-    "templateCredsSetupCompleted": true,
-    "instanceId": "d4ab02fb1ef8b6ca2c1c5c1f280ee696b0514d7d92cee5fb0da1784dbe393998"
-  }
 }

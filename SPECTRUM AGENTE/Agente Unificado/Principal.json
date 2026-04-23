@@ -23,8 +23,8 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        5232,
-        -944
+        5456,
+        -992
       ],
       "id": "3d8d6e03-d0ed-4ef5-b5f8-9560f199cddb",
       "name": "RESPOND TO MANYCHAT",
@@ -52,8 +52,8 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        5008,
-        -944
+        5232,
+        -992
       ],
       "id": "8b1b00b7-d3da-48d9-8cbf-b5fc3e0b52fb",
       "name": "Parameter Type"
@@ -68,7 +68,7 @@
       "typeVersion": 3.4,
       "position": [
         2592,
-        -848
+        -896
       ],
       "id": "77a79ded-7be9-4225-a89e-fc861d83d8dc",
       "name": "User Data"
@@ -79,7 +79,7 @@
       "typeVersion": 1,
       "position": [
         1184,
-        -992
+        -1044
       ],
       "id": "3c3d7c91-bf64-4f5d-ac20-513a7928bdca",
       "name": "No Operation, do nothing"
@@ -112,7 +112,7 @@
       "typeVersion": 2.3,
       "position": [
         896,
-        -848
+        -896
       ],
       "id": "356a1dde-049b-43fb-bb37-c27f64fb05b4",
       "name": "If NO WHATSAPP"
@@ -135,7 +135,7 @@
       "typeVersion": 1.2,
       "position": [
         1120,
-        -704
+        -748
       ],
       "id": "799deecc-0160-4b6e-ab81-5304b1aa64c0",
       "name": "Proyecto"
@@ -164,7 +164,7 @@
       "typeVersion": 1.2,
       "position": [
         544,
-        -848
+        -896
       ],
       "id": "a1a8c496-d10f-4278-a1ea-fc351bd0e9b8",
       "name": "Lenguaje & Asesoria"
@@ -185,8 +185,8 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "typeVersion": 1.3,
       "position": [
-        1200,
-        -480
+        1192,
+        -524
       ],
       "id": "e87fe725-ea68-438a-89b2-b4fe93ab1aae",
       "name": "OpenAI Chat Model2",
@@ -211,7 +211,7 @@
       "typeVersion": 1.2,
       "position": [
         2368,
-        -752
+        -800
       ],
       "id": "8f11dfe5-fc16-4624-b9b7-629553076bca",
       "name": "Update User",
@@ -233,7 +233,7 @@
       "typeVersion": 1.2,
       "position": [
         2368,
-        -944
+        -992
       ],
       "id": "616c2792-964e-45cd-9173-b4f967fe8574",
       "name": "Insert User",
@@ -254,7 +254,7 @@
       "typeVersion": 1.2,
       "position": [
         1696,
-        -848
+        -896
       ],
       "id": "cd820791-820b-47af-bad3-142135c93752",
       "name": "Find User",
@@ -308,7 +308,7 @@
       "typeVersion": 3.4,
       "position": [
         1472,
-        -848
+        -896
       ],
       "id": "fba7159e-5f80-474d-8754-eb6c17f7351f",
       "name": "CONTEXT 1"
@@ -397,7 +397,7 @@
       "typeVersion": 3.4,
       "position": [
         2144,
-        -944
+        -992
       ],
       "id": "1e790870-f00a-4224-b7f9-85705ad9a1c1",
       "name": "DATA to CREATE"
@@ -471,6 +471,12 @@
               "name": "last_message",
               "value": "={{ $('CONTEXT 1').item.json.entrada_usuario }}",
               "type": "string"
+            },
+            {
+              "id": "cb61c50f-503e-4fa0-b58f-2d15527da8da",
+              "name": "conversation_analysis",
+              "value": false,
+              "type": "boolean"
             }
           ]
         },
@@ -480,7 +486,7 @@
       "typeVersion": 3.4,
       "position": [
         2144,
-        -752
+        -800
       ],
       "id": "c5378c88-cbca-4480-bdc1-cfdeebff099f",
       "name": "DATA to UPDATE"
@@ -514,7 +520,7 @@
       "typeVersion": 2.3,
       "position": [
         1920,
-        -848
+        -896
       ],
       "id": "878bb76f-8916-4f08-a98f-0416c5f29110",
       "name": "If USER NOT EXIST"
@@ -529,7 +535,7 @@
       "typeVersion": 3.4,
       "position": [
         -3488,
-        -848
+        -896
       ],
       "id": "747cfee0-6f34-4605-bbcb-8fddcf2a8ad8",
       "name": "PARSE BODY"
@@ -552,7 +558,7 @@
       "typeVersion": 3.4,
       "position": [
         -128,
-        -848
+        -896
       ],
       "id": "c53b7d16-106e-4e69-a045-5db272f7785c",
       "name": "JOINNING MESSAGE"
@@ -575,7 +581,7 @@
       "typeVersion": 3.4,
       "position": [
         320,
-        -848
+        -896
       ],
       "id": "c180bde7-b9bf-4c0b-b1f7-f690b1873f3c",
       "name": "PROJECT LIST"
@@ -608,7 +614,7 @@
       "typeVersion": 2.3,
       "position": [
         -352,
-        -848
+        -896
       ],
       "id": "9c21d0cc-e353-4c40-ab60-f6e72620075a",
       "name": "Filter1"
@@ -622,7 +628,7 @@
       "typeVersion": 1,
       "position": [
         96,
-        -848
+        -896
       ],
       "id": "fd67da5f-0055-4b93-9f62-6483285dffe8",
       "name": "DELETE MESSAGES",
@@ -641,7 +647,7 @@
       "typeVersion": 1.1,
       "position": [
         -800,
-        -848
+        -896
       ],
       "id": "beb5e11f-83cb-4992-8d11-8aac936712a9",
       "name": "Wait",
@@ -657,7 +663,7 @@
       "typeVersion": 1,
       "position": [
         -576,
-        -848
+        -896
       ],
       "id": "68a29a71-47b6-4816-abbc-627ce6749849",
       "name": "GET MESSAGE",
@@ -679,7 +685,7 @@
       "typeVersion": 1,
       "position": [
         -1024,
-        -848
+        -896
       ],
       "id": "fd1d4651-aa03-4d94-a395-43c06f0d1dd6",
       "name": "SAVE MESSAGE",
@@ -708,7 +714,7 @@
       "typeVersion": 3.4,
       "position": [
         -1248,
-        -848
+        -896
       ],
       "id": "49fbeb87-35d9-4374-a81b-5332c0642da4",
       "name": "INPUT FINAL"
@@ -737,7 +743,7 @@
       "typeVersion": 3.4,
       "position": [
         -2144,
-        -1040
+        -1088
       ],
       "id": "f57b64d2-8111-4473-9491-cf8e337e6c5d",
       "name": "audio input"
@@ -766,7 +772,7 @@
       "typeVersion": 3.4,
       "position": [
         -2144,
-        -848
+        -896
       ],
       "id": "62d66c2e-b536-4950-81f2-28c7226f1ef0",
       "name": "image input"
@@ -795,7 +801,7 @@
       "typeVersion": 3.4,
       "position": [
         -2144,
-        -656
+        -704
       ],
       "id": "1586fe33-4724-4602-a843-9a7546766d42",
       "name": "text input"
@@ -809,7 +815,7 @@
       "typeVersion": 4.2,
       "position": [
         -2592,
-        -1040
+        -1088
       ],
       "id": "c62df0ed-bda8-4b5e-8e32-5e4d61d52199",
       "name": "HTTP IF AUDIO"
@@ -832,7 +838,7 @@
       "typeVersion": 1.8,
       "position": [
         -2368,
-        -848
+        -896
       ],
       "id": "79a9b33a-e2c6-460d-a8a9-bc8046ff99e4",
       "name": "ANALIZA IMAGEN",
@@ -859,8 +865,8 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "typeVersion": 1.3,
       "position": [
-        624,
-        -624
+        616,
+        -672
       ],
       "id": "9e9cf80d-2e28-450a-bde3-e33edf717531",
       "name": "OpenAI Chat Model1",
@@ -886,7 +892,7 @@
       "typeVersion": 1,
       "position": [
         -1472,
-        -848
+        -896
       ],
       "id": "a4daeed1-7c71-44b8-874b-116c69164a5c",
       "name": "Aggregate"
@@ -906,7 +912,7 @@
       "typeVersion": 1,
       "position": [
         -1696,
-        -848
+        -896
       ],
       "id": "48710757-cbf1-4785-a37f-5765fb192f9e",
       "name": "Sort"
@@ -919,7 +925,7 @@
       "typeVersion": 3.2,
       "position": [
         -1920,
-        -864
+        -912
       ],
       "id": "72f365ec-9948-45a8-8f2b-6f984695204a",
       "name": "Merge"
@@ -934,7 +940,7 @@
       "typeVersion": 1.8,
       "position": [
         -2368,
-        -1040
+        -1088
       ],
       "id": "c88157f4-50eb-427a-af1f-0cdf3f6e033e",
       "name": "TRANSCRIBE AUDIO",
@@ -982,7 +988,7 @@
       "typeVersion": 2.2,
       "position": [
         -2816,
-        -944
+        -992
       ],
       "id": "917a2587-a210-4c2f-a132-8a7b2526060b",
       "name": "ES AUDIO / IMAGEN"
@@ -996,7 +1002,7 @@
       "typeVersion": 4.2,
       "position": [
         -3040,
-        -944
+        -992
       ],
       "id": "0c73c401-d23c-43e9-9cab-76912dbf80d3",
       "name": "HTTP Request"
@@ -1038,7 +1044,7 @@
       "typeVersion": 2.2,
       "position": [
         -3264,
-        -848
+        -896
       ],
       "id": "a7005547-b41a-4bc3-b5cc-111b4aff7be5",
       "name": "ES ARCHIVO"
@@ -1051,7 +1057,7 @@
       "typeVersion": 2,
       "position": [
         -3712,
-        -848
+        -896
       ],
       "id": "ec90ce39-3e1d-40d2-9b15-6bbfe3c01fdb",
       "name": "Create Body"
@@ -1068,7 +1074,7 @@
       "typeVersion": 2.1,
       "position": [
         -3936,
-        -848
+        -896
       ],
       "id": "8b71d4f2-d42e-47c3-9884-0f10e4007c40",
       "name": "Webhook",
@@ -1086,7 +1092,7 @@
       "typeVersion": 1,
       "position": [
         2944,
-        -624
+        -672
       ],
       "id": "2e9d2ef3-36fa-4e3d-81d7-dc310f7e750b",
       "name": "MongoDB Chat Memory",
@@ -1112,7 +1118,7 @@
       "typeVersion": 1.3,
       "position": [
         2816,
-        -624
+        -672
       ],
       "id": "1577a690-d899-4d00-a989-9916e5593e15",
       "name": "OpenAI Chat Model",
@@ -1134,8 +1140,8 @@
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 3.1,
       "position": [
-        3072,
-        -848
+        3064,
+        -896
       ],
       "id": "147286cd-b18c-49cb-a012-8be7769d0eed",
       "name": "PRINCIPAL"
@@ -1243,6 +1249,16 @@
               "canBeUsedToMatch": true,
               "type": "string",
               "removed": false
+            },
+            {
+              "id": "proyecto",
+              "displayName": "proyecto",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
             }
           ],
           "attemptToConvertTypes": false,
@@ -1253,7 +1269,7 @@
       "typeVersion": 2.2,
       "position": [
         3072,
-        -624
+        -672
       ],
       "id": "aefb6a26-ec49-4353-840c-d715ca915597",
       "name": "lead_collector"
@@ -1266,7 +1282,7 @@
       "typeVersion": 2,
       "position": [
         3664,
-        -848
+        -896
       ],
       "id": "b2275914-b2f3-4b30-ae7c-efd0f081c606",
       "name": "Parse response"
@@ -1300,7 +1316,7 @@
       "typeVersion": 2.3,
       "position": [
         4112,
-        -944
+        -992
       ],
       "id": "12f15fc5-7eb2-4c66-a831-90cf3d809108",
       "name": "If TIENE DATOS NUEVOS"
@@ -1371,7 +1387,7 @@
       "typeVersion": 3.4,
       "position": [
         4336,
-        -1040
+        -1088
       ],
       "id": "e552935f-2efd-49d5-81c3-996b09a5e45a",
       "name": "Prepare Update"
@@ -1394,7 +1410,7 @@
       "typeVersion": 3.4,
       "position": [
         3888,
-        -944
+        -992
       ],
       "id": "44f18308-0d0a-432c-831d-c5138fdf69fb",
       "name": "Hay Cambios?"
@@ -1411,7 +1427,7 @@
       "typeVersion": 1.2,
       "position": [
         4560,
-        -1040
+        -1088
       ],
       "id": "dd0ab8cf-7e2b-4c96-b08d-58ca86dbe7ce",
       "name": "Update User Lead",
@@ -1427,8 +1443,8 @@
       "type": "n8n-nodes-base.noOp",
       "typeVersion": 1,
       "position": [
-        4784,
-        -848
+        5008,
+        -800
       ],
       "id": "e8940b61-d588-40b0-8403-a93b3aa60340",
       "name": "No Operation, do nothing1"
@@ -1489,7 +1505,7 @@
       "typeVersion": 2.2,
       "position": [
         3200,
-        -624
+        -672
       ],
       "id": "cd3c094b-2e83-4ad8-a2be-91b8b834c5a8",
       "name": "kb_search"
@@ -1596,7 +1612,7 @@
       "typeVersion": 2.2,
       "position": [
         3328,
-        -624
+        -672
       ],
       "id": "d7a2f45b-88fb-4aac-8602-34a83e9b23d4",
       "name": "rsvp"
@@ -1629,7 +1645,7 @@
       "typeVersion": 2.3,
       "position": [
         3888,
-        -752
+        -800
       ],
       "id": "adf235ee-2a04-492d-bf09-32e572519d81",
       "name": "Filter IF TRANSFER"
@@ -1644,8 +1660,8 @@
       "type": "n8n-nodes-base.mongoDb",
       "typeVersion": 1.2,
       "position": [
-        5680,
-        -944
+        5904,
+        -992
       ],
       "id": "5e880e7b-37c3-42fb-a586-929aedb2b1f7",
       "name": "Insert Analytics",
@@ -1697,8 +1713,8 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        5456,
-        -944
+        5680,
+        -992
       ],
       "id": "091d9a1f-027c-4d5f-b49d-7d3bd4d2de13",
       "name": "Calculate Respond Time"
@@ -1749,12 +1765,11 @@
       "type": "n8n-nodes-base.executeWorkflow",
       "typeVersion": 1.3,
       "position": [
-        4784,
-        -1040
+        5008,
+        -1184
       ],
       "id": "d827c8b8-49ae-47cc-9dbb-8bdcb4d38521",
-      "name": "'Notifications Master' Nuevos Leads",
-      "disabled": true
+      "name": "'Notifications Master' Nuevos Leads"
     },
     {
       "parameters": {
@@ -1803,7 +1818,7 @@
       "typeVersion": 1.3,
       "position": [
         4112,
-        -752
+        -800
       ],
       "id": "7ea33ba5-cc10-4ad7-b38a-5d653787a43c",
       "name": "'Notifications Master' Escalation"
@@ -1873,10 +1888,65 @@
       "typeVersion": 2.2,
       "position": [
         3456,
-        -624
+        -672
       ],
       "id": "448769c7-27f7-4efb-960a-b5f491b2de39",
       "name": "send_media"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        5008,
+        -992
+      ],
+      "id": "9253efb0-de3a-4803-9796-a6b788a7ce43",
+      "name": "No Operation, do nothing2"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "df577d5c-ddf9-44ef-9848-ef135119e484",
+              "leftValue": "={{ $('Parse response').item.json.datos_completos }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            },
+            {
+              "id": "49398426-9115-47fb-b997-e06d080b1c2b",
+              "leftValue": "={{ $('User Data').item.json.datos_completos }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "false",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        4784,
+        -1088
+      ],
+      "id": "c5ebdbaf-94dd-4fb1-b3f5-ada8180c21cb",
+      "name": "IF NUEVO LEAD"
     }
   ],
   "connections": {
@@ -2441,7 +2511,7 @@
       "main": [
         [
           {
-            "node": "'Notifications Master' Nuevos Leads",
+            "node": "IF NUEVO LEAD",
             "type": "main",
             "index": 0
           }
@@ -2524,6 +2594,35 @@
           }
         ]
       ]
+    },
+    "No Operation, do nothing2": {
+      "main": [
+        [
+          {
+            "node": "Parameter Type",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "IF NUEVO LEAD": {
+      "main": [
+        [
+          {
+            "node": "'Notifications Master' Nuevos Leads",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "No Operation, do nothing2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "pinData": {
@@ -2532,7 +2631,7 @@
         "headers": {
           "host": "agentsprod.redtec.ai",
           "user-agent": "ManyChat",
-          "content-length": "1566",
+          "content-length": "1542",
           "content-type": "application/json; charset=utf-8",
           "x-forwarded-for": "63.178.65.182",
           "x-forwarded-host": "agentsprod.redtec.ai",
@@ -2559,7 +2658,7 @@
           "language": null,
           "timezone": "UTC±00",
           "live_chat_url": "https://app.manychat.com/fb962079940550460/chat/1623941319",
-          "last_input_text": "quiero saber delos precios",
+          "last_input_text": "si",
           "optin_phone": true,
           "phone": "+13322311881",
           "optin_email": false,
