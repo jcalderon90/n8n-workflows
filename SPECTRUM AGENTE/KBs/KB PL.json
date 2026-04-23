@@ -1,0 +1,128 @@
+[
+  {
+    "id": "pl_resumen_general",
+    "categoria": "proyecto",
+    "tags": ["resumen", "general", "spectrum", "zona10", "torre", "apartamentos", "boutique"],
+    "pregunta": "¿Qué es Polanco Parque Boutique?",
+    "respuesta": "Polanco es un proyecto residencial de la línea Parque Boutique de Spectrum, ubicado en el corazón de la Zona 10, Ciudad de Guatemala. Consiste en 1 torre de 22 niveles con 175 apartamentos en total. Se distingue por un diseño que fusiona arquitectura moderna, sofisticación y sostenibilidad. Cuenta con 16 amenidades de lujo y está diseñado para quienes buscan vivir o invertir en el sector más dinámico de la ciudad."
+  },
+  {
+    "id": "pl_ubicacion_direccion",
+    "categoria": "ubicacion",
+    "tags": ["ubicacion", "direccion", "zona10", "corazon zona 10", "donde esta"],
+    "pregunta": "¿Dónde está ubicado Polanco? ¿Cuál es la dirección?",
+    "respuesta": "Polanco Parque Boutique está ubicado en la 15 Calle A 13-28, Zona 10, Ciudad de Guatemala. Es una ubicación privilegiada que ofrece alta plusvalía y cercanía inmediata a la zona viva y centros corporativos."
+  },
+  {
+    "id": "pl_ubicacion_puntos_interes",
+    "categoria": "ubicacion",
+    "tags": ["puntos de interes", "oakland mall", "la estacion", "avia", "fontabella", "ufm"],
+    "pregunta": "¿Qué puntos de interés hay cerca de Polanco?",
+    "respuesta": "En los alrededores de Polanco se encuentran: Oakland Place (Mall), Supermercado La Torre, Centro Comercial La Estación, AVIA, Fontabella, Universidad Francisco Marroquín (UFM), Colegio Suizo Americano, así como diversos hospitales, farmacias y los mejores restaurantes de la Zona 10."
+  },
+  {
+    "id": "pl_ubicacion_vistas",
+    "categoria": "ubicacion",
+    "tags": ["vistas", "zona14", "vista hermosa", "oakland", "zona viva"],
+    "pregunta": "¿Qué vistas ofrece el edificio Polanco?",
+    "respuesta": "El edificio ofrece vistas panorámicas hacia distintos puntos estratégicos: hacia el sur la Zona 14, hacia el norte Vista Hermosa, hacia el este la colonia Oakland y hacia el oeste el dinamismo de la Zona Viva."
+  },
+  {
+    "id": "pl_desarrollador_spectrum",
+    "categoria": "desarrollador",
+    "tags": ["spectrum", "desarrollador", "trayectoria", "experiencia", "confianza"],
+    "pregunta": "¿Quién desarrolla Polanco y qué experiencia tienen?",
+    "respuesta": "El proyecto es desarrollado por Spectrum, una empresa con más de 30 años de trayectoria y 30 proyectos entregados (más de 11,000 unidades). Polanco pertenece a su exclusiva línea 'Parque Boutique', que se enfoca en proyectos de menor escala pero mayor sofisticación y diseño arquitectónico."
+  },
+  {
+    "id": "pl_programa_sostenible",
+    "categoria": "desarrollador",
+    "tags": ["sostenibilidad", "spectrum sostenible", "ahorro energia", "ahorro agua", "medio ambiente"],
+    "pregunta": "¿Tiene Polanco algún programa de sostenibilidad ambiental?",
+    "respuesta": "Sí, forma parte del programa 'Spectrum Sostenible'. El proyecto ha logrado una reducción del 26% en el consumo proyectado de energía y agua. Además, utiliza vegetación nativa de bajo mantenimiento y ventanería con tecnología 'low-e' que reduce la transferencia de calor y mejora el aislamiento acústico."
+  },
+  {
+    "id": "pl_programa_conviviendo",
+    "categoria": "desarrollador",
+    "tags": ["conviviendo", "comunidad", "gestion social", "vecinos", "plusvalia"],
+    "pregunta": "¿Qué es el programa Conviviendo en Polanco?",
+    "respuesta": "Es un programa de gestión social de Spectrum que busca formar comunidades fuertes y conectadas. Se enfoca en capacitar a líderes vecinales y asegurar una convivencia armónica, lo que garantiza que los espacios comunes se mantengan en óptimas condiciones y la plusvalía de la propiedad crezca con el tiempo."
+  },
+  {
+    "id": "pl_modelo_s39",
+    "categoria": "modelos",
+    "tags": ["modelo s39", "1 habitacion", "39m2", "balcon", "inversion"],
+    "pregunta": "¿Cómo es el modelo S39? ¿Qué incluye?",
+    "respuesta": "El modelo S39 tiene aproximadamente 39.29 m². Cuenta con 1 dormitorio máster con closet, 1 baño completo, sala, comedor, cocina, área de lavandería y balcón. Es una opción ideal para solteros o para inversión de renta corta."
+  },
+  {
+    "id": "pl_modelo_s58",
+    "categoria": "modelos",
+    "tags": ["modelo s58", "2 habitaciones", "58m2", "walk-in closet", "parejas"],
+    "pregunta": "¿Cómo es el modelo S58? ¿Qué dimensiones tiene?",
+    "respuesta": "El modelo S58 tiene 57.62 m² de área habitacional. Incluye 2 dormitorios: el principal con walk-in closet y baño privado, y un dormitorio secundario con closet. Cuenta con baño compartido, sala-comedor, cocina, balcón y lavandería."
+  },
+  {
+    "id": "pl_modelo_s86",
+    "categoria": "modelos",
+    "tags": ["modelo s86", "3 habitaciones", "86m2", "familia", "espacioso"],
+    "pregunta": "¿Cómo es el modelo de 3 habitaciones S86?",
+    "respuesta": "El modelo S86 cuenta con 86.30 m². Ofrece 3 dormitorios: principal con walk-in closet y baño propio, y dos secundarios con closet que comparten un baño. Incluye sala-comedor, cocina equipada, lavandería y balcón."
+  },
+  {
+    "id": "pl_modelo_s92",
+    "categoria": "modelos",
+    "tags": ["modelo s92", "3 habitaciones", "92m2", "el mas grande"],
+    "pregunta": "¿Cuál es el modelo más grande de Polanco?",
+    "respuesta": "El modelo S92 es el más amplio con 92.12 m². Incluye 3 habitaciones, 2 baños completos, área social de sala y comedor integrada a la cocina, lavandería y un balcón espacioso con vistas panorámicas."
+  },
+  {
+    "id": "pl_precio_general",
+    "categoria": "precios",
+    "tags": ["precio", "costo", "inversion", "quetzales", "desde"],
+    "pregunta": "¿Cuánto cuesta un apartamento en Polanco?",
+    "respuesta": "Los precios en Polanco Parque Boutique inician desde los Q1,044,000 (variando según el nivel y modelo). Existen opciones financiadas con cuotas mensuales que inician aproximadamente desde los Q7,800."
+  },
+  {
+    "id": "pl_financiamiento",
+    "categoria": "precios",
+    "tags": ["fha", "banco industrial", "enganche", "cuotas", "credito hipotecario"],
+    "pregunta": "¿Qué opciones de financiamiento tiene Polanco?",
+    "respuesta": "Polanco cuenta con el respaldo de Banco Industrial (BI) y el aval de FHA, lo que permite enganches fraccionados y tasas de interés competitivas. El ingreso familiar requerido depende del modelo, partiendo de un aproximado de Q24,000 para los modelos iniciales."
+  },
+  {
+    "id": "pl_amenidades_lista",
+    "categoria": "amenidades",
+    "tags": ["amenidades", "piscina", "gimnasio", "coworking", "social kitchen", "fire pit"],
+    "pregunta": "¿Qué amenidades ofrece Polanco Parque Boutique?",
+    "respuesta": "El proyecto cuenta con 16 amenidades: Entrance Hall de doble altura, Social Kitchen, Gourmet Kitchen, Private Dining, Coworking, salas de reuniones, Sports Lounge, gimnasio equipado, piscina, área de spa, lounge con fire pit, juegos para niños y un Panoramic Lounge en el nivel 22."
+  },
+  {
+    "id": "pl_amenidades_tecnologia",
+    "categoria": "amenidades",
+    "tags": ["black box", "recorrido virtual", "tecnologia", "showroom"],
+    "pregunta": "¿Qué es el Black Box de Polanco?",
+    "respuesta": "El Black Box es una experiencia de tecnología inmersiva única en el showroom de Polanco. Permite a los interesados realizar un recorrido virtual por el proyecto para conocer los acabados, las vistas y la distribución antes de que el edificio esté terminado."
+  },
+  {
+    "id": "pl_showroom_ubicacion",
+    "categoria": "ubicacion",
+    "tags": ["showroom", "sala de ventas", "donde visitar", "oakland place"],
+    "pregunta": "¿Dónde puedo visitar el showroom de Polanco?",
+    "respuesta": "El showroom oficial se encuentra ubicado en el Sótano 3 de la nueva fase de Oakland Place (Zona 10). Se recomienda agendar cita previa para vivir la experiencia inmersiva del Black Box."
+  },
+  {
+    "id": "pl_inversion_airbnb",
+    "categoria": "perfil_cliente",
+    "tags": ["inversion", "airbnb", "renta corta", "negocio", "plusvalia"],
+    "pregunta": "¿Se permite Airbnb en Polanco?",
+    "respuesta": "Sí, a diferencia de otros proyectos, Polanco se promociona como un proyecto 'Airbnb Friendly', lo que lo hace altamente atractivo para inversionistas que buscan rentabilizar su propiedad a través de plataformas de renta corta en una de las zonas con mayor demanda turística y ejecutiva de la ciudad."
+  },
+  {
+    "id": "pl_entrega",
+    "categoria": "proyecto",
+    "tags": ["fecha entrega", "cuando entregan", "finalizacion", "construccion"],
+    "pregunta": "¿Para cuándo está programada la entrega de Polanco?",
+    "respuesta": "Polanco se encuentra actualmente en fase de preventa y construcción. La fecha estimada de entrega está proyectada para el año 2027/2028, permitiendo a los compradores aprovechar los precios de preventa y el fraccionamiento del enganche."
+  }
+]
