@@ -2,99 +2,57 @@
   {
     "id": "sb_resumen_general",
     "categoria": "proyecto",
-    "tags": ["resumen", "general", "spectrum", "zona15", "torre", "apartamentos", "boutique"],
+    "tags": ["resumen", "general", "spectrum", "zona15", "boutique"],
     "pregunta": "¿Qué es Sotobosque Parque Boutique?",
-    "respuesta": "Sotobosque es un proyecto residencial de la línea Parque Boutique desarrollado por Spectrum, ubicado en el corazón de Vista Hermosa II, Zona 15, Ciudad de Guatemala. Es una propuesta de arquitectura sofisticada y sostenible que cuenta con 1 torre de 22 niveles habitacionales y un total de 162 apartamentos. Se caracteriza por ofrecer un refugio exclusivo que integra naturaleza, tecnología y confort. La entrega estimada está programada para el segundo trimestre de 2027. Sitio web: sotobosqueparqueboutique.com.gt."
+    "respuesta": "Sotobosque es un proyecto residencial de la línea Parque Boutique de Spectrum, ubicado en la Zona 15. Es una torre de 22 niveles con 162 apartamentos que combina arquitectura sofisticada y un entorno natural. Está diseñado para ofrecer exclusividad y privacidad en uno de los sectores más seguros de la ciudad."
   },
   {
     "id": "sb_ubicacion_direccion",
     "categoria": "ubicacion",
-    "tags": ["ubicacion", "direccion", "zona15", "vista hermosa", "como llegar"],
-    "pregunta": "¿Dónde está ubicado Sotobosque? ¿Cuál es la dirección?",
-    "respuesta": "Sotobosque se encuentra en una ubicación privilegiada en la 15 avenida 03-09, Zona 15, Vista Hermosa II, Ciudad de Guatemala. El proyecto ofrece acceso directo al Boulevard Vista Hermosa y cercanía a servicios esenciales como supermercados, hospitales, farmacias y centros comerciales del sector."
+    "tags": ["direccion", "zona15", "vista hermosa", "donde esta"],
+    "pregunta": "¿Cuál es la ubicación exacta de Sotobosque?",
+    "respuesta": "Se encuentra en la 15 avenida 03-09, Zona 15, Vista Hermosa II, Ciudad de Guatemala. Tiene acceso inmediato al Boulevard Vista Hermosa y cercanía a centros comerciales, hospitales y universidades."
   },
   {
-    "id": "sb_ubicacion_entorno",
-    "categoria": "ubicacion",
-    "tags": ["entorno", "servicios", "puntos interes", "vista hermosa", "hospitales"],
-    "pregunta": "¿Qué servicios hay cerca de Sotobosque en Zona 15?",
-    "respuesta": "El entorno de Sotobosque en Zona 15 ofrece una amplia variedad de servicios de primer nivel, incluyendo restaurantes de prestigio, gimnasios, ciclovías, centros comerciales, y acceso inmediato a hospitales, farmacias y supermercados, permitiendo una vida urbana cómoda y conectada."
-  },
-  {
-    "id": "sb_desarrollador_spectrum",
+    "id": "sb_desarrollador_trayectoria",
     "categoria": "desarrollador",
-    "tags": ["spectrum", "desarrollador", "trayectoria", "proyectos", "experiencia"],
-    "pregunta": "¿Quién desarrolla Sotobosque y qué trayectoria tiene?",
-    "respuesta": "Sotobosque es desarrollado por Spectrum, empresa con más de 29 años de experiencia y más de 11,000 unidades entregadas. Cuenta con 11 proyectos bajo la Línea Parque y ha incursionado en la línea Parque Boutique con proyectos como Polanco y Sotobosque. Su enfoque se centra en la sostenibilidad, innovación y creación de comunidades que transforman ciudades."
+    "tags": ["spectrum", "trayectoria", "experiencia", "garantia"],
+    "pregunta": "¿Quién es el desarrollador de Sotobosque?",
+    "respuesta": "Desarrollado por Spectrum, empresa con más de 30 años de trayectoria y 30 proyectos entregados (más de 11,000 unidades). El proyecto cuenta con el aval del FHA, lo que garantiza supervisión técnica constante durante la construcción."
   },
   {
-    "id": "sb_arquitectura_diseño",
-    "categoria": "proyecto",
-    "tags": ["arquitectura", "diseño", "proporcion y escala", "atemporal"],
+    "id": "sb_arquitectura_diseno",
+    "categoria": "especificaciones",
+    "tags": ["arquitectura", "proporcion y escala", "alfredo saravia", "diseno"],
     "pregunta": "¿Quién diseñó Sotobosque y cómo es su arquitectura?",
-    "respuesta": "La arquitectura de Sotobosque fue diseñada por la firma Proporción y Escala. Su diseño es descrito como elegante, sofisticado y atemporal, con una cuidadosa atención a los detalles y una distribución eficiente de los espacios para brindar mayor confort a sus residentes."
+    "respuesta": "El diseño arquitectónico fue realizado por la firma 'Proporción y Escala', liderada por el Arq. Alfredo Saravia. Su enfoque es de 'Jungla Urbana', integrando el edificio con el entorno verde de la Zona 15 mediante materiales atemporales y acabados boutique."
   },
   {
-    "id": "sb_modelo_1hab",
+    "id": "sb_modelos_precios",
     "categoria": "modelos",
-    "tags": ["1 habitacion", "39m2", "modelo", "precio", "inversion"],
-    "pregunta": "¿Cómo es el apartamento de 1 habitación en Sotobosque?",
-    "respuesta": "El modelo de 1 habitación tiene un metraje aproximado de 39.78 m2. Incluye dormitorio máster con closet, 1 baño completo, sala-comedor-cocina y un closet para torre de lavado. Los precios para este modelo inician desde aproximadamente Q1,117,000."
-  },
-  {
-    "id": "sb_modelo_2hab",
-    "categoria": "modelos",
-    "tags": ["2 habitaciones", "56m2", "60m2", "63m2", "modelo", "balcon"],
-    "pregunta": "¿Qué opciones hay de 2 habitaciones en Sotobosque?",
-    "respuesta": "Sotobosque ofrece varias opciones de 2 habitaciones: el modelo de 56.31 m2 (desde Q1,429,000) y modelos que van de los 60.85 m2 a los 63.61 m2 con balcón (desde Q1,573,000). Incluyen dormitorio máster con walk-in closet, dormitorio secundario, 2 baños completos, cocina, sala-comedor y closet de lavandería."
-  },
-  {
-    "id": "sb_modelo_3hab",
-    "categoria": "modelos",
-    "tags": ["3 habitaciones", "79m2", "83m2", "105m2", "familia", "estudio"],
-    "pregunta": "¿Cuáles son los apartamentos más grandes en Sotobosque?",
-    "respuesta": "Existen modelos de 3 habitaciones desde 79.13 m2 hasta 105.91 m2. El modelo de 79 m2 incluye 3 dormitorios y 2 baños (desde Q1,674,000). El modelo de 83.93 m2 añade un estudio (desde Q1,753,000). El más amplio, de 105.91 m2, cuenta con 3 dormitorios, 2 baños, balcón y sala familiar (desde Q2,324,000)."
-  },
-  {
-    "id": "sb_precio_reserva",
-    "categoria": "precios",
-    "tags": ["reserva", "costo", "apartar", "Q15000"],
-    "pregunta": "¿Con cuánto se reserva un apartamento en Sotobosque?",
-    "respuesta": "La reserva para un apartamento en Sotobosque es de Q15,000. Este monto permite bloquear la unidad elegida durante el proceso de compra."
-  },
-  {
-    "id": "sb_financiamiento_enganche",
-    "categoria": "precios",
-    "tags": ["financiamiento", "fha", "enganche", "cuotas", "banco industrial"],
-    "pregunta": "¿Qué opciones de financiamiento y enganche ofrecen?",
-    "respuesta": "Sotobosque cuenta con respaldo de bancos como Banco Industrial y opción de financiamiento FHA. El enganche mínimo puede variar según el perfil, mencionándose opciones desde el 5% con FHA o entre el 15% y 30% fraccionado para otros esquemas comerciales."
+    "tags": ["modelos", "habitaciones", "precio", "reserva", "metraje"],
+    "pregunta": "¿Qué modelos de apartamentos ofrece Sotobosque y cuáles son sus precios?",
+    "respuesta": "Ofrece modelos de 1, 2 y 3 habitaciones. Los metrajes van desde 39.78 m² hasta 105.91 m². Los precios inician desde Q1,117,000. La reserva es de Q15,000 y se ofrece financiamiento bancario con enganche fraccionado."
   },
   {
     "id": "sb_amenidades_lista",
     "categoria": "amenidades",
-    "tags": ["amenidades", "piscina", "gimnasio", "coworking", "pet friendly"],
-    "pregunta": "¿Qué amenidades tiene Sotobosque Parque Boutique?",
-    "respuesta": "Sotobosque ofrece una cuidada selección de amenidades boutique que incluyen: Entrance Hall (recepción de lujo), Coworking Space, Private Meeting Rooms, Event Room, Gourmet Kitchen, Workout Area (gimnasio), Elevated Pool Deck (piscina), Panoramic Lounge (vistas 360), Pet Spa/Zone y áreas de Drop Off."
+    "tags": ["amenidades", "piscina", "gimnasio", "coworking", "social"],
+    "pregunta": "¿Qué amenidades tiene el edificio Sotobosque?",
+    "respuesta": "Cuenta con amenidades exclusivas: Entrance Hall de doble altura, Event Room, Gourmet Kitchen, Coworking Space, salas de reuniones privadas, Workout Area (gimnasio), Elevated Pool Deck (piscina) y Panoramic Lounge con vistas 360."
   },
   {
-    "id": "sb_amenidades_destacadas",
-    "categoria": "amenidades",
-    "tags": ["piscina", "lounge", "vistas", "relax"],
-    "pregunta": "¿Cuáles son las amenidades más exclusivas del proyecto?",
-    "respuesta": "Destacan el 'Elevated Pool Deck', una piscina diseñada para el relax en un entorno moderno, y el 'Panoramic Lounge', un espacio elegante con vistas privilegiadas para momentos inolvidables. También cuenta con un 'Gourmet Kitchen' equipado para experiencias gastronómicas."
+    "id": "sb_sostenibilidad_conviviendo",
+    "categoria": "sostenibilidad",
+    "tags": ["sostenibilidad", "conviviendo", "plusvalia", "comunidad"],
+    "pregunta": "¿Qué programas especiales tiene el proyecto?",
+    "respuesta": "Incluye el programa 'Conviviendo' para la gestión social y armonía entre vecinos, y 'Spectrum Sostenible', que aplica medidas de eficiencia en el uso de agua, energía y gestión de residuos para reducir el impacto ambiental."
   },
   {
-    "id": "sb_sostenibilidad",
-    "categoria": "desarrollador",
-    "tags": ["sostenibilidad", "verde", "medio ambiente", "spectrum sostenible"],
-    "pregunta": "¿Es Sotobosque un proyecto sostenible?",
-    "respuesta": "Sí, Sotobosque forma parte de la visión de sostenibilidad de Spectrum, que busca generar valor a largo plazo mediante una gestión responsable de recursos, eficiencia energética y armonía con el entorno natural de la zona 15."
-  },
-  {
-    "id": "sb_contacto",
-    "categoria": "contacto",
-    "tags": ["telefono", "whatsapp", "contacto", "cita", "web"],
-    "pregunta": "¿Cómo puedo contactar a un asesor de Sotobosque?",
-    "respuesta": "Puedes contactar al equipo comercial de Sotobosque al teléfono/WhatsApp +(502) 4769-6028 o a través del correo info@sotobosqueparqueboutique.com.gt. También puedes agendar una cita en su sitio web oficial sotobosqueparqueboutique.com.gt."
+    "id": "sb_infraestructura_servicios",
+    "categoria": "especificaciones",
+    "tags": ["agua", "pozo", "seguridad", "postventa"],
+    "pregunta": "¿Qué servicios técnicos e infraestructura ofrece el edificio?",
+    "respuesta": "El edificio posee pozo propio, planta de tratamiento, seguridad 24/7 con control de acceso y un sistema de servicio post-entrega certificado por Spectrum para garantizar la satisfacción del propietario tras la mudanza."
   }
 ]
