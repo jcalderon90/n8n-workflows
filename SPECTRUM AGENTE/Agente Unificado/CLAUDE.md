@@ -49,7 +49,7 @@ Agente Unificado/
 
 ```
 KBs/
-├── KB PL.json    ← Parque Los Laureles (PL)
+├── KB PL.json    ← Polanco (PL)
 ├── KB SB.json    ← Sotobosque (SB)
 ├── KB PPO.json   ← Parque Portales (PPO)
 ├── KB PVV.json   ← Parque Vista Verde (PVV)

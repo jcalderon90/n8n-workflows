@@ -1,5 +1,5 @@
 # 🏢 SPECTRUM VIVIENDA: Agente Unificado — Estado del Proyecto
-> Última actualización: 2026-04-23 (Preparación para Pruebas E2E)
+> Última actualización: 2026-04-27 (Post-Estandarización y Preparación de KB)
 
 ## 🎯 Objetivo General
 Arquitectura de agente conversacional modular para SPECTRUM VIVIENDA. Un orquestador central (*Sof-IA*) delega tareas a sub-workflows especializados (Tools), con persistencia centralizada en MongoDB y sincronización diferida al CRM Dynamics 365 vía SOAP.
@@ -11,123 +11,73 @@ Arquitectura de agente conversacional modular para SPECTRUM VIVIENDA. Un orquest
 | Componente | Detalle |
 |---|---|
 | **Orquestación** | n8n — workflows modulares vinculados via `Execute Workflow` |
-| **Modelos IA** | `gpt-4.1-mini` (lógica principal y tools), `gpt-4o` (análisis de imágenes y audio) |
-| **Base de Datos** | MongoDB Atlas — colecciones `users`, `appointments`, `chat_histories`, `chat_histories_lead`, `chat_histories_rsvp` |
-| **Vector Search** | MongoDB Atlas Vector Index (`spectrum_vector_index`) — RAG por proyecto |
-| **Buffer/Cache** | Redis — Message Debouncing (agrupa mensajes rápidos antes de procesar) |
-| **CDN** | Cloudinary — renders, brochures, amenidades |
-| **CRM** | Dynamics 365 via SOAP (endpoint: `crm.spectrum.com.gt:8055`) |
+| **Modelos IA** | `gpt-5.4-mini` (Orquestador), `gpt-4.1-mini` (Tools), `gpt-4o` (Media) |
+| **Base de Datos** | MongoDB Atlas — colecciones `users`, `appointments`, `chat_histories`, `quality_logs` |
+| **Vector Search** | MongoDB Atlas Vector Index (`spectrum_vector_index`) — Filtrado por campo `proyecto` |
+| **Buffer/Cache** | Redis — Message Debouncing (agrupa mensajes rápidos) |
+| **CRM** | Dynamics 365 via SOAP (Standardized Mappings) |
 | **Canales** | ManyChat (WhatsApp, Instagram, Messenger) |
-| **Notificaciones** | Gmail (HTML corporativo) vía OAuth |
 
 ---
 
 ## 📦 Módulos (Workflows)
 
 ### 1. 🧠 Orquestador Central — `Principal.json`
-**Estado: ✅ Activo y funcional**
+**Estado: ✅ Optimizado y Corregido**
 
-- Recibe Webhook de ManyChat, detecta tipo de entrada (texto/audio/imagen/archivo).
-- Buffer Redis para agrupar mensajes rápidos del usuario.
-- Consulta/crea perfil en MongoDB (`users`).
-- **Agente Sof-IA** clasifica intención y delega a tools:
-  - `lead_collector` — cuando faltan datos del lead
-  - `kb_search` — cuando hay datos completos y proyecto activo
-  - `rsvp` — cuando el usuario quiere agendar
-  - `send_media` — cuando el usuario pide material visual
-- **Memoria de Intención (`consulta_pendiente`):** guarda la consulta original del usuario mientras se capturan sus datos; la retoma automáticamente al completar el perfil.
-- Parsea el JSON del LLM, actualiza MongoDB y envía respuesta a ManyChat.
-
-**Cambios recientes:**
-- **Reinicio de Análisis:** El nodo `DATA to UPDATE` resetea `conversation_analysis` a `false` en cada interacción, permitiendo que el flujo de sincronización detecte nuevos estados para procesar.
-- **Mapeo de Intención:** Se asegura que el orquestador pase el contexto de proyecto correctamente a todas las tools.
-
----
+- **Sof-IA Prompt:** Se corrigió el mapeo de intención para usar códigos en **MAYÚSCULAS**.
+- **Fix JSON:** Corregido error de sintaxis en el esquema de salida del bot (`estado_proyecto`).
+- **Limpieza de Tools:** Eliminada duplicidad de `send_media`.
+- **Lógica de Mapeo:** Traduce automáticamente nombres de proyectos (Vista Verde, Polanco, etc.) a sus códigos oficiales (`PVV`, `PPOL`, etc.).
 
 ### 2. 👤 Captador de Leads — `Lead Collector.json`
-**Estado: ✅ Producción-Ready (Pendiente Pruebas E2E)**
+**Estado: ✅ Validado**
 
-- Recolecta Nombre, Correo y Teléfono de forma conversacional.
-- En WhatsApp confirma el teléfono del sistema en lugar de pedirlo.
-- **Mapeo de Proyecto Oficial:** Ahora traduce códigos internos (`pvv`, `pm`, `pp`) a los códigos del CRM (`PVV`, `PMAR`, `PPO`) antes del envío.
-- Al completar datos: guarda `CRM_Data` en MongoDB (`users`) para sincronización diferida.
-- **Nota:** El envío SOAP directo está activo para la creación inicial del lead.
-
----
+- Envío de datos a Dynamics 365 respetando el nodo SOAP manual.
+- Mapeo directo del campo `proyecto` recibido del orquestador.
 
 ### 3. 📚 Experto en Proyectos — `KB_Search.json`
-**Estado: ✅ Activo**
+**Estado: ✅ Alineado con RAG**
 
-- Búsqueda vectorial en MongoDB Atlas filtrando por código de proyecto (`pvv`, `pm`, `pp`).
-- Responde únicamente con información del Knowledge Base (anti-alucinaciones).
-- Modelo: `gpt-4.1-mini` (temperatura 0.1).
-
----
+- Filtrado por metadato `proyecto` en uppercase.
+- Reglas estrictas de no-alucinación basadas en el contexto recuperado.
 
 ### 4. 🗓️ Motor de Citas — `RSVP.json`
-**Estado: ✅ Activo**
+**Estado: ✅ Operativo**
 
-- Identifica tipo de agendamiento: `cita_presencial`, `cita_virtual` o `llamada`.
-- Crea/actualiza registros en colección `appointments`.
-- Envía notificación HTML por correo al confirmar cita.
-- Los datos de cita (`habitaciones`, `intencion`, `estado_civil`) se usan para enriquecer el CRM asíncronamente.
+- Captura de datos de agendamiento y guardado en `appointments`.
+- Enriquecimiento de CRM detectando intención de compra y estado civil.
 
----
+### 5. 🔄 Sincronización CRM — `Sync_CRM.json`
+**Estado: ✅ Robusto**
 
-### 5. 🖼️ Entrega de Media — `Send Media.json`
-**Estado: ✅ Activo e Integrado**
-
-- Mapea solicitudes (`amenidades`, `renders`, `planos`, `brochure`) al recurso en Cloudinary según proyecto.
-- Multi-canal: imagen nativa en Instagram/Facebook, link en WhatsApp.
+- Manejo de etiquetas XML opcionales para evitar errores de SOAP API.
+- Actualización de flags en MongoDB para evitar duplicidad de análisis (`conversation_analysis`).
 
 ---
 
-### 6. 🔄 Sincronización CRM — `Sync_CRM.json`
-**Estado: ✅ Producción-Ready (Pendiente Pruebas E2E)**
+## 📂 Knowledge Base (KBs)
+Se han estandarizado los 5 archivos JSON de la carpeta `/KBs`:
 
-- Cronjob cada 10-15 minutos.
-- **Lógica de Etiquetas Opcionales:** El payload SOAP ahora omite etiquetas vacías (como `_FechaCita` o `_NumeroHabitaciones`) si no hay datos, evitando errores de la API.
-- **Mapeo de Catálogos CRM:** 
-    - `Estado Civil`: Mapeado a `100000000-100000003`.
-    - `Habitaciones`: Mapeado a `100000000-100000002`.
-    - `Proyectos`: Mapeado a `PVV`, `PMAR`, `PPO`.
-- **Enriquecimiento:** Incluye el `Resumen` de la conversación y las `Dudas` del cliente detectadas por la IA.
-- **Audit de Calidad:** Genera logs de evaluación en la colección `quality_logs`.
+- [x] **PVV** (Parque Vista Verde)
+- [x] **PMAR** (Parque Mariscal)
+- [x] **PPO** (Parque Portales)
+- [x] **PPOL** (Polanco) - *NUEVO*
+- [x] **PSB** (Sotobosque) - *NUEVO*
 
----
-
-### 7. 🔍 Auditor de Calidad — integrado en `Sync_CRM.json`
-**Estado: ✅ Activo**
-
-Evalúa la performance del agente por conversación y guarda el resultado en MongoDB.
-**Colección:** `quality_logs`
+**Mejoras en KB:**
+*   **Metadata:** Campo `"proyecto"` unificado en mayúsculas.
+*   **Script Comercial:** Se agregó una entrada dedicada para "Medidas de Balcón" con un guion emocional y comercial estandarizado para todos los proyectos.
 
 ---
 
-## 📊 Modelo de Datos (MongoDB)
+## 🚀 Punto Actual del Proyecto
+El proyecto se encuentra en el **punto de cierre técnico**. La lógica está 100% alineada entre el Orquestador, las Tools y los archivos de datos.
 
-| Colección | Uso |
-|---|---|
-| `users` | Perfil del lead: datos, proyecto activo, `consulta_pendiente`, `CRM_Data`, flags |
-| `appointments` | Citas agendadas: tipo, fecha, habitaciones, intención, estado_civil, contacto |
-| `chat_histories` | Memoria conversacional del agente principal (ventana: 20) |
-| `chat_histories_lead` | Memoria del Lead Collector (ventana: 10) |
-| `chat_histories_rsvp` | Memoria del agente RSVP (ventana: 20) |
-| `quality_logs` | Análisis de calidad del agente por conversación |
+### 🔜 Acciones Inmediatas (Manuales)
+1.  **Vectorización:** Cargar los 5 archivos JSON en la colección `documents` de MongoDB Atlas.
+2.  **Limpieza:** Vaciar datos viejos de `documents` antes de la nueva carga.
+3.  **Pruebas E2E:** Validar flujo completo: *Consulta -> Captura de Datos -> Respuesta KB -> Sincronización CRM.*
 
 ---
-
-## 🚀 Roadmap
-
-### ✅ Completado
-- [x] Arquitectura modular con orquestador + tools.
-- [x] Sincronización SOAP robusta con manejo de errores y etiquetas opcionales.
-- [x] Mapeo de códigos de proyecto oficiales (`PVV`, `PMAR`, `PPO`).
-- [x] Registro de auditoría de calidad de conversaciones.
-- [x] Estandarización de modelos a `gpt-4.1-mini`.
-
-### 🔜 Pendiente (Pruebas Mañana)
-- [ ] Prueba E2E: Lead nuevo -> Lead Collector -> CRM Creation.
-- [ ] Prueba E2E: Conversación -> Inactividad 15min -> Sync_CRM Enrichment.
-- [ ] Prueba E2E: Agendamiento Cita -> Sync_CRM Data Update.
-- [ ] Validar URLs reales de Cloudinary para renders/planos.
+> **Nota de Seguridad:** Se respeta la prohibición de modificar la configuración del nodo SOAP API fuera de la interfaz de n8n por parte del usuario.

@@ -30,6 +30,8 @@ El sistema es una arquitectura multi-agente orquestada por n8n:
 | `pvv` | `PVV` | Parque Vista Verde |
 | `pm` | `PMAR` | Parque Mariscal |
 | `pp` | `PPO` | Parque Portales |
+| `polanco` | `PPOL` | Parque Polanco |
+| `psb` | `PSB` | Parque Sotobosque |
 
 ### Estado Civil (`_EstadoCivil`)
 - **Soltero:** `100000000`

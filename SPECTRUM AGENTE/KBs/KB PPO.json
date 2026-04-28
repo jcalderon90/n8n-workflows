@@ -1,6 +1,15 @@
 [
     {
+        "id": "ppo_medidas_balcon",
+        "proyecto": "PPO",
+        "categoria": "modelos",
+        "tags": ["balcón", "balcon", "medidas", "tamaño", "dimensiones", "cuanto mide", "grande"],
+        "pregunta": "¿Qué medidas tiene el balcón?",
+        "respuesta": "🏡 Todos nuestros modelos cuentan con balcón, pensado para brindarte un espacio adicional de confort y conexión con el exterior.\n\n📐 Las medidas exactas pueden variar según el modelo y se te comparten con total detalle durante la visita, donde además podrás apreciarlo directamente.\n\n📅 Si te parece bien, puedo ayudarte a agendar una visita presencial o virtual con un asesor, para que revises este y otros atributos del apartamento 🤝✨"
+    },
+    {
         "id": "pp_resumen_general",
+        "proyecto": "PPO",
         "categoria": "proyecto",
         "tags": ["resumen", "general", "spectrum", "zona17", "torre", "apartamentos"],
         "pregunta": "¿Qué es Parque Portales?",
@@ -8,6 +17,7 @@
     },
     {
         "id": "pp_ubicacion_direccion",
+        "proyecto": "PPO",
         "categoria": "ubicacion",
         "tags": ["ubicacion", "direccion", "zona17", "zona portales", "como llegar"],
         "pregunta": "¿Dónde está ubicado Parque Portales? ¿Cuál es la dirección?",
@@ -15,6 +25,7 @@
     },
     {
         "id": "pp_ubicacion_accesos",
+        "proyecto": "PPO",
         "categoria": "ubicacion",
         "tags": ["accesos", "rutas", "carretera atlantico", "calzada la paz", "puente belice", "zona18"],
         "pregunta": "¿Cómo se llega a Parque Portales? ¿Qué accesos tiene?",
@@ -22,6 +33,7 @@
     },
     {
         "id": "pp_ubicacion_puntos_interes",
+        "proyecto": "PPO",
         "categoria": "ubicacion",
         "tags": ["puntos de interes", "walmart", "metronorte", "centro comercial portales", "umg", "blue medical"],
         "pregunta": "¿Qué hay cerca de Parque Portales?",
@@ -29,6 +41,7 @@
     },
     {
         "id": "pp_ubicacion_vistas",
+        "proyecto": "PPO",
         "categoria": "ubicacion",
         "tags": ["vistas", "volcanes", "zona18", "puente belice", "calzada la paz"],
         "pregunta": "¿Qué vistas tiene el edificio de Parque Portales?",
@@ -36,6 +49,7 @@
     },
     {
         "id": "pp_desarrollador_spectrum",
+        "proyecto": "PPO",
         "categoria": "desarrollador",
         "tags": ["spectrum", "desarrollador", "trayectoria", "proyectos", "confianza"],
         "pregunta": "¿Quién desarrolla Parque Portales? ¿Qué experiencia tiene Spectrum?",
@@ -43,6 +57,7 @@
     },
     {
         "id": "pp_desarrollador_avales",
+        "proyecto": "PPO",
         "categoria": "desarrollador",
         "tags": ["aval", "fha", "garantia", "bancos", "confianza", "inspeccion"],
         "pregunta": "¿Parque Portales tiene avales o garantías? ¿Es un proyecto seguro?",
@@ -50,6 +65,7 @@
     },
     {
         "id": "pp_programa_conviviendo",
+        "proyecto": "PPO",
         "categoria": "desarrollador",
         "tags": ["conviviendo", "comunidad", "valor propiedad", "areas comunes"],
         "pregunta": "¿Qué es Conviviendo by Spectrum?",
@@ -57,6 +73,7 @@
     },
     {
         "id": "pp_programa_sostenible",
+        "proyecto": "PPO",
         "categoria": "desarrollador",
         "tags": ["sostenible", "medio ambiente", "energia", "agua", "green building"],
         "pregunta": "¿Parque Portales tiene algún programa de sostenibilidad?",
@@ -64,6 +81,7 @@
     },
     {
         "id": "pp_modelo_s40",
+        "proyecto": "PPO",
         "categoria": "modelos",
         "tags": ["s40", "40m2", "2 habitaciones", "modelo", "precio", "parqueo"],
         "pregunta": "¿Cómo es el modelo S40? ¿Qué incluye?",
@@ -71,6 +89,7 @@
     },
     {
         "id": "pp_modelo_s52",
+        "proyecto": "PPO",
         "categoria": "modelos",
         "tags": ["s52", "52m2", "2 habitaciones", "modelo", "parqueo"],
         "pregunta": "¿Cómo es el modelo S52? ¿Qué incluye?",
@@ -78,6 +97,7 @@
     },
     {
         "id": "pp_modelo_s70",
+        "proyecto": "PPO",
         "categoria": "modelos",
         "tags": ["s70", "70m2", "3 habitaciones", "estudio", "walk-in closet", "modelo", "2 parqueos"],
         "pregunta": "¿Cómo es el modelo S70? ¿Qué incluye?",
@@ -85,6 +105,7 @@
     },
     {
         "id": "pp_modelo_s80",
+        "proyecto": "PPO",
         "categoria": "modelos",
         "tags": ["s80", "80m2", "3 habitaciones", "estudio", "walk-in closet", "modelo", "2 parqueos", "mas grande"],
         "pregunta": "¿Cómo es el modelo S80? ¿Qué incluye?",
@@ -92,6 +113,7 @@
     },
     {
         "id": "pp_modelos_comparacion",
+        "proyecto": "PPO",
         "categoria": "modelos",
         "tags": ["comparacion", "modelos", "resumen", "diferencias", "cual elegir"],
         "pregunta": "¿Cuáles son los modelos disponibles en Parque Portales y sus diferencias?",
@@ -99,6 +121,7 @@
     },
     {
         "id": "pp_precio_general",
+        "proyecto": "PPO",
         "categoria": "precios",
         "tags": ["precio", "costo", "cuanto cuesta", "valor", "quetzales"],
         "pregunta": "¿Cuánto cuesta un apartamento en Parque Portales?",
@@ -106,6 +129,7 @@
     },
     {
         "id": "pp_precio_reserva",
+        "proyecto": "PPO",
         "categoria": "precios",
         "tags": ["reserva", "costo reserva", "apartar", "bloquear", "4000"],
         "pregunta": "¿Cuánto cuesta reservar un apartamento?",
@@ -113,6 +137,7 @@
     },
     {
         "id": "pp_financiamiento_general",
+        "proyecto": "PPO",
         "categoria": "precios",
         "tags": ["financiamiento", "credito", "banco", "hipoteca", "enganche", "mensualidad"],
         "pregunta": "¿Con qué bancos se puede financiar un apartamento en Parque Portales?",
@@ -120,6 +145,7 @@
     },
     {
         "id": "pp_financiamiento_fha",
+        "proyecto": "PPO",
         "categoria": "precios",
         "tags": ["fha", "enganche 5%", "primera vivienda", "gobierno", "hipoteca asegurada"],
         "pregunta": "¿Parque Portales tiene aval FHA? ¿Qué ventaja tiene el FHA?",
@@ -127,6 +153,7 @@
     },
     {
         "id": "pp_financiamiento_enganche",
+        "proyecto": "PPO",
         "categoria": "precios",
         "tags": ["enganche", "inicial", "porcentaje", "cuanto dar de entrada"],
         "pregunta": "¿Cuánto es el enganche mínimo para comprar en Parque Portales?",
@@ -134,6 +161,7 @@
     },
     {
         "id": "pp_proceso_compra_pasos",
+        "proyecto": "PPO",
         "categoria": "proceso_compra",
         "tags": ["proceso compra", "pasos", "como comprar", "steps", "compraventa"],
         "pregunta": "¿Cuál es el proceso para comprar un apartamento en Parque Portales?",
@@ -141,6 +169,7 @@
     },
     {
         "id": "pp_proceso_reserva_como",
+        "proyecto": "PPO",
         "categoria": "proceso_compra",
         "tags": ["como reservar", "reserva", "apartar unidad", "proceso reserva"],
         "pregunta": "¿Cómo puedo realizar una reserva?",
@@ -148,6 +177,7 @@
     },
     {
         "id": "pp_proceso_legal_factura",
+        "proyecto": "PPO",
         "categoria": "proceso_compra",
         "tags": ["factura", "escritura", "nombre", "legal", "registro propiedad"],
         "pregunta": "¿Puedo poner el apartamento a nombre de otra persona diferente a la factura?",
@@ -155,6 +185,7 @@
     },
     {
         "id": "pp_proceso_legal_ceder",
+        "proyecto": "PPO",
         "categoria": "proceso_compra",
         "tags": ["ceder derechos", "vender antes", "transferir", "terceros"],
         "pregunta": "¿Puedo vender o ceder los derechos de mi apartamento antes de escriturar?",
@@ -162,6 +193,7 @@
     },
     {
         "id": "pp_proceso_iusi",
+        "proyecto": "PPO",
         "categoria": "proceso_compra",
         "tags": ["iusi", "impuesto", "inmueble", "municipalidad", "obligatorio"],
         "pregunta": "¿Qué es el IUSI?",
@@ -169,6 +201,7 @@
     },
     {
         "id": "pp_parqueos_distribucion",
+        "proyecto": "PPO",
         "categoria": "parqueos",
         "tags": ["parqueos", "estacionamiento", "carro", "moto", "visitas", "tandem"],
         "pregunta": "¿Cuántos parqueos tiene Parque Portales?",
@@ -176,6 +209,7 @@
     },
     {
         "id": "pp_amenidades_lista",
+        "proyecto": "PPO",
         "categoria": "amenidades",
         "tags": ["amenidades", "que tiene", "servicios", "comodidades", "lista"],
         "pregunta": "¿Qué amenidades tiene Parque Portales?",
@@ -183,6 +217,7 @@
     },
     {
         "id": "pp_amenidades_nivel1",
+        "proyecto": "PPO",
         "categoria": "amenidades",
         "tags": ["nivel 1", "planta baja", "lobby", "coworking", "estudio urbano"],
         "pregunta": "¿Qué amenidades hay en el nivel 1 de Parque Portales?",
@@ -190,6 +225,7 @@
     },
     {
         "id": "pp_amenidades_nivel3",
+        "proyecto": "PPO",
         "categoria": "amenidades",
         "tags": ["nivel 3", "piscina", "gimnasio", "cine", "salon social", "zona familiar", "infantil"],
         "pregunta": "¿Qué amenidades hay en el nivel 3 de Parque Portales?",
@@ -197,6 +233,7 @@
     },
     {
         "id": "pp_amenidades_nivel24",
+        "proyecto": "PPO",
         "categoria": "amenidades",
         "tags": ["nivel 24", "terraza", "parrillas", "bbq", "mirador", "vistas panoramicas", "ultimo piso"],
         "pregunta": "¿Qué amenidades hay en el nivel 24 (último piso) de Parque Portales?",
@@ -204,6 +241,7 @@
     },
     {
         "id": "pp_amenidades_pet_friendly",
+        "proyecto": "PPO",
         "categoria": "amenidades",
         "tags": ["pet friendly", "mascotas", "perros", "gatos", "animales"],
         "pregunta": "¿Parque Portales es pet friendly?",
@@ -211,6 +249,7 @@
     },
     {
         "id": "pp_seguridad",
+        "proyecto": "PPO",
         "categoria": "amenidades",
         "tags": ["seguridad", "vigilancia", "camaras", "accesos", "24/7"],
         "pregunta": "¿Qué seguridad tiene Parque Portales?",
@@ -218,6 +257,7 @@
     },
     {
         "id": "pp_infraestructura",
+        "proyecto": "PPO",
         "categoria": "amenidades",
         "tags": ["elevadores", "gradas", "planta tratamiento", "pozo", "infraestructura"],
         "pregunta": "¿Qué infraestructura tiene el edificio?",
@@ -225,6 +265,7 @@
     },
     {
         "id": "pp_mantenimiento_que_es",
+        "proyecto": "PPO",
         "categoria": "mantenimiento",
         "tags": ["cuota mantenimiento", "que incluye", "mensualidad", "areas comunes"],
         "pregunta": "¿Qué es la cuota de mantenimiento y qué cubre?",
@@ -232,6 +273,7 @@
     },
     {
         "id": "pp_mantenimiento_pago",
+        "proyecto": "PPO",
         "categoria": "mantenimiento",
         "tags": ["donde pagar", "pago mantenimiento", "servipagos", "portal web"],
         "pregunta": "¿Dónde puedo pagar la cuota de mantenimiento?",
@@ -239,6 +281,7 @@
     },
     {
         "id": "pp_fecha_entrega",
+        "proyecto": "PPO",
         "categoria": "proyecto",
         "tags": ["entrega", "cuando", "fecha", "listo", "mudarse"],
         "pregunta": "¿Cuándo es la fecha de entrega de Parque Portales?",
@@ -246,6 +289,7 @@
     },
     {
         "id": "pp_estado_construccion",
+        "proyecto": "PPO",
         "categoria": "proyecto",
         "tags": ["estado", "construccion", "avance", "obra gris", "acabados"],
         "pregunta": "¿En qué estado de construcción está Parque Portales?",
@@ -253,6 +297,7 @@
     },
     {
         "id": "pp_torres_niveles",
+        "proyecto": "PPO",
         "categoria": "proyecto",
         "tags": ["torres", "cuantas torres", "niveles", "pisos", "altura"],
         "pregunta": "¿Cuántas torres tiene Parque Portales? ¿Cuántos niveles?",
@@ -260,6 +305,7 @@
     },
     {
         "id": "pp_paso_peatonal",
+        "proyecto": "PPO",
         "categoria": "ubicacion",
         "tags": ["paso peatonal", "zona portales", "centro comercial", "conexion peatonal"],
         "pregunta": "¿Va a haber paso peatonal del proyecto hacia Zona Portales?",
@@ -267,6 +313,7 @@
     },
     {
         "id": "pp_contacto",
+        "proyecto": "PPO",
         "categoria": "contacto",
         "tags": ["contacto", "telefono", "whatsapp", "web", "asesor", "comunicacion"],
         "pregunta": "¿Cómo puedo contactar a Parque Portales o agendar una cita?",
@@ -274,6 +321,7 @@
     },
     {
         "id": "pp_inversion_o_vivienda",
+        "proyecto": "PPO",
         "categoria": "perfil_cliente",
         "tags": ["inversion", "vivienda", "para vivir", "para rentar", "primera vivienda"],
         "pregunta": "¿Parque Portales es para vivir o para inversión?",
@@ -281,6 +329,7 @@
     },
     {
         "id": "pp_competencia_diferenciadores",
+        "proyecto": "PPO",
         "categoria": "proyecto",
         "tags": ["diferenciadores", "ventajas", "por que elegir", "competencia", "valor agregado"],
         "pregunta": "¿Por qué elegir Parque Portales sobre otros proyectos?",
@@ -288,9 +337,10 @@
     },
     {
         "id": "pp_sala_ventas",
+        "proyecto": "PPO",
         "categoria": "ubicacion",
         "tags": ["sala de ventas", "donde comprar", "visitar", "ubicacion ventas", "centro comercial portales", "nivel 3"],
         "pregunta": "¿Dónde está la sala de ventas de Parque Portales?",
         "respuesta": "La sala de ventas está en C.C. Portales, Nivel 3, Km. 4.5 Carretera al Atlántico 3-20, Zona 17, Guatemala. Video de cómo llegar: https://www.instagram.com/reel/DV3mNJSDfHk/?igsh=MTFzYnJ2dmo2OHZ0OA=="
     }
-];
+]

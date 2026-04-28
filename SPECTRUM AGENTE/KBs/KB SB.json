@@ -1,6 +1,15 @@
 [
   {
+    "id": "psb_medidas_balcon",
+    "proyecto": "PSB",
+    "categoria": "modelos",
+    "tags": ["balcón", "balcon", "medidas", "tamaño", "dimensiones", "cuanto mide", "grande"],
+    "pregunta": "¿Qué medidas tiene el balcón?",
+    "respuesta": "🏡 Todos nuestros modelos cuentan con balcón, pensado para brindarte un espacio adicional de confort y conexión con el exterior.\n\n📐 Las medidas exactas pueden variar según el modelo y se te comparten con total detalle durante la visita, donde además podrás apreciarlo directamente.\n\n📅 Si te parece bien, puedo ayudarte a agendar una visita presencial o virtual con un asesor, para que revises este y otros atributos del apartamento 🤝✨"
+  },
+  {
     "id": "sb_resumen_general",
+    "proyecto": "PSB",
     "categoria": "proyecto",
     "tags": ["resumen", "general", "spectrum", "zona15", "boutique"],
     "pregunta": "¿Qué es Sotobosque Parque Boutique?",
@@ -8,6 +17,7 @@
   },
   {
     "id": "sb_ubicacion_direccion",
+    "proyecto": "PSB",
     "categoria": "ubicacion",
     "tags": ["direccion", "zona15", "vista hermosa", "donde esta"],
     "pregunta": "¿Cuál es la ubicación exacta de Sotobosque?",
@@ -15,6 +25,7 @@
   },
   {
     "id": "sb_desarrollador_trayectoria",
+    "proyecto": "PSB",
     "categoria": "desarrollador",
     "tags": ["spectrum", "trayectoria", "experiencia", "garantia"],
     "pregunta": "¿Quién es el desarrollador de Sotobosque?",
@@ -22,6 +33,7 @@
   },
   {
     "id": "sb_arquitectura_diseno",
+    "proyecto": "PSB",
     "categoria": "especificaciones",
     "tags": ["arquitectura", "proporcion y escala", "alfredo saravia", "diseno"],
     "pregunta": "¿Quién diseñó Sotobosque y cómo es su arquitectura?",
@@ -29,6 +41,7 @@
   },
   {
     "id": "sb_modelos_precios",
+    "proyecto": "PSB",
     "categoria": "modelos",
     "tags": ["modelos", "habitaciones", "precio", "reserva", "metraje"],
     "pregunta": "¿Qué modelos de apartamentos ofrece Sotobosque y cuáles son sus precios?",
@@ -36,6 +49,7 @@
   },
   {
     "id": "sb_amenidades_lista",
+    "proyecto": "PSB",
     "categoria": "amenidades",
     "tags": ["amenidades", "piscina", "gimnasio", "coworking", "social"],
     "pregunta": "¿Qué amenidades tiene el edificio Sotobosque?",
@@ -43,6 +57,7 @@
   },
   {
     "id": "sb_sostenibilidad_conviviendo",
+    "proyecto": "PSB",
     "categoria": "sostenibilidad",
     "tags": ["sostenibilidad", "conviviendo", "plusvalia", "comunidad"],
     "pregunta": "¿Qué programas especiales tiene el proyecto?",
@@ -50,6 +65,7 @@
   },
   {
     "id": "sb_infraestructura_servicios",
+    "proyecto": "PSB",
     "categoria": "especificaciones",
     "tags": ["agua", "pozo", "seguridad", "postventa"],
     "pregunta": "¿Qué servicios técnicos e infraestructura ofrece el edificio?",

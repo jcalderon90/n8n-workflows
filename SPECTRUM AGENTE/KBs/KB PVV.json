@@ -1,6 +1,15 @@
 [
     {
+        "id": "pvv_medidas_balcon",
+        "proyecto": "PVV",
+        "categoria": "modelos",
+        "tags": ["balcón", "balcon", "medidas", "tamaño", "dimensiones", "cuanto mide", "grande"],
+        "pregunta": "¿Qué medidas tiene el balcón?",
+        "respuesta": "🏡 Todos nuestros modelos cuentan con balcón, pensado para brindarte un espacio adicional de confort y conexión con el exterior.\n\n📐 Las medidas exactas pueden variar según el modelo y se te comparten con total detalle durante la visita, donde además podrás apreciarlo directamente.\n\n📅 Si te parece bien, puedo ayudarte a agendar una visita presencial o virtual con un asesor, para que revises este y otros atributos del apartamento 🤝✨"
+    },
+    {
         "id": "pvv_resumen_general",
+        "proyecto": "PVV",
         "categoria": "proyecto",
         "tags": ["resumen", "general", "spectrum", "zona15", "torre", "apartamentos", "parque vista verde"],
         "pregunta": "¿Qué es Parque Vista Verde?",
@@ -8,6 +17,7 @@
     },
     {
         "id": "pvv_ubicacion_direccion",
+        "proyecto": "PVV",
         "categoria": "ubicacion",
         "tags": ["ubicacion", "direccion", "zona15", "como llegar", "donde queda", "vista hermosa"],
         "pregunta": "¿Dónde está ubicado Parque Vista Verde? ¿Cuál es la dirección?",
@@ -15,6 +25,7 @@
     },
     {
         "id": "pvv_ubicacion_accesos",
+        "proyecto": "PVV",
         "categoria": "ubicacion",
         "tags": ["accesos", "rutas", "boulevard", "carretera el salvador", "zona10", "zona14", "zona15"],
         "pregunta": "¿Cómo se llega a Parque Vista Verde? ¿Qué accesos tiene?",
@@ -22,6 +33,7 @@
     },
     {
         "id": "pvv_ubicacion_puntos_interes",
+        "proyecto": "PVV",
         "categoria": "ubicacion",
         "tags": ["puntos de interes", "oakland mall", "oakland place", "zona15", "zona10", "hospitales", "colegios", "restaurantes"],
         "pregunta": "¿Qué hay cerca de Parque Vista Verde?",
@@ -29,6 +41,7 @@
     },
     {
         "id": "pvv_ubicacion_vistas",
+        "proyecto": "PVV",
         "categoria": "ubicacion",
         "tags": ["vistas", "volcanes", "zona10", "zona14", "zona15", "panoramica"],
         "pregunta": "¿Qué vistas tiene el edificio de Parque Vista Verde?",
@@ -36,6 +49,7 @@
     },
     {
         "id": "pvv_desarrollador_spectrum",
+        "proyecto": "PVV",
         "categoria": "desarrollador",
         "tags": ["spectrum", "desarrollador", "trayectoria", "proyectos", "confianza", "experiencia"],
         "pregunta": "¿Quién desarrolla Parque Vista Verde? ¿Qué experiencia tiene Spectrum?",
@@ -43,6 +57,7 @@
     },
     {
         "id": "pvv_desarrollador_avales",
+        "proyecto": "PVV",
         "categoria": "desarrollador",
         "tags": ["aval", "fha", "garantia", "bancos", "confianza", "inspeccion", "seguro"],
         "pregunta": "¿Parque Vista Verde tiene avales o garantías? ¿Es un proyecto seguro?",
@@ -50,6 +65,7 @@
     },
     {
         "id": "pvv_programa_conviviendo",
+        "proyecto": "PVV",
         "categoria": "desarrollador",
         "tags": ["conviviendo", "comunidad", "valor propiedad", "areas comunes", "gestion social"],
         "pregunta": "¿Qué es Conviviendo by Spectrum?",
@@ -57,6 +73,7 @@
     },
     {
         "id": "pvv_programa_sostenible",
+        "proyecto": "PVV",
         "categoria": "desarrollador",
         "tags": ["sostenible", "medio ambiente", "energia", "agua", "green building", "desechos"],
         "pregunta": "¿Parque Vista Verde tiene algún programa de sostenibilidad?",
@@ -64,6 +81,7 @@
     },
     {
         "id": "pvv_modelos_general",
+        "proyecto": "PVV",
         "categoria": "modelos",
         "tags": ["modelos", "tipologias", "habitaciones", "metrajes", "resumen", "cual elegir"],
         "pregunta": "¿Cuáles son los modelos disponibles en Parque Vista Verde?",
@@ -71,6 +89,7 @@
     },
     {
         "id": "pvv_modelo_1hab",
+        "proyecto": "PVV",
         "categoria": "modelos",
         "tags": ["1 habitacion", "1 dormitorio", "modelo pequeño", "profesionales", "inversion", "40m2"],
         "pregunta": "¿Tienen apartamentos de 1 habitación en Parque Vista Verde?",
@@ -78,6 +97,7 @@
     },
     {
         "id": "pvv_modelo_2hab",
+        "proyecto": "PVV",
         "categoria": "modelos",
         "tags": ["2 habitaciones", "2 dormitorios", "modelo mediano", "parejas", "familia pequeña"],
         "pregunta": "¿Tienen apartamentos de 2 habitaciones en Parque Vista Verde?",
@@ -85,6 +105,7 @@
     },
     {
         "id": "pvv_modelo_3hab",
+        "proyecto": "PVV",
         "categoria": "modelos",
         "tags": ["3 habitaciones", "3 dormitorios", "modelo grande", "familia", "91m2"],
         "pregunta": "¿Tienen apartamentos de 3 habitaciones en Parque Vista Verde?",
@@ -92,6 +113,7 @@
     },
     {
         "id": "pvv_precio_general",
+        "proyecto": "PVV",
         "categoria": "precios",
         "tags": ["precio", "costo", "cuanto cuesta", "valor", "quetzales", "rango"],
         "pregunta": "¿Cuánto cuesta un apartamento en Parque Vista Verde?",
@@ -99,6 +121,7 @@
     },
     {
         "id": "pvv_precio_reserva",
+        "proyecto": "PVV",
         "categoria": "precios",
         "tags": ["reserva", "costo reserva", "apartar", "bloquear"],
         "pregunta": "¿Cuánto cuesta reservar un apartamento en Parque Vista Verde?",
@@ -106,6 +129,7 @@
     },
     {
         "id": "pvv_financiamiento_general",
+        "proyecto": "PVV",
         "categoria": "precios",
         "tags": ["financiamiento", "credito", "banco", "hipoteca", "enganche", "mensualidad", "cuota"],
         "pregunta": "¿Con qué bancos se puede financiar un apartamento en Parque Vista Verde?",
@@ -113,6 +137,7 @@
     },
     {
         "id": "pvv_edificio_estructura",
+        "proyecto": "PVV",
         "categoria": "proyecto",
         "tags": ["torre", "niveles", "pisos", "sotanos", "estructura", "cuantos apartamentos", "altura"],
         "pregunta": "¿Cuántas torres tiene Parque Vista Verde? ¿Cuántos niveles y apartamentos?",
@@ -120,6 +145,7 @@
     },
     {
         "id": "pvv_fecha_entrega",
+        "proyecto": "PVV",
         "categoria": "proyecto",
         "tags": ["entrega", "cuando", "fecha", "listo", "mudarse", "construccion"],
         "pregunta": "¿Cuándo es la fecha de entrega de Parque Vista Verde? ¿En qué estado está la construcción?",
@@ -127,6 +153,7 @@
     },
     {
         "id": "pvv_disponibilidad",
+        "proyecto": "PVV",
         "categoria": "proyecto",
         "tags": ["disponibilidad", "unidades disponibles", "cuantos quedan", "niveles disponibles"],
         "pregunta": "¿Cuántas unidades están disponibles en Parque Vista Verde?",
@@ -134,6 +161,7 @@
     },
     {
         "id": "pvv_amenidades_lista",
+        "proyecto": "PVV",
         "categoria": "amenidades",
         "tags": ["amenidades", "que tiene", "servicios", "comodidades", "lista", "10 amenidades"],
         "pregunta": "¿Qué amenidades tiene Parque Vista Verde?",
@@ -141,6 +169,7 @@
     },
     {
         "id": "pvv_amenidades_piscina",
+        "proyecto": "PVV",
         "categoria": "amenidades",
         "tags": ["piscina", "nadar", "agua", "descanso"],
         "pregunta": "¿Parque Vista Verde tiene piscina?",
@@ -148,6 +177,7 @@
     },
     {
         "id": "pvv_amenidades_gimnasio",
+        "proyecto": "PVV",
         "categoria": "amenidades",
         "tags": ["gimnasio", "ejercicio", "fitness", "gym"],
         "pregunta": "¿Parque Vista Verde tiene gimnasio?",
@@ -155,6 +185,7 @@
     },
     {
         "id": "pvv_amenidades_skylounge",
+        "proyecto": "PVV",
         "categoria": "amenidades",
         "tags": ["sky lounge", "rooftop", "vistas", "terraza", "lounge"],
         "pregunta": "¿Parque Vista Verde tiene Sky Lounge?",
@@ -162,6 +193,7 @@
     },
     {
         "id": "pvv_amenidades_coworking",
+        "proyecto": "PVV",
         "categoria": "amenidades",
         "tags": ["coworking", "trabajo", "home office", "oficina", "escritorio"],
         "pregunta": "¿Parque Vista Verde tiene área de coworking?",
@@ -169,6 +201,7 @@
     },
     {
         "id": "pvv_amenidades_kids",
+        "proyecto": "PVV",
         "categoria": "amenidades",
         "tags": ["kids play", "niños", "juegos", "area infantil", "familia"],
         "pregunta": "¿Parque Vista Verde tiene área para niños?",
@@ -176,6 +209,7 @@
     },
     {
         "id": "pvv_amenidades_pet_friendly",
+        "proyecto": "PVV",
         "categoria": "amenidades",
         "tags": ["pet friendly", "mascotas", "perros", "gatos", "animales", "permitidos"],
         "pregunta": "¿Parque Vista Verde es pet friendly? ¿Se permiten mascotas?",
@@ -183,6 +217,7 @@
     },
     {
         "id": "pvv_seguridad",
+        "proyecto": "PVV",
         "categoria": "amenidades",
         "tags": ["seguridad", "vigilancia", "camaras", "accesos", "24/7"],
         "pregunta": "¿Qué seguridad tiene Parque Vista Verde?",
@@ -190,6 +225,7 @@
     },
     {
         "id": "pvv_infraestructura",
+        "proyecto": "PVV",
         "categoria": "amenidades",
         "tags": ["elevadores", "gradas", "planta tratamiento", "pozo", "infraestructura"],
         "pregunta": "¿Qué infraestructura tiene el edificio de Parque Vista Verde?",
@@ -197,6 +233,7 @@
     },
     {
         "id": "pvv_mantenimiento_monto",
+        "proyecto": "PVV",
         "categoria": "mantenimiento",
         "tags": ["cuota mantenimiento", "monto", "cuanto cuesta", "mensualidad", "cuanto pago"],
         "pregunta": "¿Cuánto es la cuota de mantenimiento en Parque Vista Verde?",
@@ -204,6 +241,7 @@
     },
     {
         "id": "pvv_mantenimiento_que_cubre",
+        "proyecto": "PVV",
         "categoria": "mantenimiento",
         "tags": ["cuota mantenimiento", "que incluye", "que cubre", "areas comunes", "servicios incluidos"],
         "pregunta": "¿Qué cubre la cuota de mantenimiento en Parque Vista Verde?",
@@ -211,6 +249,7 @@
     },
     {
         "id": "pvv_mantenimiento_pago",
+        "proyecto": "PVV",
         "categoria": "mantenimiento",
         "tags": ["donde pagar", "pago mantenimiento", "portal web", "servipagos"],
         "pregunta": "¿Dónde puedo pagar la cuota de mantenimiento de Parque Vista Verde?",
@@ -218,6 +257,7 @@
     },
     {
         "id": "pvv_sala_ventas_horario",
+        "proyecto": "PVV",
         "categoria": "contacto",
         "tags": ["sala de ventas", "horario", "atencion", "cuando atienden", "visitar", "showroom", "oakland place"],
         "pregunta": "¿Cuál es el horario de atención de la sala de ventas de Parque Vista Verde?",
@@ -225,9 +265,10 @@
     },
     {
         "id": "pvv_contacto",
+        "proyecto": "PVV",
         "categoria": "contacto",
         "tags": ["contacto", "telefono", "whatsapp", "web", "asesor", "comunicacion", "agendar cita"],
         "pregunta": "¿Cómo puedo contactar a Parque Vista Verde o agendar una cita?",
         "respuesta": "Puedes contactar a Parque Vista Verde por: Teléfono/WhatsApp: +502 3999-1881 con la encargada del proyecto. Showroom: Sótano 2 de Oakland Place, Zona 10 → https://share.google/2JzGPsBAtLmghi3U5. Ubicación del proyecto en Google Maps: https://maps.app.goo.gl/rymbj5wKWm65k9Uc6. ⚠️ DATO PENDIENTE: sitio web oficial — confirmar con equipo comercial."
     }
-];
+]

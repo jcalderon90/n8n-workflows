@@ -1,6 +1,15 @@
 [
     {
+        "id": "pmar_medidas_balcon",
+        "proyecto": "PMAR",
+        "categoria": "modelos",
+        "tags": ["balcón", "balcon", "medidas", "tamaño", "dimensiones", "cuanto mide", "grande"],
+        "pregunta": "¿Qué medidas tiene el balcón?",
+        "respuesta": "🏡 Todos nuestros modelos cuentan con balcón, pensado para brindarte un espacio adicional de confort y conexión con el exterior.\n\n📐 Las medidas exactas pueden variar según el modelo y se te comparten con total detalle durante la visita, donde además podrás apreciarlo directamente.\n\n📅 Si te parece bien, puedo ayudarte a agendar una visita presencial o virtual con un asesor, para que revises este y otros atributos del apartamento 🤝✨"
+    },
+    {
         "id": "pm_resumen_general",
+        "proyecto": "PMAR",
         "categoria": "proyecto",
         "tags": [
             "resumen",
@@ -16,6 +25,7 @@
     },
     {
         "id": "pm_ubicacion_direccion",
+        "proyecto": "PMAR",
         "categoria": "ubicacion",
         "tags": [
             "ubicacion",
@@ -30,6 +40,7 @@
     },
     {
         "id": "pm_ubicacion_accesos",
+        "proyecto": "PMAR",
         "categoria": "ubicacion",
         "tags": [
             "accesos",
@@ -45,6 +56,7 @@
     },
     {
         "id": "pm_ubicacion_puntos_interes",
+        "proyecto": "PMAR",
         "categoria": "ubicacion",
         "tags": [
             "puntos de interes",
@@ -61,6 +73,7 @@
     },
     {
         "id": "pm_ubicacion_vistas",
+        "proyecto": "PMAR",
         "categoria": "ubicacion",
         "tags": [
             "vistas",
@@ -75,6 +88,7 @@
     },
     {
         "id": "pm_desarrollador_spectrum",
+        "proyecto": "PMAR",
         "categoria": "desarrollador",
         "tags": [
             "spectrum",
@@ -89,6 +103,7 @@
     },
     {
         "id": "pm_desarrollador_avales",
+        "proyecto": "PMAR",
         "categoria": "desarrollador",
         "tags": [
             "aval",
@@ -104,6 +119,7 @@
     },
     {
         "id": "pm_programa_conviviendo",
+        "proyecto": "PMAR",
         "categoria": "desarrollador",
         "tags": [
             "conviviendo",
@@ -117,6 +133,7 @@
     },
     {
         "id": "pm_programa_sostenible",
+        "proyecto": "PMAR",
         "categoria": "desarrollador",
         "tags": [
             "sostenible",
@@ -131,6 +148,7 @@
     },
     {
         "id": "pm_modelo_s41",
+        "proyecto": "PMAR",
         "categoria": "modelos",
         "tags": [
             "s41",
@@ -147,6 +165,7 @@
     },
     {
         "id": "pm_modelo_s58",
+        "proyecto": "PMAR",
         "categoria": "modelos",
         "tags": [
             "s58",
@@ -161,6 +180,7 @@
     },
     {
         "id": "pm_modelo_s65",
+        "proyecto": "PMAR",
         "categoria": "modelos",
         "tags": [
             "s65",
@@ -175,6 +195,7 @@
     },
     {
         "id": "pm_modelo_s71",
+        "proyecto": "PMAR",
         "categoria": "modelos",
         "tags": [
             "s71",
@@ -190,6 +211,7 @@
     },
     {
         "id": "pm_modelo_s75",
+        "proyecto": "PMAR",
         "categoria": "modelos",
         "tags": [
             "s75",
@@ -205,6 +227,7 @@
     },
     {
         "id": "pm_modelo_s90",
+        "proyecto": "PMAR",
         "categoria": "modelos",
         "tags": [
             "s90",
@@ -221,6 +244,7 @@
     },
     {
         "id": "pm_modelos_comparacion",
+        "proyecto": "PMAR",
         "categoria": "modelos",
         "tags": [
             "comparacion",
@@ -235,6 +259,7 @@
     },
     {
         "id": "pm_precio_general",
+        "proyecto": "PMAR",
         "categoria": "precios",
         "tags": [
             "precio",
@@ -249,6 +274,7 @@
     },
     {
         "id": "pm_precio_reserva",
+        "proyecto": "PMAR",
         "categoria": "precios",
         "tags": [
             "reserva",
@@ -262,6 +288,7 @@
     },
     {
         "id": "pm_financiamiento_general",
+        "proyecto": "PMAR",
         "categoria": "precios",
         "tags": [
             "financiamiento",
@@ -277,6 +304,7 @@
     },
     {
         "id": "pm_financiamiento_fha",
+        "proyecto": "PMAR",
         "categoria": "precios",
         "tags": [
             "fha",
@@ -291,6 +319,7 @@
     },
     {
         "id": "pm_financiamiento_enganche",
+        "proyecto": "PMAR",
         "categoria": "precios",
         "tags": [
             "enganche",
@@ -304,6 +333,7 @@
     },
     {
         "id": "pm_proceso_compra_pasos",
+        "proyecto": "PMAR",
         "categoria": "proceso_compra",
         "tags": [
             "proceso compra",
@@ -318,6 +348,7 @@
     },
     {
         "id": "pm_proceso_reserva_como",
+        "proyecto": "PMAR",
         "categoria": "proceso_compra",
         "tags": [
             "como reservar",
@@ -331,6 +362,7 @@
     },
     {
         "id": "pm_proceso_legal_factura",
+        "proyecto": "PMAR",
         "categoria": "proceso_compra",
         "tags": [
             "factura",
@@ -345,6 +377,7 @@
     },
     {
         "id": "pm_proceso_legal_ceder",
+        "proyecto": "PMAR",
         "categoria": "proceso_compra",
         "tags": [
             "ceder derechos",
@@ -358,6 +391,7 @@
     },
     {
         "id": "pm_proceso_iusi",
+        "proyecto": "PMAR",
         "categoria": "proceso_compra",
         "tags": [
             "iusi",
@@ -371,6 +405,7 @@
     },
     {
         "id": "pm_proceso_escrituracion",
+        "proyecto": "PMAR",
         "categoria": "proceso_compra",
         "tags": [
             "escrituracion",
@@ -384,6 +419,7 @@
     },
     {
         "id": "pm_parqueos",
+        "proyecto": "PMAR",
         "categoria": "parqueos",
         "tags": [
             "parqueos",
@@ -398,6 +434,7 @@
     },
     {
         "id": "pm_amenidades_lista",
+        "proyecto": "PMAR",
         "categoria": "amenidades",
         "tags": [
             "amenidades",
@@ -412,6 +449,7 @@
     },
     {
         "id": "pm_amenidades_nivel01",
+        "proyecto": "PMAR",
         "categoria": "amenidades",
         "tags": [
             "nivel 1",
@@ -428,6 +466,7 @@
     },
     {
         "id": "pm_amenidades_rooftop",
+        "proyecto": "PMAR",
         "categoria": "amenidades",
         "tags": [
             "nivel 22",
@@ -444,6 +483,7 @@
     },
     {
         "id": "pm_amenidades_piscina",
+        "proyecto": "PMAR",
         "categoria": "amenidades",
         "tags": [
             "piscina",
@@ -457,6 +497,7 @@
     },
     {
         "id": "pm_amenidades_pet_friendly",
+        "proyecto": "PMAR",
         "categoria": "amenidades",
         "tags": [
             "pet friendly",
@@ -472,6 +513,7 @@
     },
     {
         "id": "pm_mantenimiento_monto",
+        "proyecto": "PMAR",
         "categoria": "mantenimiento",
         "tags": [
             "cuota mantenimiento",
@@ -485,6 +527,7 @@
     },
     {
         "id": "pm_mantenimiento_que_cubre",
+        "proyecto": "PMAR",
         "categoria": "mantenimiento",
         "tags": [
             "cuota mantenimiento",
@@ -498,6 +541,7 @@
     },
     {
         "id": "pm_mantenimiento_pago",
+        "proyecto": "PMAR",
         "categoria": "mantenimiento",
         "tags": [
             "donde pagar",
@@ -510,6 +554,7 @@
     },
     {
         "id": "pm_fecha_entrega",
+        "proyecto": "PMAR",
         "categoria": "proyecto",
         "tags": [
             "entrega",
@@ -524,6 +569,7 @@
     },
     {
         "id": "pm_torres_niveles",
+        "proyecto": "PMAR",
         "categoria": "proyecto",
         "tags": [
             "torres",
@@ -538,6 +584,7 @@
     },
     {
         "id": "pm_disponibilidad",
+        "proyecto": "PMAR",
         "categoria": "proyecto",
         "tags": [
             "disponibilidad",
@@ -551,6 +598,7 @@
     },
     {
         "id": "pm_sala_ventas_horario",
+        "proyecto": "PMAR",
         "categoria": "contacto",
         "tags": [
             "sala de ventas",
@@ -565,6 +613,7 @@
     },
     {
         "id": "pm_contacto",
+        "proyecto": "PMAR",
         "categoria": "contacto",
         "tags": [
             "contacto",
@@ -580,6 +629,7 @@
     },
     {
         "id": "pm_apartamento_modelo",
+        "proyecto": "PMAR",
         "categoria": "contacto",
         "tags": [
             "apartamento modelo",
@@ -595,4 +645,4 @@
         "pregunta": "¿Dónde puedo ver el apartamento modelo de Parque Mariscal? ¿Tienen showroom o sala de ventas?",
         "respuesta": "Contamos con un apartamento modelo en nuestro Centro de Experiencia, ubicado en C.C. Miraflores – Nivel 8, 21 Avenida 4-32, Calzada Roosevelt, Zona 11, Ciudad de Guatemala. 📍\nSerá un gusto recibirte y brindarte una asesoría personalizada para que conozcas cada detalle.\nSi necesitas apoyo, puedes comunicarte al 4769-6154 📞. ¡Estamos para servirte!\n\n¿Necesitas saber cómo llegar? Aquí te dejamos un video con las indicaciones 🎥\nhttps://www.instagram.com/reel/DWtuXmIjaTv/?igsh=enNpZDV2NW1pbnRi"
     }
-];
+]

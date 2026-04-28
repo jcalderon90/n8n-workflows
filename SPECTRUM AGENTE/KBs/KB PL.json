@@ -1,6 +1,15 @@
 [
   {
+    "id": "ppol_medidas_balcon",
+    "proyecto": "PPOL",
+    "categoria": "modelos",
+    "tags": ["balcón", "balcon", "medidas", "tamaño", "dimensiones", "cuanto mide", "grande"],
+    "pregunta": "¿Qué medidas tiene el balcón?",
+    "respuesta": "🏡 Todos nuestros modelos cuentan con balcón, pensado para brindarte un espacio adicional de confort y conexión con el exterior.\n\n📐 Las medidas exactas pueden variar según el modelo y se te comparten con total detalle durante la visita, donde además podrás apreciarlo directamente.\n\n📅 Si te parece bien, puedo ayudarte a agendar una visita presencial o virtual con un asesor, para que revises este y otros atributos del apartamento 🤝✨"
+  },
+  {
     "id": "pl_resumen_general",
+    "proyecto": "PPOL",
     "categoria": "proyecto",
     "tags": ["resumen", "polanco", "zona10", "boutique", "inversion"],
     "pregunta": "¿Qué es Polanco Parque Boutique?",
@@ -8,6 +17,7 @@
   },
   {
     "id": "pl_ubicacion_direccion",
+    "proyecto": "PPOL",
     "categoria": "ubicacion",
     "tags": ["direccion", "zona10", "oakland place", "zona viva"],
     "pregunta": "¿Dónde se ubica exactamente Polanco?",
@@ -15,6 +25,7 @@
   },
   {
     "id": "pl_especificaciones_tecnicas",
+    "proyecto": "PPOL",
     "categoria": "especificaciones",
     "tags": ["ventaneria", "low-e", "acustica", "tecnologia"],
     "pregunta": "¿Qué características técnicas especiales tiene la construcción de Polanco?",
@@ -22,6 +33,7 @@
   },
   {
     "id": "pl_sostenibilidad_recursos",
+    "proyecto": "PPOL",
     "categoria": "sostenibilidad",
     "tags": ["ahorro", "energia", "agua", "eficiencia"],
     "pregunta": "¿Cómo contribuye Polanco al medio ambiente?",
@@ -29,6 +41,7 @@
   },
   {
     "id": "pl_modelos_habitaciones",
+    "proyecto": "PPOL",
     "categoria": "modelos",
     "tags": ["s39", "s58", "s86", "s92", "metraje"],
     "pregunta": "¿Cuáles son los modelos de apartamentos en Polanco?",
@@ -36,6 +49,7 @@
   },
   {
     "id": "pl_precios_reserva",
+    "proyecto": "PPOL",
     "categoria": "precios",
     "tags": ["precio", "reserva", "cuotas", "financiamiento"],
     "pregunta": "¿Cuál es el precio y cómo se reserva en Polanco?",
@@ -43,6 +57,7 @@
   },
   {
     "id": "pl_amenidades_lista",
+    "proyecto": "PPOL",
     "categoria": "amenidades",
     "tags": ["amenidades", "social kitchen", "spa", "gimnasio", "fire pit"],
     "pregunta": "¿Qué amenidades ofrece el edificio Polanco?",
@@ -50,6 +65,7 @@
   },
   {
     "id": "pl_experiencia_blackbox",
+    "proyecto": "PPOL",
     "categoria": "comercial",
     "tags": ["black box", "showroom", "recorrido virtual", "tecnologia"],
     "pregunta": "¿Cómo puedo conocer el proyecto Polanco antes de comprar?",
@@ -57,6 +73,7 @@
   },
   {
     "id": "pl_entrega_proyecto",
+    "proyecto": "PPOL",
     "categoria": "proyecto",
     "tags": ["entrega", "fecha", "construccion"],
     "pregunta": "¿Cuándo entregan los apartamentos de Polanco?",
