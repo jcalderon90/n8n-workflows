@@ -1,74 +1,211 @@
 [
-  {
-    "id": "psb_medidas_balcon",
-    "proyecto": "PSB",
-    "categoria": "modelos",
-    "tags": ["balcón", "balcon", "medidas", "tamaño", "dimensiones", "cuanto mide", "grande"],
-    "pregunta": "¿Qué medidas tiene el balcón?",
-    "respuesta": "🏡 Todos nuestros modelos cuentan con balcón, pensado para brindarte un espacio adicional de confort y conexión con el exterior.\n\n📐 Las medidas exactas pueden variar según el modelo y se te comparten con total detalle durante la visita, donde además podrás apreciarlo directamente.\n\n📅 Si te parece bien, puedo ayudarte a agendar una visita presencial o virtual con un asesor, para que revises este y otros atributos del apartamento 🤝✨"
-  },
-  {
-    "id": "sb_resumen_general",
-    "proyecto": "PSB",
-    "categoria": "proyecto",
-    "tags": ["resumen", "general", "spectrum", "zona15", "boutique"],
-    "pregunta": "¿Qué es Sotobosque Parque Boutique?",
-    "respuesta": "Sotobosque es un proyecto residencial de la línea Parque Boutique de Spectrum, ubicado en la Zona 15. Es una torre de 22 niveles con 162 apartamentos que combina arquitectura sofisticada y un entorno natural. Está diseñado para ofrecer exclusividad y privacidad en uno de los sectores más seguros de la ciudad."
-  },
-  {
-    "id": "sb_ubicacion_direccion",
-    "proyecto": "PSB",
-    "categoria": "ubicacion",
-    "tags": ["direccion", "zona15", "vista hermosa", "donde esta"],
-    "pregunta": "¿Cuál es la ubicación exacta de Sotobosque?",
-    "respuesta": "Se encuentra en la 15 avenida 03-09, Zona 15, Vista Hermosa II, Ciudad de Guatemala. Tiene acceso inmediato al Boulevard Vista Hermosa y cercanía a centros comerciales, hospitales y universidades."
-  },
-  {
-    "id": "sb_desarrollador_trayectoria",
-    "proyecto": "PSB",
-    "categoria": "desarrollador",
-    "tags": ["spectrum", "trayectoria", "experiencia", "garantia"],
-    "pregunta": "¿Quién es el desarrollador de Sotobosque?",
-    "respuesta": "Desarrollado por Spectrum, empresa con más de 30 años de trayectoria y 30 proyectos entregados (más de 11,000 unidades). El proyecto cuenta con el aval del FHA, lo que garantiza supervisión técnica constante durante la construcción."
-  },
-  {
-    "id": "sb_arquitectura_diseno",
-    "proyecto": "PSB",
-    "categoria": "especificaciones",
-    "tags": ["arquitectura", "proporcion y escala", "alfredo saravia", "diseno"],
-    "pregunta": "¿Quién diseñó Sotobosque y cómo es su arquitectura?",
-    "respuesta": "El diseño arquitectónico fue realizado por la firma 'Proporción y Escala', liderada por el Arq. Alfredo Saravia. Su enfoque es de 'Jungla Urbana', integrando el edificio con el entorno verde de la Zona 15 mediante materiales atemporales y acabados boutique."
-  },
-  {
-    "id": "sb_modelos_precios",
-    "proyecto": "PSB",
-    "categoria": "modelos",
-    "tags": ["modelos", "habitaciones", "precio", "reserva", "metraje"],
-    "pregunta": "¿Qué modelos de apartamentos ofrece Sotobosque y cuáles son sus precios?",
-    "respuesta": "Ofrece modelos de 1, 2 y 3 habitaciones. Los metrajes van desde 39.78 m² hasta 105.91 m². Los precios inician desde Q1,117,000. La reserva es de Q15,000 y se ofrece financiamiento bancario con enganche fraccionado."
-  },
-  {
-    "id": "sb_amenidades_lista",
-    "proyecto": "PSB",
-    "categoria": "amenidades",
-    "tags": ["amenidades", "piscina", "gimnasio", "coworking", "social"],
-    "pregunta": "¿Qué amenidades tiene el edificio Sotobosque?",
-    "respuesta": "Cuenta con amenidades exclusivas: Entrance Hall de doble altura, Event Room, Gourmet Kitchen, Coworking Space, salas de reuniones privadas, Workout Area (gimnasio), Elevated Pool Deck (piscina) y Panoramic Lounge con vistas 360."
-  },
-  {
-    "id": "sb_sostenibilidad_conviviendo",
-    "proyecto": "PSB",
-    "categoria": "sostenibilidad",
-    "tags": ["sostenibilidad", "conviviendo", "plusvalia", "comunidad"],
-    "pregunta": "¿Qué programas especiales tiene el proyecto?",
-    "respuesta": "Incluye el programa 'Conviviendo' para la gestión social y armonía entre vecinos, y 'Spectrum Sostenible', que aplica medidas de eficiencia en el uso de agua, energía y gestión de residuos para reducir el impacto ambiental."
-  },
-  {
-    "id": "sb_infraestructura_servicios",
-    "proyecto": "PSB",
-    "categoria": "especificaciones",
-    "tags": ["agua", "pozo", "seguridad", "postventa"],
-    "pregunta": "¿Qué servicios técnicos e infraestructura ofrece el edificio?",
-    "respuesta": "El edificio posee pozo propio, planta de tratamiento, seguridad 24/7 con control de acceso y un sistema de servicio post-entrega certificado por Spectrum para garantizar la satisfacción del propietario tras la mudanza."
-  }
+    {
+        "id": "psb_medidas_balcon",
+        "proyecto": "PSB",
+        "categoria": "modelos",
+        "tags": [
+            "balcón",
+            "balcon",
+            "medidas",
+            "tamaño",
+            "dimensiones",
+            "cuanto mide",
+            "grande"
+        ],
+        "pregunta": "¿Qué medidas tiene el balcón?",
+        "respuesta": "🏡 Todos nuestros modelos cuentan con balcón, pensado para brindarte un espacio adicional de confort y conexión con el exterior.\n\n📐 Las medidas exactas pueden variar según el modelo y se te comparten con total detalle durante la visita, donde además podrás apreciarlo directamente.\n\n📅 Si te parece bien, puedo ayudarte a agendar una visita presencial o virtual con un asesor, para que revises este y otros atributos del apartamento 🤝✨"
+    },
+    {
+        "id": "sb_resumen_general",
+        "proyecto": "PSB",
+        "categoria": "proyecto",
+        "tags": ["resumen", "general", "spectrum", "zona15", "boutique"],
+        "pregunta": "¿Qué es Sotobosque Parque Boutique?",
+        "respuesta": "Sotobosque es un proyecto residencial de la línea Parque Boutique de Spectrum, ubicado en la Zona 15. Es una torre de 22 niveles con 162 apartamentos que combina arquitectura sofisticada y un entorno natural. Está diseñado para ofrecer exclusividad y privacidad en uno de los sectores más seguros de la ciudad."
+    },
+    {
+        "id": "sb_ubicacion_direccion",
+        "proyecto": "PSB",
+        "categoria": "ubicacion",
+        "tags": ["direccion", "zona15", "vista hermosa", "donde esta"],
+        "pregunta": "¿Cuál es la ubicación exacta de Sotobosque?",
+        "respuesta": "Se encuentra en la 15 avenida 03-09, Zona 15, Vista Hermosa II, Ciudad de Guatemala. Tiene acceso inmediato al Boulevard Vista Hermosa y cercanía a centros comerciales, hospitales y universidades."
+    },
+    {
+        "id": "sb_desarrollador_trayectoria",
+        "proyecto": "PSB",
+        "categoria": "desarrollador",
+        "tags": ["spectrum", "trayectoria", "experiencia", "garantia"],
+        "pregunta": "¿Quién es el desarrollador de Sotobosque?",
+        "respuesta": "Desarrollado por Spectrum, empresa con más de 30 años de trayectoria y 30 proyectos entregados (más de 11,000 unidades). El proyecto cuenta con el aval del FHA, lo que garantiza supervisión técnica constante durante la construcción."
+    },
+    {
+        "id": "sb_arquitectura_diseno",
+        "proyecto": "PSB",
+        "categoria": "especificaciones",
+        "tags": [
+            "arquitectura",
+            "proporcion y escala",
+            "alfredo saravia",
+            "diseno"
+        ],
+        "pregunta": "¿Quién diseñó Sotobosque y cómo es su arquitectura?",
+        "respuesta": "El diseño arquitectónico fue realizado por la firma 'Proporción y Escala', liderada por el Arq. Alfredo Saravia. Su enfoque es de 'Jungla Urbana', integrando el edificio con el entorno verde de la Zona 15 mediante materiales atemporales y acabados boutique."
+    },
+    {
+        "id": "sb_modelos_precios",
+        "proyecto": "PSB",
+        "categoria": "modelos",
+        "tags": ["modelos", "habitaciones", "precio", "reserva", "metraje"],
+        "pregunta": "¿Qué modelos de apartamentos ofrece Sotobosque y cuáles son sus precios?",
+        "respuesta": "Ofrece modelos de 1, 2 y 3 habitaciones. Los metrajes van desde 39.78 m² hasta 105.91 m². Los precios inician desde Q1,117,000. La reserva es de Q15,000 y se ofrece financiamiento bancario con enganche fraccionado."
+    },
+    {
+        "id": "sb_amenidades_lista",
+        "proyecto": "PSB",
+        "categoria": "amenidades",
+        "tags": ["amenidades", "piscina", "gimnasio", "coworking", "social"],
+        "pregunta": "¿Qué amenidades tiene el edificio Sotobosque?",
+        "respuesta": "Cuenta con amenidades exclusivas: Entrance Hall de doble altura, Event Room, Gourmet Kitchen, Coworking Space, salas de reuniones privadas, Workout Area (gimnasio), Elevated Pool Deck (piscina) y Panoramic Lounge con vistas 360."
+    },
+    {
+        "id": "sb_sostenibilidad_conviviendo",
+        "proyecto": "PSB",
+        "categoria": "sostenibilidad",
+        "tags": ["sostenibilidad", "conviviendo", "plusvalia", "comunidad"],
+        "pregunta": "¿Qué programas especiales tiene el proyecto?",
+        "respuesta": "Incluye el programa 'Conviviendo' para la gestión social y armonía entre vecinos, y 'Spectrum Sostenible', que aplica medidas de eficiencia en el uso de agua, energía y gestión de residuos para reducir el impacto ambiental."
+    },
+    {
+        "id": "sb_infraestructura_servicios",
+        "proyecto": "PSB",
+        "categoria": "especificaciones",
+        "tags": ["agua", "pozo", "seguridad", "postventa"],
+        "pregunta": "¿Qué servicios técnicos e infraestructura ofrece el edificio?",
+        "respuesta": "El edificio posee pozo propio, planta de tratamiento, seguridad 24/7 con control de acceso y un sistema de servicio post-entrega certificado por Spectrum para garantizar la satisfacción del propietario tras la mudanza."
+    },
+    {
+        "id": "sb_modelo_s40",
+        "proyecto": "PSB",
+        "categoria": "modelos",
+        "tags": ["s40", "40m2", "1 habitacion", "modelo"],
+        "pregunta": "¿Cómo es el modelo S40 en Sotobosque?",
+        "respuesta": "El modelo S40 tiene 40 m². Cuenta con 1 habitación (master con clóset), 1 baño completo, clóset para torre de lavado y área de sala/comedor/cocina integrada."
+    },
+    {
+        "id": "sb_modelo_s56",
+        "proyecto": "PSB",
+        "categoria": "modelos",
+        "tags": ["s56", "56m2", "2 habitaciones", "modelo"],
+        "pregunta": "¿Cómo es el modelo S56 en Sotobosque?",
+        "respuesta": "El modelo S56 tiene 56 m². Cuenta con 2 habitaciones (master con walk-in clóset y secundario con clóset), 2 baños completos, clóset para torre de lavado, cocina y área de sala/comedor."
+    },
+    {
+        "id": "sb_modelo_s61",
+        "proyecto": "PSB",
+        "categoria": "modelos",
+        "tags": ["s61", "61m2", "2 habitaciones", "modelo", "balcon"],
+        "pregunta": "¿Cómo es el modelo S61 en Sotobosque?",
+        "respuesta": "El modelo S61 tiene 61 m². Cuenta con 2 habitaciones (master con walk-in clóset y secundario con clóset), 2 baños completos, cocina, clóset para torre de lavado, sala/comedor y balcón."
+    },
+    {
+        "id": "sb_modelo_s64",
+        "proyecto": "PSB",
+        "categoria": "modelos",
+        "tags": ["s64", "64m2", "2 habitaciones", "modelo", "balcon"],
+        "pregunta": "¿Cómo es el modelo S64 en Sotobosque?",
+        "respuesta": "El modelo S64 tiene 64 m². Cuenta con 2 habitaciones (master con walk-in clóset y secundario con clóset), 2 baños completos, cocina, clóset para torre de lavado, sala/comedor y balcón."
+    },
+    {
+        "id": "sb_modelo_s79",
+        "proyecto": "PSB",
+        "categoria": "modelos",
+        "tags": ["s79", "79m2", "3 habitaciones", "modelo", "balcon"],
+        "pregunta": "¿Cómo es el modelo S79 en Sotobosque?",
+        "respuesta": "El modelo S79 tiene 79 m². Cuenta con 3 habitaciones (master con walk-in clóset y secundarios con clóset), 2 baños completos, cocina, clóset para torre de lavado, sala/comedor y balcón."
+    },
+    {
+        "id": "sb_modelo_s80",
+        "proyecto": "PSB",
+        "categoria": "modelos",
+        "tags": [
+            "s80",
+            "80m2",
+            "3 habitaciones",
+            "modelo",
+            "estudio",
+            "balcon"
+        ],
+        "pregunta": "¿Cómo es el modelo S80 en Sotobosque?",
+        "respuesta": "El modelo S80 tiene 80 m². Cuenta con 3 habitaciones (master con walk-in clóset y secundarios con clóset), 1 estudio, 2 baños completos, cocina/comedor, clóset para torre de lavado, sala y balcón."
+    },
+    {
+        "id": "sb_modelo_s84",
+        "proyecto": "PSB",
+        "categoria": "modelos",
+        "tags": [
+            "s84",
+            "84m2",
+            "3 habitaciones",
+            "modelo",
+            "estudio",
+            "balcon"
+        ],
+        "pregunta": "¿Cómo es el modelo S84 en Sotobosque?",
+        "respuesta": "El modelo S84 tiene 84 m². Cuenta con 3 habitaciones (master con walk-in clóset y secundarios con clóset), 1 estudio, 2 baños completos, cocina, clóset para torre de lavado, sala/comedor y balcón."
+    },
+    {
+        "id": "sb_modelo_s106",
+        "proyecto": "PSB",
+        "categoria": "modelos",
+        "tags": ["s106", "106m2", "3 habitaciones", "modelo", "premium"],
+        "pregunta": "¿Cómo es el modelo S106 en Sotobosque?",
+        "respuesta": "El modelo S106 tiene 106 m². Cuenta con 3 habitaciones (master con walk-in clóset y secundarios con clóset), 2 baños completos, sala/comedor, sala adicional, cocina, clóset para torre de lavado y balcón."
+    },
+    {
+        "id": "sb_volumen_parqueos",
+        "proyecto": "PSB",
+        "categoria": "proyecto",
+        "tags": ["volumen", "niveles", "parqueos", "sotanos", "visitas"],
+        "pregunta": "¿Cuántos niveles, apartamentos y sótanos tiene Sotobosque?",
+        "respuesta": "Sotobosque tiene 22 niveles y 162 apartamentos (8 por nivel, ubicados del nivel 4 al 20). Dispone de 8 sótanos y 15 parqueos de visita. Cuenta con 1 núcleo de gradas y 2 elevadores (1 grande y 1 pequeño)."
+    },
+    {
+        "id": "sb_amenidades_niveles",
+        "proyecto": "PSB",
+        "categoria": "amenidades",
+        "tags": [
+            "amenidades",
+            "nivel 1",
+            "nivel 2",
+            "nivel 22",
+            "zonificacion"
+        ],
+        "pregunta": "¿Dónde están ubicadas las amenidades en Sotobosque?",
+        "respuesta": "Las amenidades en Sotobosque están distribuidas en 3 niveles:\n- Nivel 01: Drop Off, Entrance Hall, Workout Area, Event Room, Gourmet Kitchen, Co-working, Pet Spa y Dog Park.\n- Nivel 02: Sports Lounge y Elevated Pool Deck.\n- Nivel 22: Panoramic Lounge."
+    },
+    {
+        "id": "sb_entorno_vistas",
+        "proyecto": "PSB",
+        "categoria": "ubicacion",
+        "tags": ["entorno", "vistas", "ecosistema", "vista hermosa"],
+        "pregunta": "¿Cuál es el entorno, accesos y vistas de Sotobosque?",
+        "respuesta": "Sotobosque se ubica con acceso inmediato al Boulevard Vista Hermosa y 23 avenida. Su ecosistema cercano cuenta con puntos de conveniencia, comercio, ejercicio y servicios. Las vistas destacan hacia el amanecer y atardecer, Boulevard Vista Hermosa y Edificio Torre Alta."
+    },
+    {
+        "id": "sb_pet_friendly_detalles",
+        "proyecto": "PSB",
+        "categoria": "amenidades",
+        "tags": ["pet friendly", "mascotas", "pet spa", "dog park"],
+        "pregunta": "¿Qué amenidades ofrece Sotobosque para las mascotas?",
+        "respuesta": "Sotobosque es un proyecto pet friendly y cuenta con amenidades exclusivas para mascotas en el Nivel 01, incluyendo un Pet Spa y un Dog Park."
+    },
+    {
+        "id": "sb_garantias_normativas",
+        "proyecto": "PSB",
+        "categoria": "desarrollador",
+        "tags": ["garantia", "normativas", "fha", "calidad"],
+        "pregunta": "¿Qué respaldo legal y técnico tiene Sotobosque?",
+        "respuesta": "Sotobosque cumple con las normativas vigentes, cuenta con aval FHA, inspecciones durante el proceso constructivo y garantía de unidades. Fue desarrollado con el respaldo de equipos técnicos especializados en estructuras, hidrosanitarios, electricidad y contenciones."
+    }
 ]
