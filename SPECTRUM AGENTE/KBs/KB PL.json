@@ -3,15 +3,7 @@
     "id": "ppol_medidas_balcon",
     "proyecto": "PPOL",
     "categoria": "modelos",
-    "tags": [
-      "balcón",
-      "balcon",
-      "medidas",
-      "tamaño",
-      "dimensiones",
-      "cuanto mide",
-      "grande"
-    ],
+    "tags": ["balcón", "balcon", "medidas", "tamaño", "dimensiones", "cuanto mide", "grande"],
     "pregunta": "¿Qué medidas tiene el balcón?",
     "respuesta": "🏡 Todos nuestros modelos cuentan con balcón, pensado para brindarte un espacio adicional de confort y conexión con el exterior.\n\n📐 Las medidas exactas pueden variar según el modelo y se te comparten con total detalle durante la visita, donde además podrás apreciarlo directamente.\n\n📅 Si te parece bien, puedo ayudarte a agendar una visita presencial o virtual con un asesor, para que revises este y otros atributos del apartamento 🤝✨"
   },
@@ -19,133 +11,95 @@
     "id": "pl_resumen_general",
     "proyecto": "PPOL",
     "categoria": "proyecto",
-    "tags": [
-      "resumen",
-      "polanco",
-      "zona10",
-      "boutique",
-      "inversion"
-    ],
+    "tags": ["resumen", "polanco", "zona10", "boutique", "inversion", "lujo"],
     "pregunta": "¿Qué es Polanco Parque Boutique?",
-    "respuesta": "Polanco es un proyecto residencial de lujo de la línea Parque Boutique de Spectrum, ubicado en la Zona 10. Consta de una torre de 22 niveles con 175 apartamentos. Es un proyecto 'Airbnb Friendly', ideal para inversionistas o profesionales que buscan vivir en el centro corporativo de la ciudad."
+    "respuesta": "Polanco es un proyecto residencial de lujo de la línea Parque Boutique de Spectrum, ubicado en la Zona 10, el corazón financiero y corporativo de Ciudad de Guatemala. Consta de una torre de 22 niveles con 175 apartamentos distribuidos en 9 modelos más Penthouse. Es el único proyecto de Spectrum que permite rentas en plataformas como Airbnb, lo que lo convierte en una excelente oportunidad de inversión. También es ideal para profesionales que desean vivir en el centro de negocios de la ciudad."
   },
   {
     "id": "pl_ubicacion_direccion",
     "proyecto": "PPOL",
     "categoria": "ubicacion",
-    "tags": [
-      "direccion",
-      "zona10",
-      "oakland place",
-      "zona viva"
-    ],
+    "tags": ["direccion", "zona10", "oakland place", "zona viva", "donde queda", "como llegar"],
     "pregunta": "¿Dónde se ubica exactamente Polanco?",
-    "respuesta": "Está ubicado en la 15 Calle A 13-28, Zona 10, Ciudad de Guatemala. Se encuentra a pocos pasos de Oakland Place, La Estación, AVIA y los principales centros de negocios y restaurantes de la zona viva."
+    "respuesta": "Polanco está ubicado en la 15 Calle A 13-28, Zona 10, Ciudad de Guatemala. Se encuentra a pocos pasos de Oakland Place, La Estación, AVIA y los principales centros de negocios y restaurantes de la Zona Viva."
   },
   {
-    "id": "pl_especificaciones_tecnicas",
+    "id": "pl_vistas_orientacion",
     "proyecto": "PPOL",
-    "categoria": "especificaciones",
-    "tags": [
-      "ventaneria",
-      "low-e",
-      "acustica",
-      "tecnologia"
-    ],
-    "pregunta": "¿Qué características técnicas especiales tiene la construcción de Polanco?",
-    "respuesta": "Destaca el uso de ventanería con tecnología 'Low-E' (baja emisividad), que aísla el calor y el ruido exterior. El edificio cuenta con pozo propio, cisterna, 2 módulos de elevadores de alta velocidad y acabados de alta gama."
+    "categoria": "ubicacion",
+    "tags": ["vistas", "orientacion", "norte", "sur", "este", "oeste", "zona viva", "vista hermosa", "zona14"],
+    "pregunta": "¿Qué vistas tienen los apartamentos en Polanco?",
+    "respuesta": "Las vistas desde Polanco se dividen por orientación:\n- Sur: vistas hacia Zona 14.\n- Este: vistas hacia Vista Hermosa.\n- Oeste: vistas hacia la Zona Viva.\n- Norte: vistas hacia Colonia Oakland."
+  },
+  {
+    "id": "pl_entorno_ecosistema",
+    "proyecto": "PPOL",
+    "categoria": "ubicacion",
+    "tags": ["entorno", "cercania", "colegios", "comercio", "mascotas", "restaurantes", "servicios"],
+    "pregunta": "¿Qué lugares de interés, colegios y comercios hay cerca de Polanco?",
+    "respuesta": "El entorno cercano de Polanco incluye:\n- Educación: Colegio Altamira, UFM.\n- Comercio y conveniencia: Oakland Place, La Estación, Fontabella, AVIA, La Torre, NOVEX, Cemaco, farmacias.\n- Servicios para mascotas: WUF Doggy Daycare, Veterinaria Petmed y Animédica Hospital Veterinario.\n- Amplia oferta de restaurantes, cafeterías y servicios de la Zona Viva."
+  },
+  {
+    "id": "pl_desarrollador_spectrum",
+    "proyecto": "PPOL",
+    "categoria": "desarrollador",
+    "tags": ["spectrum", "desarrollador", "trayectoria", "proyectos", "confianza", "experiencia", "boutique"],
+    "pregunta": "¿Quién desarrolla Polanco? ¿Qué experiencia tiene Spectrum?",
+    "respuesta": "Spectrum es el desarrollador de Polanco. Con más de 30 años de trayectoria en Guatemala y más de 30 proyectos entregados (más de 11,000 unidades habitacionales), Spectrum opera en 3 líneas de producto: Línea Parque (proyectos residenciales urbanos), Línea Reserva (proyectos premium) y Línea Parque Boutique (proyectos de lujo exclusivo, donde se ubica Polanco junto a Sotobosque)."
+  },
+  {
+    "id": "pl_garantias_normativas",
+    "proyecto": "PPOL",
+    "categoria": "desarrollador",
+    "tags": ["garantia", "normativas", "fha", "calidad", "aval", "bancos", "inspeccion"],
+    "pregunta": "¿Qué respaldo legal y técnico tiene Polanco?",
+    "respuesta": "Polanco cumple con todas las normativas vigentes y cuenta con el aval del FHA (Instituto de Fomento de Hipotecas Aseguradas), que realiza inspecciones durante el proceso constructivo para verificar obra civil, instalaciones y acabados. También cuenta con el respaldo de las principales entidades bancarias del país, certificado de garantía para las unidades y canales de atención post-venta."
+  },
+  {
+    "id": "pl_programa_conviviendo",
+    "proyecto": "PPOL",
+    "categoria": "desarrollador",
+    "tags": ["conviviendo", "comunidad", "valor propiedad", "areas comunes", "gestion social"],
+    "pregunta": "¿Qué es Conviviendo by Spectrum?",
+    "respuesta": "Conviviendo by Spectrum es un programa de gestión social que impulsa comunidades organizadas, funcionales y sostenibles. Fortalece la convivencia y el buen uso de áreas comunes, mejora la estabilidad operativa del proyecto y contribuye a que el valor de la propiedad crezca con el tiempo."
   },
   {
     "id": "pl_sostenibilidad_recursos",
     "proyecto": "PPOL",
     "categoria": "sostenibilidad",
-    "tags": [
-      "ahorro",
-      "energia",
-      "agua",
-      "eficiencia"
-    ],
+    "tags": ["sostenible", "ahorro", "energia", "agua", "eficiencia", "medio ambiente", "green building"],
     "pregunta": "¿Cómo contribuye Polanco al medio ambiente?",
-    "respuesta": "A través de 'Spectrum Sostenible', Polanco reduce en un 26% el consumo proyectado de energía y un 26% el consumo de agua. Utiliza iluminación eficiente, grifería de bajo flujo y vegetación nativa que requiere poco riego."
+    "respuesta": "A través de 'Spectrum Sostenible', Polanco reduce en un 26% el consumo proyectado de energía y un 26% el consumo de agua. Utiliza iluminación eficiente, grifería de bajo flujo y vegetación nativa que requiere poco riego, con el apoyo técnico del Guatemala Green Building Council."
+  },
+  {
+    "id": "pl_especificaciones_tecnicas",
+    "proyecto": "PPOL",
+    "categoria": "especificaciones",
+    "tags": ["ventaneria", "low-e", "acustica", "tecnologia", "acabados", "alta gama"],
+    "pregunta": "¿Qué características técnicas especiales tiene la construcción de Polanco?",
+    "respuesta": "Polanco destaca por el uso de ventanería con tecnología Low-E (baja emisividad), que aísla el calor y el ruido exterior, garantizando mayor confort térmico y acústico. El edificio cuenta con pozo propio, cisterna y 2 módulos de elevadores de alta velocidad. Los acabados son de alta gama, acordes con la línea Parque Boutique."
   },
   {
     "id": "pl_modelos_habitaciones",
     "proyecto": "PPOL",
     "categoria": "modelos",
-    "tags": [
-      "s39",
-      "s58",
-      "s86",
-      "s92",
-      "metraje"
-    ],
+    "tags": ["modelos", "cuantos modelos", "opciones", "s39", "s42", "s58", "s67", "s86", "s87", "s91", "s92", "penthouse"],
     "pregunta": "¿Cuáles son los modelos de apartamentos en Polanco?",
-    "respuesta": "Los modelos principales son: S39 (1 hab, 39m²), S58 (2 hab, 58m²), S86 (3 hab, 86m²) y S92 (3 hab, 92m²). Todos incluyen balcón y están diseñados para maximizar la entrada de luz natural."
+    "respuesta": "Polanco ofrece 9 modelos de apartamentos más Penthouse:\n- S-39 (1 hab, 39 m²)\n- S-42 (1 hab, 42 m², con balcón)\n- S-58 (2 hab, 58 m², 2 parqueos tándem)\n- S-67 (2 hab, 67 m², 2 parqueos individuales)\n- S-86 (3 hab, 86 m², 2 parqueos individuales)\n- S-87 A (3 hab, 87 m², 2 parqueos individuales)\n- S-87 B (3 hab, 87 m², 2 parqueos individuales)\n- S-91 (3 hab, 91 m², 2 parqueos individuales)\n- S-92 (3 hab + sala familiar, 92 m², 2 parqueos individuales)\n\nTodos incluyen balcón y están diseñados para maximizar la entrada de luz natural."
   },
   {
-    "id": "pl_precios_reserva",
+    "id": "pl_modelos_comparacion",
     "proyecto": "PPOL",
-    "categoria": "precios",
-    "tags": [
-      "precio",
-      "reserva",
-      "cuotas",
-      "financiamiento"
-    ],
-    "pregunta": "¿Cuál es el precio y cómo se reserva en Polanco?",
-    "respuesta": "Los precios inician desde Q1,044,000 (o aprox. US$145,000). La reserva es de US$2,000. Se ofrece financiamiento con Banco Industrial y FHA, permitiendo cuotas mensuales competitivas desde Q7,800."
-  },
-  {
-    "id": "pl_amenidades_lista",
-    "proyecto": "PPOL",
-    "categoria": "amenidades",
-    "tags": [
-      "amenidades",
-      "social kitchen",
-      "spa",
-      "gimnasio",
-      "fire pit"
-    ],
-    "pregunta": "¿Qué amenidades ofrece el edificio Polanco?",
-    "respuesta": "Ofrece 16 amenidades: Social Kitchen, Gourmet Kitchen, Private Dining, Coworking, salas de reuniones, Sports Lounge, gimnasio, piscina, área de Spa en el nivel 21, lounge con fire pit y un Panoramic Lounge con vistas a toda la ciudad."
-  },
-  {
-    "id": "pl_experiencia_blackbox",
-    "proyecto": "PPOL",
-    "categoria": "comercial",
-    "tags": [
-      "black box",
-      "showroom",
-      "recorrido virtual",
-      "tecnologia"
-    ],
-    "pregunta": "¿Cómo puedo conocer el proyecto Polanco antes de comprar?",
-    "respuesta": "Polanco ofrece la experiencia 'Black Box' en su showroom de Oakland Place (Sótano 3). Es un recorrido virtual inmersivo que permite ver los acabados y las vistas reales de los apartamentos antes de su entrega."
-  },
-  {
-    "id": "pl_entrega_proyecto",
-    "proyecto": "PPOL",
-    "categoria": "proyecto",
-    "tags": [
-      "entrega",
-      "fecha",
-      "construccion"
-    ],
-    "pregunta": "¿Cuándo entregan los apartamentos de Polanco?",
-    "respuesta": "El proyecto se encuentra en construcción y comercialización, con una fecha estimada de entrega para el año 2027/2028."
+    "categoria": "modelos",
+    "tags": ["comparacion", "modelos", "resumen", "diferencias", "cual elegir", "todos los modelos"],
+    "pregunta": "¿Cuáles son las diferencias entre los modelos de Polanco?",
+    "respuesta": "Resumen comparativo de los 9 modelos de Polanco:\n\n1 dormitorio:\n- S-39: 39 m², 1 baño, 1 parqueo individual.\n- S-42: 42 m², 1 baño, 1 parqueo individual, con balcón.\n\n2 dormitorios:\n- S-58: 58 m², 2 baños, 2 parqueos tándem.\n- S-67: 67 m², 2 baños, 2 parqueos individuales.\n\n3 dormitorios:\n- S-86: 86 m², 2 baños, 2 parqueos individuales.\n- S-87 A: 87 m², 2 baños, 2 parqueos individuales.\n- S-87 B: 87 m², 2 baños, 2 parqueos individuales.\n- S-91: 91 m², 2 baños, 2 parqueos individuales.\n- S-92: 92 m² + sala familiar, 2 baños, 2 parqueos individuales.\n\nTodos incluyen lavandería y acceso a las 16 amenidades del edificio."
   },
   {
     "id": "pl_modelo_s39",
     "proyecto": "PPOL",
     "categoria": "modelos",
-    "tags": [
-      "s39",
-      "s-39",
-      "39m2",
-      "1 habitacion",
-      "modelo",
-      "parqueo"
-    ],
+    "tags": ["s39", "s-39", "39m2", "1 habitacion", "modelo", "parqueo"],
     "pregunta": "¿Cómo es el modelo S-39 en Polanco?",
     "respuesta": "El modelo S-39 tiene 39 m². Cuenta con 1 habitación (master con clóset), 1 baño completo, sala, cocina, comedor y lavandería. Incluye 1 parqueo individual."
   },
@@ -153,14 +107,7 @@
     "id": "pl_modelo_s42",
     "proyecto": "PPOL",
     "categoria": "modelos",
-    "tags": [
-      "s42",
-      "s-42",
-      "42m2",
-      "1 habitacion",
-      "modelo",
-      "balcon"
-    ],
+    "tags": ["s42", "s-42", "42m2", "1 habitacion", "modelo", "balcon"],
     "pregunta": "¿Cómo es el modelo S-42 en Polanco?",
     "respuesta": "El modelo S-42 tiene 42 m². Cuenta con 1 habitación (master con clóset), 1 baño completo, sala, cocina, comedor, lavandería y balcón. Incluye 1 parqueo individual."
   },
@@ -168,14 +115,7 @@
     "id": "pl_modelo_s58_detalle",
     "proyecto": "PPOL",
     "categoria": "modelos",
-    "tags": [
-      "s58",
-      "s-58",
-      "58m2",
-      "2 habitaciones",
-      "modelo",
-      "tandem"
-    ],
+    "tags": ["s58", "s-58", "58m2", "2 habitaciones", "modelo", "tandem"],
     "pregunta": "¿Cómo es el modelo S-58 en Polanco?",
     "respuesta": "El modelo S-58 tiene 58 m². Cuenta con 2 habitaciones (master con clóset y secundario con clóset), 2 baños completos, sala, cocina, comedor, lavandería y balcón. Incluye 2 parqueos tipo tándem."
   },
@@ -183,155 +123,216 @@
     "id": "pl_modelo_s67",
     "proyecto": "PPOL",
     "categoria": "modelos",
-    "tags": [
-      "s67",
-      "s-67",
-      "67m2",
-      "2 habitaciones",
-      "modelo",
-      "parqueos individuales"
-    ],
+    "tags": ["s67", "s-67", "67m2", "2 habitaciones", "modelo", "parqueos individuales"],
     "pregunta": "¿Cómo es el modelo S-67 en Polanco?",
-    "respuesta": "El modelo S-67 tiene 67 m². Cuenta con 2 habitaciones (master con clóset y baño, secundario con clóset), baño completo compartido, sala-comedor, cocina, lavandería y balcón. Incluye 2 parqueos individuales."
+    "respuesta": "El modelo S-67 tiene 67 m². Cuenta con 2 habitaciones (master con clóset y baño privado, secundario con clóset), baño completo compartido, sala-comedor, cocina, lavandería y balcón. Incluye 2 parqueos individuales."
   },
   {
     "id": "pl_modelo_s86_detalle",
     "proyecto": "PPOL",
     "categoria": "modelos",
-    "tags": [
-      "s86",
-      "s-86",
-      "86m2",
-      "3 habitaciones",
-      "modelo"
-    ],
+    "tags": ["s86", "s-86", "86m2", "3 habitaciones", "modelo", "walk-in closet"],
     "pregunta": "¿Cómo es el modelo S-86 en Polanco?",
-    "respuesta": "El modelo S-86 tiene 86 m². Cuenta con 3 habitaciones (master con walk-in clóset y baño, 2 secundarios con clóset), baño compartido, comedor-sala, cocina, vestíbulo, lavandería y balcón. Incluye 2 parqueos individuales."
+    "respuesta": "El modelo S-86 tiene 86 m². Cuenta con 3 habitaciones (master con walk-in clóset y baño privado, 2 secundarios con clóset), baño compartido, sala-comedor, cocina, vestíbulo, lavandería y balcón. Incluye 2 parqueos individuales."
   },
   {
     "id": "pl_modelo_s87a",
     "proyecto": "PPOL",
     "categoria": "modelos",
-    "tags": [
-      "s87a",
-      "s-87a",
-      "87m2",
-      "3 habitaciones",
-      "modelo"
-    ],
+    "tags": ["s87a", "s-87a", "87m2", "3 habitaciones", "modelo"],
     "pregunta": "¿Cómo es el modelo S-87 A en Polanco?",
-    "respuesta": "El modelo S-87 A tiene 87 m². Cuenta con 3 habitaciones (master con walk-in clóset y baño, 2 secundarios con clóset), baño compartido, comedor-sala, cocina, vestíbulo, lavandería y balcón. Incluye 2 parqueos individuales."
+    "respuesta": "El modelo S-87 A tiene 87 m². Cuenta con 3 habitaciones (master con walk-in clóset y baño privado, 2 secundarios con clóset), baño compartido, sala-comedor, cocina, vestíbulo, lavandería y balcón. Incluye 2 parqueos individuales."
   },
   {
     "id": "pl_modelo_s87b",
     "proyecto": "PPOL",
     "categoria": "modelos",
-    "tags": [
-      "s87b",
-      "s-87b",
-      "87m2",
-      "3 habitaciones",
-      "modelo"
-    ],
+    "tags": ["s87b", "s-87b", "87m2", "3 habitaciones", "modelo"],
     "pregunta": "¿Cómo es el modelo S-87 B en Polanco?",
-    "respuesta": "El modelo S-87 B tiene 87 m². Cuenta con 3 habitaciones (master con walk-in clóset y baño, 2 secundarios con clósets), baño compartido, comedor-sala, cocina, vestíbulo, lavandería y balcón. Incluye 2 parqueos individuales."
+    "respuesta": "El modelo S-87 B tiene 87 m². Cuenta con 3 habitaciones (master con walk-in clóset y baño privado, 2 secundarios con clósets), baño compartido, sala-comedor, cocina, vestíbulo, lavandería y balcón. Incluye 2 parqueos individuales."
   },
   {
     "id": "pl_modelo_s91",
     "proyecto": "PPOL",
     "categoria": "modelos",
-    "tags": [
-      "s91",
-      "s-91",
-      "91m2",
-      "3 habitaciones",
-      "modelo"
-    ],
+    "tags": ["s91", "s-91", "91m2", "3 habitaciones", "modelo"],
     "pregunta": "¿Cómo es el modelo S-91 en Polanco?",
-    "respuesta": "El modelo S-91 tiene 91 m². Cuenta con 3 habitaciones (master con walk-in clóset y baño, 2 secundarios con clóset), baño compartido, sala-comedor, cocina, vestíbulo, lavandería y balcón. Incluye 2 parqueos individuales."
+    "respuesta": "El modelo S-91 tiene 91 m². Cuenta con 3 habitaciones (master con walk-in clóset y baño privado, 2 secundarios con clóset), baño compartido, sala-comedor, cocina, vestíbulo, lavandería y balcón. Incluye 2 parqueos individuales."
   },
   {
     "id": "pl_modelo_s92_detalle",
     "proyecto": "PPOL",
     "categoria": "modelos",
-    "tags": [
-      "s92",
-      "s-92",
-      "92m2",
-      "3 habitaciones",
-      "modelo",
-      "sala familiar"
-    ],
+    "tags": ["s92", "s-92", "92m2", "3 habitaciones", "modelo", "sala familiar", "mas grande"],
     "pregunta": "¿Cómo es el modelo S-92 en Polanco?",
-    "respuesta": "El modelo S-92 tiene 92 m². Cuenta con 3 habitaciones (master con walk-in clóset y baño, 2 secundarios con clóset), baño compartido, sala-comedor, sala familiar, cocina, lavandería y balcón. Incluye 2 parqueos individuales."
+    "respuesta": "El modelo S-92 tiene 92 m². Cuenta con 3 habitaciones (master con walk-in clóset y baño privado, 2 secundarios con clóset), baño compartido, sala-comedor, sala familiar adicional, cocina, lavandería y balcón. Incluye 2 parqueos individuales. Es el modelo más amplio de la línea estándar."
+  },
+  {
+    "id": "pl_modelo_penthouse",
+    "proyecto": "PPOL",
+    "categoria": "modelos",
+    "tags": ["penthouse", "ultimo nivel", "premium", "lujo", "exclusivo"],
+    "pregunta": "¿Polanco tiene Penthouse? ¿Cómo son?",
+    "respuesta": "Sí, Polanco cuenta con unidades Penthouse de lujo en sus niveles superiores. Para conocer los detalles específicos de metraje, distribución, precio y disponibilidad del Penthouse, te invitamos a contactar directamente con tu asesor comercial o visitar nuestro showroom Black Box en Oakland Place, Sótano 3."
+  },
+  {
+    "id": "pl_precio_general",
+    "proyecto": "PPOL",
+    "categoria": "precios",
+    "tags": ["precio", "costo", "cuanto cuesta", "valor", "desde cuanto", "rango"],
+    "pregunta": "¿Cuánto cuesta un apartamento en Polanco?",
+    "respuesta": "Los precios en Polanco inician desde Q1,044,000 (aproximadamente US$145,000), dependiendo del modelo. Para conocer el precio exacto por modelo y unidades disponibles, contacta con tu asesor comercial o visita nuestro showroom Black Box en Oakland Place, Sótano 3."
+  },
+  {
+    "id": "pl_precio_reserva",
+    "proyecto": "PPOL",
+    "categoria": "precios",
+    "tags": ["reserva", "costo reserva", "apartar", "bloquear", "2000 dolares"],
+    "pregunta": "¿Cuánto cuesta reservar un apartamento en Polanco?",
+    "respuesta": "El costo de reserva es US$2,000. Este monto bloquea la unidad elegida para que no pueda ser ofrecida a otro cliente. Para realizarla, visita nuestro showroom Black Box en Oakland Place, Sótano 3, o solicítalo directamente con tu asesor comercial. La reserva debe estar debidamente firmada para ser válida."
+  },
+  {
+    "id": "pl_financiamiento_general",
+    "proyecto": "PPOL",
+    "categoria": "precios",
+    "tags": ["financiamiento", "credito", "banco", "hipoteca", "enganche", "mensualidad", "cuota", "banco industrial", "fha"],
+    "pregunta": "¿Con qué bancos se puede financiar un apartamento en Polanco?",
+    "respuesta": "Polanco cuenta con financiamiento a través de FHA y Banco Industrial. Con financiamiento bancario, las cuotas mensuales inician desde aproximadamente Q7,800. Para conocer la tabla de financiamiento completa, el enganche requerido e ingresos mínimos según tu perfil, consulta con tu asesor comercial."
+  },
+  {
+    "id": "pl_financiamiento_fha",
+    "proyecto": "PPOL",
+    "categoria": "precios",
+    "tags": ["fha", "enganche", "hipoteca asegurada", "primera vivienda", "accesible"],
+    "pregunta": "¿Polanco tiene aval FHA? ¿Qué ventaja tiene el FHA?",
+    "respuesta": "Sí, Polanco cuenta con aval FHA (Instituto de Fomento de Hipotecas Aseguradas). El FHA permite acceder a enganches más bajos y también realiza inspecciones durante la construcción como garantía adicional de calidad para el comprador. Para conocer el porcentaje de enganche exacto con FHA, consulta con tu asesor."
+  },
+  {
+    "id": "pl_proceso_compra_pasos",
+    "proyecto": "PPOL",
+    "categoria": "proceso_compra",
+    "tags": ["proceso compra", "pasos", "como comprar", "steps", "compraventa", "como adquirir"],
+    "pregunta": "¿Cuál es el proceso para comprar un apartamento en Polanco?",
+    "respuesta": "El proceso tiene 5 pasos:\n1) Reserva (US$2,000 para bloquear la unidad elegida).\n2) Acuerdo de Compraventa (documento que establece las condiciones de venta, firmado por el comprador y el asesor).\n3) Formulario de Autorización de Referencias (investigación crediticia en InforNet, EQUIFAX, TransUnion y WORLDCHECKONE).\n4) Promesa de Compraventa (contrato legal con legalización de firmas ante notario).\n5) Escritura Pública de Compraventa (instrumento final de transferencia de propiedad)."
+  },
+  {
+    "id": "pl_proceso_reserva_como",
+    "proyecto": "PPOL",
+    "categoria": "proceso_compra",
+    "tags": ["como reservar", "reserva", "apartar unidad", "proceso reserva", "formulario"],
+    "pregunta": "¿Cómo puedo realizar una reserva en Polanco?",
+    "respuesta": "La reserva puede realizarse visitando nuestro showroom Black Box en Oakland Place, Sótano 3, o directamente con tu asesor comercial. El costo es US$2,000 y el formulario debe estar debidamente completado y firmado por el cliente para que sea válido."
+  },
+  {
+    "id": "pl_proceso_legal_factura",
+    "proyecto": "PPOL",
+    "categoria": "proceso_compra",
+    "tags": ["factura", "escritura", "nombre", "legal", "registro propiedad", "mismo nombre"],
+    "pregunta": "¿Puedo poner el apartamento a nombre de otra persona diferente a la factura?",
+    "respuesta": "No. La factura y las escrituras de compraventa deben estar a nombre de la misma persona. Es un requisito al presentar el testimonio de la escritura pública ante el Registro General de la Propiedad."
+  },
+  {
+    "id": "pl_proceso_legal_ceder",
+    "proyecto": "PPOL",
+    "categoria": "proceso_compra",
+    "tags": ["ceder derechos", "vender antes", "transferir", "terceros", "antes de escriturar"],
+    "pregunta": "¿Puedo vender o ceder los derechos de mi apartamento antes de escriturar?",
+    "respuesta": "No. La promesa de compraventa establece claramente que el comprador no puede ceder los derechos a terceras personas antes de escriturar. La misma parte compradora debe formalizar la escritura pública."
+  },
+  {
+    "id": "pl_proceso_iusi",
+    "proyecto": "PPOL",
+    "categoria": "proceso_compra",
+    "tags": ["iusi", "impuesto", "inmueble", "municipalidad", "obligatorio"],
+    "pregunta": "¿Qué es el IUSI?",
+    "respuesta": "El IUSI (Impuesto Único Sobre Inmuebles) es un pago obligatorio en Guatemala por la tenencia de bienes inmuebles. Se destina a las municipalidades y a la administración pública para financiar servicios públicos e infraestructura."
   },
   {
     "id": "pl_volumen_parqueos",
     "proyecto": "PPOL",
     "categoria": "proyecto",
-    "tags": [
-      "volumen",
-      "niveles",
-      "parqueos",
-      "sotanos",
-      "visitas"
-    ],
+    "tags": ["volumen", "niveles", "parqueos", "sotanos", "visitas", "bicicleta", "apartamentos"],
     "pregunta": "¿Cuántos niveles, apartamentos y sótanos tiene Polanco?",
-    "respuesta": "El proyecto Polanco cuenta con 22 niveles, 175 apartamentos (9 modelos + Penthouse), 2 módulos de elevadores y 1 módulo de gradas. Dispone de 8 sótanos, racks de bicicletas y 17 parqueos de visitas. Las unidades habitacionales están ubicadas de los niveles 2 al 19."
+    "respuesta": "Polanco cuenta con 22 niveles, 175 apartamentos (9 modelos + Penthouse), 2 módulos de elevadores de alta velocidad y 1 módulo de gradas. Las unidades habitacionales están en los niveles 2 al 19. Dispone de 8 sótanos de estacionamiento, racks de bicicletas y 17 parqueos de visita."
+  },
+  {
+    "id": "pl_amenidades_lista",
+    "proyecto": "PPOL",
+    "categoria": "amenidades",
+    "tags": ["amenidades", "que tiene", "servicios", "comodidades", "lista", "16 amenidades"],
+    "pregunta": "¿Qué amenidades ofrece Polanco?",
+    "respuesta": "Polanco ofrece 16 amenidades premium distribuidas en dos niveles:\n- Social Kitchen, Gourmet Kitchen, Private Dining.\n- Coworking y salas de reuniones privadas.\n- Sports Lounge, gimnasio y área de Spa.\n- Piscina.\n- Grill Cabanas y Children's Playground.\n- Lounge con Fire Pit.\n- Panoramic Lounge con vistas panorámicas a toda la ciudad (Nivel 21)."
   },
   {
     "id": "pl_amenidades_niveles",
     "proyecto": "PPOL",
     "categoria": "amenidades",
-    "tags": [
-      "amenidades",
-      "nivel 1",
-      "nivel 21",
-      "zonificacion"
-    ],
+    "tags": ["amenidades", "nivel 1", "nivel 21", "zonificacion", "donde estan"],
     "pregunta": "¿Dónde están ubicadas las amenidades en Polanco?",
-    "respuesta": "Las amenidades de Polanco están zonificadas en dos niveles:\n- Nivel 01: Lobby, Drop off, Private Dining, Coworking, Grill Cabanas, Children's Playground, Lounge, Pool, Spa, Meeting Rooms, Gourmet Kitchen, Sports Lounge y Workout Area.\n- Nivel 21: Panoramic Lounge y Fire Pit."
+    "respuesta": "Las amenidades de Polanco están distribuidas en dos niveles:\n- Nivel 01: Lobby, Drop Off, Private Dining, Coworking, Grill Cabanas, Children's Playground, Lounge, Pool, Spa, Meeting Rooms, Gourmet Kitchen, Sports Lounge y Workout Area.\n- Nivel 21: Panoramic Lounge y Fire Pit."
   },
   {
-    "id": "pl_vistas_orientacion",
+    "id": "pl_experiencia_blackbox",
     "proyecto": "PPOL",
-    "categoria": "ubicacion",
-    "tags": [
-      "vistas",
-      "orientacion",
-      "norte",
-      "sur",
-      "este",
-      "oeste"
-    ],
-    "pregunta": "¿Qué vistas tienen los apartamentos en Polanco?",
-    "respuesta": "Las vistas desde Polanco se dividen por orientación:\n- Sur: Vistas hacia Zona 14.\n- Este: Vistas hacia Vista Hermosa.\n- Oeste: Vistas hacia la Zona Viva.\n- Norte: Vistas hacia Colonia Oakland."
+    "categoria": "contacto",
+    "tags": ["black box", "showroom", "recorrido virtual", "tecnologia", "conocer proyecto", "visitar"],
+    "pregunta": "¿Cómo puedo conocer el proyecto Polanco antes de comprar?",
+    "respuesta": "Polanco ofrece la experiencia 'Black Box' en su showroom de Oakland Place (Sótano 3). Es un recorrido virtual inmersivo que permite apreciar los acabados y las vistas reales de los apartamentos antes de su entrega. Te invitamos a visitarnos para vivirla en persona."
   },
   {
-    "id": "pl_entorno_ecosistema",
+    "id": "pl_infraestructura",
     "proyecto": "PPOL",
-    "categoria": "ubicacion",
-    "tags": [
-      "entorno",
-      "cercania",
-      "colegios",
-      "comercio",
-      "mascotas"
-    ],
-    "pregunta": "¿Qué lugares de interés, colegios y comercios hay cerca de Polanco?",
-    "respuesta": "En su entorno cercano Polanco cuenta con:\n- Educación: Colegio Altamira, UFM.\n- Comercio/Conveniencia: Oakland Place, La Estación, Fontabella, AVIA, La Torre, NOVEX, Cemaco, farmacias.\n- Servicios para mascotas: WUF Doggy Daycare, Veterinaria Petmed y Animédica Hospital Veterinario."
+    "categoria": "amenidades",
+    "tags": ["elevadores", "gradas", "pozo", "cisterna", "infraestructura", "servicios basicos"],
+    "pregunta": "¿Qué infraestructura tiene el edificio de Polanco?",
+    "respuesta": "Polanco cuenta con: 2 módulos de elevadores de alta velocidad, 1 módulo de gradas de emergencia, 8 sótanos de estacionamiento, pozo propio y cisterna para garantizar la continuidad del agua, y ventanería Low-E en toda la torre para confort térmico y acústico."
   },
   {
-    "id": "pl_garantias_normativas",
+    "id": "pl_seguridad",
     "proyecto": "PPOL",
-    "categoria": "desarrollador",
-    "tags": [
-      "garantia",
-      "normativas",
-      "fha",
-      "calidad"
-    ],
-    "pregunta": "¿Qué respaldo legal o normativo tiene Polanco?",
-    "respuesta": "Polanco cumple con todas las normativas vigentes, cuenta con el aval del FHA e importantes entidades bancarias. Incluye inspecciones de obra civil, instalaciones y acabados durante su construcción, además de una garantía de vivienda y canales de atención post-venta."
+    "categoria": "amenidades",
+    "tags": ["seguridad", "vigilancia", "camaras", "accesos", "24/7", "control acceso"],
+    "pregunta": "¿Qué seguridad tiene Polanco?",
+    "respuesta": "Polanco cuenta con acceso controlado de entrada y salida para residentes y visitas. Para conocer el detalle completo del sistema de seguridad del edificio, te invitamos a consultarlo con tu asesor comercial o visitando nuestro showroom en Oakland Place, Sótano 3."
+  },
+  {
+    "id": "pl_mantenimiento",
+    "proyecto": "PPOL",
+    "categoria": "mantenimiento",
+    "tags": ["cuota mantenimiento", "mensualidad", "areas comunes", "cuanto pago", "que incluye"],
+    "pregunta": "¿Cuánto es la cuota de mantenimiento en Polanco y qué cubre?",
+    "respuesta": "Polanco cuenta con cuota de mantenimiento mensual para preservar las áreas comunes y amenidades del edificio. El monto varía según el modelo. Para conocer la cuota exacta correspondiente a tu unidad y lo que incluye, consulta con tu asesor comercial."
+  },
+  {
+    "id": "pl_perfil_cliente",
+    "proyecto": "PPOL",
+    "categoria": "perfil_cliente",
+    "tags": ["inversion", "vivienda", "airbnb", "para vivir", "para rentar", "primera vivienda", "profesionales", "inversionistas"],
+    "pregunta": "¿Polanco es para vivir o para inversión? ¿Se permite Airbnb?",
+    "respuesta": "Polanco es ideal tanto para vivir como para invertir. Es el único proyecto de Spectrum con política Airbnb Friendly, lo que permite a los propietarios rentar su apartamento en plataformas como Airbnb y generar ingresos. También es perfecto para jóvenes profesionales que desean vivir en el corazón corporativo de Zona 10. Para información sobre si aplica para Primera Vivienda, consulta con tu asesor comercial."
+  },
+  {
+    "id": "pl_entrega_proyecto",
+    "proyecto": "PPOL",
+    "categoria": "proyecto",
+    "tags": ["entrega", "fecha", "construccion", "cuando", "mudarse", "2027", "2028"],
+    "pregunta": "¿Cuándo entregan los apartamentos de Polanco?",
+    "respuesta": "Polanco se encuentra en construcción y comercialización. La fecha estimada de entrega es 2027/2028. Para la fecha más actualizada y el avance actual de obra, consulta directamente con tu asesor comercial."
+  },
+  {
+    "id": "pl_contacto",
+    "proyecto": "PPOL",
+    "categoria": "contacto",
+    "tags": ["contacto", "telefono", "whatsapp", "web", "asesor", "agendar cita", "comunicacion"],
+    "pregunta": "¿Cómo puedo contactar a Polanco o agendar una visita?",
+    "respuesta": "Puedes conocer Polanco visitando nuestro showroom Black Box en Oakland Place, Sótano 3, Ciudad de Guatemala. También puedes solicitarlo a través de este chat y un asesor se comunicará contigo a la brevedad para brindarte atención personalizada."
+  },
+  {
+    "id": "pl_diferenciadores",
+    "proyecto": "PPOL",
+    "categoria": "proyecto",
+    "tags": ["diferenciadores", "ventajas", "por que elegir", "competencia", "valor agregado", "airbnb", "zona10"],
+    "pregunta": "¿Por qué elegir Polanco sobre otros proyectos de la zona?",
+    "respuesta": "Polanco destaca por:\n- Airbnb Friendly: el único proyecto de Spectrum que permite rentas en plataformas como Airbnb, ideal para inversionistas.\n- Ubicación privilegiada en Zona 10, el corazón financiero y corporativo de Guatemala.\n- 16 amenidades premium de clase internacional (Spa, Private Dining, Panoramic Lounge, Fire Pit).\n- Tecnología constructiva Low-E para mayor confort térmico y acústico.\n- 9 modelos disponibles, con opciones desde 1 hasta 3 dormitorios + Penthouse.\n- Experiencia Black Box: showroom inmersivo en Oakland Place para conocer el proyecto antes de comprar.\n- Respaldo del FHA y amplia trayectoria de Spectrum."
   }
 ]

@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "n8n-mcp": {
+      "type": "http",
+      "url": "https://agentsprod.redtec.ai/mcp-server/http",
+      "headers": {
+        "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJlMWU4MjYyMy04NTg5LTRmMzUtYTg0My1kZDNiYTAxOWY4N2YiLCJpc3MiOiJuOG4iLCJhdWQiOiJtY3Atc2VydmVyLWFwaSIsImp0aSI6IjAzNzZjN2Y5LWI1MjYtNGRiYi1iYzQxLTFiNTRiNDQ4MTllZCIsImlhdCI6MTc3NzU4Mjc4N30.rVHameshED0H1YwlikIF0X3nvkt2gEp0Z5qh_LWx6To"
+      }
+    }
+  }
+}

@@ -1,0 +1,163 @@
+{
+  "id": "r1Jf5vwrkBrT4dEu",
+  "name": "Notifications Master",
+  "active": true,
+  "isArchived": false,
+  "versionId": "f3dd2547-8585-4d7c-82ff-5ac9caae32d2",
+  "createdAt": "2026-04-21T03:53:06.467Z",
+  "updatedAt": "2026-04-30T21:21:58.229Z",
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "timeSavedMode": "fixed",
+    "callerPolicy": "workflowsFromSameOwner",
+    "availableInMCP": true
+  },
+  "connections": {
+    "Switch Alerta": {
+      "main": [
+        [{"node": "Payload Nuevo Lead", "type": "main", "index": 0}],
+        [{"node": "Payload Precios", "type": "main", "index": 0}],
+        [{"node": "Payload Cita", "type": "main", "index": 0}],
+        [{"node": "Payload Escalación", "type": "main", "index": 0}]
+      ]
+    },
+    "Payload Nuevo Lead": {"main": [[{"node": "Merge Payload", "type": "main", "index": 0}]]},
+    "Payload Precios":    {"main": [[{"node": "Merge Payload", "type": "main", "index": 1}]]},
+    "Payload Cita":       {"main": [[{"node": "Merge Payload", "type": "main", "index": 2}]]},
+    "Payload Escalación": {"main": [[{"node": "Merge Payload", "type": "main", "index": 3}]]},
+    "Merge Payload": {"main": [[{"node": "Send Gmail Notification", "type": "main", "index": 0}]]},
+    "START": {"main": [[{"node": "Switch Alerta", "type": "main", "index": 0}]]}
+  },
+  "nodes": [
+    {
+      "parameters": {
+        "workflowInputs": {
+          "values": [
+            {"name": "tipo_alerta"},
+            {"name": "datos", "type": "object"}
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [32, 80],
+      "id": "da2c6136-c64f-439a-bb9a-c5cc07fbd74d",
+      "name": "START"
+    },
+    {
+      "parameters": {
+        "dataType": "string",
+        "value1": "={{ $json.tipo_alerta }}",
+        "rules": {
+          "rules": [
+            {"value2": "nuevo_lead"},
+            {"value2": "interes_precios", "output": 1},
+            {"value2": "cita", "output": 2},
+            {"value2": "escalacion", "output": 3}
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 1,
+      "position": [256, 48],
+      "id": "e425cfc6-1a6e-4e5e-9be4-fe5739dea5b7",
+      "name": "Switch Alerta"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {"id": "1", "name": "subject", "value": "=NUEVO LEAD REGISTRADO - {{ $json.datos.proyecto }}", "type": "string"},
+            {"id": "2", "name": "sendTo", "value": "jorge.menzel@garooinc.com,hpalma@spectrum.com.gt,vramirez@spectrum.com.gt,lrivas@spectrum.com.gt", "type": "string"},
+            {"id": "3", "name": "html_body", "value": "=<div style=\"font-family: Arial; padding: 20px; background-color: #f4f6f9; border-radius: 8px;\"><h2 style=\"color: #2c3e50;\">🔥 Nuevo Lead Captado</h2><hr><p><strong>Proyecto:</strong> {{ $json.datos.proyecto }}</p><p><strong>Nombre:</strong> {{ $json.datos.nombre_lead }}</p><p><strong>Teléfono:</strong> {{ $json.datos.telefono_lead }}</p><p><strong>Correo:</strong> {{ $json.datos.correo_lead }}</p><p><strong>Canal:</strong> {{ $json.datos.canal }}</p></div>", "type": "string"}
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [480, -208],
+      "id": "5650fd04-1c84-4b52-a6c9-92cd576ae68a",
+      "name": "Payload Nuevo Lead"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {"id": "1", "name": "subject", "value": "=Lead interesado en precios - {{ $json.datos.proyecto }}", "type": "string"},
+            {"id": "2", "name": "sendTo", "value": "hpalma@spectrum.com.gt,jorge.menzel@garooinc.com,vramirez@spectrum.com.gt,lrivas@spectrum.com.gt", "type": "string"},
+            {"id": "3", "name": "html_body", "value": "=<div style=\"font-family: Arial; padding: 20px;\"><h2 style=\"color: #8e44ad;\">💰 Interés Comercial / Precios</h2><hr><p><strong>Proyecto:</strong> {{ $json.datos.proyecto }}</p><p><strong>Nombre:</strong> {{ $json.datos.nombre_lead }}</p><p><strong>Teléfono:</strong> {{ $json.datos.telefono_lead }}</p><p><strong>Pregunta exacta del cliente:</strong><br><br><i>\"{{ $json.datos.ultima_consulta }}\"</i></p></div>", "type": "string"}
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [480, -16],
+      "id": "79f39209-cde0-41b9-8954-19e36ee18025",
+      "name": "Payload Precios"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {"id": "1", "name": "subject", "value": "=🗓️ NUEVA CITA REGISTRADA - {{ $json.datos.proyecto }}", "type": "string"},
+            {"id": "2", "name": "sendTo", "value": "jorge.menzel@garooinc.com,hpalma@spectrum.com.gt,vramirez@spectrum.com.gt,lrivas@spectrum.com.gt", "type": "string"},
+            {"id": "3", "name": "html_body", "value": "=<div style=\"font-family: Arial; padding: 20px; background-color: #e8f8f5;\"><h2 style=\"color: #16a085;\">📅 Gran Cierre: Nueva Cita</h2><p>El bot ha logrado consolidar una reunión.</p><hr><p><strong>Proyecto:</strong> {{ $json.datos.proyecto }}</p><p><strong>Lead:</strong> {{ $json.datos.nombre_lead }}</p><p><strong>Teléfono:</strong> {{ $json.datos.telefono_lead }}</p><p><strong>Fecha acordada:</strong> {{ $json.datos.fecha_cita }}</p><p><strong>Modalidad:</strong> {{ $json.datos.modalidad }}</p></div>", "type": "string"}
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [480, 176],
+      "id": "d3b3c7de-7201-4ab8-a27c-4d41e3ce73bf",
+      "name": "Payload Cita"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {"id": "1", "name": "subject", "value": "=🚨 Solicitud de escalación / Contacto Humano - {{ $json.datos.proyecto }}", "type": "string"},
+            {"id": "2", "name": "sendTo", "value": "hpalma@spectrum.com.gt,jorge.menzel@garooinc.com,vramirez@spectrum.com.gt,lrivas@spectrum.com.gt", "type": "string"},
+            {"id": "3", "name": "html_body", "value": "=<div style=\"font-family: Arial; padding: 20px; background-color: #fdedec;\"><h2 style=\"color: #c0392b;\">🚨 Escalación Requerida</h2><p>El Lead ha solicitado atención humana o la IA ha determinado que no puede ayudar y necesita soporte vivo de ventas.</p><hr><p><strong>Mochila de Contexto:</strong></p><ul><li><strong>Proyecto:</strong> {{ $json.datos.proyecto }}</li><li><strong>Lead:</strong> {{ $json.datos.nombre_lead }}</li><li><strong>Teléfono:</strong> {{ $json.datos.telefono_lead }}</li><li><strong>Último mensaje recibido:</strong> <i>\"{{ $json.datos.ultima_consulta }}\"</i></li></ul></div>", "type": "string"}
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [480, 368],
+      "id": "c8c995ca-06ad-421e-a2a7-fb3ad05de124",
+      "name": "Payload Escalación"
+    },
+    {
+      "parameters": {"numberInputs": 4},
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [704, 48],
+      "id": "e2207986-58b6-4aee-9b42-5884fecb29af",
+      "name": "Merge Payload"
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ true ? \"jorge.calderon@garooinc.com\" : $json.sendTo }}",
+        "subject": "={{ $json.subject }}",
+        "message": "={{ $json.html_body }}",
+        "options": {
+          "appendAttribution": false,
+          "senderName": "Soporte Redtec"
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [928, 80],
+      "id": "19bb35a2-2dc0-4f19-9bbf-9fade3e52f06",
+      "name": "Send Gmail Notification",
+      "webhookId": "bea4c899-a024-4a95-b8cf-4d862abd51f2"
+    }
+  ],
+  "tags": [],
+  "description": "Flujo para enviar notificaciones"
+}

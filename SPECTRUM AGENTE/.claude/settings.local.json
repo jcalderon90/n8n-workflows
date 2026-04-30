@@ -2,7 +2,20 @@
   "permissions": {
     "allow": [
       "Read(//Users/jorgecalderon/Desktop/PROYECTOS/**)",
-      "Read(//Users/jorgecalderon/**)"
+      "Read(//Users/jorgecalderon/**)",
+      "mcp__n8n-mcp__search_projects",
+      "mcp__n8n-mcp__search_workflows",
+      "mcp__n8n-mcp__search_folders",
+      "mcp__n8n-mcp__get_workflow_details",
+      "Bash(python3 *)",
+      "Bash(curl *)",
+      "Bash(awk '{print $5, $9}')",
+      "Bash(awk '{printf \"%-40s %s\\\\n\", $9, $5}')",
+      "Bash(grep \"\\\\.json$\")"
     ]
-  }
+  },
+  "enabledMcpjsonServers": [
+    "n8n-mcp"
+  ],
+  "prefersReducedMotion": true
 }
