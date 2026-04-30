@@ -160,13 +160,13 @@ Los 7 workflows están activos en n8n y sincronizados localmente. El proyecto es
 
 ### 🔜 Pendiente antes de producción
 
-| # | Tarea | Bloqueante |
-|---|---|---|
-| 1 | **Vectorizar KBs** — cargar los 5 JSONs en MongoDB `documents` | Sí — sin esto KB SEARCH no funciona |
-| 2 | **Fix Gmail Notifications Master** — quitar override hardcodeado | Sí — notificaciones van al destino equivocado |
-| 3 | **URLs reales SEND MEDIA** — reemplazar placeholders de PMAR y PPO | Sí — envío de media falla para esos proyectos |
-| 4 | **Activar Sync_CRM** — encender el workflow en n8n | Sí — sin esto no hay sincronización al CRM |
-| 5 | **Pruebas E2E** — flujo completo: mensaje → lead → KB → cita → CRM | Sí — validación final antes de go-live |
+| # | Tarea | Bloqueante | Estado |
+|---|---|---|---|
+| 1 | **Vectorizar KBs** — cargar los 5 JSONs en MongoDB `documents` | Sí — sin esto KB SEARCH no funciona | ✋ Manual en n8n |
+| 2 | **Fix Gmail Notifications Master** — quitar override hardcodeado | Sí — notificaciones van al destino equivocado | ⏸️ Pausado (en pruebas) |
+| 3 | **URLs reales SEND MEDIA** — reemplazar placeholders de PMAR y PPO | Sí — envío de media falla para esos proyectos | ⏸️ Pausado (esperando URLs) |
+| 4 | **Activar Sync_CRM** — encender el workflow en n8n | Sí — sin esto no hay sincronización al CRM | ⏸️ Pausado |
+| 5 | **Pruebas E2E** — flujo completo: mensaje → lead → KB → cita → CRM | Sí — validación final antes de go-live | ⏳ Pendiente |
 
 ---
 > **Nota de Seguridad:** Se respeta la prohibición de modificar la configuración del nodo SOAP API fuera de la interfaz de n8n por parte del usuario.

@@ -6,6 +6,17 @@
       "headers": {
         "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJlMWU4MjYyMy04NTg5LTRmMzUtYTg0My1kZDNiYTAxOWY4N2YiLCJpc3MiOiJuOG4iLCJhdWQiOiJtY3Atc2VydmVyLWFwaSIsImp0aSI6IjAzNzZjN2Y5LWI1MjYtNGRiYi1iYzQxLTFiNTRiNDQ4MTllZCIsImlhdCI6MTc3NzU4Mjc4N30.rVHameshED0H1YwlikIF0X3nvkt2gEp0Z5qh_LWx6To"
       }
+    },
+    "mongodb": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "mongodb-mcp-server@latest"
+      ],
+      "env": {
+        "MDB_MCP_CONNECTION_STRING": "mongodb+srv://jorgecalderon_db_user:hvV2fwG1dGcWVuAT@cluster0.es7z0bi.mongodb.net/Centralizado",
+        "MDB_MCP_READONLY": "true"
+      }
     }
   }
 }
