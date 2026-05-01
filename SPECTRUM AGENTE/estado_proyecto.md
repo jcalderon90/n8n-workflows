@@ -1,5 +1,5 @@
 # 🏢 SPECTRUM VIVIENDA: Agente Unificado — Estado del Proyecto
-> Última actualización: 2026-04-30 (Sincronización con n8n, limpieza de archivos, vectorización documentada)
+> Última actualización: 2026-05-01 (Sincronización MCP con n8n en vivo — todos los archivos descargados del servidor)
 
 ## 🎯 Objetivo General
 Arquitectura de agente conversacional modular para SPECTRUM VIVIENDA. Un orquestador central (*Sof-IA*) delega tareas a sub-workflows especializados (Tools), con persistencia centralizada en MongoDB y sincronización diferida al CRM Dynamics 365 vía SOAP.
@@ -22,50 +22,58 @@ Arquitectura de agente conversacional modular para SPECTRUM VIVIENDA. Un orquest
 
 ## 📦 Módulos (Workflows)
 
-> Los archivos locales están sincronizados con n8n. El nombre de cada archivo coincide exactamente con el nombre del workflow en el servidor.
+> Los archivos locales fueron sincronizados vía MCP desde n8n el 2026-05-01. Cada archivo contiene el JSON idéntico al servidor.
 
 ### 1. 🧠 Orquestador Central — `AGENT PRINCIPAL.json`
-**Estado: ✅ Activo en n8n**
+**Estado: ✅ Activo en n8n** | ID: `iXaptKTUXaXrP7aF` | 59 nodos | Última mod: 2026-05-01
 
 - Clasifica intenciones y delega a sub-workflows (tools).
 - Mapea nombres de proyectos a códigos oficiales en mayúsculas (`PVV`, `PPOL`, etc.).
-- Modelo: `gpt-4.1-mini`.
 
-### 2. 👤 Captador de Leads — `LEAD COLLECTOR.json`
-**Estado: ✅ Activo en n8n**
+### 2. 👤 Captador de Leads — `Lead Collector.json`
+**Estado: ✅ Activo en n8n** | ID: `SHPFhvoal7k1Rqf9` | 15 nodos | Última mod: 2026-05-01
 
 - Captura nombre, correo y teléfono del lead.
 - Escribe en MongoDB (`users`) y sincroniza al CRM vía SOAP.
 
 ### 3. 📚 Experto en Proyectos — `KB SEARCH.json`
-**Estado: ✅ Activo en n8n** ⚠️ Pendiente vectorización
+**Estado: ✅ Activo en n8n** | ID: `D3LKuNi6CmMIdvzg` | 8 nodos | Última mod: 2026-04-30 | ⚠️ Pendiente vectorización
 
 - Búsqueda vectorial en MongoDB Atlas con filtro por `proyecto`.
 - Requiere que los KBs estén cargados en la colección `documents`.
 
 ### 4. 🗓️ Motor de Citas — `RSVP.json`
-**Estado: ✅ Activo en n8n**
+**Estado: ✅ Activo en n8n** | ID: `TjFPzHs5aimxILH7` | 22 nodos | Última mod: 2026-04-30
 
 - Gestiona citas presenciales, virtuales y llamadas.
 - Escribe en colección `appointments` y enriquece datos del lead.
 
-### 5. 📤 Envío de Media — `SEND MEDIA.json`
-**Estado: ✅ Activo en n8n** ⚠️ URLs placeholder en PMAR y PPO
+### 5. 📤 Envío de Media — `Send Media.json`
+**Estado: ✅ Activo en n8n** | ID: `NtTiyrNy2LHimE7u` | 4 nodos | Última mod: 2026-04-30 | ⚠️ URLs placeholder en PMAR y PPO
 
 - Envía brochures, renders y planos vía ManyChat API.
 - PVV tiene URLs reales; PMAR y PPO usan URLs de prueba.
 
 ### 6. 🔔 Notificaciones — `Notifications Master.json`
-**Estado: ✅ Activo en n8n** ⚠️ Gmail hardcodeado a jorge.calderon@garooinc.com
+**Estado: ✅ Activo en n8n** | ID: `r1Jf5vwrkBrT4dEu` | 8 nodos | Última mod: 2026-04-30 | ⚠️ Gmail hardcodeado a jorge.calderon@garooinc.com
 
 - Maneja 4 tipos de alerta: `nuevo_lead`, `interes_precios`, `cita`, `escalacion`.
 - En producción debe enviar al destinatario correcto de Spectrum, no a Jorge.
 
 ### 7. 🔄 Sincronización CRM — `Sync_CRM.json`
-**Estado: ⛔ INACTIVO en n8n**
+**Estado: ⛔ INACTIVO en n8n** | ID: `TTVNRX38pPoPmK2X` | 29 nodos | Última mod: 2026-04-30
 
 - Schedule cada 10 min. Sincroniza leads maduros al CRM SOAP.
 - Desactivado intencionalmente — activar solo cuando el sistema esté en producción.
+
+### Workflows de soporte (en n8n, fuera de esta carpeta)
+
+| Workflow | ID | Estado | Función |
+|---|---|---|---|
+| `SPECTRUM - VIVIENDA - ORQUESTADOR` | `Rubf8G68RUyrUlkP` | ✅ Activo | Orquestador principal (ManyChat → Agent) |
+| `SPECTRUM - Error Handler` | `1vyPDStd2kybsWQD` | ✅ Activo | Manejo global de errores |
+| `Company-Knowledge MongoDB - CHUNKS - FILTER` | `LLiVnT0M6xvDKive` | ⛔ Inactivo | Vectorización de KBs (uso manual) |
+| `LEAD CONVERSATIONS REPORT` | `QFTI5yoJLhCuGHFb` | ⛔ Inactivo | Reporte de conversaciones |
 
 ---
 
@@ -86,7 +94,7 @@ Se han estandarizado los 5 archivos JSON de la carpeta `/KBs`:
 
 ## 🔢 Proceso de Vectorización de KBs
 
-**Workflow en n8n:** `Company-Knowledge MongoDB - CHUNKS - FILTER`
+**Workflow en n8n:** `Company-Knowledge MongoDB - CHUNKS - FILTER` (ID: `LLiVnT0M6xvDKive`)
 **Carpeta:** Knowledge Bases
 **Trigger:** Manual (ejecutar a mano por proyecto)
 
@@ -149,24 +157,36 @@ El workflow hace `insert` directo. Si se corre dos veces para el mismo proyecto,
 
 ## 🚀 Punto Actual del Proyecto
 
-Los 7 workflows están activos en n8n y sincronizados localmente. El proyecto está listo para la fase de pruebas, bloqueado únicamente por la vectorización de los KBs.
+Los 7 workflows están sincronizados desde n8n vía MCP al repositorio local (2026-05-01). 6 de los 7 están activos; Sync_CRM está inactivo intencionalmente. El proyecto está listo para la fase de pruebas, bloqueado únicamente por la vectorización de los KBs.
 
 ### ✅ Completado
-- Workflows sincronizados desde n8n al repositorio local
-- Archivos renombrados para coincidir exactamente con n8n
+- Workflows sincronizados desde n8n vía MCP (descarga directa del servidor, 2026-05-01)
+- Archivos locales contienen la versión exacta del servidor de n8n
 - KBs estandarizados (5 proyectos, metadatos en mayúsculas)
 - Proceso de vectorización documentado
 - Archivos obsoletos eliminados (`fix_rsvp.js`, `update_principal.js`, `.claude/` vacío)
+- IDs de workflows documentados para referencia directa
+- **Auditoría profunda de Workflows completada y bugs corregidos (2026-05-01)**:
+  - Códigos de proyecto erróneos (`pm`, `pp`) en descriptions de *kb_search* y *rsvp* corregidos.
+  - Bloque duplicado de *send_media* eliminado del system prompt de *PRINCIPAL*.
+  - Variante "Parque Sotobosque" agregada a los mapeos para evitar ambigüedades.
+  - Fallback silencioso a "PVV" eliminado en nodo *Proyecto* (ahora queda vacío para activar la pregunta al usuario).
+  - Remitente de correos estandarizado a "SPECTRUM VIVIENDA".
+  - Nombres de nodos con encoding corrupto corregidos (ej. *Payload Escalación*).
+  - Riesgo de formato `_Proyecto` en CRM descartado (API sí acepta códigos "PVV", etc.).
 
 ### 🔜 Pendiente antes de producción
 
 | # | Tarea | Bloqueante | Estado |
 |---|---|---|---|
 | 1 | **Vectorizar KBs** — cargar los 5 JSONs en MongoDB `documents` | Sí — sin esto KB SEARCH no funciona | ✋ Manual en n8n |
-| 2 | **Fix Gmail Notifications Master** — quitar override hardcodeado | Sí — notificaciones van al destino equivocado | ⏸️ Pausado (en pruebas) |
-| 3 | **URLs reales SEND MEDIA** — reemplazar placeholders de PMAR y PPO | Sí — envío de media falla para esos proyectos | ⏸️ Pausado (esperando URLs) |
-| 4 | **Activar Sync_CRM** — encender el workflow en n8n | Sí — sin esto no hay sincronización al CRM | ⏸️ Pausado |
-| 5 | **Pruebas E2E** — flujo completo: mensaje → lead → KB → cita → CRM | Sí — validación final antes de go-live | ⏳ Pendiente |
+| 2 | **Fix Gmail Notifications Master** — quitar override `true ? jorge.calderon...` | Sí — notificaciones van al destino equivocado | ⏸️ Pausado (en pruebas) |
+| 3 | **Fix Gmail RSVP** — quitar destinatario hardcodeado a `jorge.calderon...` | Sí — confirmaciones de cita no llegan a Spectrum | ⏸️ Pausado |
+| 4 | **Fix SEND MEDIA** — agregar mapping de PPOL y PSB faltantes | Sí — leads piden estos proyectos y no existen | ⏸️ Pausado |
+| 5 | **URLs reales SEND MEDIA** — reemplazar placeholders de PMAR y PPO | Sí — envío de media falla para esos proyectos | ⏸️ Pausado (esperando URLs) |
+| 6 | **Revisar Lead Collector SOAP** — evaluar si el nodo SOAP debe seguir `disabled: true` o no | No — actualmente Sync_CRM procesa luego en batch | ⏸️ Pausado |
+| 7 | **Activar Sync_CRM** — encender el workflow en n8n | Sí — sin esto no hay sincronización al CRM | ⏸️ Pausado |
+| 8 | **Pruebas E2E** — flujo completo: mensaje → lead → KB → cita → CRM | Sí — validación final antes de go-live | ⏳ Pendiente |
 
 ---
 > **Nota de Seguridad:** Se respeta la prohibición de modificar la configuración del nodo SOAP API fuera de la interfaz de n8n por parte del usuario.

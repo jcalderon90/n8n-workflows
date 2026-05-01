@@ -1,52 +1,16 @@
 {
-  "id": "NtTiyrNy2LHimE7u",
   "name": "SEND MEDIA",
-  "active": true,
-  "isArchived": false,
-  "versionId": "f0c77fe9-da95-4931-bb97-f4341b56b219",
-  "createdAt": "2026-04-21T05:50:52.066Z",
-  "updatedAt": "2026-04-30T21:21:54.275Z",
-  "settings": {
-    "executionOrder": "v1",
-    "binaryMode": "separate",
-    "availableInMCP": true
-  },
-  "connections": {
-    "Map Media Resources": {
-      "main": [[{"node": "Send API ManyChat", "type": "main", "index": 0}]]
-    },
-    "Send API ManyChat": {
-      "main": [[{"node": "Response To Agent", "type": "main", "index": 0}]]
-    },
-    "START": {
-      "main": [[{"node": "Map Media Resources", "type": "main", "index": 0}]]
-    }
-  },
   "nodes": [
     {
       "parameters": {
-        "workflowInputs": {
-          "values": [
-            {"name": "tipo_media"},
-            {"name": "proyecto"},
-            {"name": "canal"},
-            {"name": "manychat_id"}
-          ]
-        }
-      },
-      "type": "n8n-nodes-base.executeWorkflowTrigger",
-      "typeVersion": 1.1,
-      "position": [-304, -48],
-      "id": "0d1c59f1-2ba6-4d49-80cb-4ebf8ad6d415",
-      "name": "START"
-    },
-    {
-      "parameters": {
-        "jsCode": "const proyecto = $input.item.json.proyecto || \"PVV\";\nconst tipo = ($input.item.json.tipo_media || \"amenidades\").toLowerCase().trim();\nconst canal = ($input.item.json.canal || \"whatsapp\").toLowerCase().trim();\n\nconst database = {\n  \"PVV\": {\n    \"amenidades\": \"https://res.cloudinary.com/dif0pqsok/image/upload/v1763745364/amenidades_dble4k.png\",\n    \"renders\": \"https://res.cloudinary.com/dif0pqsok/image/upload/v1763745364/amenidades_dble4k.png\",\n    \"planos\": \"https://res.cloudinary.com/dif0pqsok/image/upload/v1763745364/amenidades_dble4k.png\",\n    \"brochure\": \"https://res.cloudinary.com/dif0pqsok/image/upload/v1763745364/amenidades_dble4k.png\"\n  },\n  \"PMAR\": {\n    \"amenidades\": \"https://link-de-prueba.com/amenidades.png\",\n    \"renders\": \"https://link-de-prueba.com/renders.png\",\n    \"planos\": \"https://link-de-prueba.com/planos.png\",\n    \"brochure\": \"https://link-de-prueba.com/brochure.png\"\n  },\n  \"PPO\": {\n    \"amenidades\": \"https://link-de-prueba.com/amenidades.png\",\n    \"renders\": \"https://link-de-prueba.com/renders.png\",\n    \"planos\": \"https://link-de-prueba.com/planos.png\",\n    \"brochure\": \"https://link-de-prueba.com/brochure.png\"\n  }\n};\n\nconst projectData = database[proyecto] || database[\"PVV\"];\nlet url = projectData[tipo];\nif (!url) url = projectData[\"amenidades\"];\n\nconst objectType = canal === 'whatsapp' ? 'text' : 'image';\nconst keyName = canal === 'whatsapp' ? 'text' : 'url';\n\nreturn [{\n  json: {\n    manychat_id: $input.item.json.manychat_id,\n    canal: canal,\n    url: url,\n    objectType: objectType,\n    keyName: keyName\n  }\n}];"
+        "jsCode": "const proyecto = $input.item.json.proyecto || \"PVV\";\nconst tipo = ($input.item.json.tipo_media || \"amenidades\").toLowerCase().trim();\nconst canal = ($input.item.json.canal || \"whatsapp\").toLowerCase().trim();\n\n// Mapeo inicial de recursos multimedia por proyecto.\n// Debes cambiar estos URLs por los oficiales de cada proyecto.\nconst database = {\n  \"PVV\": {\n    \"amenidades\": \"https://res.cloudinary.com/dif0pqsok/image/upload/v1763745364/amenidades_dble4k.png\",\n    \"renders\": \"https://res.cloudinary.com/dif0pqsok/image/upload/v1763745364/amenidades_dble4k.png\", // Reemplazar\n    \"planos\": \"https://res.cloudinary.com/dif0pqsok/image/upload/v1763745364/amenidades_dble4k.png\", // Reemplazar\n    \"brochure\": \"https://res.cloudinary.com/dif0pqsok/image/upload/v1763745364/amenidades_dble4k.png\" // Reemplazar\n  },\n  \"PMAR\": {\n    \"amenidades\": \"https://link-de-prueba.com/amenidades.png\",\n    \"renders\": \"https://link-de-prueba.com/renders.png\",\n    \"planos\": \"https://link-de-prueba.com/planos.png\",\n    \"brochure\": \"https://link-de-prueba.com/brochure.png\"\n  },\n  \"PPO\": {\n    \"amenidades\": \"https://link-de-prueba.com/amenidades.png\",\n    \"renders\": \"https://link-de-prueba.com/renders.png\",\n    \"planos\": \"https://link-de-prueba.com/planos.png\",\n    \"brochure\": \"https://link-de-prueba.com/brochure.png\"\n  }\n};\n\nconst projectData = database[proyecto] || database[\"PVV\"];\nlet url = projectData[tipo];\n\n// Fallback: si piden algo que no estÃ¡ en la lista, mandamos amenidades por defecto\nif (!url) {\n  url = projectData[\"amenidades\"];\n}\n\n// LÃ³gica extraÃ­da del flujo antiguo: Si es whatsapp y la cuenta manda urls en vez de imagen pura, \n// mantenemos esa estructura (envÃ­ar como texto en whatsapp, o como imagen en IG/FB).\nconst objectType = canal === 'whatsapp' ? 'text' : 'image';\nconst keyName = canal === 'whatsapp' ? 'text' : 'url';\n\nreturn [{\n  json: {\n    manychat_id: $input.item.json.manychat_id,\n    canal: canal,\n    url: url,\n    objectType: objectType,\n    keyName: keyName\n  }\n}];"
       },
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
-      "position": [-80, -48],
+      "position": [
+        -80,
+        -48
+      ],
       "id": "a4953767-6691-4a1d-a1e8-22c5183383af",
       "name": "Map Media Resources"
     },
@@ -58,7 +22,12 @@
         "genericAuthType": "httpHeaderAuth",
         "sendHeaders": true,
         "headerParameters": {
-          "parameters": [{"name": "Content-Type", "value": "application/json"}]
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
         },
         "sendBody": true,
         "specifyBody": "json",
@@ -67,7 +36,10 @@
       },
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
-      "position": [160, -48],
+      "position": [
+        160,
+        -48
+      ],
       "id": "5b4a895d-c69f-4d85-ae0b-9a89807e3030",
       "name": "Send API ManyChat"
     },
@@ -78,7 +50,7 @@
             {
               "id": "b3e21820-2c70-4976-8051-789a6be3db9d",
               "name": "response",
-              "value": "Media enviada. Dile al usuario con entusiasmo que ya le enviaste lo que solicitó y pregúntale qué le parece el proyecto.",
+              "value": "Media enviada. Dile al usuario con entusiasmo que ya le enviaste lo que solicitÃ³ y pregÃºntale quÃ© le parece el proyecto.",
               "type": "string"
             }
           ]
@@ -87,11 +59,83 @@
       },
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
-      "position": [384, -48],
+      "position": [
+        384,
+        -48
+      ],
       "id": "1ccd2c84-4ba5-42f6-a885-5f43752a0b83",
       "name": "Response To Agent"
+    },
+    {
+      "parameters": {
+        "workflowInputs": {
+          "values": [
+            {
+              "name": "tipo_media"
+            },
+            {
+              "name": "proyecto"
+            },
+            {
+              "name": "canal"
+            },
+            {
+              "name": "manychat_id"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -304,
+        -48
+      ],
+      "id": "0d1c59f1-2ba6-4d49-80cb-4ebf8ad6d415",
+      "name": "START"
     }
   ],
-  "tags": [],
-  "description": "Flujo para enviar imagenes y videos"
+  "connections": {
+    "Map Media Resources": {
+      "main": [
+        [
+          {
+            "node": "Send API ManyChat",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send API ManyChat": {
+      "main": [
+        [
+          {
+            "node": "Response To Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "START": {
+      "main": [
+        [
+          {
+            "node": "Map Media Resources",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": true
+  },
+  "id": "NtTiyrNy2LHimE7u",
+  "tags": []
 }

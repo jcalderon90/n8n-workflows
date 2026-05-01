@@ -29,14 +29,13 @@ Este archivo es leído automáticamente por Claude Code. Contiene las instruccio
 
 ```
 Agente Unificado/
-├── Principal.json       ← Orquestador: clasifica intenciones, delega a tools
-├── Lead Collector.json  ← Captura y persiste datos del lead en MongoDB
-├── KB_Search.json       ← Búsqueda en base de conocimiento por proyecto
-├── RSVP.json            ← Gestión de citas y disponibilidad
-├── Send Media.json      ← Envío de archivos/brochures por WhatsApp
-├── Sync_CRM.json        ← Sincronización diferida al CRM SOAP (cada 10-15 min)
-├── Notifications.json   ← Notificaciones internas al equipo
-└── escalation.json      ← Escalación a agente humano
+├── AGENT PRINCIPAL.json       ← Orquestador: clasifica intenciones, delega a tools
+├── Lead Collector.json        ← Captura y persiste datos del lead en MongoDB
+├── KB SEARCH.json             ← Búsqueda en base de conocimiento por proyecto
+├── RSVP.json                  ← Gestión de citas y disponibilidad
+├── Send Media.json            ← Envío de archivos/brochures por WhatsApp
+├── Sync_CRM.json              ← Sincronización diferida al CRM SOAP (cada 10-15 min)
+└── Notifications Master.json  ← Notificaciones internas al equipo
 ```
 
 **Persistencia:** MongoDB Atlas — colecciones `users`, `appointments`, `chat_histories*`, `quality_logs`
@@ -49,8 +48,8 @@ Agente Unificado/
 
 ```
 KBs/
-├── KB PL.json    ← Polanco (PL)
-├── KB SB.json    ← Sotobosque (SB)
+├── KB PL.json    ← Polanco (PPOL)
+├── KB SB.json    ← Sotobosque (PSB)
 ├── KB PPO.json   ← Parque Portales (PPO)
 ├── KB PVV.json   ← Parque Vista Verde (PVV)
 └── KB PMAR.json  ← Parque Mariscal (PMAR)

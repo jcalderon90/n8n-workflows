@@ -15,7 +15,9 @@
     ]
   },
   "enabledMcpjsonServers": [
-    "n8n-mcp"
+    "n8n-mcp",
+    "mongodb"
   ],
-  "prefersReducedMotion": true
+  "prefersReducedMotion": true,
+  "enableAllProjectMcpServers": true
 }

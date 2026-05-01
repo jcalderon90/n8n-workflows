@@ -26,14 +26,13 @@ Agente conversacional inmobiliario para **SPECTRUM VIVIENDA**. El orquestador ce
 
 ```
 Agente Unificado/
-├── Principal.json       ← Orquestador: clasifica intenciones, delega a tools
-├── Lead Collector.json  ← Captura y persiste datos del lead en MongoDB
-├── KB_Search.json       ← RAG por proyecto (Vector Search en MongoDB)
-├── RSVP.json            ← Gestión de citas; escribe en colección `appointments`
-├── Send Media.json      ← Envío de brochures/archivos por WhatsApp
-├── Sync_CRM.json        ← Sincronización diferida al CRM SOAP (cada 10-15 min)
-├── Notifications.json   ← Notificaciones internas al equipo
-└── escalation.json      ← Escalación a agente humano
+├── AGENT PRINCIPAL.json       ← Orquestador: clasifica intenciones, delega a tools
+├── Lead Collector.json        ← Captura y persiste datos del lead en MongoDB
+├── KB SEARCH.json             ← RAG por proyecto (Vector Search en MongoDB)
+├── RSVP.json                  ← Gestión de citas; escribe en colección `appointments`
+├── Send Media.json            ← Envío de brochures/archivos por WhatsApp
+├── Sync_CRM.json              ← Sincronización diferida al CRM SOAP (cada 10-15 min)
+└── Notifications Master.json  ← Notificaciones internas al equipo
 ```
 
 ### Colecciones MongoDB
@@ -43,8 +42,8 @@ Agente Unificado/
 - `quality_logs` — auditoría de calidad post-sync
 
 ### Modelos IA
-- `gpt-4.1-mini` — Orquestador (`Principal.json`)
-- `gpt-4.1-mini` — Tools especializadas
+- `gpt-5.4-mini` — Orquestador (`AGENT PRINCIPAL.json`)
+- `gpt-5-mini` — Tools especializadas (`KB SEARCH.json`)
 - `gpt-4o` — Procesamiento de media (`Send Media.json`)
 
 ---
