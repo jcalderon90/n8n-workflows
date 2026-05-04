@@ -1,5 +1,5 @@
 # 🏢 SPECTRUM VIVIENDA: Agente Unificado — Estado del Proyecto
-> Última actualización: 2026-05-01 (Sincronización MCP con n8n en vivo — todos los archivos descargados del servidor)
+> Última actualización: 2026-05-04 (Correcciones de bugs reportadas por QA — prompts actualizados)
 
 ## 🎯 Objetivo General
 Arquitectura de agente conversacional modular para SPECTRUM VIVIENDA. Un orquestador central (*Sof-IA*) delega tareas a sub-workflows especializados (Tools), con persistencia centralizada en MongoDB y sincronización diferida al CRM Dynamics 365 vía SOAP.
@@ -25,16 +25,18 @@ Arquitectura de agente conversacional modular para SPECTRUM VIVIENDA. Un orquest
 > Los archivos locales fueron sincronizados vía MCP desde n8n el 2026-05-01. Cada archivo contiene el JSON idéntico al servidor.
 
 ### 1. 🧠 Orquestador Central — `AGENT PRINCIPAL.json`
-**Estado: ✅ Activo en n8n** | ID: `iXaptKTUXaXrP7aF` | 59 nodos | Última mod: 2026-05-01
+**Estado: ✅ Activo en n8n** | ID: `iXaptKTUXaXrP7aF` | 59 nodos | Última mod: 2026-05-04
 
 - Clasifica intenciones y delega a sub-workflows (tools).
 - Mapea nombres de proyectos a códigos oficiales en mayúsculas (`PVV`, `PPOL`, etc.).
+- ⚠️ **Pendiente aplicar en n8n**: Corrección de ambigüedad Zona 15 (PVV vs PSB) + formato de nombres con zona.
 
 ### 2. 👤 Captador de Leads — `Lead Collector.json`
-**Estado: ✅ Activo en n8n** | ID: `SHPFhvoal7k1Rqf9` | 15 nodos | Última mod: 2026-05-01
+**Estado: ✅ Activo en n8n** | ID: `SHPFhvoal7k1Rqf9` | 15 nodos | Última mod: 2026-05-04
 
 - Captura nombre, correo y teléfono del lead.
 - Escribe en MongoDB (`users`) y sincroniza al CRM vía SOAP.
+- ⚠️ **Pendiente aplicar en n8n**: Agregar confirmaciones válidas de teléfono ("simon", "simón", "va", "ya", etc.) en ESCENARIO 3.
 
 ### 3. 📚 Experto en Proyectos — `KB SEARCH.json`
 **Estado: ✅ Activo en n8n** | ID: `D3LKuNi6CmMIdvzg` | 8 nodos | Última mod: 2026-04-30 | ⚠️ Pendiente vectorización
@@ -174,6 +176,11 @@ Los 7 workflows están sincronizados desde n8n vía MCP al repositorio local (20
   - Remitente de correos estandarizado a "SPECTRUM VIVIENDA".
   - Nombres de nodos con encoding corrupto corregidos (ej. *Payload Escalación*).
   - Riesgo de formato `_Proyecto` en CRM descartado (API sí acepta códigos "PVV", etc.).
+- **Bugs de QA identificados y prompts corregidos (2026-05-04)**:
+  - "simon" y modismos guatemaltecos ahora reconocidos como confirmación en Lead Collector (ESCENARIO 3).
+  - Ambigüedad de Zona 15 resuelta en AGENT PRINCIPAL: "zona 15" ya no mapea directamente a PVV; pregunta específicamente entre PVV y PSB.
+  - Formato de nombres de proyecto actualizado a "Nombre - Zona X" en respuestas del bot.
+  - Excepción añadida al RETOMO CASO A para manejar consultas con "zona 15".
 
 ### 🔜 Pendiente antes de producción
 
