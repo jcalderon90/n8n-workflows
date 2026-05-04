@@ -179,7 +179,7 @@ Los 7 workflows están sincronizados desde n8n vía MCP al repositorio local (20
 
 | # | Tarea | Bloqueante | Estado |
 |---|---|---|---|
-| 1 | **Vectorizar KBs** — cargar los 5 JSONs en MongoDB `documents` | Sí — sin esto KB SEARCH no funciona | ✋ Manual en n8n |
+| 1 | **Vectorizar KBs** — cargar los 5 JSONs en MongoDB `documents` | Sí — sin esto KB SEARCH no funciona | ✅ Completado (2026-05-02) |
 | 2 | **Fix Gmail Notifications Master** — quitar override `true ? jorge.calderon...` | Sí — notificaciones van al destino equivocado | ⏸️ Pausado (en pruebas) |
 | 3 | **Fix Gmail RSVP** — quitar destinatario hardcodeado a `jorge.calderon...` | Sí — confirmaciones de cita no llegan a Spectrum | ⏸️ Pausado |
 | 4 | **Fix SEND MEDIA** — agregar mapping de PPOL y PSB faltantes | Sí — leads piden estos proyectos y no existen | ⏸️ Pausado |

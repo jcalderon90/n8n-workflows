@@ -14,10 +14,10 @@
       "Bash(grep \"\\\\.json$\")"
     ]
   },
+  "enableAllProjectMcpServers": true,
   "enabledMcpjsonServers": [
     "n8n-mcp",
     "mongodb"
   ],
-  "prefersReducedMotion": true,
-  "enableAllProjectMcpServers": true
+  "prefersReducedMotion": true
 }

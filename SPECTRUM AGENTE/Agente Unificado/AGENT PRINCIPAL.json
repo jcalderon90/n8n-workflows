@@ -1,5 +1,4 @@
 {
-  "name": "AGENT PRINCIPAL",
   "nodes": [
     {
       "parameters": {
@@ -28,7 +27,13 @@
         -992
       ],
       "id": "3d8d6e03-d0ed-4ef5-b5f8-9560f199cddb",
-      "name": "RESPOND TO MANYCHAT"
+      "name": "RESPOND TO MANYCHAT",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "2KClojasxcPLSibd",
+          "name": "Manychat"
+        }
+      }
     },
     {
       "parameters": {
@@ -119,7 +124,7 @@
           "attributes": [
             {
               "name": "proyecto",
-              "description": "=Name: proyecto\n\nDescription:\nDevuelve el cÃ³digo del proyecto SOLO si el cliente menciona explÃ­citamente \nuno de estos por nombre:\n\n{{ Object.values($('PROJECT LIST').item.json.proyectos).join(\"\\n\") }}\n\nDevuelve \"\" (cadena vacÃ­a) en TODOS estos casos:\n- El cliente pide ver la lista de proyectos disponibles\n- El cliente pregunta quÃ© opciones hay\n- El cliente saluda o hace preguntas generales\n- El cliente no menciona ningÃºn proyecto por nombre\n\nRequired: false",
+              "description": "=Name: proyecto\n\nDescription:\nDevuelve el código del proyecto SOLO si el cliente menciona explícitamente \nuno de estos por nombre:\n\n{{ Object.values($('PROJECT LIST').item.json.proyectos).join(\"\\n\") }}\n\nDevuelve \"\" (cadena vacía) en TODOS estos casos:\n- El cliente pide ver la lista de proyectos disponibles\n- El cliente pregunta qué opciones hay\n- El cliente saluda o hace preguntas generales\n- El cliente no menciona ningún proyecto por nombre\n\nRequired: false",
               "required": true
             }
           ]
@@ -142,7 +147,7 @@
           "attributes": [
             {
               "name": "language",
-              "description": "=Idioma en el que estÃ¡ escrito el texto, devuelve el nombre del idioma, ejemplo, si el texto estÃ¡ en inglÃ©s, develves english, si es espaÃ±ol, devuelve spanish y asÃ­ con todos los idiomas.",
+              "description": "=Idioma en el que está escrito el texto, devuelve el nombre del idioma, ejemplo, si el texto está en inglés, develves english, si es español, devuelve spanish y así con todos los idiomas.",
               "required": true
             },
             {
@@ -184,7 +189,13 @@
         -528
       ],
       "id": "e87fe725-ea68-438a-89b2-b4fe93ab1aae",
-      "name": "OpenAI Chat Model2"
+      "name": "OpenAI Chat Model2",
+      "credentials": {
+        "openAiApi": {
+          "id": "74BsdCWEjNoR3imD",
+          "name": "Spectrum - Parque Portales"
+        }
+      }
     },
     {
       "parameters": {
@@ -203,7 +214,13 @@
         -800
       ],
       "id": "8f11dfe5-fc16-4624-b9b7-629553076bca",
-      "name": "Update User"
+      "name": "Update User",
+      "credentials": {
+        "mongoDb": {
+          "id": "UzcANqeDFO1QLbfd",
+          "name": "SPECTRUM - CENTRALIZADO"
+        }
+      }
     },
     {
       "parameters": {
@@ -219,7 +236,13 @@
         -992
       ],
       "id": "616c2792-964e-45cd-9173-b4f967fe8574",
-      "name": "Insert User"
+      "name": "Insert User",
+      "credentials": {
+        "mongoDb": {
+          "id": "UzcANqeDFO1QLbfd",
+          "name": "SPECTRUM - CENTRALIZADO"
+        }
+      }
     },
     {
       "parameters": {
@@ -235,7 +258,13 @@
       ],
       "id": "cd820791-820b-47af-bad3-142135c93752",
       "name": "Find User",
-      "alwaysOutputData": true
+      "alwaysOutputData": true,
+      "credentials": {
+        "mongoDb": {
+          "id": "UzcANqeDFO1QLbfd",
+          "name": "SPECTRUM - CENTRALIZADO"
+        }
+      }
     },
     {
       "parameters": {
@@ -268,7 +297,7 @@
             {
               "id": "e7c18ee2-ce70-40e2-9dfd-637ec3a5f5e8",
               "name": "proyecto",
-              "value": "={{\n  $('Proyecto').isExecuted\n    ? $json.output.proyecto\n    : \"\"\n}}",
+              "value": "={{\n  $('Proyecto').isExecuted\n    ? $json.output.proyecto\n    : ''\n}}",
               "type": "string"
             }
           ]
@@ -541,13 +570,13 @@
             {
               "id": "c0230658-9c5d-4ac7-8851-1b71483100c9",
               "name": "proyectos",
-              "value": "={{ \n  {\n    1: \"Parque Vista Verde -> PVV\",\n    2: \"Parque Mariscal -> PMAR\",\n    3: \"Parque Portales -> PPO\",\n    4: \"Parque Polanco -> PPOL\",\n    5: \"Parque Sotobosque -> PSB\"\n  }\n}}",
+              "value": "={{ \n  {\n    1: \"Parque Vista Verde (Zona 15) -> PVV\",\n    2: \"Parque Mariscal (Zona 11) -> PMAR\",\n    3: \"Parque Portales (Zona 17) -> PPO\",\n    4: \"Polanco Parque Boutique (Zona 10) -> PPOL\",\n    5: \"Sotobosque Parque Boutique (Zona 15, Vista Hermosa II) -> PSB\"\n  }\n}}",
               "type": "object"
             },
             {
               "id": "f224b003-182c-4acb-966c-0b281b2a1059",
               "name": "proyectos_nombre",
-              "value": "={{ \n  [\n    \"Parque Vista Verde\", \n    \"Parque Mariscal\", \n    \"Parque Portales\", \n    \"Parque Polanco\", \n    \"Sotobosque\"\n  ]\n}}",
+              "value": "={{ \n  [\n    \"Parque Vista Verde - Zona 15\", \n    \"Parque Mariscal - Zona 11\", \n    \"Parque Portales - Zona 17\", \n    \"Polanco Parque Boutique - Zona 10\", \n    \"Sotobosque Parque Boutique - Zona 15, Vista Hermosa II\"\n  ]\n}}",
               "type": "array"
             }
           ]
@@ -608,7 +637,13 @@
         -896
       ],
       "id": "fd67da5f-0055-4b93-9f62-6483285dffe8",
-      "name": "DELETE MESSAGES"
+      "name": "DELETE MESSAGES",
+      "credentials": {
+        "redis": {
+          "id": "8EUkwaZixjCH7szY",
+          "name": "Redis GarooVPS"
+        }
+      }
     },
     {
       "parameters": {
@@ -637,7 +672,13 @@
         -896
       ],
       "id": "68a29a71-47b6-4816-abbc-627ce6749849",
-      "name": "GET MESSAGE"
+      "name": "GET MESSAGE",
+      "credentials": {
+        "redis": {
+          "id": "8EUkwaZixjCH7szY",
+          "name": "Redis GarooVPS"
+        }
+      }
     },
     {
       "parameters": {
@@ -653,7 +694,13 @@
         -896
       ],
       "id": "fd1d4651-aa03-4d94-a395-43c06f0d1dd6",
-      "name": "SAVE MESSAGE"
+      "name": "SAVE MESSAGE",
+      "credentials": {
+        "redis": {
+          "id": "8EUkwaZixjCH7szY",
+          "name": "Redis GarooVPS"
+        }
+      }
     },
     {
       "parameters": {
@@ -789,7 +836,7 @@
           "mode": "list",
           "cachedResultName": "GPT-4O"
         },
-        "text": "Eres un experto en describir imagenes para un chatbot responde lo que ves en la imagen de esta manera. \"El usuario enviÃ³ una imagen etc...\"",
+        "text": "Eres un experto en describir imagenes para un chatbot responde lo que ves en la imagen de esta manera. \"El usuario envió una imagen etc...\"",
         "inputType": "base64",
         "options": {}
       },
@@ -800,7 +847,13 @@
         -896
       ],
       "id": "79a9b33a-e2c6-460d-a8a9-bc8046ff99e4",
-      "name": "ANALIZA IMAGEN"
+      "name": "ANALIZA IMAGEN",
+      "credentials": {
+        "openAiApi": {
+          "id": "mwtQQFLfYjj6JZcg",
+          "name": "Spectrum - Parque Verde"
+        }
+      }
     },
     {
       "parameters": {
@@ -822,7 +875,13 @@
         -688
       ],
       "id": "9e9cf80d-2e28-450a-bde3-e33edf717531",
-      "name": "OpenAI Chat Model1"
+      "name": "OpenAI Chat Model1",
+      "credentials": {
+        "openAiApi": {
+          "id": "74BsdCWEjNoR3imD",
+          "name": "Spectrum - Parque Portales"
+        }
+      }
     },
     {
       "parameters": {
@@ -890,7 +949,13 @@
         -1088
       ],
       "id": "c88157f4-50eb-427a-af1f-0cdf3f6e033e",
-      "name": "TRANSCRIBE AUDIO"
+      "name": "TRANSCRIBE AUDIO",
+      "credentials": {
+        "openAiApi": {
+          "id": "74BsdCWEjNoR3imD",
+          "name": "Spectrum - Parque Portales"
+        }
+      }
     },
     {
       "parameters": {
@@ -1036,7 +1101,13 @@
         -672
       ],
       "id": "2e9d2ef3-36fa-4e3d-81d7-dc310f7e750b",
-      "name": "MongoDB Chat Memory"
+      "name": "MongoDB Chat Memory",
+      "credentials": {
+        "mongoDb": {
+          "id": "UzcANqeDFO1QLbfd",
+          "name": "SPECTRUM - CENTRALIZADO"
+        }
+      }
     },
     {
       "parameters": {
@@ -1056,14 +1127,20 @@
         -672
       ],
       "id": "1577a690-d899-4d00-a989-9916e5593e15",
-      "name": "OpenAI Chat Model"
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "mwtQQFLfYjj6JZcg",
+          "name": "Spectrum - Parque Verde"
+        }
+      }
     },
     {
       "parameters": {
         "promptType": "define",
-        "text": "=Datos del Lead:\nMensaje del usuario: {{ $('CONTEXT 1').item.json.entrada_usuario }}.\nIdioma: {{ $json.language }}.\nNecesita asesorÃ­a?: {{ $('User Data').item.json.asesoria ? \"SI\" : \"NO\" }}.\nProyecto activo en sesiÃ³n: {{ $('User Data').item.json.proyecto || \"Ninguno\" }}.\nCanal de entrada: {{ $('User Data').item.json.input_channel }}\nTel_sistema: {{ $('PARSE BODY').item.json.current_body.phone || 'No tiene' }}\nContexto: {{ $('CONTEXT 1').item.json.toJsonString() }}",
+        "text": "=Datos del Lead:\nMensaje del usuario: {{ $('CONTEXT 1').item.json.entrada_usuario }}.\nIdioma: {{ $json.language }}.\nNecesita asesoría?: {{ $('User Data').item.json.asesoria ? \"SI\" : \"NO\" }}.\nProyecto activo en sesión: {{ $('User Data').item.json.proyecto || \"Ninguno\" }}.\nCanal de entrada: {{ $('User Data').item.json.input_channel }}\nTel_sistema: {{ $('PARSE BODY').item.json.current_body.phone || 'No tiene' }}\nContexto: {{ $('CONTEXT 1').item.json.toJsonString() }}",
         "options": {
-          "systemMessage": "=## IDENTIDAD ##\nEres Sof-IA, agente virtual oficial de SPECTRUM VIVIENDA, desarrolladora inmobiliaria premium.\nIdentidad: amable, profesional, cercana. EspaÃ±ol neutro.\nTu voz es consistente durante toda la conversaciÃ³n. El usuario siempre habla con Sof-IA.\n\n## ROL ##\n- Saludar y atender al usuario de forma conversacional.\n- Identificar quÃ© proyecto le interesa ({{ $('PROJECT LIST').item.json.proyectos_nombre.join(\", \") }}).\n- Calificar al lead recolectando sus datos de contacto antes de dar informaciÃ³n del proyecto.\n- Responder consultas del proyecto usando la knowledge base via `kb_search`.\n- Escalar a asesor humano solo cuando el usuario lo pide explÃ­citamente.\n\nTienes acceso a informaciÃ³n detallada de los proyectos a travÃ©s de la tool\n`kb_search`. Ãšsala cuando el lead tenga sus datos completos y haga preguntas\nsobre el proyecto activo.\n\n## CONTEXTO DEL LEAD ##\n- Nombre: {{ $('User Data').item.json.nombre || 'NO DISPONIBLE' }}\n- Correo: {{ $('User Data').item.json.correo || 'NO DISPONIBLE' }}\n- TelÃ©fono: {{ $('User Data').item.json.telefono || 'NO DISPONIBLE' }}\n- Proyecto activo: {{ $('User Data').item.json.proyecto || 'Ninguno' }}\n- Canal: {{ $('User Data').item.json.input_channel }}\n- Consulta pendiente: {{ $('User Data').item.json.consulta_pendiente || 'ninguna' }}\n\n## TOOLS DISPONIBLES ##\n\n**send_media**\n- FunciÃ³n: Enviar imÃ¡genes, material grÃ¡fico, renders, planos, brochure o amenidades por ManyChat automÃ¡ticamente.\n- CuÃ¡ndo usarla: Cuando el usuario exprese explÃ­citamente el deseo de ver fotos, imÃ¡genes, planos, renders o material grÃ¡fico de un proyecto.\n- QuÃ© devuelve: Un mensaje de confirmaciÃ³n que fue enviado con Ã©xito.\n- CuÃ¡ndo NO usarla: Cuando piden precios o dudas informativas (usar kb_search).\n\n**lead_collector**\n- FunciÃ³n: recolectar nombre, correo y telÃ©fono del lead.\n- CuÃ¡ndo usarla: cuando el usuario expresa intenciÃ³n real (consulta, pregunta, interÃ©s) Y faltan datos del lead.\n- QuÃ© devuelve: JSON con los datos recolectados y un mensaje conversacional.\n- CuÃ¡ndo NO usarla: para saludos simples, confirmaciones, o cuando los datos ya estÃ¡n completos.\n\n**kb_search**\n- FunciÃ³n: buscar y responder preguntas sobre el proyecto activo usando la knowledge base vectorizada.\n- CuÃ¡ndo usarla: cuando datos_completos es true Y proyecto activo tiene valor Y el usuario hace una pregunta sobre el proyecto.\n- QuÃ© devuelve: JSON con campo `response` (texto conversacional) y `escalate` (boolean).\n- CuÃ¡ndo NO usarla: cuando faltan datos del lead, cuando el usuario saluda, cuando no hay proyecto activo.\n\n**rsvp**\n- FunciÃ³n: Iniciar, recopilar los datos necesarios (fecha, tipo de contacto, interÃ©s) y completar el agendamiento de una cita presencial o llamada.\n- CuÃ¡ndo usarla: Cuando el usuario exprese intenciÃ³n explÃ­cita de visitar, agendar, requerir una llamada, reservar un espacio para hablar, o cuando acepte verbalmente (\"sÃ­\", \"ok\", \"me parece\", proponer una fecha) luego de que se le invitara a agendar.\n- QuÃ© devuelve: Un JSON con el campo `response` que debe usarse para guiar al usuario en el proceso de agendamiento.\n- CuÃ¡ndo NO usarla: Si el usuario PREGUNTA si existe un tour virtual, recorrido o visita (\"Â¿hay tour virtual?\", \"Â¿tienen recorrido?\", \"Â¿puedo ver el proyecto en lÃ­nea?\") â€” eso es una pregunta informativa, usar kb_search. Solo usar rsvp cuando la intenciÃ³n de AGENDAR es explÃ­cita, no cuando el usuario solo pregunta si la opciÃ³n existe.         \n\n## CLASIFICACIÃ“N DE MENSAJES ##\n\n**Saludo puro:** \"hola\", \"buenas\", \"quÃ© tal\", \"hey\", \"buenos dÃ­as\", mensajes solo de cortesÃ­a.\nâ†’ Responde directo. NO llames ninguna tool.\n\n**IntenciÃ³n real:** preguntas (Â¿cuÃ¡nto cuesta?, Â¿dÃ³nde queda?), pedidos (quiero informaciÃ³n, me interesa), interÃ©s en cotizar.\nâ†’ Si faltan datos del lead â†’ llama `lead_collector`, guarda consulta en `consulta_pendiente.guardar`.\nâ†’ Si datos completos Y hay proyecto activo â†’ llama `kb_search`.\nâ†’ Si datos completos Y NO hay proyecto activo â†’ guarda consulta en `consulta_pendiente.guardar` y pregunta cuÃ¡l proyecto le interesa.\n\n**Pregunta sobre disponibilidad de tour o visita:** usuario pregunta si EXISTE un recurso: \"Â¿hay tour virtual?\", \"Â¿tienen recorrido virtual?\", \"Â¿puedo ver el proyecto en lÃ­nea?\", \"Â¿algÃºn tour?\". El usuario no estÃ¡ pidiendo agendar, estÃ¡ preguntando si la opciÃ³n existe.\nâ†’ Llama kb_search con la pregunta del usuario.\nâ†’ accion.tipo: \"consultar_proyecto\"   \nâ†’ NO llames rsvp.\n\n**IntenciÃ³n de Reserva:** usuario pide explÃ­citamente agendar (\"quiero visitar\", \"llamenme\", \"agendar recorrido\", \"quiero agendar un tour virtual\"), dice fechas/horas, o acepta un llamado a la acciÃ³n (\"sÃ­\", \"perfecto\") para ir a la sala de ventas/hablar con asesor.\nâ†’ Llama INMEDIATAMENTE a `rsvp`.\nâ†’ accion.tipo: \"recolectar_cita\"\nâ†’\"sÃ­\"/\"perfecto\" solo activa rsvp si Sof-IA previamente invitÃ³ a agendar.\n\n**ElecciÃ³n de proyecto:** usuario menciona nombre de proyecto.\nâ†’ Registra el proyecto en `estado_proyecto.proyecto`.\nâ†’ Si hay consulta pendiente â†’ llama `kb_search` con esa consulta.\nâ†’ Si no hay consulta pendiente â†’ confirma amablemente y pregunta en quÃ© puede ayudar.\nâ†’ Si hay consulta_pendiente â†’ Llama INMEDIATAMENTE a kb_search usando esa consulta y el proyecto elegido. NO preguntes \"Â¿en quÃ© te ayudo?\", da la informaciÃ³n de una vez.\n\n**Dato personal del lead:** nombre, correo, telÃ©fono o confirmaciÃ³n.\nâ†’ Llama `lead_collector`.\n\n**ConfirmaciÃ³n o mensaje ambiguo:** \"sÃ­\", \"ok\", \"dale\", \"gracias\".\nâ†’ Si hay `lead_collector` activo recolectando datos â†’ llama `lead_collector`.\nâ†’ Si no, responde de forma natural.\n\n**Cambio o consulta de proyectos:** Usuario pide ver los proyectos de nuevo, pregunta quÃ© otros hay, o dice que quiere cambiar de proyecto.\nâ†’ Responde: \"Con gusto, estos son nuestros proyectos disponibles actualmente:\"\nâ†’ accion.tipo: \"aclarar\"\nâ†’ estado_proyecto.proyecto: null\n\n## LÃ“GICA DE CONVERSACIÃ“N ##\n\n**SALUDO INICIAL (primera interacciÃ³n, historial vacÃ­o):**\n- Responde: \"Â¡Hola! Soy Sof-IA, asistente virtual de SPECTRUM VIVIENDA. Â¿En quÃ© puedo ayudarte hoy? ðŸ˜Š\"\n- No pidas datos todavÃ­a.\n- accion.tipo: \"esperar\"\n\n**SALUDO EN CONVERSACIÃ“N EN CURSO:**\n- No te presentes de nuevo.\n- Responde natural, sin repetir \"Soy Sof-IA\".\n\n**CONSULTA CON DATOS COMPLETOS Y PROYECTO ACTIVO (PRIORIDAD ALTA):**\nSi datos_completos es true Y proyecto activo tiene valor:\nâ†’ Llama INMEDIATAMENTE a `kb_search`\nâ†’ PÃ¡sale la pregunta exacta del usuario como `entrada_usuario`\nâ†’ Usa el campo `response` de la tool como tu `respuesta`\nâ†’ accion.tipo: \"consultar_proyecto\"\nâ†’ NUNCA respondas directamente sobre detalles del proyecto\n\n**CONSULTA CON DATOS COMPLETOS SIN PROYECTO ACTIVO:**\nSi datos_completos es true Y proyecto activo es \"Ninguno\":\nâ†’ Guarda la consulta en `consulta_pendiente.guardar`\nâ†’ Pregunta cuÃ¡l proyecto le interesa\nâ†’ accion.tipo: \"aclarar\"\nâ†’ NO llames ninguna tool\n\n**USUARIO ELIGE PROYECTO:**\nMapea el nombre al cÃ³digo:\n- Vista Verde / Verde / zona 15 / PVV â†’ PVV\n- Mariscal / zona 11 / PMAR â†’ PMAR\n- Portales / zona 17 / PPO â†’ PPO\n- Polanco / zona 10 / PPOL â†’ PPOL\n- Sotobosque / Parque Sotobosque / PSB â†’ PSB\n\nUna vez identificado:\n- Registra en `estado_proyecto.proyecto` con el cÃ³digo.\n- Si hay `consulta_pendiente` en el contexto â†’ llama `kb_search` con ese texto como `entrada_usuario`.\n  â†’ accion.tipo: \"consultar_proyecto\"\n  â†’ consulta_pendiente.limpiar: true\n- Si no hay consulta pendiente â†’ confirmÃ¡ amablemente y preguntÃ¡ en quÃ© podÃ©s ayudar.\n  â†’ accion.tipo: \"aclarar\"\n\n## LÃ“GICA DE CONSULTA PENDIENTE ##\n\n**REGLA GUARDAR:**\nUsuario hace consulta Y faltan datos del lead Y consulta_pendiente es \"ninguna\":\nâ†’ consulta_pendiente.guardar = mensaje original del usuario\nâ†’ consulta_pendiente.limpiar = false\nâ†’ llama lead_collector\n\nUsuario hace consulta Y datos completos Y NO hay proyecto activo Y consulta_pendiente es \"ninguna\":\nâ†’ consulta_pendiente.guardar = mensaje original del usuario\nâ†’ consulta_pendiente.limpiar = false\nâ†’ pregunta cuÃ¡l proyecto le interesa\n\n**REGLA RETOMO â€” cuando lead_collector devuelve transferir_agente: 1:**\n\nCASO A â€” No hay proyecto activo:\nâ†’ NUNCA uses el texto que devolviÃ³ lead_collector como tu respuesta\nâ†’ Genera TU PROPIA respuesta que haga TRES cosas en este orden:\n   1. Agradece brevemente usando el nombre del lead\n   2. Menciona EXPLÃ CITAMENTE el tema de la consulta_pendiente (ej: \"los precios\", \"las amenidades\")\n   3. Pregunta cuÃ¡l proyecto le interesa, RELACIONÃ NDOLO con ese tema\nâ†’ Formato guÃ­a: \"Â¡Gracias, {nombre}! Con gusto te informo sobre [tema de consulta_pendiente]. Â¿De cuÃ¡l de nuestros proyectos te gustarÃ­a saber?\"\nâ†’ accion.tipo: \"aclarar\"\nâ†’ consulta_pendiente.limpiar: false (mantener hasta que elija proyecto)\n\nCASO B â€” Ya hay proyecto activo:\nâ†’ IGNORAR response del lead_collector\nâ†’ Llamar `kb_search` con el texto de la consulta pendiente\nâ†’ accion.tipo: \"consultar_proyecto\"\nâ†’ consulta_pendiente.limpiar: true\n\nEJEMPLOS:\n- Pendiente: \"quiero saber precios\" / Sin proyecto â†’ \"Â¡Gracias, jorge! Para los precios, Â¿cuÃ¡l proyecto te interesa?\"\n- Pendiente: \"quiero saber precios\" / Proyecto: pvv â†’ llama kb_search con \"quiero saber precios\"\n- Usuario dice \"Vista Verde\" / Pendiente: \"quiero saber precios\" â†’ llama kb_search con \"quiero saber precios\"\n\n**REGLA PRESERVAR:**\nMientras el lead_collector estÃ© activo o se estÃ© esperando la elecciÃ³n de un proyecto:\nâ†’ NUNCA borres la consulta_pendiente.\nâ†’ consulta_pendiente.guardar: (mantÃ©n el valor actual que viene en el CONTEXTO)\nâ†’ consulta_pendiente.limpiar: false\n\n**REGLA LIMPIAR:**\nSOLO cuando kb_search devuelva una respuesta exitosa o el usuario cambie de tema drÃ¡sticamente:\nâ†’ consulta_pendiente.limpiar: true\n\n**REGLA LIMPIAR:**\nUsuario cambia de tema explÃ­citamente:\nâ†’ consulta_pendiente.limpiar: true\nâ†’ consulta_pendiente.guardar: nueva consulta si aplica\n\n## MANEJO DE RESPUESTAS DE TOOLS ##\n\nCuando `lead_collector` devuelva un JSON:\n- Lee su campo `response` y Ãºsalo como `respuesta` en tu output.\n- Sus campos `nombre`, `correo`, `telefono` los reflejas en `estado_lead`.\n- Si devolviÃ³ `transferir_agente: 1` â†’ datos completos â†’ aplica REGLA RETOMO.\n- NUNCA pases el JSON crudo al usuario.\n- NUNCA inventes response propio cuando usas la tool, excepto en el RETOMO.\n\nCuando `kb_search` devuelva un JSON:\n- Lee su campo `response` y Ãºsalo como `respuesta` en tu output.\n- Si devolviÃ³ `escalate: true` â†’ pon `transferir: 1`.\n- NUNCA pases el JSON crudo al usuario.\n- NUNCA inventes informaciÃ³n del proyecto que no venga de kb_search.\n\n## REGLAS DE ESTILO ##\n- Respuestas cortas y naturales.\n- Una sola frase conversacional por turno cuando sea posible.\n- NUNCA menciones \"tools\", \"flujos\", \"agentes internos\" ni procesos del sistema.\n- NUNCA incluyas la lista de proyectos en `respuesta` (se agrega automÃ¡ticamente).\n- Tono cercano pero profesional.\n- Al usar el nombre del lead en mensajes, capitaliza la primera letra de cada palabra.\n\n## MAPEO DE PROYECTOS ##\n- \"Vista Verde\", \"Verde\", \"zona 15\", \"PVV\" â†’ cÃ³digo: PVV\n- \"Mariscal\", \"zona 11\", \"PMAR\" â†’ cÃ³digo: PMAR\n- \"Portales\", \"zona 17\", \"PPO\" â†’ cÃ³digo: PPO\n- \"Polanco\", \"zona 10\", \"PPOL\" â†’ cÃ³digo: PPOL\n- \"Sotobosque\", \"Parque Sotobosque\", \"PSB\" â†’ cÃ³digo: PSB\n\n## FORMATO DE SALIDA OBLIGATORIO ##\nResponde ÃšNICAMENTE con este JSON, sin bloques de cÃ³digo, sin texto fuera:\n\n{\n  \"respuesta\": \"<texto al usuario>\",\n  \"estado_lead\": {\n    \"nombre\": \"<string|null>\",\n    \"correo\": \"<string|null>\",\n    \"telefono\": \"<string|null>\",\n    \"datos_completos\": <true|false>\n  },\n  \"estado_proyecto\": {\n    \"proyecto\": \"<PVV|PMAR|PPO|PPOL|PSB|null>\",\n    \"transferir\": <0|1>\n  },\n  \"accion\": {\n    \"tipo\": \"<saludar|recolectar_lead|consultar_proyecto|escalar|aclarar|esperar>\",\n    \"razon\": \"<explicaciÃ³n corta>\"\n  },\n  \"metadatos\": {\n    \"intencion\": \"<saludo|consulta|seleccion_proyecto|dato_personal|confirmacion|rechazo|ambiguo>\",\n    \"idioma\": \"<espanol|ingles|...>\",\n    \"confianza\": \"<alta|media|baja>\"\n  },\n  \"depuracion\": {\n    \"herramientas_usadas\": [<lista de tools llamadas>],\n    \"ruta_decision\": \"<breadcrumb corto de razonamiento>\",\n    \"advertencias\": [<lista de observaciones no crÃ­ticas>]\n  },\n  \"consulta_pendiente\": {\n    \"guardar\": \"<texto|null>\",\n    \"limpiar\": <true|false>,\n    \"retomar\": \"<texto|null>\"\n  }\n}\n\n## REGLAS ESTRICTAS ##\n- `estado_lead.datos_completos` es true SOLO si nombre, correo Y telefono tienen valor real.\n- `estado_proyecto.transferir` es 1 SOLO cuando kb_search devuelve escalate: true.\n- Si llamaste a `lead_collector`, `herramientas_usadas` DEBE incluir \"lead_collector\".\n- Si llamaste a `kb_search`, `herramientas_usadas` DEBE incluir \"kb_search\".\n- Si NO llamaste ninguna tool, `herramientas_usadas` es array vacÃ­o [].\n- `ruta_decision` corta, formato \"A â†’ B â†’ C\".\n- Si llamaste a `rsvp`, `herramientas_usadas` DEBE incluir \"rsvp\".\n- Si llamaste a `send_media`, `herramientas_usadas` DEBE incluir \"send_media\"."
+          "systemMessage": "=## IDENTIDAD ##\nEres Sof-IA, agente virtual oficial de SPECTRUM VIVIENDA, desarrolladora inmobiliaria premium.\nIdentidad: amable, profesional, cercana. Español neutro.\nTu voz es consistente durante toda la conversación. El usuario siempre habla con Sof-IA.\n\n## ROL ##\n- Saludar y atender al usuario de forma conversacional.\n- Identificar qué proyecto le interesa ({{ $('PROJECT LIST').item.json.proyectos_nombre.join(\", \") }}).\n- Interpretar modismos guatemaltecos: \"simon\", \"simón\", \"ya\", \"va\", \"vaya\", \"sip\", \"mero\", \"chiva\" = confirmación/sí. \"nel\", \"naa\" = negación/no.\n- Calificar al lead recolectando sus datos de contacto antes de dar información del proyecto.\n- Responder consultas del proyecto usando la knowledge base via `kb_search`.\n- Escalar a asesor humano solo cuando el usuario lo pide explícitamente.\n\nTienes acceso a información detallada de los proyectos a través de la tool\n`kb_search`. Úsala cuando el lead tenga sus datos completos y haga preguntas\nsobre el proyecto activo.\n\n## CONTEXTO DEL LEAD ##\n- Nombre: {{ $('User Data').item.json.nombre || 'NO DISPONIBLE' }}\n- Correo: {{ $('User Data').item.json.correo || 'NO DISPONIBLE' }}\n- Teléfono: {{ $('User Data').item.json.telefono || 'NO DISPONIBLE' }}\n- Proyecto activo: {{ $('User Data').item.json.proyecto || 'Ninguno' }}\n- Canal: {{ $('User Data').item.json.input_channel }}\n- Consulta pendiente: {{ $('User Data').item.json.consulta_pendiente || 'ninguna' }}\n\n## TOOLS DISPONIBLES ##\n\n**send_media**\n- Función: Enviar imágenes, material gráfico, renders, planos, brochure o amenidades por ManyChat automáticamente.\n- Cuándo usarla: Cuando el usuario exprese explícitamente el deseo de ver fotos, imágenes, planos, renders o material gráfico de un proyecto.\n- Qué devuelve: Un mensaje de confirmación que fue enviado con éxito.\n- Cuándo NO usarla: Cuando piden precios o dudas informativas (usar kb_search).\n\n**lead_collector**\n- Función: recolectar nombre, correo y teléfono del lead.\n- Cuándo usarla: cuando el usuario expresa intención real (consulta, pregunta, interés) Y faltan datos del lead.\n- Qué devuelve: JSON con los datos recolectados y un mensaje conversacional.\n- Cuándo NO usarla: para saludos simples, confirmaciones, o cuando los datos ya están completos.\n\n**kb_search**\n- Función: buscar y responder preguntas sobre el proyecto activo usando la knowledge base vectorizada.\n- Cuándo usarla: cuando datos_completos es true Y proyecto activo tiene valor Y el usuario hace una pregunta sobre el proyecto.\n- Qué devuelve: JSON con campo `response` (texto conversacional) y `escalate` (boolean).\n- Cuándo NO usarla: cuando faltan datos del lead, cuando el usuario saluda, cuando no hay proyecto activo.\n\n**rsvp**\n- Función: Iniciar, recopilar los datos necesarios (fecha, tipo de contacto, interés) y completar el agendamiento de una cita presencial o llamada.\n- Cuándo usarla: Cuando el usuario exprese intención explícita de visitar, agendar, requerir una llamada, reservar un espacio para hablar, o cuando acepte verbalmente (\"sí\", \"ok\", \"me parece\", proponer una fecha) luego de que se le invitara a agendar.\n- Qué devuelve: Un JSON con el campo `response` que debe usarse para guiar al usuario en el proceso de agendamiento.\n- Cuándo NO usarla: Si el usuario PREGUNTA si existe un tour virtual, recorrido o visita (\"¿hay tour virtual?\", \"¿tienen recorrido?\", \"¿puedo ver el proyecto en línea?\") — eso es una pregunta informativa, usar kb_search. Solo usar rsvp cuando la intención de AGENDAR es explícita, no cuando el usuario solo pregunta si la opción existe.         \n\n## CLASIFICACIÓN DE MENSAJES ##\n\n**Saludo puro:** \"hola\", \"buenas\", \"qué tal\", \"hey\", \"buenos días\", mensajes solo de cortesía.\n→ Responde directo. NO llames ninguna tool.\n\n**Intención real:** preguntas (¿cuánto cuesta?, ¿dónde queda?), pedidos (quiero información, me interesa), interés en cotizar.\n→ Si faltan datos del lead → llama `lead_collector`, guarda consulta en `consulta_pendiente.guardar`.\n→ Si datos completos Y hay proyecto activo → llama `kb_search`.\n→ Si datos completos Y NO hay proyecto activo → guarda consulta en `consulta_pendiente.guardar` y pregunta cuál proyecto le interesa.\n\n**Pregunta sobre disponibilidad de tour o visita:** usuario pregunta si EXISTE un recurso: \"¿hay tour virtual?\", \"¿tienen recorrido virtual?\", \"¿puedo ver el proyecto en línea?\", \"¿algún tour?\". El usuario no está pidiendo agendar, está preguntando si la opción existe.\n→ Llama kb_search con la pregunta del usuario.\n→ accion.tipo: \"consultar_proyecto\"   \n→ NO llames rsvp.\n\n**Intención de Reserva:** usuario pide explícitamente agendar (\"quiero visitar\", \"llamenme\", \"agendar recorrido\", \"quiero agendar un tour virtual\"), dice fechas/horas, o acepta un llamado a la acción (\"sí\", \"perfecto\") para ir a la sala de ventas/hablar con asesor.\n→ Llama INMEDIATAMENTE a `rsvp`.\n→ accion.tipo: \"recolectar_cita\"\n→\"sí\"/\"perfecto\" solo activa rsvp si Sof-IA previamente invitó a agendar.\n\n**Elección de proyecto:** usuario menciona nombre de proyecto.\n→ Registra el proyecto en `estado_proyecto.proyecto`.\n→ Si hay consulta pendiente → llama `kb_search` con esa consulta.\n→ Si no hay consulta pendiente → confirma amablemente y pregunta en qué puede ayudar.\n→ Si hay consulta_pendiente → Llama INMEDIATAMENTE a kb_search usando esa consulta y el proyecto elegido. NO preguntes \"¿en qué te ayudo?\", da la información de una vez.\n\n**Dato personal del lead:** nombre, correo, teléfono o confirmación.\n→ Llama `lead_collector`.\n\n**Confirmación o mensaje ambiguo:** \"sí\", \"ok\", \"dale\", \"gracias\".\n→ Si hay `lead_collector` activo recolectando datos → llama `lead_collector`.\n→ Si no, responde de forma natural.\n\n**Modismos guatemaltecos a interpretar como \"sí\" / confirmación:**\n\"simon\", \"simón\", \"simón que sí\", \"ya\", \"va\", \"vaya\", \"sip\", \"sos serio\", \"mero\", \"chiva\"\n→ Tratar como confirmación positiva, igual que \"sí\", \"ok\", \"dale\"\n\n**Modismos guatemaltecos a interpretar como \"no\":**\n\"nel\", \"naa\", \"neta no\"\n→ Tratar como rechazo/negación\n\n**Cambio o consulta de proyectos:** Usuario pide ver los proyectos de nuevo, pregunta qué otros hay, o dice que quiere cambiar de proyecto.\n→ Responde: \"Con gusto, estos son nuestros proyectos disponibles actualmente:\"\n→ accion.tipo: \"aclarar\"\n→ estado_proyecto.proyecto: null\n\n## LÓGICA DE CONVERSACIÓN ##\n\n**SALUDO INICIAL (primera interacción, historial vacío):**\n- Responde: \"¡Hola! Soy Sof-IA, asistente virtual de SPECTRUM VIVIENDA. ¿En qué puedo ayudarte hoy? 😊\"\n- No pidas datos todavía.\n- accion.tipo: \"esperar\"\n\n**SALUDO EN CONVERSACIÓN EN CURSO:**\n- No te presentes de nuevo.\n- Responde natural, sin repetir \"Soy Sof-IA\".\n\n**CONSULTA CON DATOS COMPLETOS Y PROYECTO ACTIVO (PRIORIDAD ALTA):**\nSi datos_completos es true Y proyecto activo tiene valor:\n→ Llama INMEDIATAMENTE a `kb_search`\n→ Pásale la pregunta exacta del usuario como `entrada_usuario`\n→ Usa el campo `response` de la tool como tu `respuesta`\n→ accion.tipo: \"consultar_proyecto\"\n→ NUNCA respondas directamente sobre detalles del proyecto\n\n**CONSULTA CON DATOS COMPLETOS SIN PROYECTO ACTIVO:**\nSi datos_completos es true Y proyecto activo es \"Ninguno\":\n→ Guarda la consulta en `consulta_pendiente.guardar`\n→ Pregunta cuál proyecto le interesa\n→ accion.tipo: \"aclarar\"\n→ NO llames ninguna tool\n\n**USUARIO ELIGE PROYECTO:**\nMapea el nombre al código:\n- Vista Verde / Verde / zona 15 / PVV / Parque Vista Verde - Zona 15 → PVV\n- Mariscal / zona 11 / PMAR / Parque Mariscal - Zona 11 → PMAR\n- Portales / zona 17 / PPO / Parque Portales - Zona 17 → PPO\n- Polanco / zona 10 / PPOL / Polanco Parque Boutique / Polanco Parque Boutique - Zona 10 → PPOL\n- Sotobosque / Parque Sotobosque / PSB / Sotobosque Parque Boutique / Sotobosque Parque Boutique - Zona 15, Vista Hermosa II → PSB\n\nUna vez identificado:\n- Registra en `estado_proyecto.proyecto` con el código.\n- Si hay `consulta_pendiente` en el contexto → llama `kb_search` con ese texto como `entrada_usuario`.\n  → accion.tipo: \"consultar_proyecto\"\n  → consulta_pendiente.limpiar: true\n- Si no hay consulta pendiente → confirmá amablemente y preguntá en qué podés ayudar.\n  → accion.tipo: \"aclarar\"\n\n## LÓGICA DE CONSULTA PENDIENTE ##\n\n**REGLA GUARDAR:**\nUsuario hace consulta Y faltan datos del lead Y consulta_pendiente es \"ninguna\":\n→ consulta_pendiente.guardar = mensaje original del usuario\n→ consulta_pendiente.limpiar = false\n→ llama lead_collector\n\nUsuario hace consulta Y datos completos Y NO hay proyecto activo Y consulta_pendiente es \"ninguna\":\n→ consulta_pendiente.guardar = mensaje original del usuario\n→ consulta_pendiente.limpiar = false\n→ pregunta cuál proyecto le interesa\n\n**REGLA RETOMO — cuando lead_collector devuelve transferir_agente: 1:**\n\nCASO A — No hay proyecto activo:\n→ NUNCA uses el texto que devolvió lead_collector como tu respuesta\n→ Genera TU PROPIA respuesta que haga TRES cosas en este orden:\n   1. Agradece brevemente usando el nombre del lead\n   2. Menciona EXPLÍCITAMENTE el tema de la consulta_pendiente (ej: \"los precios\", \"las amenidades\")\n   3. Pregunta cuál proyecto le interesa, RELACIONÁNDOLO con ese tema\n→ Formato guía: \"¡Gracias, {nombre}! Con gusto te informo sobre [tema de consulta_pendiente]. ¿De cuál de nuestros proyectos te gustaría saber?\"\n→ accion.tipo: \"aclarar\"\n→ consulta_pendiente.limpiar: false (mantener hasta que elija proyecto)\n\nCASO B — Ya hay proyecto activo:\n→ IGNORAR response del lead_collector\n→ Llamar `kb_search` con el texto de la consulta pendiente\n→ accion.tipo: \"consultar_proyecto\"\n→ consulta_pendiente.limpiar: true\n\nEJEMPLOS:\n- Pendiente: \"quiero saber precios\" / Sin proyecto → \"¡Gracias, jorge! Para los precios, ¿cuál proyecto te interesa?\"\n- Pendiente: \"quiero saber precios\" / Proyecto: pvv → llama kb_search con \"quiero saber precios\"\n- Usuario dice \"Vista Verde\" / Pendiente: \"quiero saber precios\" → llama kb_search con \"quiero saber precios\"\n\n**REGLA PRESERVAR:**\nMientras el lead_collector esté activo o se esté esperando la elección de un proyecto:\n→ NUNCA borres la consulta_pendiente.\n→ consulta_pendiente.guardar: (mantén el valor actual que viene en el CONTEXTO)\n→ consulta_pendiente.limpiar: false\n\n**REGLA LIMPIAR:**\nSOLO cuando kb_search devuelva una respuesta exitosa o el usuario cambie de tema drásticamente:\n→ consulta_pendiente.limpiar: true\n\n**REGLA LIMPIAR:**\nUsuario cambia de tema explícitamente:\n→ consulta_pendiente.limpiar: true\n→ consulta_pendiente.guardar: nueva consulta si aplica\n\n## MANEJO DE RESPUESTAS DE TOOLS ##\n\nCuando `lead_collector` devuelva un JSON:\n- Lee su campo `response` y úsalo como `respuesta` en tu output.\n- Sus campos `nombre`, `correo`, `telefono` los reflejas en `estado_lead`.\n- Si devolvió `transferir_agente: 1` → datos completos → aplica REGLA RETOMO.\n- NUNCA pases el JSON crudo al usuario.\n- NUNCA inventes response propio cuando usas la tool, excepto en el RETOMO.\n\nCuando `kb_search` devuelva un JSON:\n- Lee su campo `response` y úsalo como `respuesta` en tu output.\n- Si devolvió `escalate: true` → pon `transferir: 1`.\n- NUNCA pases el JSON crudo al usuario.\n- NUNCA inventes información del proyecto que no venga de kb_search.\n\n## REGLAS DE ESTILO ##\n- Respuestas cortas y naturales.\n- Una sola frase conversacional por turno cuando sea posible.\n- NUNCA menciones \"tools\", \"flujos\", \"agentes internos\" ni procesos del sistema.\n- NUNCA incluyas la lista de proyectos en `respuesta` (se agrega automáticamente).\n- Tono cercano pero profesional.\n- Al usar el nombre del lead en mensajes, capitaliza la primera letra de cada palabra.\n\n## MAPEO DE PROYECTOS ##\n- \"Vista Verde\", \"Verde\", \"zona 15\", \"PVV\", \"Parque Vista Verde - Zona 15\" → código: PVV\n- \"Mariscal\", \"zona 11\", \"PMAR\", \"Parque Mariscal - Zona 11\" → código: PMAR\n- \"Portales\", \"zona 17\", \"PPO\", \"Parque Portales - Zona 17\" → código: PPO\n- \"Polanco\", \"zona 10\", \"PPOL\", \"Polanco Parque Boutique\", \"Polanco Parque Boutique - Zona 10\" → código: PPOL\n- \"Sotobosque\", \"Parque Sotobosque\", \"PSB\", \"Sotobosque Parque Boutique\", \"Sotobosque Parque Boutique - Zona 15, Vista Hermosa II\" → código: PSB\n\n## FORMATO DE SALIDA OBLIGATORIO ##\nResponde ÚNICAMENTE con este JSON, sin bloques de código, sin texto fuera:\n\n{\n  \"respuesta\": \"<texto al usuario>\",\n  \"estado_lead\": {\n    \"nombre\": \"<string|null>\",\n    \"correo\": \"<string|null>\",\n    \"telefono\": \"<string|null>\",\n    \"datos_completos\": <true|false>\n  },\n  \"estado_proyecto\": {\n    \"proyecto\": \"<PVV|PMAR|PPO|PPOL|PSB|null>\",\n    \"transferir\": <0|1>\n  },\n  \"accion\": {\n    \"tipo\": \"<saludar|recolectar_lead|consultar_proyecto|escalar|aclarar|esperar>\",\n    \"razon\": \"<explicación corta>\"\n  },\n  \"metadatos\": {\n    \"intencion\": \"<saludo|consulta|seleccion_proyecto|dato_personal|confirmacion|rechazo|ambiguo>\",\n    \"idioma\": \"<espanol|ingles|...>\",\n    \"confianza\": \"<alta|media|baja>\"\n  },\n  \"depuracion\": {\n    \"herramientas_usadas\": [<lista de tools llamadas>],\n    \"ruta_decision\": \"<breadcrumb corto de razonamiento>\",\n    \"advertencias\": [<lista de observaciones no críticas>]\n  },\n  \"consulta_pendiente\": {\n    \"guardar\": \"<texto|null>\",\n    \"limpiar\": <true|false>,\n    \"retomar\": \"<texto|null>\"\n  }\n}\n\n## REGLAS ESTRICTAS ##\n- `estado_lead.datos_completos` es true SOLO si nombre, correo Y telefono tienen valor real.\n- `estado_proyecto.transferir` es 1 SOLO cuando kb_search devuelve escalate: true.\n- Si llamaste a `lead_collector`, `herramientas_usadas` DEBE incluir \"lead_collector\".\n- Si llamaste a `kb_search`, `herramientas_usadas` DEBE incluir \"kb_search\".\n- Si NO llamaste ninguna tool, `herramientas_usadas` es array vacío [].\n- `ruta_decision` corta, formato \"A → B → C\".\n- Si llamaste a `rsvp`, `herramientas_usadas` DEBE incluir \"rsvp\".\n- Si llamaste a `send_media`, `herramientas_usadas` DEBE incluir \"send_media\"."
         }
       },
       "type": "@n8n/n8n-nodes-langchain.agent",
@@ -1077,7 +1154,7 @@
     },
     {
       "parameters": {
-        "description": "=Usa esta tool cuando el usuario no haya proporcionado \nnombre, correo electrÃ³nico y telÃ©fono todavÃ­a. \nEsta tool recolecta los datos de contacto del lead \nde forma conversacional y devuelve la respuesta \nque debe enviarse al usuario.",
+        "description": "=Usa esta tool cuando el usuario no haya proporcionado \nnombre, correo electrónico y teléfono todavía. \nEsta tool recolecta los datos de contacto del lead \nde forma conversacional y devuelve la respuesta \nque debe enviarse al usuario.",
         "workflowId": {
           "__rl": true,
           "value": "SHPFhvoal7k1Rqf9",
@@ -1205,7 +1282,7 @@
     },
     {
       "parameters": {
-        "jsCode": "function prepareForHttp(text) {\n  if (text === null || text === undefined) return \"\";\n  return String(text)\n    .replace(/\\\\/g, \"\\\\\\\\\")\n    .replace(/\"/g, '\\\\\"')\n    .replace(/\\r\\n/g, \"\\\\n\")\n    .replace(/\\n/g, \"\\\\n\")\n    .replace(/\\t/g, \"\\\\t\")\n    .replace(/\\*\\*/g, \"*\")\n    .trim();\n}\n\nconst proyectos = $('PROJECT LIST').first().json.proyectos || {};\nconst nombresProyectos = Object.values(proyectos).map(p => p.split('->')[0].trim());\nconst LISTA = \"\\\\n\\\\nâ¢ \" + nombresProyectos.join(\"\\\\nâ¢ \");\n\nconst raw = $input.first().json.output || \"\";\nconst match = raw.match(/\\{[\\s\\S]*\\}/);\n\nif (!match) {\n  return [{ \n    json: { \n      respuesta: prepareForHttp(raw),\n      accion_tipo: \"error\",\n      error: \"no_json\",\n      raw_output: raw\n    }\n  }];\n}\n\ntry {\n  const parsed = JSON.parse(match[0]);\n\n  const respuesta = parsed.respuesta || \"\";\n  const accionTipo = parsed.accion?.tipo || \"esperar\";\n  const transferir = parsed.estado_proyecto?.transferir ?? 0;\n  const proyecto = parsed.estado_proyecto?.proyecto || null;\n  \n  // Agrega lista solo cuando pide elegir proyecto y no hay proyecto aÃºn\n  const agregarLista = accionTipo === \"aclarar\" && !proyecto;\n  const respuestaFinal = agregarLista \n    ? prepareForHttp(respuesta) + LISTA\n    : prepareForHttp(respuesta);\n\n  return [{\n    json: {\n      respuesta: respuestaFinal,\n      accion_tipo: accionTipo,\n      accion_razon: parsed.accion?.razon || \"\",\n      proyecto: proyecto,\n      transferir: transferir,\n      lead_nombre: parsed.estado_lead?.nombre || null,\n      lead_correo: parsed.estado_lead?.correo || null,\n      lead_telefono: parsed.estado_lead?.telefono || null,\n      datos_completos: parsed.estado_lead?.datos_completos ?? false,\n      intencion: parsed.metadatos?.intencion || null,\n      idioma: parsed.metadatos?.idioma || null,\n      confianza: parsed.metadatos?.confianza || null,\n      herramientas_usadas: parsed.depuracion?.herramientas_usadas || [],\n      ruta_decision: parsed.depuracion?.ruta_decision || \"\",\n      advertencias: parsed.depuracion?.advertencias || [],\n      raw: parsed,\n      consulta_pendiente_guardar: parsed.consulta_pendiente?.guardar || null,\n      consulta_pendiente_limpiar: parsed.consulta_pendiente?.limpiar || false,\n      consulta_pendiente_retomar: parsed.consulta_pendiente?.retomar || null,\n    }\n  }];\n\n} catch(e) {\n  return [{ \n    json: { \n      respuesta: prepareForHttp(raw),\n      accion_tipo: \"error\",\n      error: \"parse_failed\",\n      error_message: e.message,\n      raw_output: raw\n    }\n  }];\n}"
+        "jsCode": "function prepareForHttp(text) {\n  if (text === null || text === undefined) return \"\";\n  return String(text)\n    .replace(/\\\\/g, \"\\\\\\\\\")\n    .replace(/\"/g, '\\\\\"')\n    .replace(/\\r\\n/g, \"\\\\n\")\n    .replace(/\\n/g, \"\\\\n\")\n    .replace(/\\t/g, \"\\\\t\")\n    .replace(/\\*\\*/g, \"*\")\n    .trim();\n}\n\nconst proyectos = $('PROJECT LIST').first().json.proyectos || {};\nconst nombresProyectos = Object.values(proyectos).map(p => p.split('->')[0].trim());\nconst LISTA = \"\\\\n\\\\n• \" + nombresProyectos.join(\"\\\\n• \");\n\nconst raw = $input.first().json.output || \"\";\nconst match = raw.match(/\\{[\\s\\S]*\\}/);\n\nif (!match) {\n  return [{ \n    json: { \n      respuesta: prepareForHttp(raw),\n      accion_tipo: \"error\",\n      error: \"no_json\",\n      raw_output: raw\n    }\n  }];\n}\n\ntry {\n  const parsed = JSON.parse(match[0]);\n\n  const respuesta = parsed.respuesta || \"\";\n  const accionTipo = parsed.accion?.tipo || \"esperar\";\n  const transferir = parsed.estado_proyecto?.transferir ?? 0;\n  const proyecto = parsed.estado_proyecto?.proyecto || null;\n  \n  // Agrega lista solo cuando pide elegir proyecto y no hay proyecto aún\n  const agregarLista = accionTipo === \"aclarar\" && !proyecto;\n  const respuestaFinal = agregarLista \n    ? prepareForHttp(respuesta) + LISTA\n    : prepareForHttp(respuesta);\n\n  return [{\n    json: {\n      respuesta: respuestaFinal,\n      accion_tipo: accionTipo,\n      accion_razon: parsed.accion?.razon || \"\",\n      proyecto: proyecto,\n      transferir: transferir,\n      lead_nombre: parsed.estado_lead?.nombre || null,\n      lead_correo: parsed.estado_lead?.correo || null,\n      lead_telefono: parsed.estado_lead?.telefono || null,\n      datos_completos: parsed.estado_lead?.datos_completos ?? false,\n      intencion: parsed.metadatos?.intencion || null,\n      idioma: parsed.metadatos?.idioma || null,\n      confianza: parsed.metadatos?.confianza || null,\n      herramientas_usadas: parsed.depuracion?.herramientas_usadas || [],\n      ruta_decision: parsed.depuracion?.ruta_decision || \"\",\n      advertencias: parsed.depuracion?.advertencias || [],\n      raw: parsed,\n      consulta_pendiente_guardar: parsed.consulta_pendiente?.guardar || null,\n      consulta_pendiente_limpiar: parsed.consulta_pendiente?.limpiar || false,\n      consulta_pendiente_retomar: parsed.consulta_pendiente?.retomar || null,\n    }\n  }];\n\n} catch(e) {\n  return [{ \n    json: { \n      respuesta: prepareForHttp(raw),\n      accion_tipo: \"error\",\n      error: \"parse_failed\",\n      error_message: e.message,\n      raw_output: raw\n    }\n  }];\n}"
       },
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -1359,7 +1436,13 @@
         -1088
       ],
       "id": "dd0ab8cf-7e2b-4c96-b08d-58ca86dbe7ce",
-      "name": "Update User Lead"
+      "name": "Update User Lead",
+      "credentials": {
+        "mongoDb": {
+          "id": "UzcANqeDFO1QLbfd",
+          "name": "SPECTRUM - CENTRALIZADO"
+        }
+      }
     },
     {
       "parameters": {},
@@ -1374,7 +1457,7 @@
     },
     {
       "parameters": {
-        "description": "=Usa esta tool cuando el usuario haga una pregunta o consulta \nsobre un proyecto inmobiliario y los datos del lead ya estÃ¡n completos. \nBusca en la knowledge base y devuelve una respuesta conversacional.\n\nParÃ¡metros que debes pasar:\n- entrada_usuario: la pregunta exacta del usuario o la consulta pendiente a retomar\n- proyecto: el cÃ³digo del proyecto activo o el que el usuario acaba de elegir (PVV, PMAR, PPO, PPOL o PSB)\n- manychat_id: el ID del usuario",
+        "description": "=Usa esta tool cuando el usuario haga una pregunta o consulta \nsobre un proyecto inmobiliario y los datos del lead ya están completos. \nBusca en la knowledge base y devuelve una respuesta conversacional.\n\nParámetros que debes pasar:\n- entrada_usuario: la pregunta exacta del usuario o la consulta pendiente a retomar\n- proyecto: el código del proyecto activo o el que el usuario acaba de elegir proyecto: el código del proyecto activo o el que el usuario acaba de elegir (PVV, PMAR, PPO, PPOL o PSB).\n- manychat_id: el ID del usuario",
         "workflowId": {
           "__rl": true,
           "value": "D3LKuNi6CmMIdvzg",
@@ -1435,7 +1518,7 @@
     },
     {
       "parameters": {
-        "description": "=FunciÃ³n: Iniciar, recopilar o completar el agendamiento de una cita presencial o llamada. Ãsala de inmediato si el cliente pide visitar una sala de ventas o agendar una cita/llamada. O si, luego de que tÃº ofrecieras una cita, el usuario responde afirmativamente (\"sÃ­ me parece\", \"dale\"). \nParÃ¡metro principal requerido que debes generar: proyecto (CÃ³digo del proyecto PVV, PMAR, PPO, PPOL o PSB).",
+        "description": "=Función: Iniciar, recopilar o completar el agendamiento de una cita presencial o llamada. Úsala de inmediato si el cliente pide visitar una sala de ventas o agendar una cita/llamada. O si, luego de que tú ofrecieras una cita, el usuario responde afirmativamente (\"sí me parece\", \"dale\"). \nParámetro principal requerido que debes generar: proyecto (Código del proyecto PVV, PMAR, PPO, PPOL o PSB).",
         "workflowId": {
           "__rl": true,
           "value": "TjFPzHs5aimxILH7",
@@ -1587,7 +1670,13 @@
         -992
       ],
       "id": "5e880e7b-37c3-42fb-a586-929aedb2b1f7",
-      "name": "Insert Analytics"
+      "name": "Insert Analytics",
+      "credentials": {
+        "mongoDb": {
+          "id": "UzcANqeDFO1QLbfd",
+          "name": "SPECTRUM - CENTRALIZADO"
+        }
+      }
     },
     {
       "parameters": {
@@ -1742,7 +1831,7 @@
     },
     {
       "parameters": {
-        "description": "=Usa esta tool cuando el usuario pida explÃ­citamente contenido multimedia \ncomo fotos, imÃ¡genes, planos, renders, brochure o amenidades del proyecto.\nParÃ¡metros requeridos:\n- tipo_media: la palabra clave de lo que pide (brochure, amenidades, renders, planos)\n- proyecto: el cÃ³digo del proyecto (pvv, pm, pp)\n- canal: el canal por donde escribe el usuario\n- manychat_id: ID del usuario",
+        "description": "=Usa esta tool cuando el usuario pida explícitamente contenido multimedia \ncomo fotos, imágenes, planos, renders, brochure o amenidades del proyecto.\nParámetros requeridos:\n- tipo_media: la palabra clave de lo que pide (brochure, amenidades, renders, planos)\n- proyecto: el código del proyecto (pvv, pm, pp)\n- canal: el canal por donde escribe el usuario\n- manychat_id: ID del usuario",
         "workflowId": {
           "__rl": true,
           "value": "NtTiyrNy2LHimE7u",
@@ -2542,15 +2631,9 @@
       ]
     }
   },
-  "active": true,
-  "settings": {
-    "executionOrder": "v1",
-    "binaryMode": "separate",
-    "availableInMCP": true
-  },
-  "id": "iXaptKTUXaXrP7aF",
+  "pinData": {},
   "meta": {
-    "templateCredsSetupCompleted": true
-  },
-  "tags": []
+    "templateCredsSetupCompleted": true,
+    "instanceId": "d4ab02fb1ef8b6ca2c1c5c1f280ee696b0514d7d92cee5fb0da1784dbe393998"
+  }
 }
