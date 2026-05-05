@@ -25,11 +25,12 @@ Arquitectura de agente conversacional modular para SPECTRUM VIVIENDA. Un orquest
 > Los archivos locales fueron sincronizados vía MCP desde n8n el 2026-05-01. Cada archivo contiene el JSON idéntico al servidor.
 
 ### 1. 🧠 Orquestador Central — `AGENT PRINCIPAL.json`
-**Estado: ✅ Activo en n8n** | ID: `iXaptKTUXaXrP7aF` | 59 nodos | Última mod: 2026-05-04
+**Estado: ✅ Activo en n8n** | ID: `iXaptKTUXaXrP7aF` | 59 nodos | Última mod: 2026-05-05
 
 - Clasifica intenciones y delega a sub-workflows (tools).
 - Mapea nombres de proyectos a códigos oficiales en mayúsculas (`PVV`, `PPOL`, etc.).
-- ⚠️ **Pendiente aplicar en n8n**: Corrección de ambigüedad Zona 15 (PVV vs PSB) + formato de nombres con zona.
+- ✅ **Completado**: Lógica de notificación única por transición de estado y reseteo de flag `conversation_analysis`.
+- ✅ **Completado**: Corrección de ambigüedad Zona 15 (PVV vs PSB).
 
 ### 2. 👤 Captador de Leads — `Lead Collector.json`
 **Estado: ✅ Activo en n8n** | ID: `SHPFhvoal7k1Rqf9` | 15 nodos | Última mod: 2026-05-04
@@ -197,3 +198,4 @@ Los 7 workflows están sincronizados desde n8n vía MCP al repositorio local (20
 
 ---
 > **Nota de Seguridad:** Se respeta la prohibición de modificar la configuración del nodo SOAP API fuera de la interfaz de n8n por parte del usuario.
+ API fuera de la interfaz de n8n por parte del usuario.

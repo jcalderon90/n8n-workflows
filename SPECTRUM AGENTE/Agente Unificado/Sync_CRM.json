@@ -1,5 +1,4 @@
 {
-  "name": "Sync_CRM",
   "nodes": [
     {
       "parameters": {
@@ -101,7 +100,13 @@
         -336
       ],
       "id": "aadc8604-e273-45cc-8003-7ee94212303b",
-      "name": "OpenAI Chat Model"
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "mwtQQFLfYjj6JZcg",
+          "name": "Spectrum - Parque Verde"
+        }
+      }
     },
     {
       "parameters": {
@@ -117,7 +122,13 @@
       ],
       "id": "b21bc5bd-7257-4818-804d-62837956c3fd",
       "name": "Find Appointment",
-      "alwaysOutputData": true
+      "alwaysOutputData": true,
+      "credentials": {
+        "mongoDb": {
+          "id": "UzcANqeDFO1QLbfd",
+          "name": "SPECTRUM - CENTRALIZADO"
+        }
+      }
     },
     {
       "parameters": {
@@ -162,12 +173,12 @@
           "attributes": [
             {
               "name": "Resumen",
-              "description": "=Resumen breve (mÃ¡ximo 3 oraciones) del desarrollo de la conversaciÃ³n: quÃ© preguntÃ³ el cliente, quÃ© informaciÃ³n se le dio y en quÃ© punto quedÃ³ la conversaciÃ³n.",
+              "description": "=Resumen breve (máximo 3 oraciones) del desarrollo de la conversación: qué preguntó el cliente, qué información se le dio y en qué punto quedó la conversación.",
               "required": true
             },
             {
               "name": "Dudas",
-              "description": "=Lista numerada de todas las preguntas o dudas que expresÃ³ el cliente durante la conversaciÃ³n. Si no hay dudas explÃ­citas, escribe 'Ninguna'. Formato: 1. ... 2. ... 3. ...",
+              "description": "=Lista numerada de todas las preguntas o dudas que expresó el cliente durante la conversación. Si no hay dudas explícitas, escribe 'Ninguna'. Formato: 1. ... 2. ... 3. ...",
               "required": true
             }
           ]
@@ -315,7 +326,7 @@
       "parameters": {
         "collection": "users",
         "options": {},
-        "query": "={\n  \"CRM_Data\": { \"$exists\": true },\n  \"conversation_analysis\": { \"$ne\": true },\n  \"last_interaction\": { \"$lt\": \"{{ $json.cutoff }}\" }\n}"
+        "query": "={\n  \"datos_completos\": true,\n  \"conversation_analysis\": { \"$ne\": true },\n  \"last_interaction\": { \"$lt\": \"{{ $json.cutoff }}\" }\n}"
       },
       "type": "n8n-nodes-base.mongoDb",
       "typeVersion": 1.2,
@@ -325,7 +336,13 @@
       ],
       "id": "3d5d94a3-1414-4229-b19c-3c74ba65e1b5",
       "name": "Find Users to Sync",
-      "alwaysOutputData": false
+      "alwaysOutputData": false,
+      "credentials": {
+        "mongoDb": {
+          "id": "UzcANqeDFO1QLbfd",
+          "name": "SPECTRUM - CENTRALIZADO"
+        }
+      }
     },
     {
       "parameters": {
@@ -341,7 +358,13 @@
       ],
       "id": "aedbed79-402c-4261-bbad-0da96b247b07",
       "name": "Chat Lead",
-      "alwaysOutputData": true
+      "alwaysOutputData": true,
+      "credentials": {
+        "mongoDb": {
+          "id": "UzcANqeDFO1QLbfd",
+          "name": "SPECTRUM - CENTRALIZADO"
+        }
+      }
     },
     {
       "parameters": {
@@ -357,7 +380,13 @@
       ],
       "id": "9d9974b4-8af5-48b5-8ec1-f72cb1673f06",
       "name": "Chat RSVP",
-      "alwaysOutputData": true
+      "alwaysOutputData": true,
+      "credentials": {
+        "mongoDb": {
+          "id": "UzcANqeDFO1QLbfd",
+          "name": "SPECTRUM - CENTRALIZADO"
+        }
+      }
     },
     {
       "parameters": {
@@ -373,7 +402,13 @@
       ],
       "id": "6183b44c-c31c-432e-b312-458832ab6e1e",
       "name": "Chat",
-      "alwaysOutputData": true
+      "alwaysOutputData": true,
+      "credentials": {
+        "mongoDb": {
+          "id": "UzcANqeDFO1QLbfd",
+          "name": "SPECTRUM - CENTRALIZADO"
+        }
+      }
     },
     {
       "parameters": {
@@ -466,22 +501,22 @@
           "attributes": [
             {
               "name": "funnel_stage",
-              "description": "=Etapa del funnel: 'nuevo' (solo saludÃ³), 'identificado' (dio datos), 'proyecto_activo' (eligiÃ³ proyecto), 'consultando' (hizo preguntas), 'en_rsvp' (iniciÃ³ agendamiento), 'cita_confirmada' (confirmÃ³ cita), 'escalado' (pidiÃ³ humano)",
+              "description": "=Etapa del funnel: 'nuevo' (solo saludó), 'identificado' (dio datos), 'proyecto_activo' (eligió proyecto), 'consultando' (hizo preguntas), 'en_rsvp' (inició agendamiento), 'cita_confirmada' (confirmó cita), 'escalado' (pidió humano)",
               "required": true
             },
             {
               "name": "intencion_detectada",
-              "description": "=En una frase corta, quÃ© buscaba el usuario en esta conversaciÃ³n",
+              "description": "=En una frase corta, qué buscaba el usuario en esta conversación",
               "required": true
             },
             {
               "name": "tools_correctas",
-              "description": "=Â¿El agente usÃ³ las tools correctas en el momento correcto? Describe brevemente si lead_collector, kb_search, rsvp y send_media se usaron apropiadamente. Si no se usÃ³ alguna tool necesaria, indÃ­calo.",
+              "description": "=¿El agente usó las tools correctas en el momento correcto? Describe brevemente si lead_collector, kb_search, rsvp y send_media se usaron apropiadamente. Si no se usó alguna tool necesaria, indícalo.",
               "required": true
             },
             {
               "name": "errores_detectados",
-              "description": "=Lista numerada de errores en la lÃ³gica del agente: respuestas incorrectas, loops, confusiÃ³n de contexto, preguntas innecesarias. Escribe 'Ninguno' si no hay errores.",
+              "description": "=Lista numerada de errores en la lógica del agente: respuestas incorrectas, loops, confusión de contexto, preguntas innecesarias. Escribe 'Ninguno' si no hay errores.",
               "required": true
             },
             {
@@ -491,17 +526,17 @@
             },
             {
               "name": "tono_agente",
-              "description": "=EvaluaciÃ³n del tono: 'natural y correcto', 'muy formal', 'robotico', 'confuso', 'repetitivo'",
+              "description": "=Evaluación del tono: 'natural y correcto', 'muy formal', 'robotico', 'confuso', 'repetitivo'",
               "required": true
             },
             {
               "name": "puntuacion",
-              "description": "=PuntuaciÃ³n del 1 al 10. Criterios: correcta identificaciÃ³n de intenciÃ³n (20%), uso apropiado de tools (20%), tono natural (20%), avance en el funnel (20%), ausencia de errores (20%).",
+              "description": "=Puntuación del 1 al 10. Criterios: correcta identificación de intención (20%), uso apropiado de tools (20%), tono natural (20%), avance en el funnel (20%), ausencia de errores (20%).",
               "required": true
             },
             {
               "name": "recomendacion",
-              "description": "=Una recomendaciÃ³n concreta y accionable para el desarrollador sobre cÃ³mo mejorar el comportamiento del agente en conversaciones similares a esta.",
+              "description": "=Una recomendación concreta y accionable para el desarrollador sobre cómo mejorar el comportamiento del agente en conversaciones similares a esta.",
               "required": true
             }
           ]
@@ -537,7 +572,13 @@
         -320
       ],
       "id": "1076b4dc-a83c-4db6-bf23-013d676330a0",
-      "name": "OpenAI Quality Model"
+      "name": "OpenAI Quality Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "mwtQQFLfYjj6JZcg",
+          "name": "Spectrum - Parque Verde"
+        }
+      }
     },
     {
       "parameters": {
@@ -568,7 +609,13 @@
         -544
       ],
       "id": "9f18ca16-7516-4f19-8b4d-1348a1dccb5e",
-      "name": "Insert quality_logs"
+      "name": "Insert quality_logs",
+      "credentials": {
+        "mongoDb": {
+          "id": "UzcANqeDFO1QLbfd",
+          "name": "SPECTRUM - CENTRALIZADO"
+        }
+      }
     },
     {
       "parameters": {
@@ -585,7 +632,13 @@
         -544
       ],
       "id": "dfff4e07-517e-47d6-90e1-2861487e8e0f",
-      "name": "Update Conversation Analysis"
+      "name": "Update Conversation Analysis",
+      "credentials": {
+        "mongoDb": {
+          "id": "UzcANqeDFO1QLbfd",
+          "name": "SPECTRUM - CENTRALIZADO"
+        }
+      }
     },
     {
       "parameters": {
@@ -935,15 +988,9 @@
       ]
     }
   },
-  "active": false,
-  "settings": {
-    "executionOrder": "v1",
-    "binaryMode": "separate",
-    "availableInMCP": true
-  },
-  "id": "TTVNRX38pPoPmK2X",
+  "pinData": {},
   "meta": {
-    "templateCredsSetupCompleted": true
-  },
-  "tags": []
+    "templateCredsSetupCompleted": true,
+    "instanceId": "d4ab02fb1ef8b6ca2c1c5c1f280ee696b0514d7d92cee5fb0da1784dbe393998"
+  }
 }

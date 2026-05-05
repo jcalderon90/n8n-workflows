@@ -12,7 +12,12 @@
       "Bash(awk '{print $5, $9}')",
       "Bash(awk '{printf \"%-40s %s\\\\n\", $9, $5}')",
       "Bash(grep \"\\\\.json$\")",
-      "Skill(update-config)"
+      "Skill(update-config)",
+      "Bash(chmod +x *)",
+      "Bash(./scripts/list-nodes.sh \"AGENT PRINCIPAL.json\")",
+      "Bash(./scripts/search-nodes.sh \"AGENT PRINCIPAL.json\" \"consulta_pendiente\")",
+      "Bash(brew install *)",
+      "Bash(./scripts/get-node.sh \"AGENT PRINCIPAL.json\" \"Prepare Update\")"
     ]
   },
   "enableAllProjectMcpServers": true,

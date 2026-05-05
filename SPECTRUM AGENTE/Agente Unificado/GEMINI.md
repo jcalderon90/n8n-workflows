@@ -1,6 +1,6 @@
-# Spectrum Agente Unificado — Claude Code Guide
+# Spectrum Agente Unificado — Gemini CLI Guide
 
-Este archivo es leído automáticamente por Claude Code. Contiene las instrucciones para trabajar correctamente en este proyecto de automatización inmobiliaria.
+Este archivo es leído automáticamente por Gemini CLI. Contiene las instrucciones para trabajar correctamente en este proyecto de automatización inmobiliaria.
 
 ---
 
