@@ -390,20 +390,6 @@
         "respuesta": "No. La promesa de compraventa establece claramente que el comprador no puede ceder los derechos a terceras personas antes de escriturar. La misma parte compradora debe formalizar la escritura pública."
     },
     {
-        "id": "pm_proceso_iusi",
-        "proyecto": "PMAR",
-        "categoria": "proceso_compra",
-        "tags": [
-            "iusi",
-            "impuesto",
-            "inmueble",
-            "municipalidad",
-            "obligatorio"
-        ],
-        "pregunta": "¿Qué es el IUSI?",
-        "respuesta": "El IUSI (Impuesto Único Sobre Inmuebles) es un pago obligatorio en Guatemala por la tenencia de bienes inmuebles. Se destina a las municipalidades y a la administración pública para financiar servicios públicos e infraestructura."
-    },
-    {
         "id": "pm_proceso_escrituracion",
         "proyecto": "PMAR",
         "categoria": "proceso_compra",

@@ -1,3 +1,4 @@
+
 [
   {
     "id": "ppol_medidas_balcon",
@@ -173,7 +174,7 @@
     "categoria": "modelos",
     "tags": ["penthouse", "ultimo nivel", "premium", "lujo", "exclusivo"],
     "pregunta": "¿Polanco tiene Penthouse? ¿Cómo son?",
-    "respuesta": "Sí, Polanco cuenta con unidades Penthouse de lujo en sus niveles superiores. Para conocer los detalles específicos de metraje, distribución, precio y disponibilidad del Penthouse, te invitamos a contactar directamente con tu asesor comercial o visitar nuestro showroom Black Box en Oakland Place, Sótano 3."
+    "respuesta": "Sí, Polanco cuenta con unidades Penthouse de lujo en sus niveles superiores. Para conocer los detalles específicos de metraje, distribución, precio y disponibilidad del Penthouse, te invitamos a contactar directamente con tu asesor comercial o visitar nuestro Centro de Experiencia en Oakland Place, Sótano 2."
   },
   {
     "id": "pl_precio_general",
@@ -181,15 +182,15 @@
     "categoria": "precios",
     "tags": ["precio", "costo", "cuanto cuesta", "valor", "desde cuanto", "rango"],
     "pregunta": "¿Cuánto cuesta un apartamento en Polanco?",
-    "respuesta": "Los precios en Polanco inician desde Q1,044,000 (aproximadamente US$145,000), dependiendo del modelo. Para conocer el precio exacto por modelo y unidades disponibles, contacta con tu asesor comercial o visita nuestro showroom Black Box en Oakland Place, Sótano 3."
+    "respuesta": "Los precios en Polanco inician desde Q1,044,000, dependiendo del modelo. Para conocer el precio exacto por modelo y unidades disponibles, contacta con tu asesor comercial o visita nuestro Centro de Experiencia en Oakland Place, Sótano 2."
   },
   {
     "id": "pl_precio_reserva",
     "proyecto": "PPOL",
     "categoria": "precios",
-    "tags": ["reserva", "costo reserva", "apartar", "bloquear", "2000 dolares"],
+    "tags": ["reserva", "costo reserva", "apartar", "bloquear", "15000 quetzales"],
     "pregunta": "¿Cuánto cuesta reservar un apartamento en Polanco?",
-    "respuesta": "El costo de reserva es US$2,000. Este monto bloquea la unidad elegida para que no pueda ser ofrecida a otro cliente. Para realizarla, visita nuestro showroom Black Box en Oakland Place, Sótano 3, o solicítalo directamente con tu asesor comercial. La reserva debe estar debidamente firmada para ser válida."
+    "respuesta": "El costo de reserva es de Q15,000 (únicamente se aceptan quetzales). Este monto bloquea la unidad elegida para que no pueda ser ofrecida a otro cliente. Para realizarla, puedes visitar nuestro Centro de Experiencia en Oakland Place, Sótano 2, o solicitarlo directamente con tu asesor comercial. La reserva debe estar debidamente firmada para ser válida."
   },
   {
     "id": "pl_financiamiento_general",
@@ -213,7 +214,7 @@
     "categoria": "proceso_compra",
     "tags": ["proceso compra", "pasos", "como comprar", "steps", "compraventa", "como adquirir"],
     "pregunta": "¿Cuál es el proceso para comprar un apartamento en Polanco?",
-    "respuesta": "El proceso tiene 5 pasos:\n1) Reserva (US$2,000 para bloquear la unidad elegida).\n2) Acuerdo de Compraventa (documento que establece las condiciones de venta, firmado por el comprador y el asesor).\n3) Formulario de Autorización de Referencias (investigación crediticia en InforNet, EQUIFAX, TransUnion y WORLDCHECKONE).\n4) Promesa de Compraventa (contrato legal con legalización de firmas ante notario).\n5) Escritura Pública de Compraventa (instrumento final de transferencia de propiedad)."
+    "respuesta": "El proceso tiene 5 pasos:\n1) Reserva (Q15,000 para bloquear la unidad elegida).\n2) Acuerdo de Compraventa (documento que establece las condiciones de venta, firmado por el comprador y el asesor).\n3) Formulario de Autorización de Referencias (investigación crediticia en InforNet, EQUIFAX, TransUnion y WORLDCHECKONE).\n4) Promesa de Compraventa (contrato legal con legalización de firmas ante notario).\n5) Escritura Pública de Compraventa (instrumento final de transferencia de propiedad)."
   },
   {
     "id": "pl_proceso_reserva_como",
@@ -221,7 +222,7 @@
     "categoria": "proceso_compra",
     "tags": ["como reservar", "reserva", "apartar unidad", "proceso reserva", "formulario"],
     "pregunta": "¿Cómo puedo realizar una reserva en Polanco?",
-    "respuesta": "La reserva puede realizarse visitando nuestro showroom Black Box en Oakland Place, Sótano 3, o directamente con tu asesor comercial. El costo es US$2,000 y el formulario debe estar debidamente completado y firmado por el cliente para que sea válido."
+    "respuesta": "La reserva puede realizarse visitando nuestro Centro de Experiencia en Oakland Place, Sótano 2, o directamente con tu asesor comercial. El costo es de Q15,000 (únicamente en quetzales) y el formulario debe estar debidamente completado y firmado por el cliente para que sea válido."
   },
   {
     "id": "pl_proceso_legal_factura",
@@ -238,14 +239,6 @@
     "tags": ["ceder derechos", "vender antes", "transferir", "terceros", "antes de escriturar"],
     "pregunta": "¿Puedo vender o ceder los derechos de mi apartamento antes de escriturar?",
     "respuesta": "No. La promesa de compraventa establece claramente que el comprador no puede ceder los derechos a terceras personas antes de escriturar. La misma parte compradora debe formalizar la escritura pública."
-  },
-  {
-    "id": "pl_proceso_iusi",
-    "proyecto": "PPOL",
-    "categoria": "proceso_compra",
-    "tags": ["iusi", "impuesto", "inmueble", "municipalidad", "obligatorio"],
-    "pregunta": "¿Qué es el IUSI?",
-    "respuesta": "El IUSI (Impuesto Único Sobre Inmuebles) es un pago obligatorio en Guatemala por la tenencia de bienes inmuebles. Se destina a las municipalidades y a la administración pública para financiar servicios públicos e infraestructura."
   },
   {
     "id": "pl_volumen_parqueos",
@@ -272,12 +265,12 @@
     "respuesta": "Las amenidades de Polanco están distribuidas en dos niveles:\n- Nivel 01: Lobby, Drop Off, Private Dining, Coworking, Grill Cabanas, Children's Playground, Lounge, Pool, Spa, Meeting Rooms, Gourmet Kitchen, Sports Lounge y Workout Area.\n- Nivel 21: Panoramic Lounge y Fire Pit."
   },
   {
-    "id": "pl_experiencia_blackbox",
+    "id": "pl_experiencia_inmersiva",
     "proyecto": "PPOL",
     "categoria": "contacto",
-    "tags": ["black box", "showroom", "recorrido virtual", "tecnologia", "conocer proyecto", "visitar"],
+    "tags": ["showroom", "recorrido virtual", "tecnologia", "conocer proyecto", "visitar"],
     "pregunta": "¿Cómo puedo conocer el proyecto Polanco antes de comprar?",
-    "respuesta": "Polanco ofrece la experiencia 'Black Box' en su showroom de Oakland Place (Sótano 3). Es un recorrido virtual inmersivo que permite apreciar los acabados y las vistas reales de los apartamentos antes de su entrega. Te invitamos a visitarnos para vivirla en persona."
+    "respuesta": "Polanco ofrece una experiencia inmersiva en su Centro de Experiencia de Oakland Place (Sótano 2). Es un recorrido virtual que permite apreciar los acabados y las vistas reales de los apartamentos antes de su entrega. Te invitamos a visitarnos para vivirla en persona."
   },
   {
     "id": "pl_infraestructura",
@@ -293,7 +286,7 @@
     "categoria": "amenidades",
     "tags": ["seguridad", "vigilancia", "camaras", "accesos", "24/7", "control acceso"],
     "pregunta": "¿Qué seguridad tiene Polanco?",
-    "respuesta": "Polanco cuenta con acceso controlado de entrada y salida para residentes y visitas. Para conocer el detalle completo del sistema de seguridad del edificio, te invitamos a consultarlo con tu asesor comercial o visitando nuestro showroom en Oakland Place, Sótano 3."
+    "respuesta": "Polanco cuenta con acceso controlado de entrada y salida para residentes y visitas. Para conocer el detalle completo del sistema de seguridad del edificio, te invitamos a consultarlo con tu asesor comercial o visitando nuestro Centro de Experiencia en Oakland Place, Sótano 2."
   },
   {
     "id": "pl_mantenimiento",
@@ -325,7 +318,7 @@
     "categoria": "contacto",
     "tags": ["contacto", "telefono", "whatsapp", "web", "asesor", "agendar cita", "comunicacion"],
     "pregunta": "¿Cómo puedo contactar a Polanco o agendar una visita?",
-    "respuesta": "Puedes conocer Polanco visitando nuestro showroom Black Box en Oakland Place, Sótano 3, Ciudad de Guatemala. También puedes solicitarlo a través de este chat y un asesor se comunicará contigo a la brevedad para brindarte atención personalizada."
+    "respuesta": "Puedes conocer Polanco visitando nuestro Centro de Experiencia en Oakland Place, Sótano 2, Ciudad de Guatemala. También puedes solicitarlo a través de este chat y un asesor se comunicará contigo a la brevedad para brindarte atención personalizada."
   },
   {
     "id": "pl_diferenciadores",
@@ -333,6 +326,6 @@
     "categoria": "proyecto",
     "tags": ["diferenciadores", "ventajas", "por que elegir", "competencia", "valor agregado", "airbnb", "zona10"],
     "pregunta": "¿Por qué elegir Polanco sobre otros proyectos de la zona?",
-    "respuesta": "Polanco destaca por:\n- Airbnb Friendly: el único proyecto de Spectrum que permite rentas en plataformas como Airbnb, ideal para inversionistas.\n- Ubicación privilegiada en Zona 10, el corazón financiero y corporativo de Guatemala.\n- 16 amenidades premium de clase internacional (Spa, Private Dining, Panoramic Lounge, Fire Pit).\n- Tecnología constructiva Low-E para mayor confort térmico y acústico.\n- 9 modelos disponibles, con opciones desde 1 hasta 3 dormitorios + Penthouse.\n- Experiencia Black Box: showroom inmersivo en Oakland Place para conocer el proyecto antes de comprar.\n- Respaldo del FHA y amplia trayectoria de Spectrum."
+    "respuesta": "Polanco destaca por:\n- Airbnb Friendly: el único proyecto de Spectrum que permite rentas en plataformas como Airbnb, ideal para inversionistas.\n- Ubicación privilegiada en Zona 10, el corazón financiero y corporativo de Guatemala.\n- 16 amenidades premium de clase internacional (Spa, Private Dining, Panoramic Lounge, Fire Pit).\n- Tecnología constructiva Low-E para mayor confort térmico y acústico.\n- 9 modelos disponibles, con opciones desde 1 hasta 3 dormitorios + Penthouse.\n- Centro de Experiencia: showroom inmersivo en Oakland Place para conocer el proyecto antes de comprar.\n- Respaldo del FHA y amplia trayectoria de Spectrum."
   }
 ]
