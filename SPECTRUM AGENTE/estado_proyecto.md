@@ -1,5 +1,5 @@
 # 🏢 SPECTRUM VIVIENDA: Agente Unificado — Estado del Proyecto
-> Última actualización: 2026-05-04 (Correcciones de bugs reportadas por QA — prompts actualizados)
+> Última actualización: 2026-05-05 (Integración de Búsqueda Secundaria de Leads, Tracking UTM y Sincronización ManyChat)
 
 ## 🎯 Objetivo General
 Arquitectura de agente conversacional modular para SPECTRUM VIVIENDA. Un orquestador central (*Sof-IA*) delega tareas a sub-workflows especializados (Tools), con persistencia centralizada en MongoDB y sincronización diferida al CRM Dynamics 365 vía SOAP.
@@ -182,6 +182,16 @@ Los 7 workflows están sincronizados desde n8n vía MCP al repositorio local (20
   - Ambigüedad de Zona 15 resuelta en AGENT PRINCIPAL: "zona 15" ya no mapea directamente a PVV; pregunta específicamente entre PVV y PSB.
   - Formato de nombres de proyecto actualizado a "Nombre - Zona X" en respuestas del bot.
   - Excepción añadida al RETOMO CASO A para manejar consultas con "zona 15".
+- **Fase 2: Integración de Búsqueda Secundaria de Leads (2026-05-05)**:
+  - Mecanismo secundario de búsqueda por número de teléfono (`whatsapp_phone`) implementado en `AGENT PRINCIPAL.json`.
+  - Nodos agregados (`Find user by Phone`, `If NOT EXIST`, `Update User1`, etc.) para reconciliar leads externos en MongoDB y prevenir la creación de registros duplicados.
+  - Actualización automática del `manychat_id` para unificar historiales de usuarios recurrentes.
+- **Fase 3: Tracking de Enlaces Externos (UTM Source) (2026-05-06)**:
+  - Análisis y diseño del flujo de tracking (`UTM Source.json`) para capturar el parámetro `src` vía Webhook.
+  - Lógica de redireccionamiento hacia WhatsApp implementada para trazabilidad de campañas antes de la interacción con el bot.
+- **Sincronización Bidireccional con ManyChat (2026-05-05)**:
+  - Implementación de actualización automática del custom field `proyecto_interes` en ManyChat a través de `AGENT PRINCIPAL.json` (al transferir lead) y `Sync_CRM.json` (al sincronizar en batch).
+  - Mejora en la robustez de extracción de datos: fallback de teléfono añadido en notificaciones (`$('User Data').item.json.telefono || $('Parse response').item.json.lead_telefono`).
 
 ### 🔜 Pendiente antes de producción
 

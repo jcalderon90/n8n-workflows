@@ -1,0 +1,15 @@
+﻿diff --git a/SPECTRUM AGENTE/estado_proyecto.md b/SPECTRUM AGENTE/estado_proyecto.md
+index 6e50274..e173e77 100644
+--- a/SPECTRUM AGENTE/estado_proyecto.md	
++++ b/SPECTRUM AGENTE/estado_proyecto.md	
+@@ -182,6 +182,10 @@ Los 7 workflows est├ín sincronizados desde n8n v├¡a MCP al repositorio local (20
+   - Ambig├╝edad de Zona 15 resuelta en AGENT PRINCIPAL: "zona 15" ya no mapea directamente a PVV; pregunta espec├¡ficamente entre PVV y PSB.
+   - Formato de nombres de proyecto actualizado a "Nombre - Zona X" en respuestas del bot.
+   - Excepci├│n a├▒adida al RETOMO CASO A para manejar consultas con "zona 15".
++- **Fase 2: Integraci├│n de B├║squeda Secundaria de Leads (2026-05-05)**:
++  - Mecanismo secundario de b├║squeda por n├║mero de tel├⌐fono (`whatsapp_phone`) implementado en `AGENT PRINCIPAL.json`.
++  - Nodos agregados (`Find user by Phone`, `If NOT EXIST`, `Update User1`, etc.) para reconciliar leads externos en MongoDB y prevenir la creaci├│n de registros duplicados.
++  - Actualizaci├│n autom├ítica del `manychat_id` para unificar historiales de usuarios recurrentes.
+ 
+ ### ≡ƒö£ Pendiente antes de producci├│n
+ 

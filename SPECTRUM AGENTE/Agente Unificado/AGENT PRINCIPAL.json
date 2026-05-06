@@ -23,7 +23,7 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        5456,
+        6800,
         -992
       ],
       "id": "3d8d6e03-d0ed-4ef5-b5f8-9560f199cddb",
@@ -52,7 +52,7 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        5232,
+        6576,
         -992
       ],
       "id": "8b1b00b7-d3da-48d9-8cbf-b5fc3e0b52fb",
@@ -67,8 +67,8 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        2592,
-        -896
+        3936,
+        -800
       ],
       "id": "77a79ded-7be9-4225-a89e-fc861d83d8dc",
       "name": "User Data"
@@ -79,7 +79,7 @@
       "typeVersion": 1,
       "position": [
         1184,
-        -1040
+        -944
       ],
       "id": "3c3d7c91-bf64-4f5d-ac20-513a7928bdca",
       "name": "No Operation, do nothing"
@@ -112,7 +112,7 @@
       "typeVersion": 2.3,
       "position": [
         896,
-        -896
+        -800
       ],
       "id": "356a1dde-049b-43fb-bb37-c27f64fb05b4",
       "name": "If NO WHATSAPP"
@@ -134,7 +134,7 @@
       "typeVersion": 1.2,
       "position": [
         1120,
-        -752
+        -656
       ],
       "id": "799deecc-0160-4b6e-ab81-5304b1aa64c0",
       "name": "Proyecto"
@@ -163,7 +163,7 @@
       "typeVersion": 1.2,
       "position": [
         544,
-        -896
+        -800
       ],
       "id": "a1a8c496-d10f-4278-a1ea-fc351bd0e9b8",
       "name": "Lenguaje & Asesoria"
@@ -185,7 +185,7 @@
       "typeVersion": 1.3,
       "position": [
         1200,
-        -528
+        -432
       ],
       "id": "e87fe725-ea68-438a-89b2-b4fe93ab1aae",
       "name": "OpenAI Chat Model2",
@@ -209,8 +209,8 @@
       "type": "n8n-nodes-base.mongoDb",
       "typeVersion": 1.2,
       "position": [
-        2368,
-        -800
+        3712,
+        -704
       ],
       "id": "8f11dfe5-fc16-4624-b9b7-629553076bca",
       "name": "Update User",
@@ -231,8 +231,8 @@
       "type": "n8n-nodes-base.mongoDb",
       "typeVersion": 1.2,
       "position": [
-        2368,
-        -992
+        3712,
+        -896
       ],
       "id": "616c2792-964e-45cd-9173-b4f967fe8574",
       "name": "Insert User",
@@ -252,8 +252,8 @@
       "type": "n8n-nodes-base.mongoDb",
       "typeVersion": 1.2,
       "position": [
-        1696,
-        -896
+        3040,
+        -800
       ],
       "id": "cd820791-820b-47af-bad3-142135c93752",
       "name": "Find User",
@@ -307,7 +307,7 @@
       "typeVersion": 3.4,
       "position": [
         1472,
-        -896
+        -800
       ],
       "id": "fba7159e-5f80-474d-8754-eb6c17f7351f",
       "name": "CONTEXT 1"
@@ -401,8 +401,8 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        2144,
-        -992
+        3488,
+        -896
       ],
       "id": "1e790870-f00a-4224-b7f9-85705ad9a1c1",
       "name": "DATA to CREATE"
@@ -490,8 +490,8 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        2144,
-        -800
+        3488,
+        -704
       ],
       "id": "c5378c88-cbca-4480-bdc1-cfdeebff099f",
       "name": "DATA to UPDATE"
@@ -524,8 +524,8 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
       "position": [
-        1920,
-        -896
+        3264,
+        -800
       ],
       "id": "878bb76f-8916-4f08-a98f-0416c5f29110",
       "name": "If USER NOT EXIST"
@@ -540,7 +540,7 @@
       "typeVersion": 3.4,
       "position": [
         -3488,
-        -896
+        -800
       ],
       "id": "747cfee0-6f34-4605-bbcb-8fddcf2a8ad8",
       "name": "PARSE BODY"
@@ -563,7 +563,7 @@
       "typeVersion": 3.4,
       "position": [
         -128,
-        -896
+        -800
       ],
       "id": "c53b7d16-106e-4e69-a045-5db272f7785c",
       "name": "JOINNING MESSAGE"
@@ -592,7 +592,7 @@
       "typeVersion": 3.4,
       "position": [
         320,
-        -896
+        -800
       ],
       "id": "c180bde7-b9bf-4c0b-b1f7-f690b1873f3c",
       "name": "PROJECT LIST"
@@ -625,7 +625,7 @@
       "typeVersion": 2.3,
       "position": [
         -352,
-        -896
+        -800
       ],
       "id": "9c21d0cc-e353-4c40-ab60-f6e72620075a",
       "name": "Filter1"
@@ -639,7 +639,7 @@
       "typeVersion": 1,
       "position": [
         96,
-        -896
+        -800
       ],
       "id": "fd67da5f-0055-4b93-9f62-6483285dffe8",
       "name": "DELETE MESSAGES",
@@ -658,7 +658,7 @@
       "typeVersion": 1.1,
       "position": [
         -800,
-        -896
+        -800
       ],
       "id": "beb5e11f-83cb-4992-8d11-8aac936712a9",
       "name": "Wait",
@@ -674,7 +674,7 @@
       "typeVersion": 1,
       "position": [
         -576,
-        -896
+        -800
       ],
       "id": "68a29a71-47b6-4816-abbc-627ce6749849",
       "name": "GET MESSAGE",
@@ -696,7 +696,7 @@
       "typeVersion": 1,
       "position": [
         -1024,
-        -896
+        -800
       ],
       "id": "fd1d4651-aa03-4d94-a395-43c06f0d1dd6",
       "name": "SAVE MESSAGE",
@@ -725,7 +725,7 @@
       "typeVersion": 3.4,
       "position": [
         -1248,
-        -896
+        -800
       ],
       "id": "49fbeb87-35d9-4374-a81b-5332c0642da4",
       "name": "INPUT FINAL"
@@ -754,7 +754,7 @@
       "typeVersion": 3.4,
       "position": [
         -2144,
-        -1088
+        -992
       ],
       "id": "f57b64d2-8111-4473-9491-cf8e337e6c5d",
       "name": "audio input"
@@ -783,7 +783,7 @@
       "typeVersion": 3.4,
       "position": [
         -2144,
-        -896
+        -800
       ],
       "id": "62d66c2e-b536-4950-81f2-28c7226f1ef0",
       "name": "image input"
@@ -812,7 +812,7 @@
       "typeVersion": 3.4,
       "position": [
         -2144,
-        -704
+        -608
       ],
       "id": "1586fe33-4724-4602-a843-9a7546766d42",
       "name": "text input"
@@ -826,7 +826,7 @@
       "typeVersion": 4.2,
       "position": [
         -2592,
-        -1088
+        -992
       ],
       "id": "c62df0ed-bda8-4b5e-8e32-5e4d61d52199",
       "name": "HTTP IF AUDIO"
@@ -849,7 +849,7 @@
       "typeVersion": 1.8,
       "position": [
         -2368,
-        -896
+        -800
       ],
       "id": "79a9b33a-e2c6-460d-a8a9-bc8046ff99e4",
       "name": "ANALIZA IMAGEN",
@@ -876,8 +876,8 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "typeVersion": 1.3,
       "position": [
-        544,
-        -688
+        624,
+        -576
       ],
       "id": "9e9cf80d-2e28-450a-bde3-e33edf717531",
       "name": "OpenAI Chat Model1",
@@ -903,7 +903,7 @@
       "typeVersion": 1,
       "position": [
         -1472,
-        -896
+        -800
       ],
       "id": "a4daeed1-7c71-44b8-874b-116c69164a5c",
       "name": "Aggregate"
@@ -923,7 +923,7 @@
       "typeVersion": 1,
       "position": [
         -1696,
-        -896
+        -800
       ],
       "id": "48710757-cbf1-4785-a37f-5765fb192f9e",
       "name": "Sort"
@@ -936,7 +936,7 @@
       "typeVersion": 3.2,
       "position": [
         -1920,
-        -912
+        -816
       ],
       "id": "72f365ec-9948-45a8-8f2b-6f984695204a",
       "name": "Merge"
@@ -951,7 +951,7 @@
       "typeVersion": 1.8,
       "position": [
         -2368,
-        -1088
+        -992
       ],
       "id": "c88157f4-50eb-427a-af1f-0cdf3f6e033e",
       "name": "TRANSCRIBE AUDIO",
@@ -999,7 +999,7 @@
       "typeVersion": 2.2,
       "position": [
         -2816,
-        -992
+        -896
       ],
       "id": "917a2587-a210-4c2f-a132-8a7b2526060b",
       "name": "ES AUDIO / IMAGEN"
@@ -1013,7 +1013,7 @@
       "typeVersion": 4.2,
       "position": [
         -3040,
-        -992
+        -896
       ],
       "id": "0c73c401-d23c-43e9-9cab-76912dbf80d3",
       "name": "HTTP Request"
@@ -1055,7 +1055,7 @@
       "typeVersion": 2.2,
       "position": [
         -3264,
-        -896
+        -800
       ],
       "id": "a7005547-b41a-4bc3-b5cc-111b4aff7be5",
       "name": "ES ARCHIVO"
@@ -1068,7 +1068,7 @@
       "typeVersion": 2,
       "position": [
         -3712,
-        -896
+        -800
       ],
       "id": "ec90ce39-3e1d-40d2-9b15-6bbfe3c01fdb",
       "name": "Create Body"
@@ -1085,7 +1085,7 @@
       "typeVersion": 2.1,
       "position": [
         -3936,
-        -896
+        -800
       ],
       "id": "8b71d4f2-d42e-47c3-9884-0f10e4007c40",
       "name": "Webhook",
@@ -1102,8 +1102,8 @@
       "type": "@n8n/n8n-nodes-langchain.memoryMongoDbChat",
       "typeVersion": 1,
       "position": [
-        2944,
-        -672
+        4288,
+        -576
       ],
       "id": "2e9d2ef3-36fa-4e3d-81d7-dc310f7e750b",
       "name": "MongoDB Chat Memory",
@@ -1118,20 +1118,18 @@
       "parameters": {
         "model": {
           "__rl": true,
-          "value": "gpt-4.1-mini",
+          "value": "gpt-5-mini",
           "mode": "list",
-          "cachedResultName": "gpt-4.1-mini"
+          "cachedResultName": "gpt-5-mini"
         },
         "responsesApiEnabled": false,
-        "options": {
-          "temperature": 0.1
-        }
+        "options": {}
       },
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "typeVersion": 1.3,
       "position": [
-        2784,
-        -672
+        4160,
+        -576
       ],
       "id": "1577a690-d899-4d00-a989-9916e5593e15",
       "name": "OpenAI Chat Model",
@@ -1153,8 +1151,8 @@
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 3.1,
       "position": [
-        3072,
-        -896
+        4416,
+        -800
       ],
       "id": "147286cd-b18c-49cb-a012-8be7769d0eed",
       "name": "PRINCIPAL"
@@ -1175,7 +1173,7 @@
             "query": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('query', ``, 'string') }}",
             "manychat_id": "={{ $('User Data').item.json.manychat_id }}",
             "canal": "={{ $('User Data').item.json.input_channel }}",
-            "tel_sistema": "={{ $('PARSE BODY').item.json.current_body.phone || 'No tiene' }}",
+            "tel_sistema": "={{ $('PARSE BODY').item.json.current_body.whatsapp_phone || 'No tiene' }}",
             "nombre": "={{ $('User Data').item.json.nombre || '' }}",
             "correo": "={{ $('User Data').item.json.correo || '' }}",
             "telefono": "={{ $('User Data').item.json.telefono || '' }}",
@@ -1281,8 +1279,8 @@
       "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
       "typeVersion": 2.2,
       "position": [
-        3072,
-        -672
+        4416,
+        -576
       ],
       "id": "aefb6a26-ec49-4353-840c-d715ca915597",
       "name": "lead_collector"
@@ -1294,8 +1292,8 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        3664,
-        -896
+        5008,
+        -800
       ],
       "id": "b2275914-b2f3-4b30-ae7c-efd0f081c606",
       "name": "Parse response"
@@ -1328,7 +1326,7 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
       "position": [
-        4112,
+        5456,
         -992
       ],
       "id": "12f15fc5-7eb2-4c66-a831-90cf3d809108",
@@ -1405,7 +1403,7 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        4336,
+        5680,
         -1088
       ],
       "id": "e552935f-2efd-49d5-81c3-996b09a5e45a",
@@ -1428,7 +1426,7 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        3888,
+        5232,
         -992
       ],
       "id": "44f18308-0d0a-432c-831d-c5138fdf69fb",
@@ -1445,7 +1443,7 @@
       "type": "n8n-nodes-base.mongoDb",
       "typeVersion": 1.2,
       "position": [
-        4560,
+        5904,
         -1088
       ],
       "id": "dd0ab8cf-7e2b-4c96-b08d-58ca86dbe7ce",
@@ -1462,7 +1460,7 @@
       "type": "n8n-nodes-base.noOp",
       "typeVersion": 1,
       "position": [
-        5008,
+        6352,
         -800
       ],
       "id": "e8940b61-d588-40b0-8403-a93b3aa60340",
@@ -1523,8 +1521,8 @@
       "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
       "typeVersion": 2.2,
       "position": [
-        3200,
-        -672
+        4544,
+        -576
       ],
       "id": "cd3c094b-2e83-4ad8-a2be-91b8b834c5a8",
       "name": "kb_search"
@@ -1630,8 +1628,8 @@
       "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
       "typeVersion": 2.2,
       "position": [
-        3328,
-        -672
+        4672,
+        -576
       ],
       "id": "d7a2f45b-88fb-4aac-8602-34a83e9b23d4",
       "name": "rsvp"
@@ -1663,7 +1661,7 @@
       "type": "n8n-nodes-base.filter",
       "typeVersion": 2.3,
       "position": [
-        3888,
+        5232,
         -800
       ],
       "id": "adf235ee-2a04-492d-bf09-32e572519d81",
@@ -1679,7 +1677,7 @@
       "type": "n8n-nodes-base.mongoDb",
       "typeVersion": 1.2,
       "position": [
-        5904,
+        7248,
         -992
       ],
       "id": "5e880e7b-37c3-42fb-a586-929aedb2b1f7",
@@ -1732,7 +1730,7 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        5680,
+        7024,
         -992
       ],
       "id": "091d9a1f-027c-4d5f-b49d-7d3bd4d2de13",
@@ -1751,7 +1749,7 @@
           "mappingMode": "defineBelow",
           "value": {
             "tipo_alerta": "nuevo_lead",
-            "datos": "={{ \n  {\n    \"proyecto\": $('User Data').item.json.proyecto || 'Parque Vista Verde',\n    \"nombre_lead\": $('User Data').item.json.nombre || 'No registrado',\n    \"telefono_lead\": $('User Data').item.json.telefono,\n    \"correo_lead\": $('User Data').item.json.correo || 'No registrado',\n    \"canal\": $('User Data').item.json.input_channel\n  }\n}}"
+            "datos": "={{ \n  {\n    \"proyecto\": $('User Data').item.json.proyecto || 'Parque Vista Verde',\n    \"nombre_lead\": $('User Data').item.json.nombre || 'No registrado',\n    \"telefono_lead\": $('User Data').item.json.telefono || $('Parse response').item.json.lead_telefono,\n    \"correo_lead\": $('User Data').item.json.correo || 'No registrado',\n    \"canal\": $('User Data').item.json.input_channel\n  }\n}}"
           },
           "matchingColumns": [],
           "schema": [
@@ -1784,7 +1782,7 @@
       "type": "n8n-nodes-base.executeWorkflow",
       "typeVersion": 1.3,
       "position": [
-        5008,
+        6352,
         -1184
       ],
       "id": "d827c8b8-49ae-47cc-9dbb-8bdcb4d38521",
@@ -1836,7 +1834,7 @@
       "type": "n8n-nodes-base.executeWorkflow",
       "typeVersion": 1.3,
       "position": [
-        4112,
+        5456,
         -800
       ],
       "id": "7ea33ba5-cc10-4ad7-b38a-5d653787a43c",
@@ -1906,8 +1904,8 @@
       "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
       "typeVersion": 2.2,
       "position": [
-        3456,
-        -672
+        4800,
+        -576
       ],
       "id": "448769c7-27f7-4efb-960a-b5f491b2de39",
       "name": "send_media"
@@ -1917,7 +1915,7 @@
       "type": "n8n-nodes-base.noOp",
       "typeVersion": 1,
       "position": [
-        5008,
+        6352,
         -992
       ],
       "id": "9253efb0-de3a-4803-9796-a6b788a7ce43",
@@ -1961,11 +1959,183 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
       "position": [
-        4784,
+        6128,
         -1088
       ],
       "id": "c5ebdbaf-94dd-4fb1-b3f5-ada8180c21cb",
       "name": "IF NUEVO LEAD"
+    },
+    {
+      "parameters": {
+        "collection": "users",
+        "options": {},
+        "query": "={\"telefono\":\"{{ $('PARSE BODY').item.json.current_body.whatsapp_phone }}\"}"
+      },
+      "type": "n8n-nodes-base.mongoDb",
+      "typeVersion": 1.2,
+      "position": [
+        1920,
+        -736
+      ],
+      "id": "c5d48d6a-6fd9-4ac2-8354-a133cca8831a",
+      "name": "Find user by Phone",
+      "alwaysOutputData": true,
+      "executeOnce": false,
+      "credentials": {
+        "mongoDb": {
+          "id": "UzcANqeDFO1QLbfd",
+          "name": "SPECTRUM - CENTRALIZADO"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const id = $input.first().json._id;\nif (typeof id === \"object\" && id !== null && id.$oid) {\n  return [{ json: { _id: id.$oid, manychat_id: $('PARSE BODY').first().json.current_body.id, conversation_analysis: false } }];\n} else {\n  return [{ json: { _id: String(id), manychat_id: $('PARSE BODY').first().json.current_body.id, conversation_analysis: false } }];\n}\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2368,
+        -656
+      ],
+      "id": "4d9d8394-1e7b-4956-853d-05a9dcbe1714",
+      "name": "Code in JavaScript"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "ca0080ac-2510-4cf9-9468-d7773669c512",
+              "leftValue": "={{ $('PARSE BODY').item.json.current_body.custom_fields.canal_ingreso.toLowerCase() }}",
+              "rightValue": "whatsapp",
+              "operator": {
+                "type": "string",
+                "operation": "notEquals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        1696,
+        -800
+      ],
+      "id": "667e13f2-692f-4b41-a962-8d5265401847",
+      "name": "If NOT WHATSAPP"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "f619fe49-00c0-477a-9d5b-776fc503e4d0",
+              "leftValue": "={{ $('Find user by Phone').item.json }}",
+              "rightValue": "",
+              "operator": {
+                "type": "object",
+                "operation": "empty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        2144,
+        -736
+      ],
+      "id": "16113268-0b8a-4dcb-a488-f2028cd77b4e",
+      "name": "If NOT EXIST"
+    },
+    {
+      "parameters": {
+        "collection": "users",
+        "options": {},
+        "query": "={\"telefono\":\"{{ $('PARSE BODY').item.json.current_body.whatsapp_phone }}\"}"
+      },
+      "type": "n8n-nodes-base.mongoDb",
+      "typeVersion": 1.2,
+      "position": [
+        2816,
+        -656
+      ],
+      "id": "ed98b5f6-bd08-41da-b270-f15d136f77be",
+      "name": "Find Modified User",
+      "credentials": {
+        "mongoDb": {
+          "id": "UzcANqeDFO1QLbfd",
+          "name": "SPECTRUM - CENTRALIZADO"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "collection": "users",
+        "updateKey": "_id",
+        "fields": "manychat_id,conversation_analysis",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.mongoDb",
+      "typeVersion": 1.2,
+      "position": [
+        2592,
+        -656
+      ],
+      "id": "e71ec3d2-a400-405b-b105-1bef802791c9",
+      "name": "Update User1",
+      "credentials": {
+        "mongoDb": {
+          "id": "UzcANqeDFO1QLbfd",
+          "name": "SPECTRUM - CENTRALIZADO"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "subscriber",
+        "operation": "setCustomField",
+        "subscriber_id": "={{ $('PARSE BODY').item.json.current_body.id }}",
+        "identifierType": "name",
+        "value": "proyecto_interes",
+        "fieldValue": "={{ $json.proyecto }}",
+        "requestOptions": {}
+      },
+      "type": "n8n-nodes-manychat.manyChat",
+      "typeVersion": 1,
+      "position": [
+        5232,
+        -608
+      ],
+      "id": "ad0d593a-0c10-4c38-8073-881a7f2438e1",
+      "name": "UPDATE - Proyecto Interes Manychat",
+      "credentials": {
+        "manyChatApi": {
+          "id": "aEvHbFXnmwofChqs",
+          "name": "ManyChat Garoo"
+        }
+      }
     }
   ],
   "connections": {
@@ -2101,7 +2271,7 @@
       "main": [
         [
           {
-            "node": "Find User",
+            "node": "If NOT WHATSAPP",
             "type": "main",
             "index": 0
           }
@@ -2482,6 +2652,11 @@
             "node": "Filter IF TRANSFER",
             "type": "main",
             "index": 0
+          },
+          {
+            "node": "UPDATE - Proyecto Interes Manychat",
+            "type": "main",
+            "index": 0
           }
         ]
       ]
@@ -2642,9 +2817,175 @@
           }
         ]
       ]
+    },
+    "Find user by Phone": {
+      "main": [
+        [
+          {
+            "node": "If NOT EXIST",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "Update User1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If NOT WHATSAPP": {
+      "main": [
+        [
+          {
+            "node": "Find User",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Find user by Phone",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If NOT EXIST": {
+      "main": [
+        [
+          {
+            "node": "Find User",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Find Modified User": {
+      "main": [
+        [
+          {
+            "node": "Find User",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update User1": {
+      "main": [
+        [
+          {
+            "node": "Find Modified User",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
-  "pinData": {},
+  "pinData": {
+    "Webhook": [
+      {
+        "headers": {
+          "host": "agentsprod.redtec.ai",
+          "user-agent": "ManyChat",
+          "content-length": "1547",
+          "content-type": "application/json; charset=utf-8",
+          "x-forwarded-for": "3.64.54.57",
+          "x-forwarded-host": "agentsprod.redtec.ai",
+          "x-forwarded-port": "443",
+          "x-forwarded-proto": "https",
+          "x-forwarded-server": "c3c333a532ee",
+          "x-real-ip": "3.64.54.57",
+          "accept-encoding": "gzip"
+        },
+        "params": {},
+        "query": {},
+        "body": {
+          "key": "user:1623941319",
+          "id": "1623941319",
+          "page_id": "962079940550460",
+          "user_refs": [],
+          "status": "active",
+          "first_name": "Jorge",
+          "last_name": "Calderon",
+          "name": "Jorge Calderon",
+          "gender": "unknown",
+          "profile_pic": null,
+          "locale": null,
+          "language": null,
+          "timezone": "UTC±00",
+          "live_chat_url": "https://app.manychat.com/fb962079940550460/chat/1623941319",
+          "last_input_text": "Polanco",
+          "optin_phone": true,
+          "phone": "+13322311881",
+          "optin_email": false,
+          "email": null,
+          "subscribed": "2026-02-04T13:17:27-06:00",
+          "last_interaction": null,
+          "ig_last_interaction": null,
+          "last_seen": null,
+          "ig_last_seen": null,
+          "is_followup_enabled": true,
+          "ig_username": null,
+          "ig_id": null,
+          "whatsapp_phone": "+13322311881",
+          "optin_whatsapp": true,
+          "phone_country_code": "US",
+          "last_growth_tool": null,
+          "custom_fields": {
+            "canal_ingreso": "WhatsApp",
+            "Celular": null,
+            "ChatGPT's response": null,
+            "ChatGPT's response (2024-08-13 21:18:56)": null,
+            "Conversation": null,
+            "Conversation (2024-08-13 21:18:56)": null,
+            "debugging": null,
+            "Fecha Evento": null,
+            "Fecha Evento 2": null,
+            "Fecha Evento 3": null,
+            "Fecha Reserva": null,
+            "First name for prompt": null,
+            "First name for prompt (2024-08-13 21:18:56)": null,
+            "image_descriptioin": null,
+            "Input from Template": null,
+            "Last Input": null,
+            "last_interaction_timestamp": null,
+            "Nombre Cotizacion": null,
+            "Nombre Reserva": null,
+            "Numero Personas": null,
+            "Ocasion": null,
+            "Panelista": null,
+            "Pregunta": null,
+            "proyecto": "PVV",
+            "Respuesta de image-n8n via Webhook": null,
+            "Respuesta de n8n via Webhook": null,
+            "user's question fallback": null,
+            "user's question fallback (2024-08-13 21:18:56)": null,
+            "voice_note_transcription": null
+          }
+        },
+        "webhookUrl": "https://agentsprod.redtec.ai/webhook/spectrum-agent",
+        "executionMode": "production"
+      }
+    ]
+  },
   "meta": {
     "templateCredsSetupCompleted": true,
     "instanceId": "d4ab02fb1ef8b6ca2c1c5c1f280ee696b0514d7d92cee5fb0da1784dbe393998"
