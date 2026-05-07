@@ -1,5 +1,5 @@
 # 🏢 SPECTRUM VIVIENDA: Agente Unificado — Estado del Proyecto
-> Última actualización: 2026-05-06 (Actualización Polanco Sótano 2, Q15k y Estandarización de Tono Tuteo)
+> Última actualización: 2026-05-06 (Definición de estrategia UTM Tracking para implementación mañana)
 
 ## 🎯 Objetivo General
 Arquitectura de agente conversacional modular para SPECTRUM VIVIENDA. Un orquestador central (*Sof-IA*) delega tareas a sub-workflows especializados (Tools), con persistencia centralizada en MongoDB y sincronización diferida al CRM Dynamics 365 vía SOAP.
@@ -67,7 +67,8 @@ El sistema ha sido refinado para cumplir con los estándares de comunicación de
 | 2 | **Limpiar IUSI en MongoDB** — Borrar entradas con tag "iusi" en todos los proyectos | No — pero evita respuestas innecesarias | ⏳ Pendiente |
 | 3 | **Fix Gmail Notifications/RSVP** — quitar overrides de destinatario Jorge | Sí | ⏸️ Pausado |
 | 4 | **URLs reales SEND MEDIA** — placeholders de PMAR y PPO | Sí | ⏸️ Pausado |
-| 5 | **Pruebas E2E Finales** — validar el nuevo tono "tuteo" en vivo | Sí | ⏳ Pendiente |
+| 5 | **Implementar UTM Tracking (n8n Frases Naturales)** — Modificar `UTM Source.json` (`?src=X&prj=Y`), actualizar Excel de links y configurar `AGENT PRINCIPAL.json` para extraer UTM. **(Hacer mañana)** | Sí | ⏳ Pendiente |
+| 6 | **Pruebas E2E Finales** — validar el nuevo tono "tuteo" en vivo | Sí | ⏳ Pendiente |
 
 ---
 > **Nota de Seguridad:** Se respeta la prohibición de modificar la configuración del nodo SOAP API fuera de la interfaz de n8n por parte del usuario.
