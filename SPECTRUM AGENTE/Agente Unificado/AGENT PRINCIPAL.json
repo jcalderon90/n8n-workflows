@@ -172,9 +172,9 @@
       "parameters": {
         "model": {
           "__rl": true,
-          "value": "gpt-4.1-mini",
+          "value": "gpt-4o-mini",
           "mode": "list",
-          "cachedResultName": "gpt-4.1-mini"
+          "cachedResultName": "gpt-4o-mini"
         },
         "responsesApiEnabled": false,
         "options": {
@@ -609,7 +609,7 @@
           "conditions": [
             {
               "id": "5b5ad242-c6c3-4f2a-9b67-edb92fa424be",
-              "leftValue": "={{ $json.propertyName.last() }}",
+              "leftValue": "={{ $json.propertyName?.last() || \"\" }}",
               "rightValue": "={{ $('INPUT FINAL').item.json.input }}",
               "operator": {
                 "type": "string",
@@ -864,9 +864,9 @@
       "parameters": {
         "model": {
           "__rl": true,
-          "value": "gpt-4.1-mini",
+          "value": "gpt-4o-mini",
           "mode": "list",
-          "cachedResultName": "gpt-4.1-mini"
+          "cachedResultName": "gpt-4o-mini"
         },
         "responsesApiEnabled": false,
         "options": {
