@@ -67,7 +67,7 @@ El sistema ha sido refinado para cumplir con los estándares de comunicación de
 | 2 | **Limpiar IUSI en MongoDB** — Borrar entradas con tag "iusi" en todos los proyectos | No — pero evita respuestas innecesarias | ⏳ Pendiente |
 | 3 | **Fix Gmail Notifications/RSVP** — quitar overrides de destinatario Jorge | Sí | ⏸️ Pausado |
 | 4 | **URLs reales SEND MEDIA** — placeholders de PMAR y PPO | Sí | ⏸️ Pausado |
-| 5 | **Implementar UTM Tracking (n8n Frases Naturales)** — Modificar `UTM Source.json` (`?src=X&prj=Y`), actualizar Excel de links y configurar `AGENT PRINCIPAL.json` para extraer UTM. **(Hacer mañana)** | Sí | ⏳ Pendiente |
+| 5 | **Implementar UTM Tracking (Regex en n8n)** — Añadir Nodo Code en `AGENT PRINCIPAL.json` tras el Webhook para parsear keywords del `last_input_text` (Ver `estrategia_captacion_whatsapp.md`) | Sí | ⏳ Pendiente |
 | 6 | **Pruebas E2E Finales** — validar el nuevo tono "tuteo" en vivo | Sí | ⏳ Pendiente |
 
 ---
