@@ -1,5 +1,5 @@
 # 🏢 SPECTRUM VIVIENDA: Agente Unificado — Estado del Proyecto
-> Última actualización: 2026-05-06 (Definición de estrategia UTM Tracking para implementación mañana)
+> Última actualización: 2026-05-09 (Optimización UTMs CRM, Integración ManyChat y Saneamiento Global)
 
 ## 🎯 Objetivo General
 Arquitectura de agente conversacional modular para SPECTRUM VIVIENDA. Un orquestador central (*Sof-IA*) delega tareas a sub-workflows especializados (Tools), con persistencia centralizada en MongoDB y sincronización diferida al CRM Dynamics 365 vía SOAP.
@@ -11,9 +11,9 @@ Arquitectura de agente conversacional modular para SPECTRUM VIVIENDA. Un orquest
 | Componente | Detalle |
 |---|---|
 | **Orquestación** | n8n — workflows modulares vinculados via `Execute Workflow` |
-| **Modelos IA** | `gpt-5.4-mini` (Orquestador), `gpt-5-mini` (KB Search), `gpt-4o` (Media) |
+| **Modelos IA** | `gpt-5-mini` (Orquestador), `gpt-4.1-mini` (Tools), `gpt-4o-mini` (Auditoría) |
 | **Base de Datos** | MongoDB Atlas — colecciones `users`, `appointments`, `chat_histories`, `quality_logs` |
-| **Vector Search** | MongoDB Atlas Vector Index (`spectrum_vector_index`) — Filtrado por campo `proyecto` |
+| **Vector Search** | MongoDB Atlas Vector Index (`spectrum_vector_index`) — Filtrado por proyecto |
 | **Buffer/Cache** | Redis — Message Debouncing (agrupa mensajes rápidos) |
 | **CRM** | Dynamics 365 via SOAP (Standardized Mappings) |
 | **Canales** | ManyChat (WhatsApp, Instagram, Messenger) |
@@ -23,53 +23,62 @@ Arquitectura de agente conversacional modular para SPECTRUM VIVIENDA. Un orquest
 ## 📦 Módulos (Workflows)
 
 ### 1. 🧠 Orquestador Central — `AGENT PRINCIPAL.json`
-**Estado: ✅ Activo en n8n** | ID: `iXaptKTUXaXrP7aF` | 59 nodos | Última mod: 2026-05-06
+**Estado: ✅ Activo en n8n** | Última mod: 2026-05-09
 
-- ✅ **Completado**: Estandarización de tono a **tuteo/tadeo** (*puedes, prefieres*). Se añadió instrucción explícita en el *System Message* para prohibir el voseo (*podés*).
-- ✅ **Completado**: Corrección de ambigüedad Zona 15 y lógica de notificación única.
+- ✅ **Completado**: Implementación de **UTM Tracking** vía nodo `Extraer CAMPAIGN DATA`.
+- ✅ **Completado**: Sincronización automática a ManyChat de `proyecto_interes` y `proyecto_utm_source`.
+- ✅ **Completado**: Limpieza estructural y encadenamiento de nodos de actualización de leads.
+- ✅ **Completado**: Jerarquía de proyectos establecida y estandarización a **tuteo**.
 
 ### 2. 👤 Captador de Leads — `Lead Collector.json`
-**Estado: ✅ Activo en n8n** | ID: `SHPFhvoal7k1Rqf9` | 15 nodos | Última mod: 2026-05-06
+**Estado: ✅ Activo en n8n** | Última mod: 2026-05-09
 
-- ✅ **Completado**: Cambio de tono de *voseo* a *tuteo* en todos los mensajes y escenarios.
-- ✅ **Completado**: Reconocimiento de modismos guatemaltecos como confirmación.
+- ✅ **Completado**: Estandarización de **tuteo** ("identificá", "usá") para coherencia regional.
+- ✅ **Completado**: Vinculación de credenciales de MongoDB y OpenAI.
 
 ### 3. 📚 Experto en Proyectos — `KB SEARCH.json`
-**Estado: ✅ Activo en n8n** | ID: `D3LKuNi6CmMIdvzg` | 8 nodos | Última mod: 2026-05-06
+**Estado: ✅ Activo en n8n** | Última mod: 2026-05-09
 
-- ✅ **Completado**: Estandarización de variantes de CTA a tuteo (*¿Cuál prefieres?*).
-- ✅ **Completado**: Uso de `gpt-5-mini` para respuestas rápidas.
+- ✅ **Completado**: Inclusión de todos los proyectos activos (PVV, PMAR, PPO, PPOL, PSB).
+- ✅ **Completado**: Vinculación de credenciales y optimización de temperatura (0.1) para precisión.
 
----
+### 4. 🔔 Notificaciones y Citas — `Notifications Master.json` & `RSVP.json`
+**Estado: ✅ Activo en n8n** | Última mod: 2026-05-09
 
-## 📂 Knowledge Base (KBs)
-Se han actualizado los archivos JSON en `/KBs`:
+- ✅ **Completado**: Fix de **encoding de emojis** en correos (fuego, calendario, etc.).
+- ✅ **Completado**: Estandarización de remitente a "Soporte RedTec" y vinculación de Gmail OAuth2.
+- ✅ **Completado**: Tuteo en el flujo de agendamiento de citas.
+- ✅ **Completado**: Implementación de regla estricta: El bot delega el envío de enlaces de reuniones virtuales al asesor humano.
 
-- [x] **PPOL** (Polanco): Actualizado a **Sótano 2**, costo de reserva **Q15,000** (quetzales únicamente), eliminado término **"Black Box"** (ahora "Centro de Experiencia") y removida sección de **IUSI**.
-- [x] **PPO**, **PMAR**, **PSB**: Se eliminó la entrada del **IUSI** de todos los archivos para evitar "info-dumping" técnico.
+### 5. 🔄 Sincronizador CRM — `Sync_CRM.json`
+**Estado: ✅ Activo en n8n** | Última mod: 2026-05-09
+
+- ✅ **Completado**: Lógica de propagación de UTMs robusta (prioriza raíz del usuario).
+- ✅ **Completado**: Actualización de modelo de auditoría a `gpt-4o-mini`.
 
 ---
 
 ## 🚀 Punto Actual del Proyecto
 
-El sistema ha sido refinado para cumplir con los estándares de comunicación de Spectrum (tuteo) y la información comercial actualizada de Polanco.
+El ecosistema está técnicamente finalizado. Se han resuelto las discrepancias de datos entre el orquestador y el sincronizador CRM. Las notificaciones internas están saneadas y el tono de voz es consistente en todos los puntos de contacto.
 
-### ✅ Completado recientemente (2026-05-06)
-- **Estandarización de Tono:** Eliminación total del voseo (*sos, podés, preferís*) en todos los prompts del sistema y reemplazo por tuteo (*eres, puedes, prefieres*).
-- **Actualización Polanco:** Sincronización de KB con la nueva realidad comercial (Sótano 2, Q15k reserva, fin de "Black Box").
-- **Limpieza de IUSI:** Eliminación de explicaciones de impuestos en todos los KBs para simplificar respuestas.
+### ✅ Completado recientemente (2026-05-09)
+- **Integración ManyChat-CRM:** El bot ahora inyecta datos directamente en los campos personalizados de ManyChat para seguimiento en vivo.
+- **Resiliencia de Datos:** Los UTMs fluyen correctamente desde el primer mensaje hasta el XML de la SOAP API.
+- **Matriz de Campañas:** Se validó y configuró la detección de orígenes (Web, City Core, Social Media, Fan Page, Mail, Bancos) basada en la matriz de marketing.
+- **Saneamiento Visual:** Corrección de caracteres especiales y mejora de la legibilidad en notificaciones HTML.
+- **Infraestructura:** Vinculación exitosa de credenciales de MongoDB, OpenAI y Gmail OAuth2 en todos los nodos.
 
-### 🔜 Pendiente antes de producción (RE-VECTORIZACIÓN CRÍTICA)
+### 🔜 Pendiente para Testing / Producción
 
 | # | Tarea | Bloqueante | Estado |
 |---|---|---|---|
-| 1 | **Re-vectorizar Polanco** — Borrar PPOL en MongoDB y cargar `KB PL.json` nuevo | Sí — o el bot seguirá diciendo Sótano 3 | ⏳ Pendiente |
-| 2 | **Limpiar IUSI en MongoDB** — Borrar entradas con tag "iusi" en todos los proyectos | No — pero evita respuestas innecesarias | ⏳ Pendiente |
-| 3 | **Fix Gmail Notifications/RSVP** — quitar overrides de destinatario Jorge | Sí | ⏸️ Pausado |
-| 4 | **URLs reales SEND MEDIA** — placeholders de PMAR y PPO | Sí | ⏸️ Pausado |
-| 5 | **Implementar UTM Tracking (Regex en n8n)** — Añadir Nodo Code en `AGENT PRINCIPAL.json` tras el Webhook para parsear keywords del `last_input_text` (Ver `estrategia_captacion_whatsapp.md`) | Sí | ⏳ Pendiente |
-| 6 | **Pruebas E2E Finales** — validar el nuevo tono "tuteo" en vivo | Sí | ⏳ Pendiente |
+| 1 | **Pruebas E2E** — Validar flujo completo desde link de WhatsApp hasta creación en CRM | Sí | ⏳ Pendiente |
+| 2 | **URLs reales SEND MEDIA** — Cargar enlaces oficiales para Polanco y Sotobosque | No | ⏳ Esperando Assets |
+| 3 | **Validación de Auditoría** — Revisar logs en `quality_logs` tras las primeras interacciones reales | No | ⏳ Pendiente |
+| 4 | **Estrategia Multimedia** — Implementar envío de videos e imágenes en `Send Media.json` | No | ⏳ Planificando |
+
+
 
 ---
 > **Nota de Seguridad:** Se respeta la prohibición de modificar la configuración del nodo SOAP API fuera de la interfaz de n8n por parte del usuario.
- API fuera de la interfaz de n8n por parte del usuario.

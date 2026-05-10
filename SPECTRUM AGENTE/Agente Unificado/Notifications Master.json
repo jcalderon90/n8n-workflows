@@ -1,5 +1,4 @@
 {
-  "name": "Notifications Master",
   "nodes": [
     {
       "parameters": {
@@ -76,7 +75,7 @@
             {
               "id": "3",
               "name": "html_body",
-              "value": "=<div style=\"font-family: Arial; padding: 20px; background-color: #f4f6f9; border-radius: 8px;\"><h2 style=\"color: #2c3e50;\">ð¥ Nuevo Lead Captado</h2><hr><p><strong>Proyecto:</strong> {{ $json.datos.proyecto }}</p><p><strong>Nombre:</strong> {{ $json.datos.nombre_lead }}</p><p><strong>TelÃ©fono:</strong> {{ $json.datos.telefono_lead }}</p><p><strong>Correo:</strong> {{ $json.datos.correo_lead }}</p><p><strong>Canal:</strong> {{ $json.datos.canal }}</p></div>",
+              "value": "=<div style=\"font-family: Arial; padding: 20px; background-color: #f4f6f9; border-radius: 8px;\"><h2 style=\"color: #2c3e50;\">🔥 Nuevo Lead Captado</h2><hr><p><strong>Proyecto:</strong> {{ $json.datos.proyecto }}</p><p><strong>Nombre:</strong> {{ $json.datos.nombre_lead }}</p><p><strong>Teléfono:</strong> {{ $json.datos.telefono_lead }}</p><p><strong>Correo:</strong> {{ $json.datos.correo_lead }}</p><p><strong>Canal:</strong> {{ $json.datos.canal }}</p></div>",
               "type": "string"
             }
           ]
@@ -111,7 +110,7 @@
             {
               "id": "3",
               "name": "html_body",
-              "value": "=<div style=\"font-family: Arial; padding: 20px;\"><h2 style=\"color: #8e44ad;\">ð° InterÃ©s Comercial / Precios</h2><hr><p><strong>Proyecto:</strong> {{ $json.datos.proyecto }}</p><p><strong>Nombre:</strong> {{ $json.datos.nombre_lead }}</p><p><strong>TelÃ©fono:</strong> {{ $json.datos.telefono_lead }}</p><p><strong>Pregunta exacta del cliente:</strong><br><br><i>\"{{ $json.datos.ultima_consulta }}\"</i></p></div>",
+              "value": "=<div style=\"font-family: Arial; padding: 20px;\"><h2 style=\"color: #8e44ad;\">💰 Interés Comercial / Precios</h2><hr><p><strong>Proyecto:</strong> {{ $json.datos.proyecto }}</p><p><strong>Nombre:</strong> {{ $json.datos.nombre_lead }}</p><p><strong>Teléfono:</strong> {{ $json.datos.telefono_lead }}</p><p><strong>Pregunta exacta del cliente:</strong><br><br><i>\"{{ $json.datos.ultima_consulta }}\"</i></p></div>",
               "type": "string"
             }
           ]
@@ -134,7 +133,7 @@
             {
               "id": "1",
               "name": "subject",
-              "value": "=ðï¸ NUEVA CITA REGISTRADA - {{ $json.datos.proyecto }}",
+              "value": "=🗓️ NUEVA CITA REGISTRADA - {{ $json.datos.proyecto }}",
               "type": "string"
             },
             {
@@ -146,7 +145,7 @@
             {
               "id": "3",
               "name": "html_body",
-              "value": "=<div style=\"font-family: Arial; padding: 20px; background-color: #e8f8f5;\"><h2 style=\"color: #16a085;\">ð Gran Cierre: Nueva Cita</h2><p>El bot ha logrado consolidar una reuniÃ³n.</p><hr><p><strong>Proyecto:</strong> {{ $json.datos.proyecto }}</p><p><strong>Lead:</strong> {{ $json.datos.nombre_lead }}</p><p><strong>TelÃ©fono:</strong> {{ $json.datos.telefono_lead }}</p><p><strong>Fecha acordada:</strong> {{ $json.datos.fecha_cita }}</p><p><strong>Modalidad:</strong> {{ $json.datos.modalidad }}</p></div>",
+              "value": "=<div style=\"font-family: Arial; padding: 20px; background-color: #e8f8f5;\"><h2 style=\"color: #16a085;\">📅 Gran Cierre: Nueva Cita</h2><p>El bot ha logrado consolidar una reunión.</p><hr><p><strong>Proyecto:</strong> {{ $json.datos.proyecto }}</p><p><strong>Lead:</strong> {{ $json.datos.nombre_lead }}</p><p><strong>Teléfono:</strong> {{ $json.datos.telefono_lead }}</p><p><strong>Fecha acordada:</strong> {{ $json.datos.fecha_cita }}</p><p><strong>Modalidad:</strong> {{ $json.datos.modalidad }}</p></div>",
               "type": "string"
             }
           ]
@@ -169,7 +168,7 @@
             {
               "id": "1",
               "name": "subject",
-              "value": "=ð¨ Solicitud de escalaciÃ³n / Contacto Humano - {{ $json.datos.proyecto }}",
+              "value": "=🚨 Solicitud de escalación / Contacto Humano - {{ $json.datos.proyecto }}",
               "type": "string"
             },
             {
@@ -181,7 +180,7 @@
             {
               "id": "3",
               "name": "html_body",
-              "value": "=<div style=\"font-family: Arial; padding: 20px; background-color: #fdedec;\"><h2 style=\"color: #c0392b;\">ð¨ EscalaciÃ³n Requerida</h2><p>El Lead ha solicitado atenciÃ³n humana o la IA ha determinado que no puede ayudar y necesita soporte vivo de ventas.</p><hr><p><strong>Mochila de Contexto:</strong></p><ul><li><strong>Proyecto:</strong> {{ $json.datos.proyecto }}</li><li><strong>Lead:</strong> {{ $json.datos.nombre_lead }}</li><li><strong>TelÃ©fono:</strong> {{ $json.datos.telefono_lead }}</li><li><strong>Ãltimo mensaje recibido:</strong> <i>\"{{ $json.datos.ultima_consulta }}\"</i></li></ul></div>",
+              "value": "=<div style=\"font-family: Arial; padding: 20px; background-color: #fdedec;\"><h2 style=\"color: #c0392b;\">🚨 Escalación Requerida</h2><p>El Lead ha solicitado atención humana o la IA ha determinado que no puede ayudar y necesita soporte vivo de ventas.</p><hr><p><strong>Mochila de Contexto:</strong></p><ul><li><strong>Proyecto:</strong> {{ $json.datos.proyecto }}</li><li><strong>Lead:</strong> {{ $json.datos.nombre_lead }}</li><li><strong>Teléfono:</strong> {{ $json.datos.telefono_lead }}</li><li><strong>Último mensaje recibido:</strong> <i>\"{{ $json.datos.ultima_consulta }}\"</i></li></ul></div>",
               "type": "string"
             }
           ]
@@ -217,7 +216,7 @@
         "message": "={{ $json.html_body }}",
         "options": {
           "appendAttribution": false,
-          "senderName": "SPECTRUM VIVIENDA"
+          "senderName": "Soporte Redtec"
         }
       },
       "type": "n8n-nodes-base.gmail",
@@ -228,10 +227,27 @@
       ],
       "id": "19bb35a2-2dc0-4f19-9bbf-9fade3e52f06",
       "name": "Send Gmail Notification",
-      "webhookId": "bea4c899-a024-4a95-b8cf-4d862abd51f2"
+      "webhookId": "bea4c899-a024-4a95-b8cf-4d862abd51f2",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "H8Qx7NlrthXmHUiy",
+          "name": "Soporte Garoo"
+        }
+      }
     }
   ],
   "connections": {
+    "START": {
+      "main": [
+        [
+          {
+            "node": "Switch Alerta",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
     "Switch Alerta": {
       "main": [
         [
@@ -318,27 +334,23 @@
           }
         ]
       ]
-    },
-    "START": {
-      "main": [
-        [
-          {
-            "node": "Switch Alerta",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
     }
   },
-  "active": true,
-  "settings": {
-    "executionOrder": "v1",
-    "binaryMode": "separate",
-    "timeSavedMode": "fixed",
-    "callerPolicy": "workflowsFromSameOwner",
-    "availableInMCP": true
+  "pinData": {
+    "START": [
+      {
+        "tipo_alerta": "nuevo_lead",
+        "datos": {
+          "proyecto": "Parque Vista Verde",
+          "nombre_lead": "Jorge Calderon",
+          "correo_lead": "jcalderon@mail.com",
+          "canal": "whatsapp"
+        }
+      }
+    ]
   },
-  "id": "r1Jf5vwrkBrT4dEu",
-  "tags": []
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "d4ab02fb1ef8b6ca2c1c5c1f280ee696b0514d7d92cee5fb0da1784dbe393998"
+  }
 }
