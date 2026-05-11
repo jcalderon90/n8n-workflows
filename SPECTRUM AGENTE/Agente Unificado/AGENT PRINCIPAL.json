@@ -4,14 +4,16 @@
       "parameters": {
         "method": "POST",
         "url": "https://api.manychat.com/fb/sending/sendContent",
-        "authentication": "genericCredentialType",
-        "genericAuthType": "httpHeaderAuth",
         "sendHeaders": true,
         "headerParameters": {
           "parameters": [
             {
               "name": "Content-Type",
               "value": "application/json"
+            },
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{ $('Get Account Credentials').item.json.api_key }}"
             }
           ]
         },
@@ -23,17 +25,11 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        7088,
+        7312,
         -992
       ],
       "id": "3d8d6e03-d0ed-4ef5-b5f8-9560f199cddb",
-      "name": "RESPOND TO MANYCHAT",
-      "credentials": {
-        "httpHeaderAuth": {
-          "id": "2KClojasxcPLSibd",
-          "name": "Manychat"
-        }
-      }
+      "name": "RESPOND TO MANYCHAT"
     },
     {
       "parameters": {
@@ -52,7 +48,7 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        6864,
+        7088,
         -992
       ],
       "id": "8b1b00b7-d3da-48d9-8cbf-b5fc3e0b52fb",
@@ -67,7 +63,7 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        4224,
+        4448,
         -800
       ],
       "id": "77a79ded-7be9-4225-a89e-fc861d83d8dc",
@@ -78,8 +74,8 @@
       "type": "n8n-nodes-base.noOp",
       "typeVersion": 1,
       "position": [
-        1248,
-        -944
+        1472,
+        -948
       ],
       "id": "3c3d7c91-bf64-4f5d-ac20-513a7928bdca",
       "name": "No Operation, do nothing"
@@ -111,7 +107,7 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
       "position": [
-        960,
+        1184,
         -800
       ],
       "id": "356a1dde-049b-43fb-bb37-c27f64fb05b4",
@@ -133,8 +129,8 @@
       "type": "@n8n/n8n-nodes-langchain.informationExtractor",
       "typeVersion": 1.2,
       "position": [
-        1184,
-        -656
+        1408,
+        -652
       ],
       "id": "799deecc-0160-4b6e-ab81-5304b1aa64c0",
       "name": "Proyecto"
@@ -162,7 +158,7 @@
       "type": "@n8n/n8n-nodes-langchain.informationExtractor",
       "typeVersion": 1.2,
       "position": [
-        608,
+        832,
         -800
       ],
       "id": "a1a8c496-d10f-4278-a1ea-fc351bd0e9b8",
@@ -184,8 +180,8 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "typeVersion": 1.3,
       "position": [
-        1264,
-        -432
+        1480,
+        -428
       ],
       "id": "e87fe725-ea68-438a-89b2-b4fe93ab1aae",
       "name": "OpenAI Chat Model2",
@@ -209,7 +205,7 @@
       "type": "n8n-nodes-base.mongoDb",
       "typeVersion": 1.2,
       "position": [
-        4000,
+        4224,
         -704
       ],
       "id": "8f11dfe5-fc16-4624-b9b7-629553076bca",
@@ -231,7 +227,7 @@
       "type": "n8n-nodes-base.mongoDb",
       "typeVersion": 1.2,
       "position": [
-        4000,
+        4224,
         -896
       ],
       "id": "616c2792-964e-45cd-9173-b4f967fe8574",
@@ -247,12 +243,12 @@
       "parameters": {
         "collection": "users",
         "options": {},
-        "query": "={\"manychat_id\":\"{{ $('PARSE BODY').item.json.current_body.id }}\"}"
+        "query": "={ \n  \"manychat_id\": \"{{ $('PARSE BODY').item.json.current_body.id }}\",\n  \"page_id\": \"{{ $('PARSE BODY').item.json.current_body.page_id }}\"\n}"
       },
       "type": "n8n-nodes-base.mongoDb",
       "typeVersion": 1.2,
       "position": [
-        3328,
+        3552,
         -800
       ],
       "id": "cd820791-820b-47af-bad3-142135c93752",
@@ -306,7 +302,7 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        1536,
+        1760,
         -800
       ],
       "id": "fba7159e-5f80-474d-8754-eb6c17f7351f",
@@ -320,6 +316,12 @@
               "id": "9040d88b-dc99-47e3-a6e3-14b8264ae6cb",
               "name": "manychat_id",
               "value": "={{ $('PARSE BODY').item.json.current_body.id }}",
+              "type": "string"
+            },
+            {
+              "id": "1fca47c3-3150-4740-a3a3-aaeb55e0bd49",
+              "name": "page_id",
+              "value": "={{ $('PARSE BODY').item.json.current_body.page_id }}",
               "type": "string"
             },
             {
@@ -413,7 +415,7 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        3776,
+        4000,
         -896
       ],
       "id": "1e790870-f00a-4224-b7f9-85705ad9a1c1",
@@ -433,6 +435,12 @@
               "id": "9040d88b-dc99-47e3-a6e3-14b8264ae6cb",
               "name": "manychat_id",
               "value": "={{ $('PARSE BODY').item.json.current_body.id }}",
+              "type": "string"
+            },
+            {
+              "id": "b4b2db9c-7dda-440f-808c-cfd153db7319",
+              "name": "=page_id",
+              "value": "={{ $('PARSE BODY').item.json.current_body.page_id }}",
               "type": "string"
             },
             {
@@ -502,7 +510,7 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        3776,
+        4000,
         -704
       ],
       "id": "c5378c88-cbca-4480-bdc1-cfdeebff099f",
@@ -536,7 +544,7 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
       "position": [
-        3552,
+        3776,
         -800
       ],
       "id": "878bb76f-8916-4f08-a98f-0416c5f29110",
@@ -574,7 +582,7 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        -64,
+        160,
         -800
       ],
       "id": "c53b7d16-106e-4e69-a045-5db272f7785c",
@@ -603,7 +611,7 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        384,
+        608,
         -800
       ],
       "id": "c180bde7-b9bf-4c0b-b1f7-f690b1873f3c",
@@ -636,7 +644,7 @@
       "type": "n8n-nodes-base.filter",
       "typeVersion": 2.3,
       "position": [
-        -288,
+        -64,
         -800
       ],
       "id": "9c21d0cc-e353-4c40-ab60-f6e72620075a",
@@ -650,7 +658,7 @@
       "type": "n8n-nodes-base.redis",
       "typeVersion": 1,
       "position": [
-        160,
+        384,
         -800
       ],
       "id": "fd67da5f-0055-4b93-9f62-6483285dffe8",
@@ -669,7 +677,7 @@
       "type": "n8n-nodes-base.wait",
       "typeVersion": 1.1,
       "position": [
-        -736,
+        -512,
         -800
       ],
       "id": "beb5e11f-83cb-4992-8d11-8aac936712a9",
@@ -685,7 +693,7 @@
       "type": "n8n-nodes-base.redis",
       "typeVersion": 1,
       "position": [
-        -512,
+        -288,
         -800
       ],
       "id": "68a29a71-47b6-4816-abbc-627ce6749849",
@@ -707,7 +715,7 @@
       "type": "n8n-nodes-base.redis",
       "typeVersion": 1,
       "position": [
-        -960,
+        -736,
         -800
       ],
       "id": "fd1d4651-aa03-4d94-a395-43c06f0d1dd6",
@@ -736,7 +744,7 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        -1184,
+        -960,
         -800
       ],
       "id": "49fbeb87-35d9-4374-a81b-5332c0642da4",
@@ -765,7 +773,7 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        -2080,
+        -1856,
         -992
       ],
       "id": "f57b64d2-8111-4473-9491-cf8e337e6c5d",
@@ -794,7 +802,7 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        -2080,
+        -1856,
         -800
       ],
       "id": "62d66c2e-b536-4950-81f2-28c7226f1ef0",
@@ -823,7 +831,7 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        -2080,
+        -1856,
         -608
       ],
       "id": "1586fe33-4724-4602-a843-9a7546766d42",
@@ -837,7 +845,7 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        -2528,
+        -2304,
         -992
       ],
       "id": "c62df0ed-bda8-4b5e-8e32-5e4d61d52199",
@@ -860,7 +868,7 @@
       "type": "@n8n/n8n-nodes-langchain.openAi",
       "typeVersion": 1.8,
       "position": [
-        -2304,
+        -2080,
         -800
       ],
       "id": "79a9b33a-e2c6-460d-a8a9-bc8046ff99e4",
@@ -888,7 +896,7 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "typeVersion": 1.3,
       "position": [
-        688,
+        904,
         -576
       ],
       "id": "9e9cf80d-2e28-450a-bde3-e33edf717531",
@@ -914,7 +922,7 @@
       "type": "n8n-nodes-base.aggregate",
       "typeVersion": 1,
       "position": [
-        -1408,
+        -1184,
         -800
       ],
       "id": "a4daeed1-7c71-44b8-874b-116c69164a5c",
@@ -934,7 +942,7 @@
       "type": "n8n-nodes-base.sort",
       "typeVersion": 1,
       "position": [
-        -1632,
+        -1408,
         -800
       ],
       "id": "48710757-cbf1-4785-a37f-5765fb192f9e",
@@ -947,7 +955,7 @@
       "type": "n8n-nodes-base.merge",
       "typeVersion": 3.2,
       "position": [
-        -1856,
+        -1632,
         -816
       ],
       "id": "72f365ec-9948-45a8-8f2b-6f984695204a",
@@ -962,7 +970,7 @@
       "type": "@n8n/n8n-nodes-langchain.openAi",
       "typeVersion": 1.8,
       "position": [
-        -2304,
+        -2080,
         -992
       ],
       "id": "c88157f4-50eb-427a-af1f-0cdf3f6e033e",
@@ -1010,7 +1018,7 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.2,
       "position": [
-        -2752,
+        -2528,
         -896
       ],
       "id": "917a2587-a210-4c2f-a132-8a7b2526060b",
@@ -1024,7 +1032,7 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        -2976,
+        -2752,
         -896
       ],
       "id": "0c73c401-d23c-43e9-9cab-76912dbf80d3",
@@ -1066,7 +1074,7 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.2,
       "position": [
-        -3200,
+        -2976,
         -800
       ],
       "id": "a7005547-b41a-4bc3-b5cc-111b4aff7be5",
@@ -1114,7 +1122,7 @@
       "type": "@n8n/n8n-nodes-langchain.memoryMongoDbChat",
       "typeVersion": 1,
       "position": [
-        4576,
+        4800,
         -576
       ],
       "id": "2e9d2ef3-36fa-4e3d-81d7-dc310f7e750b",
@@ -1140,7 +1148,7 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "typeVersion": 1.3,
       "position": [
-        4448,
+        4672,
         -576
       ],
       "id": "1577a690-d899-4d00-a989-9916e5593e15",
@@ -1163,7 +1171,7 @@
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 3.1,
       "position": [
-        4704,
+        4920,
         -800
       ],
       "id": "147286cd-b18c-49cb-a012-8be7769d0eed",
@@ -1189,7 +1197,8 @@
             "nombre": "={{ $('User Data').item.json.nombre || '' }}",
             "correo": "={{ $('User Data').item.json.correo || '' }}",
             "telefono": "={{ $('User Data').item.json.telefono || '' }}",
-            "mongo_id": "={{ $json._id.toJsonString().replace(/^\"(.*)\"$/, '$1') }}"
+            "mongo_id": "={{ $json._id.toJsonString().replace(/^\"(.*)\"$/, '$1') }}",
+            "page_id": "={{ $('PARSE BODY').item.json.current_body.page_id }}"
           },
           "matchingColumns": [],
           "schema": [
@@ -1206,6 +1215,16 @@
             {
               "id": "manychat_id",
               "displayName": "manychat_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "page_id",
+              "displayName": "page_id",
               "required": false,
               "defaultMatch": false,
               "display": true,
@@ -1291,7 +1310,7 @@
       "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
       "typeVersion": 2.2,
       "position": [
-        4704,
+        4928,
         -576
       ],
       "id": "aefb6a26-ec49-4353-840c-d715ca915597",
@@ -1304,7 +1323,7 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        5296,
+        5520,
         -800
       ],
       "id": "b2275914-b2f3-4b30-ae7c-efd0f081c606",
@@ -1338,7 +1357,7 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
       "position": [
-        5744,
+        5968,
         -992
       ],
       "id": "12f15fc5-7eb2-4c66-a831-90cf3d809108",
@@ -1415,7 +1434,7 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        5968,
+        6192,
         -1088
       ],
       "id": "e552935f-2efd-49d5-81c3-996b09a5e45a",
@@ -1438,7 +1457,7 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        5520,
+        5744,
         -992
       ],
       "id": "44f18308-0d0a-432c-831d-c5138fdf69fb",
@@ -1455,7 +1474,7 @@
       "type": "n8n-nodes-base.mongoDb",
       "typeVersion": 1.2,
       "position": [
-        6192,
+        6416,
         -1088
       ],
       "id": "dd0ab8cf-7e2b-4c96-b08d-58ca86dbe7ce",
@@ -1472,7 +1491,7 @@
       "type": "n8n-nodes-base.noOp",
       "typeVersion": 1,
       "position": [
-        6640,
+        6864,
         -800
       ],
       "id": "e8940b61-d588-40b0-8403-a93b3aa60340",
@@ -1533,7 +1552,7 @@
       "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
       "typeVersion": 2.2,
       "position": [
-        4832,
+        5056,
         -576
       ],
       "id": "cd3c094b-2e83-4ad8-a2be-91b8b834c5a8",
@@ -1640,7 +1659,7 @@
       "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
       "typeVersion": 2.2,
       "position": [
-        4960,
+        5184,
         -576
       ],
       "id": "d7a2f45b-88fb-4aac-8602-34a83e9b23d4",
@@ -1673,7 +1692,7 @@
       "type": "n8n-nodes-base.filter",
       "typeVersion": 2.3,
       "position": [
-        5520,
+        5744,
         -800
       ],
       "id": "adf235ee-2a04-492d-bf09-32e572519d81",
@@ -1689,7 +1708,7 @@
       "type": "n8n-nodes-base.mongoDb",
       "typeVersion": 1.2,
       "position": [
-        7536,
+        7760,
         -992
       ],
       "id": "5e880e7b-37c3-42fb-a586-929aedb2b1f7",
@@ -1742,7 +1761,7 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        7312,
+        7536,
         -992
       ],
       "id": "091d9a1f-027c-4d5f-b49d-7d3bd4d2de13",
@@ -1794,7 +1813,7 @@
       "type": "n8n-nodes-base.executeWorkflow",
       "typeVersion": 1.3,
       "position": [
-        6640,
+        6864,
         -1184
       ],
       "id": "d827c8b8-49ae-47cc-9dbb-8bdcb4d38521",
@@ -1846,7 +1865,7 @@
       "type": "n8n-nodes-base.executeWorkflow",
       "typeVersion": 1.3,
       "position": [
-        5744,
+        5968,
         -800
       ],
       "id": "7ea33ba5-cc10-4ad7-b38a-5d653787a43c",
@@ -1868,7 +1887,8 @@
             "tipo_media": "={{ $fromAI('tipo_media', '', 'string') }}",
             "proyecto": "={{ $fromAI('proyecto', '', 'string') || $('User Data').item.json.proyecto }}",
             "canal": "={{ $('User Data').item.json.input_channel }}",
-            "manychat_id": "={{ $('User Data').item.json.manychat_id }}"
+            "manychat_id": "={{ $('User Data').item.json.manychat_id }}",
+            "manychat_api": "={{ $('Get Account Credentials').item.json.api_key }}"
           },
           "matchingColumns": [],
           "schema": [
@@ -1907,6 +1927,16 @@
               "display": true,
               "canBeUsedToMatch": true,
               "type": "string"
+            },
+            {
+              "id": "manychat_api",
+              "displayName": "manychat_api",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
             }
           ],
           "attemptToConvertTypes": false,
@@ -1916,7 +1946,7 @@
       "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
       "typeVersion": 2.2,
       "position": [
-        5088,
+        5312,
         -576
       ],
       "id": "448769c7-27f7-4efb-960a-b5f491b2de39",
@@ -1927,7 +1957,7 @@
       "type": "n8n-nodes-base.noOp",
       "typeVersion": 1,
       "position": [
-        6640,
+        6864,
         -992
       ],
       "id": "9253efb0-de3a-4803-9796-a6b788a7ce43",
@@ -1971,7 +2001,7 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
       "position": [
-        6416,
+        6640,
         -1088
       ],
       "id": "c5ebdbaf-94dd-4fb1-b3f5-ada8180c21cb",
@@ -1986,8 +2016,8 @@
       "type": "n8n-nodes-base.mongoDb",
       "typeVersion": 1.2,
       "position": [
-        1984,
-        -736
+        2208,
+        -728
       ],
       "id": "c5d48d6a-6fd9-4ac2-8354-a133cca8831a",
       "name": "Find user by Phone",
@@ -2027,7 +2057,7 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
       "position": [
-        1760,
+        1984,
         -800
       ],
       "id": "667e13f2-692f-4b41-a962-8d5265401847",
@@ -2061,8 +2091,8 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
       "position": [
-        2208,
-        -736
+        2432,
+        -728
       ],
       "id": "16113268-0b8a-4dcb-a488-f2028cd77b4e",
       "name": "If NOT EXIST"
@@ -2076,7 +2106,7 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        2432,
+        2656,
         -656
       ],
       "id": "8cfb8290-cba5-4d97-b1b9-03a8c684921d",
@@ -2092,7 +2122,7 @@
       "type": "n8n-nodes-base.mongoDb",
       "typeVersion": 1.2,
       "position": [
-        2656,
+        2880,
         -656
       ],
       "id": "fb4b0dbd-05c4-4b6f-a296-d432fad927c7",
@@ -2121,7 +2151,7 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        2880,
+        3104,
         -656
       ],
       "id": "a64ee935-a8df-410a-826b-f4fdb425a526",
@@ -2129,12 +2159,12 @@
     },
     {
       "parameters": {
-        "jsCode": "// Capturamos el texto del mensaje (ajusta 'last_input_text' si ves que ManyChat lo manda en 'message')\nlet message_text = $input.item.json.current_body?.last_input_text || $input.item.json.current_body?.message || $input.item.json.last_input_text || \"\";\nmessage_text = message_text.toLowerCase();\n\nlet proyecto = null;\nlet utm_source = \"100000004\"; // WhatsApp Genérico\nlet tag_medio = \"Organico WhatsApp\";\n\n// Detección de Proyectos\nif (message_text.includes(\"vista verde\") || message_text.includes(\"pvv\")) proyecto = \"PVV\";\nelse if (message_text.includes(\"mariscal\") || message_text.includes(\"pmar\")) proyecto = \"PMAR\";\nelse if (message_text.includes(\"portales\") || message_text.includes(\"ppo\")) proyecto = \"PPO\";\nelse if (message_text.includes(\"polanco\") || message_text.includes(\"ppol\")) proyecto = \"PPOL\";\nelse if (message_text.includes(\"soto bosque\") || message_text.includes(\"sotobosque\") || message_text.includes(\"psb\")) proyecto = \"PSB\";\n\n// Detección de Fuentes (UTMs)\nif (message_text.includes(\"anuncio\")) { tag_medio = \"City Core\"; utm_source = \"100000012\"; }\nelse if (message_text.includes(\"redes sociales\")) { tag_medio = \"Social Media\"; utm_source = \"100000012\"; }\nelse if (message_text.includes(\"fan page\")) { tag_medio = \"Fan Page\"; }\nelse if (message_text.includes(\"email\")) { tag_medio = \"Mail\"; }\nelse if (message_text.includes(\"banco\")) { tag_medio = \"Banco\"; }\nelse if (message_text.includes(\"quiero información del\") || message_text.includes(\"quiero información de\")) { tag_medio = \"Web\"; }\n\nreturn [{\n    json: {\n        ...$input.item.json,\n        extracted_campaign_data: {\n            proyecto_detectado: proyecto,\n            tag_medio: tag_medio,\n            utm_source_crm: utm_source\n        }\n    }\n}];"
+        "jsCode": "// Capturamos el texto del mensaje (ajusta 'last_input_text' si ves que ManyChat lo manda en 'message')\nlet message_text = $('PARSE BODY').first().json.current_body.last_input_text || \"\";\nmessage_text = message_text.toLowerCase();\n\nlet proyecto = null;\nlet utm_source = \"100000004\"; // WhatsApp Genérico\nlet tag_medio = \"Organico WhatsApp\";\n\n// Detección de Proyectos\nif (message_text.includes(\"vista verde\") || message_text.includes(\"pvv\")) proyecto = \"PVV\";\nelse if (message_text.includes(\"mariscal\") || message_text.includes(\"pmar\")) proyecto = \"PMAR\";\nelse if (message_text.includes(\"portales\") || message_text.includes(\"ppo\")) proyecto = \"PPO\";\nelse if (message_text.includes(\"polanco\") || message_text.includes(\"ppol\")) proyecto = \"PPOL\";\nelse if (message_text.includes(\"soto bosque\") || message_text.includes(\"sotobosque\") || message_text.includes(\"psb\")) proyecto = \"PSB\";\n\n// Detección de Fuentes (UTMs)\nif (message_text.includes(\"anuncio\")) { tag_medio = \"City Core\"; utm_source = \"100000012\"; }\nelse if (message_text.includes(\"redes sociales\")) { tag_medio = \"Social Media\"; utm_source = \"100000012\"; }\nelse if (message_text.includes(\"fan page\")) { tag_medio = \"Fan Page\"; }\nelse if (message_text.includes(\"email\")) { tag_medio = \"Mail\"; }\nelse if (message_text.includes(\"banco\")) { tag_medio = \"Banco\"; }\nelse if (message_text.includes(\"quiero información del\") || message_text.includes(\"quiero información de\")) { tag_medio = \"Web\"; }\n\nreturn [{\n    json: {\n        ...$input.item.json,\n        extracted_campaign_data: {\n            proyecto_detectado: proyecto,\n            tag_medio: tag_medio,\n            utm_source_crm: utm_source\n        }\n    }\n}];"
       },
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        -3424,
+        -3200,
         -800
       ],
       "id": "459845c9-25ff-4f46-a342-de5d63c2a9dd",
@@ -2149,7 +2179,7 @@
       "type": "n8n-nodes-base.mongoDb",
       "typeVersion": 1.2,
       "position": [
-        3104,
+        3328,
         -656
       ],
       "id": "45fee60f-78db-48bf-8438-d4e65f3eabcb",
@@ -2174,7 +2204,7 @@
       "type": "n8n-nodes-manychat.manyChat",
       "typeVersion": 1,
       "position": [
-        5520,
+        5744,
         -608
       ],
       "id": "ad0d593a-0c10-4c38-8073-881a7f2438e1",
@@ -2199,7 +2229,7 @@
       "type": "n8n-nodes-manychat.manyChat",
       "typeVersion": 1,
       "position": [
-        5744,
+        5968,
         -608
       ],
       "id": "8b643c8c-948c-40ce-bdd8-1cd3cb15e574",
@@ -2208,6 +2238,29 @@
         "manyChatApi": {
           "id": "aEvHbFXnmwofChqs",
           "name": "ManyChat Garoo"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "collection": "manychat_settings",
+        "options": {},
+        "query": "={ \"page_id\": \"{{ $json.current_body.page_id }}\" }"
+      },
+      "type": "n8n-nodes-base.mongoDb",
+      "typeVersion": 1.2,
+      "position": [
+        -3424,
+        -800
+      ],
+      "id": "063a1571-77ee-4821-a69f-210eaf54271a",
+      "name": "Get Account Credentials",
+      "retryOnFail": false,
+      "alwaysOutputData": true,
+      "credentials": {
+        "mongoDb": {
+          "id": "UzcANqeDFO1QLbfd",
+          "name": "SPECTRUM - CENTRALIZADO"
         }
       }
     }
@@ -2396,7 +2449,7 @@
       "main": [
         [
           {
-            "node": "Extraer CAMPAIGN DATA",
+            "node": "Get Account Credentials",
             "type": "main",
             "index": 0
           }
@@ -2999,6 +3052,17 @@
         [
           {
             "node": "UPDATE - UTM Source",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Account Credentials": {
+      "main": [
+        [
+          {
+            "node": "Extraer CAMPAIGN DATA",
             "type": "main",
             "index": 0
           }

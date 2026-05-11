@@ -11,6 +11,9 @@
               "name": "manychat_id"
             },
             {
+              "name": "page_id"
+            },
+            {
               "name": "mongo_id"
             },
             {
@@ -105,6 +108,12 @@
               "id": "8b243697-1075-4f96-8e02-7eab922d9c39",
               "name": "proyecto",
               "value": "={{ $json.proyecto || '' }}",
+              "type": "string"
+            },
+            {
+              "id": "9bcd68be-0364-4be5-bb89-fe074d4d6c16",
+              "name": "page_id",
+              "value": "={{ $json.page_id || '' }}",
               "type": "string"
             }
           ]
@@ -411,7 +420,7 @@
         "operation": "update",
         "collection": "users",
         "updateKey": "_id",
-        "fields": "CRM_Data",
+        "fields": "CRM_Data,page_id",
         "options": {}
       },
       "type": "n8n-nodes-base.mongoDb",
@@ -444,6 +453,12 @@
               "name": "CRM_Data",
               "value": "={{ $('PARSE BODY').item.json['soap:Envelope']['soap:Body'].CreacionClientePotencialBot }}",
               "type": "object"
+            },
+            {
+              "id": "47a4419b-ac79-40c3-9120-de84b732315a",
+              "name": "page_id",
+              "value": "={{ $('SET CONTEXT').item.json.page_id }}",
+              "type": "string"
             }
           ]
         },
