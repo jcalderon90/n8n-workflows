@@ -15,7 +15,7 @@
       "typeVersion": 1.3,
       "position": [
         1328,
-        616
+        624
       ],
       "id": "46be3337-aa07-48e3-bf62-c156d8cf6ab8",
       "name": "Schedule Trigger"
@@ -28,7 +28,7 @@
       "typeVersion": 3,
       "position": [
         2000,
-        616
+        624
       ],
       "id": "4e22ae0d-34c4-4294-961a-da1ee927fdf2",
       "name": "Loop Over Users"
@@ -96,7 +96,7 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "typeVersion": 1.3,
       "position": [
-        4088,
+        4096,
         672
       ],
       "id": "8311047a-dd17-440d-9527-7a4a91a7c302",
@@ -118,7 +118,7 @@
       "typeVersion": 1.2,
       "position": [
         2448,
-        396
+        400
       ],
       "id": "54edd89f-ce49-429c-b63c-40eae75164a8",
       "name": "Find Appointment",
@@ -148,7 +148,7 @@
       "typeVersion": 3.4,
       "position": [
         2672,
-        396
+        400
       ],
       "id": "1e9bda8f-ec9e-42a8-9aba-061611c8542a",
       "name": "Manychat User ID"
@@ -161,7 +161,7 @@
       "typeVersion": 2,
       "position": [
         1552,
-        616
+        624
       ],
       "id": "8774a149-ec47-48a8-864f-687e4fe736d6",
       "name": "Time-15min"
@@ -281,7 +281,7 @@
             {
               "id": "29bc8a2a-9b6e-4b09-ae6d-30b74ab45b94",
               "name": "body",
-              "value": "=<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<soap:Envelope xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\">\n<soap:Body>\n<CreacionClientePotencialBot xmlns=\"http://tempuri.org/\">\n<_OrigenCliente>{{ $('Loop Over Users').item.json.CRM_Data?._OrigenCliente || 100000001 }}</_OrigenCliente>\n<_Proyecto>{{ $('Loop Over Users').item.json.proyecto || \"PPO\" }}</_Proyecto>\n<_Nombre>{{ $('Loop Over Users').item.json.nombre?.split(\" \")[0] || \"Cliente\" }}</_Nombre>\n<_Apellido>{{ $('Loop Over Users').item.json.nombre?.split(\" \").slice(1).join(\" \") || \"N/A\" }}</_Apellido>\n<_TelefonoMovil>{{ $('Loop Over Users').item.json.telefono || \"\" }}</_TelefonoMovil>\n<_CorreEletronico>{{ $('Loop Over Users').item.json.correo || \"\" }}</_CorreEletronico>\n{{ $('Loop Over Users').item.json.correo_secundario ? '<_CorreoSecundario>' + $('Loop Over Users').item.json.correo_secundario + '</_CorreoSecundario>' : '' }}\n<_UTMSource>{{ $('Loop Over Users').item.json.utm_source_crm || $('Loop Over Users').item.json.CRM_Data?._UTMSource || 100000004 }}</_UTMSource>\n<_UTMCampaing>{{ $('Loop Over Users').item.json.tag_medio || \"Cliente atendido desde Chatbot\" }}</_UTMCampaing>\n<_MetodocontactoPref>{{ \n  ($('Find Appointment').item.json?.contacto_pref == \"correo\" ? 2 : \n   $('Find Appointment').item.json?.contacto_pref == \"llamada\" ? 3 : \n   $('Find Appointment').item.json?.contacto_pref == \"whatsapp\" ? 4 : \n   $('Find Appointment').item.json?.contacto_pref == \"cualquier_forma\" ? 5 : \n   Number($('Loop Over Users').item.json.CRM_Data?._MetodocontactoPref || 5)) \n}}</_MetodocontactoPref>\n<_Comentarios>{{ $('Loop Over Users').item.json.CRM_Data?._Comentarios || \"\" }}</_Comentarios>\n{{ \n  ($('Find Appointment').item.json?.habitaciones == \"1\" ? '<_NumeroHabitaciones>100000000</_NumeroHabitaciones>' : \n   $('Find Appointment').item.json?.habitaciones == \"2\" ? '<_NumeroHabitaciones>100000001</_NumeroHabitaciones>' : \n   $('Find Appointment').item.json?.habitaciones == \"3\" ? '<_NumeroHabitaciones>100000002</_NumeroHabitaciones>' : \n   ($('Loop Over Users').item.json.CRM_Data?._NumeroHabitaciones ? '<_NumeroHabitaciones>' + $('Loop Over Users').item.json.CRM_Data._NumeroHabitaciones + '</_NumeroHabitaciones>' : '')) \n}}\n{{ \n  ($('Find Appointment').item.json?.estado_civil == \"soltero\" ? '<_EstadoCivil>100000000</_EstadoCivil>' : \n   $('Find Appointment').item.json?.estado_civil == \"casado\" ? '<_EstadoCivil>100000001</_EstadoCivil>' : \n   $('Find Appointment').item.json?.estado_civil == \"divorciado\" ? '<_EstadoCivil>100000002</_EstadoCivil>' : \n   $('Find Appointment').item.json?.estado_civil == \"union_libre\" ? '<_EstadoCivil>100000003</_EstadoCivil>' : \n   ($('Loop Over Users').item.json.CRM_Data?._EstadoCivil ? '<_EstadoCivil>' + $('Loop Over Users').item.json.CRM_Data._EstadoCivil + '</_EstadoCivil>' : '')) \n}}\n{{ \n  ($('Find Appointment').item.json?.intencion == \"I\" ? '<_MotivoInteres>100000001</_MotivoInteres>' : \n   $('Find Appointment').item.json?.intencion == \"V\" ? '<_MotivoInteres>100000003</_MotivoInteres>' : \n   ($('Loop Over Users').item.json.CRM_Data?._MotivoInteres ? '<_MotivoInteres>' + $('Loop Over Users').item.json.CRM_Data._MotivoInteres + '</_MotivoInteres>' : '')) \n}}\n{{ \n  $('Find Appointment').item.json?.fecha_hora ? '<_FechaCita>' + new Date($('Find Appointment').item.json.fecha_hora).toISOString() + '</_FechaCita>' : \n  ($('Loop Over Users').item.json.CRM_Data?._FechaCita ? '<_FechaCita>' + $('Loop Over Users').item.json.CRM_Data._FechaCita + '</_FechaCita>' : '') \n}}\n{{ \n  ($('Find Appointment').item.json?.tipo == \"cita_presencial\" ? '<_TipoCita>100000000</_TipoCita>' : \n   ['cita_virtual', 'llamada'].includes($('Find Appointment').item.json?.tipo) ? '<_TipoCita>100000001</_TipoCita>' : \n   ($('Loop Over Users').item.json.CRM_Data?._TipoCita ? '<_TipoCita>' + $('Loop Over Users').item.json.CRM_Data._TipoCita + '</_TipoCita>' : '')) \n}}\n<_ResumenConversacion>{{ $json.conversation_ressume?.Resumen || \"\" }}</_ResumenConversacion>\n<_DudasCliente>{{ $json.conversation_ressume?.Dudas || \"\" }}</_DudasCliente>\n</CreacionClientePotencialBot>\n</soap:Body>\n</soap:Envelope>",
+              "value": "=<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<soap:Envelope xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\">\n<soap:Body>\n<CreacionClientePotencialBot xmlns=\"http://tempuri.org/\">\n<_OrigenCliente>{{ $('Loop Over Users').item.json.CRM_Data?._OrigenCliente || 100000001 }}</_OrigenCliente>\n<_Proyecto>{{ $('Loop Over Users').item.json.proyecto || \"PPO\" }}</_Proyecto>\n<_Nombre>{{ $('Loop Over Users').item.json.nombre?.split(\" \")[0] || \"Cliente\" }}</_Nombre>\n<_Apellido>{{ $('Loop Over Users').item.json.nombre?.split(\" \").slice(1).join(\" \") || \"N/A\" }}</_Apellido>\n<_TelefonoMovil>{{ $('Loop Over Users').item.json.telefono || \"\" }}</_TelefonoMovil>\n<_CorreEletronico>{{ $('Loop Over Users').item.json.correo || \"\" }}</_CorreEletronico>\n{{ $('Loop Over Users').item.json.correo_secundario ? '<_CorreoSecundario>' + $('Loop Over Users').item.json.correo_secundario + '</_CorreoSecundario>' : '' }}\n<_UTMSource>{{ $('Loop Over Users').item.json.utm_source_crm || 100000004 }}</_UTMSource>\n<_UTMCampaing>{{ $('Loop Over Users').item.json.atribucion_tag || \"Web\" }}</_UTMCampaing>\n<_MetodocontactoPref>{{ \n  ($('Find Appointment').item.json?.contacto_pref == \"correo\" ? 2 : \n   $('Find Appointment').item.json?.contacto_pref == \"llamada\" ? 3 : \n   $('Find Appointment').item.json?.contacto_pref == \"whatsapp\" ? 4 : \n   $('Find Appointment').item.json?.contacto_pref == \"cualquier_forma\" ? 5 : \n   Number($('Loop Over Users').item.json.CRM_Data?._MetodocontactoPref || 5)) \n}}</_MetodocontactoPref>\n<_Comentarios>{{ $('Loop Over Users').item.json.atribucion_contacto || \"Chatbot\" }}</_Comentarios>\n{{ \n  ($('Find Appointment').item.json?.habitaciones == \"1\" ? '<_NumeroHabitaciones>100000000</_NumeroHabitaciones>' : \n   $('Find Appointment').item.json?.habitaciones == \"2\" ? '<_NumeroHabitaciones>100000001</_NumeroHabitaciones>' : \n   $('Find Appointment').item.json?.habitaciones == \"3\" ? '<_NumeroHabitaciones>100000002</_NumeroHabitaciones>' : \n   ($('Loop Over Users').item.json.CRM_Data?._NumeroHabitaciones ? '<_NumeroHabitaciones>' + $('Loop Over Users').item.json.CRM_Data._NumeroHabitaciones + '</_NumeroHabitaciones>' : '')) \n}}\n{{ \n  ($('Find Appointment').item.json?.estado_civil == \"soltero\" ? '<_EstadoCivil>100000000</_EstadoCivil>' : \n   $('Find Appointment').item.json?.estado_civil == \"casado\" ? '<_EstadoCivil>100000001</_EstadoCivil>' : \n   $('Find Appointment').item.json?.estado_civil == \"divorciado\" ? '<_EstadoCivil>100000002</_EstadoCivil>' : \n   $('Find Appointment').item.json?.estado_civil == \"union_libre\" ? '<_EstadoCivil>100000003</_EstadoCivil>' : \n   ($('Loop Over Users').item.json.CRM_Data?._EstadoCivil ? '<_EstadoCivil>' + $('Loop Over Users').item.json.CRM_Data._EstadoCivil + '</_EstadoCivil>' : '')) \n}}\n{{ \n  ($('Find Appointment').item.json?.intencion == \"I\" ? '<_MotivoInteres>100000001</_MotivoInteres>' : \n   $('Find Appointment').item.json?.intencion == \"V\" ? '<_MotivoInteres>100000003</_MotivoInteres>' : \n   ($('Loop Over Users').item.json.CRM_Data?._MotivoInteres ? '<_MotivoInteres>' + $('Loop Over Users').item.json.CRM_Data._MotivoInteres + '</_MotivoInteres>' : '')) \n}}\n{{ \n  $('Find Appointment').item.json?.fecha_hora ? '<_FechaCita>' + new Date($('Find Appointment').item.json.fecha_hora).toISOString() + '</_FechaCita>' : \n  ($('Loop Over Users').item.json.CRM_Data?._FechaCita ? '<_FechaCita>' + $('Loop Over Users').item.json.CRM_Data._FechaCita + '</_FechaCita>' : '') \n}}\n{{ \n  ($('Find Appointment').item.json?.tipo == \"cita_presencial\" ? '<_TipoCita>100000000</_TipoCita>' : \n   ['cita_virtual', 'llamada'].includes($('Find Appointment').item.json?.tipo) ? '<_TipoCita>100000001</_TipoCita>' : \n   ($('Loop Over Users').item.json.CRM_Data?._TipoCita ? '<_TipoCita>' + $('Loop Over Users').item.json.CRM_Data._TipoCita + '</_TipoCita>' : '')) \n}}\n<_ResumenConversacion>{{ $json.conversation_ressume?.Resumen || \"\" }}</_ResumenConversacion>\n<_DudasCliente>{{ $json.conversation_ressume?.Dudas || \"\" }}</_DudasCliente>\n</CreacionClientePotencialBot>\n</soap:Body>\n</soap:Envelope>",
               "type": "string"
             }
           ]
@@ -317,7 +317,7 @@
       "typeVersion": 1,
       "position": [
         7184,
-        616
+        624
       ],
       "id": "5f34e6ac-0ef0-4a0a-a31a-3d5fdda05a82",
       "name": "No Operation, do nothing"
@@ -332,7 +332,7 @@
       "typeVersion": 1.2,
       "position": [
         1776,
-        616
+        624
       ],
       "id": "fadfdf15-4f6b-40fc-b3d9-44087a95aa95",
       "name": "Find Users to Sync",
@@ -568,7 +568,7 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "typeVersion": 1.3,
       "position": [
-        6456,
+        6464,
         672
       ],
       "id": "a5b166f3-173a-4a07-b833-b376a03f1297",
@@ -665,7 +665,7 @@
       "typeVersion": 1.2,
       "position": [
         2224,
-        396
+        400
       ],
       "id": "4b6f6f38-8359-4b47-9a5b-ec8b0b569687",
       "name": "Find User Credentials",
@@ -680,7 +680,7 @@
     {
       "parameters": {
         "method": "POST",
-        "url": "https://api.manychat.com/fb/subscriber/setCustomField",
+        "url": "=https://api.manychat.com/fb/subscriber/setCustomFieldByName",
         "sendHeaders": true,
         "headerParameters": {
           "parameters": [
@@ -696,7 +696,7 @@
         },
         "sendBody": true,
         "specifyBody": "json",
-        "jsonBody": "={\n  \"subscriber_id\": \"{{ $('Manychat User ID').item.json.manychat_user_id }}\",\n  \"field_id\": {{ $json.data.find(f => f.name === 'proyecto_interes')?.id }},\n  \"field_value\": \"{{ $('Loop Over Users').item.json.proyecto || '' }}\"\n}",
+        "jsonBody": "={\n  \"subscriber_id\": \"{{ $('Manychat User ID').item.json.manychat_user_id }}\",\n  \"field_name\": \"proyecto_interes\",\n  \"field_value\": \"{{ $('Loop Over Users').item.json.proyecto || '' }}\"\n}",
         "options": {}
       },
       "type": "n8n-nodes-base.httpRequest",

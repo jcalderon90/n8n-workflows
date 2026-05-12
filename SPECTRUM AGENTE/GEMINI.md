@@ -64,8 +64,8 @@ Los archivos en `/KBs` se cargan en MongoDB Atlas (colección `documents`) para 
 | `KB PVV.json` | `PVV` |
 | `KB PMAR.json` | `PMAR` |
 | `KB PPO.json` | `PPO` |
-| `KB PL.json` | `PPOL` |
-| `KB SB.json` | `PSB` |
+| `KB PPOL.json` | `PPOL` |
+| `KB PSB.json` | `PSB` |
 
 ---
 

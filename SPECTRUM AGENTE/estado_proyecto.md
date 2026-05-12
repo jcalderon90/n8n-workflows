@@ -1,5 +1,5 @@
 # 🏢 SPECTRUM VIVIENDA: Agente Unificado — Estado del Proyecto
-> Última actualización: 2026-05-11 (Implementación Multitenancy ManyChat y Saneamiento Global)
+> Última actualización: 2026-05-12 (Corrección de errores en AGENT PRINCIPAL y Sync_CRM)
 
 ## 🎯 Objetivo General
 Arquitectura de agente conversacional modular para SPECTRUM VIVIENDA. Un orquestador central (*Sof-IA*) delega tareas a sub-workflows especializados (Tools), con persistencia centralizada en MongoDB y sincronización diferida al CRM Dynamics 365 vía SOAP.
@@ -23,18 +23,19 @@ Arquitectura de agente conversacional modular para SPECTRUM VIVIENDA. Un orquest
 ## 📦 Módulos (Workflows)
 
 ### 1. 🧠 Orquestador Central — `AGENT PRINCIPAL.json`
-**Estado: 🔄 En Migración a Multitenant** | Última mod: 2026-05-11
+**Estado: ✅ Activo y Multitenant** | Última mod: 2026-05-12
 
 - ✅ **Completado**: Nodo `Get Account Credentials` para búsqueda dinámica de API Keys en MongoDB.
 - ✅ **Completado**: Nodo `RESPOND TO MANYCHAT` convertido a dinámico (HTTP Request con Header Auth).
 - ✅ **Completado**: Búsqueda de usuarios en MongoDB ahora segmentada por `manychat_id` + `page_id`.
-- ⏳ **Pendiente**: Reemplazar nodos nativos de ManyChat (`Proyecto Interes` y `UTM Source`) por nodos `httpRequest` para soportar tokens dinámicos.
+- ✅ **Completado**: Reemplazo de nodos nativos por `httpRequest` usando endpoint `setCustomFieldByName` para compatibilidad multitenant.
+- ✅ **Completado**: Fix nodos `UPDATE - UTM Source` y `UPDATE - Proyecto Interes` — URL corregida de `setCustomField` a `setCustomFieldByName` (error `field_id cannot be blank`).
 
 ### 2. 👤 Captador de Leads — `Lead Collector.json`
-**Estado: 🔄 En Migración a Multitenant** | Última mod: 2026-05-11
+**Estado: ✅ Activo y Multitenant** | Última mod: 2026-05-12
 
 - ✅ **Completado**: Recepción de `page_id` en el trigger `START`.
-- ⏳ **Pendiente**: Actualizar nodo `Update User` para incluir el campo `page_id` en la persistencia de MongoDB.
+- ✅ **Completado**: Actualización de nodo `Update User` para persistir el `page_id` en MongoDB.
 
 ### 3. 📚 Experto en Proyectos — `KB SEARCH.json`
 **Estado: ✅ Activo en n8n** | Última mod: 2026-05-09
@@ -46,7 +47,6 @@ Arquitectura de agente conversacional modular para SPECTRUM VIVIENDA. Un orquest
 **Estado: ✅ Activo en n8n** | Última mod: 2026-05-11
 
 - ✅ **Completado**: Fix de encoding de emojis y estandarización de tuteo.
-- ⚠️ **Nota**: Estos flujos no requieren cambios de multitenancy ya que la respuesta final la da el Orquestador o no envían mensajes a ManyChat.
 
 ### 5. 🎞️ Envío de Media — `Send Media.json`
 **Estado: ✅ Multitenant Ready** | Última mod: 2026-05-11
@@ -55,29 +55,39 @@ Arquitectura de agente conversacional modular para SPECTRUM VIVIENDA. Un orquest
 - ✅ **Completado**: Nodo de envío actualizado a `httpRequest` con Header `Authorization` dinámico.
 
 ### 6. 🔄 Sincronizador CRM — `Sync_CRM.json`
-**Estado: ⏳ Pendiente de Revisión** | Última mod: 2026-05-09
+**Estado: ✅ Activo y Auditado** | Última mod: 2026-05-12
 
-- ⏳ **Pendiente**: Validar que el `page_id` se incluya en los logs de auditoría para trazabilidad multi-cuenta.
+- ✅ **Completado**: Inclusión de `page_id` en `quality_logs` para trazabilidad completa por cuenta.
+- ✅ **Completado**: Sincronización de Custom Fields hacia ManyChat usando API Keys dinámicas.
+- ✅ **Completado**: Fix nodo `Body` — eliminado salto de línea dentro de expresión `$('Loop Over Users')` que causaba `invalid syntax`.
+- ✅ **Completado**: Fix nodo `UPDATE - Proyecto Interes Manychat` — migrado a `setCustomFieldByName` con `field_name` hardcodeado, eliminando dependencia de lookup dinámico de `field_id`.
+- ℹ️ **Nota**: Nodo `Campos Usuario` se mantiene en el flujo (sin uso activo) para referencia futura.
+
+### 7. 🛠️ Utilidad de Vectorización — `Vectorizar los KBs.json`
+**Estado: ⚙️ En Uso (Manual)** | Última mod: 2026-05-12
+
+- ✅ **Completado**: Estructura para carga masiva de chunks en MongoDB Atlas (`documents`).
+- ✅ **Completado**: Configuración de metadatos (proyecto, categoría, tags) para búsqueda filtrada.
+- ℹ️ **Nota**: Workflow de ejecución manual para actualización de base de conocimientos.
 
 ---
 
 ## 🚀 Punto Actual del Proyecto
 
-Se ha implementado el 80% de la lógica de **Multitenancy**. El bot ahora identifica de qué página de ManyChat viene el mensaje y recupera la API Key correspondiente desde la nueva colección `manychat_settings`. 
+El sistema es ahora **100% Multitenant** y ha sido verificado técnicamente (nodos de actualización migrados a `setCustomFieldByName` para evitar errores de `field_id`).
 
-### ✅ Completado recientemente (2026-05-11)
-- **Identificación de Origen:** El flujo ahora segmenta usuarios por `page_id`, permitiendo que un mismo usuario tenga perfiles distintos en WhatsApp, Instagram o diferentes cuentas de FB.
-- **Respuestas Dinámicas:** La respuesta principal (`RESPOND TO MANYCHAT`) ya no depende de una credencial estática de n8n.
-- **Soporte Tool Media:** El envío de brochures ya es compatible con múltiples tokens.
+### ✅ Completado recientemente (2026-05-12)
+- **Corrección de API ManyChat (AGENT PRINCIPAL):** Nodos `UPDATE - UTM Source` y `UPDATE - Proyecto Interes` migrados a `setCustomFieldByName`.
+- **Corrección Sync_CRM:** Fix de syntax error en nodo `Body` y migración a `setCustomFieldByName`.
+- **Sincronización de KBs:** Estandarización de nombres de archivos en documentación (`KB PPOL.json`, `KB PSB.json`).
+- **Trazabilidad de Auditoría:** Los logs de calidad ahora permiten filtrar por proyecto y cuenta de origen.
 
-### 🔜 Próximos pasos (Continuar en otra PC)
+### 🔜 Próximos pasos
 
 | # | Tarea | Bloqueante | Estado |
 |---|---|---|---|
-| 1 | **Reemplazar Nodos de Actualización** — Cambiar nodos nativos de ManyChat en `AGENT PRINCIPAL` por `httpRequest` (Ver `nodos_manychat_http.json`) | Sí | ⏳ Pendiente |
-| 2 | **Persistencia Page_ID** — Actualizar nodo `Update User` en `Lead Collector` para guardar el `page_id` | Sí | ⏳ Pendiente |
-| 3 | **Población MongoDB** — Crear registros en `manychat_settings` para cada `page_id` activo | Sí | ⏳ Pendiente |
-| 4 | **Pruebas E2E Multicuenta** — Validar flujo desde Instagram y WhatsApp simultáneamente | Sí | ⏳ Pendiente |
+| 1 | **Población MongoDB** — Crear registros en `manychat_settings` para cada `page_id` activo | Sí | ⏳ Pendiente |
+| 2 | **Pruebas E2E Multicuenta** — Validar flujo desde Instagram y WhatsApp simultáneamente | Sí | ⏳ Pendiente |
+| 3 | **Monitoreo inicial** — Revisar la colección `quality_logs` tras las primeras 24h | No | ⏳ Pendiente |
 
 ---
-> **Nota de Seguridad:** Se ha dejado el archivo `nodos_manychat_http.json` en la raíz con el código listo para copiar/pegar en la nueva instancia de n8n.

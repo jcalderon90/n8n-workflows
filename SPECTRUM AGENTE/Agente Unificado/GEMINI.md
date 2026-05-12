@@ -67,8 +67,8 @@ Agente Unificado/
 
 ```
 KBs/
-├── KB PL.json    ← Polanco (PPOL)
-├── KB SB.json    ← Sotobosque (PSB)
+├── KB PPOL.json  ← Polanco (PPOL)
+├── KB PSB.json   ← Sotobosque (PSB)
 ├── KB PPO.json   ← Parque Portales (PPO)
 ├── KB PVV.json   ← Parque Vista Verde (PVV)
 └── KB PMAR.json  ← Parque Mariscal (PMAR)

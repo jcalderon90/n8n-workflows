@@ -33,6 +33,15 @@
             },
             {
               "name": "proyecto"
+            },
+            {
+              "name": "atribucion_tag"
+            },
+            {
+              "name": "atribucion_medio"
+            },
+            {
+              "name": "atribucion_contacto"
             }
           ]
         }
@@ -398,7 +407,7 @@
             {
               "id": "29bc8a2a-9b6e-4b09-ae6d-30b74ab45b94",
               "name": "body",
-              "value": "=<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<soap:Envelope xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\">\n  <soap:Body>\n    <CreacionClientePotencialBot xmlns=\"http://tempuri.org/\">\n      <_OrigenCliente>100000001</_OrigenCliente>\n      <_Proyecto>{{ $('SET CONTEXT').item.json.proyecto }}</_Proyecto>\n      <_Comentarios>Lead generado desde chatbot</_Comentarios>\n      <_UTMSource>{{ $('SET CONTEXT').item.json.canal.toLowerCase() == 'whatsapp' ? 100000004 : $('SET CONTEXT').item.json.canal.toLowerCase() == 'instagram' ? 100000012 : 100000005 }}</_UTMSource>\n      <_UTMCampaing>Cliente atendido desde Chatbot</_UTMCampaing>\n      <_Nombre>{{ $json.nombre.split(\" \")[0] }}</_Nombre>\n      <_Apellido>{{ $json.nombre.split(\" \")[1] || \"N/A\" }}</_Apellido>\n      <_TelefonoMovil>{{ $json.telefono }}</_TelefonoMovil>\n      <_CorreEletronico>{{ $json.correo }}</_CorreEletronico>\n      <_MetodocontactoPref>5</_MetodocontactoPref>\n    </CreacionClientePotencialBot>\n  </soap:Body>\n</soap:Envelope>",
+              "value": "=<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<soap:Envelope xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\">\n  <soap:Body>\n    <CreacionClientePotencialBot xmlns=\"http://tempuri.org/\">\n      <_OrigenCliente>100000001</_OrigenCliente>\n      <_Proyecto>{{ $('SET CONTEXT').item.json.proyecto }}</_Proyecto>\n      <_Comentarios>{{ $('START').item.json.atribucion_medio }} | {{ $('START').item.json.atribucion_contacto\n     }}</_Comentarios>\n      <_UTMSource>{{ $('SET CONTEXT').item.json.canal.toLowerCase() == 'whatsapp' ? 100000004 : $('SET CONTEXT').item.json.canal.toLowerCase() == 'instagram' ? 100000012 : 100000005 }}</_UTMSource>\n      <_UTMCampaing>{{ $('START').item.json.atribucion_tag || \"Web\" }}</_UTMCampaing>\n      <_Nombre>{{ $json.nombre.split(\" \")[0] }}</_Nombre>\n      <_Apellido>{{ $json.nombre.split(\" \")[1] || \"N/A\" }}</_Apellido>\n      <_TelefonoMovil>{{ $json.telefono }}</_TelefonoMovil>\n      <_CorreEletronico>{{ $('LEAD DATA').item.json.correo }}</_CorreEletronico>\n      <_MetodocontactoPref>5</_MetodocontactoPref>\n    </CreacionClientePotencialBot>\n  </soap:Body>\n</soap:Envelope>",
               "type": "string"
             }
           ]
@@ -419,7 +428,7 @@
         "operation": "update",
         "collection": "users",
         "updateKey": "_id",
-        "fields": "CRM_Data,page_id",
+        "fields": "=CRM_Data,page_id,atribucion_tag,atribucion_medio,atribucion_contacto",
         "options": {}
       },
       "type": "n8n-nodes-base.mongoDb",
@@ -457,6 +466,24 @@
               "id": "47a4419b-ac79-40c3-9120-de84b732315a",
               "name": "page_id",
               "value": "={{ $('SET CONTEXT').item.json.page_id }}",
+              "type": "string"
+            },
+            {
+              "id": "25e1adb0-49a2-4921-bbc7-99074c9e4745",
+              "name": "atribucion_tag",
+              "value": "={{ $('START').item.json.atribucion_tag }}",
+              "type": "string"
+            },
+            {
+              "id": "1de751c6-aeb9-4149-b641-55be0c305c58",
+              "name": "atribucion_medio",
+              "value": "={{ $('START').item.json.atribucion_medio }}",
+              "type": "string"
+            },
+            {
+              "id": "81fa2720-a7c4-455f-ae93-fd30f27f3a74",
+              "name": "atribucion_contacto",
+              "value": "={{ $('START').item.json.atribucion_contacto }}",
               "type": "string"
             }
           ]

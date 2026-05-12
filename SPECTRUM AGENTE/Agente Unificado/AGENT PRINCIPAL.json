@@ -64,7 +64,7 @@
       "typeVersion": 3.4,
       "position": [
         4448,
-        -800
+        -704
       ],
       "id": "77a79ded-7be9-4225-a89e-fc861d83d8dc",
       "name": "User Data"
@@ -75,7 +75,7 @@
       "typeVersion": 1,
       "position": [
         1472,
-        -944
+        -848
       ],
       "id": "3c3d7c91-bf64-4f5d-ac20-513a7928bdca",
       "name": "No Operation, do nothing"
@@ -108,7 +108,7 @@
       "typeVersion": 2.3,
       "position": [
         1184,
-        -800
+        -704
       ],
       "id": "356a1dde-049b-43fb-bb37-c27f64fb05b4",
       "name": "If NO WHATSAPP"
@@ -130,7 +130,7 @@
       "typeVersion": 1.2,
       "position": [
         1408,
-        -656
+        -560
       ],
       "id": "799deecc-0160-4b6e-ab81-5304b1aa64c0",
       "name": "Proyecto"
@@ -159,7 +159,7 @@
       "typeVersion": 1.2,
       "position": [
         832,
-        -800
+        -704
       ],
       "id": "a1a8c496-d10f-4278-a1ea-fc351bd0e9b8",
       "name": "Lenguaje & Asesoria"
@@ -181,7 +181,7 @@
       "typeVersion": 1.3,
       "position": [
         1488,
-        -432
+        -336
       ],
       "id": "e87fe725-ea68-438a-89b2-b4fe93ab1aae",
       "name": "OpenAI Chat Model2",
@@ -206,7 +206,7 @@
       "typeVersion": 1.2,
       "position": [
         4224,
-        -704
+        -608
       ],
       "id": "8f11dfe5-fc16-4624-b9b7-629553076bca",
       "name": "Update User",
@@ -228,7 +228,7 @@
       "typeVersion": 1.2,
       "position": [
         4224,
-        -896
+        -800
       ],
       "id": "616c2792-964e-45cd-9173-b4f967fe8574",
       "name": "Insert User",
@@ -249,7 +249,7 @@
       "typeVersion": 1.2,
       "position": [
         3552,
-        -800
+        -704
       ],
       "id": "cd820791-820b-47af-bad3-142135c93752",
       "name": "Find User",
@@ -303,7 +303,7 @@
       "typeVersion": 3.4,
       "position": [
         1760,
-        -800
+        -704
       ],
       "id": "fba7159e-5f80-474d-8754-eb6c17f7351f",
       "name": "CONTEXT 1"
@@ -416,7 +416,7 @@
       "typeVersion": 3.4,
       "position": [
         4000,
-        -896
+        -800
       ],
       "id": "1e790870-f00a-4224-b7f9-85705ad9a1c1",
       "name": "DATA to CREATE"
@@ -511,7 +511,7 @@
       "typeVersion": 3.4,
       "position": [
         4000,
-        -704
+        -608
       ],
       "id": "c5378c88-cbca-4480-bdc1-cfdeebff099f",
       "name": "DATA to UPDATE"
@@ -545,7 +545,7 @@
       "typeVersion": 2.3,
       "position": [
         3776,
-        -800
+        -704
       ],
       "id": "878bb76f-8916-4f08-a98f-0416c5f29110",
       "name": "If USER NOT EXIST"
@@ -560,7 +560,7 @@
       "typeVersion": 3.4,
       "position": [
         -3648,
-        -800
+        -704
       ],
       "id": "747cfee0-6f34-4605-bbcb-8fddcf2a8ad8",
       "name": "PARSE BODY"
@@ -583,7 +583,7 @@
       "typeVersion": 3.4,
       "position": [
         160,
-        -800
+        -704
       ],
       "id": "c53b7d16-106e-4e69-a045-5db272f7785c",
       "name": "JOINNING MESSAGE"
@@ -612,7 +612,7 @@
       "typeVersion": 3.4,
       "position": [
         608,
-        -800
+        -704
       ],
       "id": "c180bde7-b9bf-4c0b-b1f7-f690b1873f3c",
       "name": "PROJECT LIST"
@@ -645,7 +645,7 @@
       "typeVersion": 2.3,
       "position": [
         -64,
-        -800
+        -704
       ],
       "id": "9c21d0cc-e353-4c40-ab60-f6e72620075a",
       "name": "Filter1"
@@ -659,7 +659,7 @@
       "typeVersion": 1,
       "position": [
         384,
-        -800
+        -704
       ],
       "id": "fd67da5f-0055-4b93-9f62-6483285dffe8",
       "name": "DELETE MESSAGES",
@@ -678,7 +678,7 @@
       "typeVersion": 1.1,
       "position": [
         -512,
-        -800
+        -704
       ],
       "id": "beb5e11f-83cb-4992-8d11-8aac936712a9",
       "name": "Wait",
@@ -694,7 +694,7 @@
       "typeVersion": 1,
       "position": [
         -288,
-        -800
+        -704
       ],
       "id": "68a29a71-47b6-4816-abbc-627ce6749849",
       "name": "GET MESSAGE",
@@ -716,7 +716,7 @@
       "typeVersion": 1,
       "position": [
         -736,
-        -800
+        -704
       ],
       "id": "fd1d4651-aa03-4d94-a395-43c06f0d1dd6",
       "name": "SAVE MESSAGE",
@@ -745,7 +745,7 @@
       "typeVersion": 3.4,
       "position": [
         -960,
-        -800
+        -704
       ],
       "id": "49fbeb87-35d9-4374-a81b-5332c0642da4",
       "name": "INPUT FINAL"
@@ -774,7 +774,7 @@
       "typeVersion": 3.4,
       "position": [
         -1856,
-        -992
+        -896
       ],
       "id": "f57b64d2-8111-4473-9491-cf8e337e6c5d",
       "name": "audio input"
@@ -803,7 +803,7 @@
       "typeVersion": 3.4,
       "position": [
         -1856,
-        -800
+        -704
       ],
       "id": "62d66c2e-b536-4950-81f2-28c7226f1ef0",
       "name": "image input"
@@ -832,7 +832,7 @@
       "typeVersion": 3.4,
       "position": [
         -1856,
-        -608
+        -512
       ],
       "id": "1586fe33-4724-4602-a843-9a7546766d42",
       "name": "text input"
@@ -846,7 +846,7 @@
       "typeVersion": 4.2,
       "position": [
         -2304,
-        -992
+        -896
       ],
       "id": "c62df0ed-bda8-4b5e-8e32-5e4d61d52199",
       "name": "HTTP IF AUDIO"
@@ -869,7 +869,7 @@
       "typeVersion": 1.8,
       "position": [
         -2080,
-        -800
+        -704
       ],
       "id": "79a9b33a-e2c6-460d-a8a9-bc8046ff99e4",
       "name": "ANALIZA IMAGEN",
@@ -897,7 +897,7 @@
       "typeVersion": 1.3,
       "position": [
         912,
-        -576
+        -480
       ],
       "id": "9e9cf80d-2e28-450a-bde3-e33edf717531",
       "name": "OpenAI Chat Model1",
@@ -923,7 +923,7 @@
       "typeVersion": 1,
       "position": [
         -1184,
-        -800
+        -704
       ],
       "id": "a4daeed1-7c71-44b8-874b-116c69164a5c",
       "name": "Aggregate"
@@ -943,7 +943,7 @@
       "typeVersion": 1,
       "position": [
         -1408,
-        -800
+        -704
       ],
       "id": "48710757-cbf1-4785-a37f-5765fb192f9e",
       "name": "Sort"
@@ -956,7 +956,7 @@
       "typeVersion": 3.2,
       "position": [
         -1632,
-        -816
+        -720
       ],
       "id": "72f365ec-9948-45a8-8f2b-6f984695204a",
       "name": "Merge"
@@ -971,7 +971,7 @@
       "typeVersion": 1.8,
       "position": [
         -2080,
-        -992
+        -896
       ],
       "id": "c88157f4-50eb-427a-af1f-0cdf3f6e033e",
       "name": "TRANSCRIBE AUDIO",
@@ -1019,7 +1019,7 @@
       "typeVersion": 2.2,
       "position": [
         -2528,
-        -896
+        -800
       ],
       "id": "917a2587-a210-4c2f-a132-8a7b2526060b",
       "name": "ES AUDIO / IMAGEN"
@@ -1033,7 +1033,7 @@
       "typeVersion": 4.2,
       "position": [
         -2752,
-        -896
+        -800
       ],
       "id": "0c73c401-d23c-43e9-9cab-76912dbf80d3",
       "name": "HTTP Request"
@@ -1075,7 +1075,7 @@
       "typeVersion": 2.2,
       "position": [
         -2976,
-        -800
+        -704
       ],
       "id": "a7005547-b41a-4bc3-b5cc-111b4aff7be5",
       "name": "ES ARCHIVO"
@@ -1088,7 +1088,7 @@
       "typeVersion": 2,
       "position": [
         -3872,
-        -800
+        -704
       ],
       "id": "ec90ce39-3e1d-40d2-9b15-6bbfe3c01fdb",
       "name": "Create Body"
@@ -1105,7 +1105,7 @@
       "typeVersion": 2.1,
       "position": [
         -4096,
-        -800
+        -704
       ],
       "id": "8b71d4f2-d42e-47c3-9884-0f10e4007c40",
       "name": "Webhook",
@@ -1123,7 +1123,7 @@
       "typeVersion": 1,
       "position": [
         4800,
-        -576
+        -480
       ],
       "id": "2e9d2ef3-36fa-4e3d-81d7-dc310f7e750b",
       "name": "MongoDB Chat Memory",
@@ -1149,7 +1149,7 @@
       "typeVersion": 1.3,
       "position": [
         4672,
-        -576
+        -480
       ],
       "id": "1577a690-d899-4d00-a989-9916e5593e15",
       "name": "OpenAI Chat Model",
@@ -1172,7 +1172,7 @@
       "typeVersion": 3.1,
       "position": [
         4928,
-        -800
+        -704
       ],
       "id": "147286cd-b18c-49cb-a012-8be7769d0eed",
       "name": "PRINCIPAL"
@@ -1198,7 +1198,10 @@
             "correo": "={{ $('User Data').item.json.correo || '' }}",
             "telefono": "={{ $('User Data').item.json.telefono || '' }}",
             "mongo_id": "={{ $json._id.toJsonString().replace(/^\"(.*)\"$/, '$1') }}",
-            "page_id": "={{ $('PARSE BODY').item.json.current_body.page_id }}"
+            "page_id": "={{ $('PARSE BODY').item.json.current_body.page_id }}",
+            "atribucion_tag": "={{ $('Extraer CAMPAIGN DATA').item.json.extracted_campaign_data.atribucion_tag }}",
+            "atribucion_medio": "={{ $('Extraer CAMPAIGN DATA').item.json.extracted_campaign_data.atribucion_medio }}",
+            "atribucion_contacto": "={{ $('Extraer CAMPAIGN DATA').item.json.extracted_campaign_data.atribucion_contacto }}"
           },
           "matchingColumns": [],
           "schema": [
@@ -1301,6 +1304,36 @@
               "canBeUsedToMatch": true,
               "type": "string",
               "removed": false
+            },
+            {
+              "id": "atribucion_tag",
+              "displayName": "atribucion_tag",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "atribucion_medio",
+              "displayName": "atribucion_medio",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "atribucion_contacto",
+              "displayName": "atribucion_contacto",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
             }
           ],
           "attemptToConvertTypes": false,
@@ -1311,7 +1344,7 @@
       "typeVersion": 2.2,
       "position": [
         4928,
-        -576
+        -480
       ],
       "id": "aefb6a26-ec49-4353-840c-d715ca915597",
       "name": "lead_collector"
@@ -1324,7 +1357,7 @@
       "typeVersion": 2,
       "position": [
         5520,
-        -800
+        -704
       ],
       "id": "b2275914-b2f3-4b30-ae7c-efd0f081c606",
       "name": "Parse response"
@@ -1553,7 +1586,7 @@
       "typeVersion": 2.2,
       "position": [
         5056,
-        -576
+        -480
       ],
       "id": "cd3c094b-2e83-4ad8-a2be-91b8b834c5a8",
       "name": "kb_search"
@@ -1660,7 +1693,7 @@
       "typeVersion": 2.2,
       "position": [
         5184,
-        -576
+        -480
       ],
       "id": "d7a2f45b-88fb-4aac-8602-34a83e9b23d4",
       "name": "rsvp"
@@ -1947,7 +1980,7 @@
       "typeVersion": 2.2,
       "position": [
         5312,
-        -576
+        -480
       ],
       "id": "448769c7-27f7-4efb-960a-b5f491b2de39",
       "name": "send_media"
@@ -2017,7 +2050,7 @@
       "typeVersion": 1.2,
       "position": [
         2208,
-        -736
+        -640
       ],
       "id": "c5d48d6a-6fd9-4ac2-8354-a133cca8831a",
       "name": "Find user by Phone",
@@ -2058,7 +2091,7 @@
       "typeVersion": 2.3,
       "position": [
         1984,
-        -800
+        -704
       ],
       "id": "667e13f2-692f-4b41-a962-8d5265401847",
       "name": "If NOT WHATSAPP"
@@ -2092,7 +2125,7 @@
       "typeVersion": 2.3,
       "position": [
         2432,
-        -736
+        -640
       ],
       "id": "16113268-0b8a-4dcb-a488-f2028cd77b4e",
       "name": "If NOT EXIST"
@@ -2107,7 +2140,7 @@
       "typeVersion": 3.4,
       "position": [
         2656,
-        -656
+        -560
       ],
       "id": "8cfb8290-cba5-4d97-b1b9-03a8c684921d",
       "name": "DATA to CREATE FASE 2"
@@ -2123,7 +2156,7 @@
       "typeVersion": 1.2,
       "position": [
         2880,
-        -656
+        -560
       ],
       "id": "fb4b0dbd-05c4-4b6f-a296-d432fad927c7",
       "name": "Insert User Fase 2",
@@ -2152,20 +2185,20 @@
       "typeVersion": 3.4,
       "position": [
         3104,
-        -656
+        -560
       ],
       "id": "a64ee935-a8df-410a-826b-f4fdb425a526",
       "name": "ID - Lead en Fase 2 "
     },
     {
       "parameters": {
-        "jsCode": "// Capturamos el texto del mensaje (ajusta 'last_input_text' si ves que ManyChat lo manda en 'message')\nlet message_text = $('PARSE BODY').first().json.current_body.last_input_text || \"\";\nmessage_text = message_text.toLowerCase();\n\nlet proyecto = null;\nlet utm_source = \"100000004\"; // WhatsApp Genérico\nlet tag_medio = \"Organico WhatsApp\";\n\n// Detección de Proyectos\nif (message_text.includes(\"vista verde\") || message_text.includes(\"pvv\")) proyecto = \"PVV\";\nelse if (message_text.includes(\"mariscal\") || message_text.includes(\"pmar\")) proyecto = \"PMAR\";\nelse if (message_text.includes(\"portales\") || message_text.includes(\"ppo\")) proyecto = \"PPO\";\nelse if (message_text.includes(\"polanco\") || message_text.includes(\"ppol\")) proyecto = \"PPOL\";\nelse if (message_text.includes(\"soto bosque\") || message_text.includes(\"sotobosque\") || message_text.includes(\"psb\")) proyecto = \"PSB\";\n\n// Detección de Fuentes (UTMs)\nif (message_text.includes(\"anuncio\")) { tag_medio = \"City Core\"; utm_source = \"100000012\"; }\nelse if (message_text.includes(\"redes sociales\")) { tag_medio = \"Social Media\"; utm_source = \"100000012\"; }\nelse if (message_text.includes(\"fan page\")) { tag_medio = \"Fan Page\"; }\nelse if (message_text.includes(\"email\")) { tag_medio = \"Mail\"; }\nelse if (message_text.includes(\"banco\")) { tag_medio = \"Banco\"; }\nelse if (message_text.includes(\"quiero información del\") || message_text.includes(\"quiero información de\")) { tag_medio = \"Web\"; }\n\nreturn [{\n    json: {\n        ...$input.item.json,\n        extracted_campaign_data: {\n            proyecto_detectado: proyecto,\n            tag_medio: tag_medio,\n            utm_source_crm: utm_source\n        }\n    }\n}];"
+        "jsCode": "// 1. Capturar texto base y canal\nconst body = $('PARSE BODY').first().json.current_body;\nconst canal_ingreso = body.custom_fields?.canal_ingreso || \"WhatsApp\";\nlet message_text = body.last_input_text || \"\";\nconst message_lower = message_text.toLowerCase();\n\n// 2. Determinar Código CRM Base (UTM Source numérico)\nlet utm_base = \"100000004\"; // Default WhatsApp\nif (canal_ingreso.includes(\"Instagram\")) utm_base = \"100000012\";\nelse if (canal_ingreso.includes(\"Messenger\")) utm_base = \"100000005\";\n\n// 3. Mapeo de Atribución basado en \"Prefilled Text\" (Tu tabla)\nlet atribucion = {\n  tag: \"Web\",\n  medio: \"Página web\",\n  contacto: \"Chatbot\"\n};\n\n// Detección por frases exactas\nif (message_lower.includes(\"en un anuncio\")) {\n  atribucion = { tag: \"City Core\", medio: \"Comunicación en City Cores\", contacto: \"Chatbot\" };\n} else if (message_lower.includes(\"redes sociales\")) {\n  atribucion = { tag: \"Social Media\", medio: \"Redes sociales Orgánico\", contacto: \"Chatbot\" };\n} else if (message_lower.includes(\"fan page\")) {\n  atribucion = { tag: \"Fan Page\", medio: \"Encabezado de fan page\", contacto: \"Chatbot/Página web\" };\n} else if (message_lower.includes(\"por email\")) {\n  atribucion = { tag: \"Mail\", medio: \"Mailings\", contacto: \"Chatbot\" };\n} else if (message_lower.includes(\"en el banco\")) {\n  atribucion = { tag: \"Banco\", medio: \"Bancos\", contacto: \"Chatbot\" };\n} else if (message_lower.includes(\"quiero información\") || message_lower.includes(\"info de\")) {\n  atribucion = { tag: \"Web\", medio: \"Página web\", contacto: \"Chatbot\" };\n}\n\n// 4. Detección de Proyectos (Mantenemos la lógica actual)\nlet proyecto = null;\nif (message_lower.includes(\"vista verde\") || message_lower.includes(\"pvv\")) proyecto = \"PVV\";\nelse if (message_lower.includes(\"mariscal\") || message_lower.includes(\"pmar\")) proyecto = \"PMAR\";\nelse if (message_lower.includes(\"portales\") || message_lower.includes(\"ppo\")) proyecto = \"PPO\";\nelse if (message_lower.includes(\"polanco\") || message_lower.includes(\"ppol\")) proyecto = \"PPOL\";\nelse if (message_lower.includes(\"soto bosque\") || message_lower.includes(\"sotobosque\") ||\n  message_lower.includes(\"psb\")) proyecto = \"PSB\";\n\nreturn [{\n    json: {\n        ...$input.item.json,\n        extracted_campaign_data: {\n            proyecto_detectado: proyecto,\n            utm_source_crm: utm_base,\n            // Nuevos campos detallados\n            atribucion_tag: atribucion.tag,\n            atribucion_medio: atribucion.medio,\n            atribucion_contacto: atribucion.contacto\n        }\n    }\n}];"
       },
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
         -3200,
-        -800
+        -704
       ],
       "id": "459845c9-25ff-4f46-a342-de5d63c2a9dd",
       "name": "Extraer CAMPAIGN DATA"
@@ -2180,7 +2213,7 @@
       "typeVersion": 1.2,
       "position": [
         3328,
-        -656
+        -560
       ],
       "id": "45fee60f-78db-48bf-8438-d4e65f3eabcb",
       "name": "Delete Lead FASE 2",
@@ -2201,7 +2234,7 @@
       "typeVersion": 1.2,
       "position": [
         -3424,
-        -800
+        -704
       ],
       "id": "063a1571-77ee-4821-a69f-210eaf54271a",
       "name": "Get Account Credentials",
@@ -2217,7 +2250,7 @@
     {
       "parameters": {
         "method": "POST",
-        "url": "https://api.manychat.com/fb/subscriber/setCustomField",
+        "url": "https://api.manychat.com/fb/subscriber/setCustomFieldByName",
         "sendHeaders": true,
         "headerParameters": {
           "parameters": [
@@ -2239,7 +2272,7 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.4,
       "position": [
-        5744,
+        5968,
         -608
       ],
       "id": "10d6b52e-2d5d-4299-8f59-733e9a626a1d",
@@ -2247,8 +2280,42 @@
     },
     {
       "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "43c8a26b-80ae-4bbc-9c96-c87e721c9c61",
+              "leftValue": "={{ $json.proyecto }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.3,
+      "position": [
+        5744,
+        -608
+      ],
+      "id": "2806d203-97ec-484e-830a-9562a52e21ea",
+      "name": "Filtrar Proyecto Existente"
+    },
+    {
+      "parameters": {
         "method": "POST",
-        "url": "https://api.manychat.com/fb/subscriber/setCustomField",
+        "url": "https://api.manychat.com/fb/subscriber/setCustomFieldByName",
         "sendHeaders": true,
         "headerParameters": {
           "parameters": [
@@ -2264,16 +2331,16 @@
         },
         "sendBody": true,
         "specifyBody": "json",
-        "jsonBody": "={\n  \"subscriber_id\": \"{{ $('PARSE BODY').item.json.current_body.id }}\",\n  \"field_name\": \"utm_source_crm\", \n  \"field_value\": \"{{ $('Extraer CAMPAIGN DATA').item.json.extracted_campaign_data.utm_source_crm }}\"\n}",
+        "jsonBody": "={\n  \"subscriber_id\": \"{{ $('PARSE BODY').item.json.current_body.id }}\",\n  \"field_name\": \"proyecto_utm_source\", \n  \"field_value\": \"{{ $('Extraer CAMPAIGN DATA').item.json.extracted_campaign_data.utm_source_crm }}\"\n}",
         "options": {}
       },
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.4,
       "position": [
-        5968,
-        -608
+        5744,
+        -416
       ],
-      "id": "0122321d-8f7c-4802-9741-e18cebbfdd6c",
+      "id": "fedc3b21-dc2a-44db-8a3f-73f52838234a",
       "name": "UPDATE - UTM Source"
     }
   ],
@@ -2793,7 +2860,12 @@
             "index": 0
           },
           {
-            "node": "UPDATE - Proyecto Interes",
+            "node": "Filtrar Proyecto Existente",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "UPDATE - UTM Source",
             "type": "main",
             "index": 0
           }
@@ -3072,9 +3144,14 @@
     },
     "UPDATE - Proyecto Interes": {
       "main": [
+        []
+      ]
+    },
+    "Filtrar Proyecto Existente": {
+      "main": [
         [
           {
-            "node": "UPDATE - UTM Source",
+            "node": "UPDATE - Proyecto Interes",
             "type": "main",
             "index": 0
           }
@@ -3088,57 +3165,55 @@
         "headers": {
           "host": "agentsprod.redtec.ai",
           "user-agent": "ManyChat",
-          "content-length": "946",
+          "content-length": "1044",
           "content-type": "application/json; charset=utf-8",
-          "x-forwarded-for": "3.124.242.138",
+          "x-forwarded-for": "63.179.139.135",
           "x-forwarded-host": "agentsprod.redtec.ai",
           "x-forwarded-port": "443",
           "x-forwarded-proto": "https",
           "x-forwarded-server": "2a862d2f5b19",
-          "x-real-ip": "3.124.242.138",
+          "x-real-ip": "63.179.139.135",
           "accept-encoding": "gzip"
         },
         "params": {},
         "query": {},
         "body": {
-          "key": "user:233720490",
-          "id": "233720490",
-          "page_id": "113631858496836",
+          "key": "user:1322293733",
+          "id": "1322293733",
+          "page_id": "113179411695050",
           "user_refs": [],
           "status": "active",
-          "first_name": "Pruebas",
-          "last_name": "De ManyChat",
-          "name": "Pruebas De ManyChat",
+          "first_name": "Merari",
+          "last_name": "de Mata",
+          "name": "Merari de Mata",
           "gender": null,
-          "profile_pic": null,
+          "profile_pic": "https://app.manychat.com/ava/113179411695050/1322293733/9da4902eb52023d77fb667d94c0ed6e2",
           "locale": null,
           "language": null,
           "timezone": "UTC±00",
-          "live_chat_url": "https://app.manychat.com/fb113631858496836/chat/233720490",
-          "last_input_text": "quiero info",
+          "live_chat_url": "https://app.manychat.com/fb113179411695050/chat/1322293733",
+          "last_input_text": "Ok gracias \nSi me gustaría",
           "optin_phone": false,
           "phone": null,
           "optin_email": false,
           "email": null,
-          "subscribed": "2026-01-05T14:48:06-06:00",
+          "subscribed": "2026-05-12T09:57:51-06:00",
           "last_interaction": null,
-          "ig_last_interaction": null,
+          "ig_last_interaction": "2026-05-12T10:24:03-06:00",
           "last_seen": null,
-          "ig_last_seen": null,
+          "ig_last_seen": "2026-05-12T10:24:03-06:00",
           "is_followup_enabled": true,
-          "ig_username": null,
-          "ig_id": null,
-          "whatsapp_phone": "+13322311881",
+          "ig_username": "mery_dmata",
+          "ig_id": 1590114552046851,
+          "whatsapp_phone": null,
           "whatsapp_bsuid": null,
           "whatsapp_username": null,
-          "optin_whatsapp": true,
+          "optin_whatsapp": false,
           "phone_country_code": null,
           "last_growth_tool": null,
           "custom_fields": {
-            "canal_ingreso": "WhatsApp",
-            "Input from Template": null,
-            "First_Name": null,
-            "whatsapp_id": "13322311881",
+            "canal_ingreso": "Instagram",
+            "proyecto": "PPO",
             "proyecto_interes": null,
             "proyecto_utm_source": null
           }
