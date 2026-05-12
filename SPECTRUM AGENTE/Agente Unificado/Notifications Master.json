@@ -69,7 +69,7 @@
             {
               "id": "2",
               "name": "sendTo",
-              "value": "jorge.menzel@garooinc.com,hpalma@spectrum.com.gt,vramirez@spectrum.com.gt,lrivas@spectrum.com.gt",
+              "value": "=jorge.menzel@garooinc.com,hpalma@spectrum.com.gt,vramirez@spectrum.com.gt,lrivas@spectrum.com.gt,dmartinez@spectrum.com.gt",
               "type": "string"
             },
             {
@@ -104,7 +104,7 @@
             {
               "id": "2",
               "name": "sendTo",
-              "value": "hpalma@spectrum.com.gt,jorge.menzel@garooinc.com,vramirez@spectrum.com.gt,lrivas@spectrum.com.gt",
+              "value": "hpalma@spectrum.com.gt,jorge.menzel@garooinc.com,vramirez@spectrum.com.gt,lrivas@spectrum.com.gt,dmartinez@spectrum.com.gt",
               "type": "string"
             },
             {
@@ -139,7 +139,7 @@
             {
               "id": "2",
               "name": "sendTo",
-              "value": "jorge.menzel@garooinc.com,hpalma@spectrum.com.gt,vramirez@spectrum.com.gt,lrivas@spectrum.com.gt",
+              "value": "jorge.menzel@garooinc.com,hpalma@spectrum.com.gt,vramirez@spectrum.com.gt,lrivas@spectrum.com.gt,dmartinez@spectrum.com.gt",
               "type": "string"
             },
             {
@@ -174,7 +174,7 @@
             {
               "id": "2",
               "name": "sendTo",
-              "value": "hpalma@spectrum.com.gt,jorge.menzel@garooinc.com,vramirez@spectrum.com.gt,lrivas@spectrum.com.gt",
+              "value": "hpalma@spectrum.com.gt,jorge.menzel@garooinc.com,vramirez@spectrum.com.gt,lrivas@spectrum.com.gt,dmartinez@spectrum.com.gt",
               "type": "string"
             },
             {
@@ -211,11 +211,12 @@
     },
     {
       "parameters": {
-        "sendTo": "={{ true ? \"jorge.calderon@garooinc.com\" : $json.sendTo }}",
+        "sendTo": "=jorge.calderon@garooinc.com",
         "subject": "={{ $json.subject }}",
         "message": "={{ $json.html_body }}",
         "options": {
           "appendAttribution": false,
+          "ccList": "={{ $json.sendTo }}",
           "senderName": "Soporte Redtec"
         }
       },
@@ -341,9 +342,10 @@
       {
         "tipo_alerta": "nuevo_lead",
         "datos": {
-          "proyecto": "Parque Vista Verde",
-          "nombre_lead": "Jorge Calderon",
-          "correo_lead": "jcalderon@mail.com",
+          "proyecto": "PMAR",
+          "nombre_lead": "Diana Vásquez",
+          "telefono_lead": "+50250185082",
+          "correo_lead": "dianavasquezl.2163@gmail.com",
           "canal": "whatsapp"
         }
       }

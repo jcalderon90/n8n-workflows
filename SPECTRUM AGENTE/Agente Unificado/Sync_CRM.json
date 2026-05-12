@@ -14,10 +14,10 @@
       "type": "n8n-nodes-base.scheduleTrigger",
       "typeVersion": 1.3,
       "position": [
-        304,
-        -416
+        1328,
+        616
       ],
-      "id": "0024f6c2-22d6-45b7-9fea-198fb319573a",
+      "id": "46be3337-aa07-48e3-bf62-c156d8cf6ab8",
       "name": "Schedule Trigger"
     },
     {
@@ -27,10 +27,10 @@
       "type": "n8n-nodes-base.splitInBatches",
       "typeVersion": 3,
       "position": [
-        976,
-        -416
+        2000,
+        616
       ],
-      "id": "b123dbba-991c-431a-b32c-dcd3546766f3",
+      "id": "4e22ae0d-34c4-4294-961a-da1ee927fdf2",
       "name": "Loop Over Users"
     },
     {
@@ -62,10 +62,10 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        2544,
-        -576
+        3792,
+        448
       ],
-      "id": "be84b166-609b-4528-8e4c-a4c1f082f047",
+      "id": "1296a600-ae0d-442b-ba73-2285bde93f4f",
       "name": "Messages",
       "executeOnce": false
     },
@@ -76,10 +76,10 @@
       "type": "n8n-nodes-base.merge",
       "typeVersion": 3.2,
       "position": [
-        2096,
-        -592
+        3344,
+        432
       ],
-      "id": "80bbd7e0-bcd8-4a55-aa6a-eea1048221c3",
+      "id": "084c3289-f54c-4b74-aec4-5fb609bac28f",
       "name": "Merge"
     },
     {
@@ -96,10 +96,10 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "typeVersion": 1.3,
       "position": [
-        2848,
-        -352
+        4088,
+        672
       ],
-      "id": "aadc8604-e273-45cc-8003-7ee94212303b",
+      "id": "8311047a-dd17-440d-9527-7a4a91a7c302",
       "name": "OpenAI Chat Model",
       "credentials": {
         "openAiApi": {
@@ -112,15 +112,15 @@
       "parameters": {
         "collection": "appointments",
         "options": {},
-        "query": "={\"manychat_id\": \"{{ $json.manychat_id }}\"}"
+        "query": "={\"manychat_id\": \"{{ $('Loop Over Users').item.json.manychat_id }}\"}"
       },
       "type": "n8n-nodes-base.mongoDb",
       "typeVersion": 1.2,
       "position": [
-        1200,
-        -624
+        2448,
+        396
       ],
-      "id": "b21bc5bd-7257-4818-804d-62837956c3fd",
+      "id": "54edd89f-ce49-429c-b63c-40eae75164a8",
       "name": "Find Appointment",
       "alwaysOutputData": true,
       "credentials": {
@@ -147,10 +147,10 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        1424,
-        -624
+        2672,
+        396
       ],
-      "id": "3bf694cd-8dab-42aa-b1ef-9f283cda2c43",
+      "id": "1e9bda8f-ec9e-42a8-9aba-061611c8542a",
       "name": "Manychat User ID"
     },
     {
@@ -160,10 +160,10 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        528,
-        -416
+        1552,
+        616
       ],
-      "id": "e6d4664e-d331-4391-a3fa-b955b6b610c8",
+      "id": "8774a149-ec47-48a8-864f-687e4fe736d6",
       "name": "Time-15min"
     },
     {
@@ -188,10 +188,10 @@
       "type": "@n8n/n8n-nodes-langchain.informationExtractor",
       "typeVersion": 1.2,
       "position": [
-        2768,
-        -576
+        4016,
+        448
       ],
-      "id": "c63ba235-70bb-483e-97e0-76025e6be5ee",
+      "id": "6939e57a-adb2-4d63-8db2-1fa4f6301336",
       "name": "Information Extractor"
     },
     {
@@ -223,10 +223,10 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        3120,
-        -576
+        4368,
+        448
       ],
-      "id": "7a49c62d-bc3e-4c68-8482-ac49fbef08e4",
+      "id": "521acc8d-7d9e-41e1-8506-9f04ed44af87",
       "name": "EXTRACTOR RESPONSE"
     },
     {
@@ -255,10 +255,10 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        3792,
-        -576
+        5040,
+        448
       ],
-      "id": "171688cb-e8c0-419f-ab35-94fa35dbed6c",
+      "id": "4953f8ad-2286-4460-b77d-7191edd80aaf",
       "name": "GENERAR LEAD CONTACT"
     },
     {
@@ -268,10 +268,10 @@
       "type": "n8n-nodes-base.xml",
       "typeVersion": 1,
       "position": [
-        4016,
-        -576
+        5264,
+        448
       ],
-      "id": "0569f7b6-cbf2-430f-b959-503c567c50f8",
+      "id": "c16d0b30-2179-4347-b69f-56f6bfb22749",
       "name": "XML BODY"
     },
     {
@@ -291,10 +291,10 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        3344,
-        -576
+        4592,
+        448
       ],
-      "id": "29bd7742-e5ac-4f2b-b8b4-82808fd7fed4",
+      "id": "156b589a-38a9-4790-8eca-33918a49f76c",
       "name": "Body"
     },
     {
@@ -305,10 +305,10 @@
       "type": "n8n-nodes-base.xml",
       "typeVersion": 1,
       "position": [
-        3568,
-        -576
+        4816,
+        448
       ],
-      "id": "19b5bf7a-bf04-48b7-9b6b-e63e01ce14c8",
+      "id": "baa7b96e-7e10-4885-abca-9a69583ba175",
       "name": "PARSE BODY"
     },
     {
@@ -316,10 +316,10 @@
       "type": "n8n-nodes-base.noOp",
       "typeVersion": 1,
       "position": [
-        5712,
-        -416
+        7184,
+        616
       ],
-      "id": "44dd0a1c-0dec-44df-8f09-efdf30cc2463",
+      "id": "5f34e6ac-0ef0-4a0a-a31a-3d5fdda05a82",
       "name": "No Operation, do nothing"
     },
     {
@@ -331,10 +331,10 @@
       "type": "n8n-nodes-base.mongoDb",
       "typeVersion": 1.2,
       "position": [
-        752,
-        -416
+        1776,
+        616
       ],
-      "id": "3d5d94a3-1414-4229-b19c-3c74ba65e1b5",
+      "id": "fadfdf15-4f6b-40fc-b3d9-44087a95aa95",
       "name": "Find Users to Sync",
       "alwaysOutputData": false,
       "credentials": {
@@ -353,10 +353,10 @@
       "type": "n8n-nodes-base.mongoDb",
       "typeVersion": 1.2,
       "position": [
-        1648,
-        -768
+        2896,
+        256
       ],
-      "id": "aedbed79-402c-4261-bbad-0da96b247b07",
+      "id": "94d995b1-b324-441a-9cee-991cce04179c",
       "name": "Chat Lead",
       "alwaysOutputData": true,
       "credentials": {
@@ -375,10 +375,10 @@
       "type": "n8n-nodes-base.mongoDb",
       "typeVersion": 1.2,
       "position": [
-        1648,
-        -576
+        2896,
+        448
       ],
-      "id": "9d9974b4-8af5-48b5-8ec1-f72cb1673f06",
+      "id": "2696ac00-f836-4b5c-b76d-6d95edbea06c",
       "name": "Chat RSVP",
       "alwaysOutputData": true,
       "credentials": {
@@ -397,10 +397,10 @@
       "type": "n8n-nodes-base.mongoDb",
       "typeVersion": 1.2,
       "position": [
-        1648,
-        -384
+        2896,
+        640
       ],
-      "id": "6183b44c-c31c-432e-b312-458832ab6e1e",
+      "id": "587eecf5-1316-42a2-a118-f83d50599bac",
       "name": "Chat",
       "alwaysOutputData": true,
       "credentials": {
@@ -419,10 +419,10 @@
       "type": "n8n-nodes-base.aggregate",
       "typeVersion": 1,
       "position": [
-        2320,
-        -576
+        3568,
+        448
       ],
-      "id": "349eaf8f-0f43-429c-bdae-2a4364c768e2",
+      "id": "070cf003-d564-4d51-8e03-0007b7464e65",
       "name": "Aggregate"
     },
     {
@@ -442,10 +442,10 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        1872,
-        -768
+        3120,
+        256
       ],
-      "id": "38e6c6c1-aaad-495d-95eb-88c01a4e2e58",
+      "id": "1cf35879-a77b-4d7d-918d-b1707a3c09de",
       "name": "LEAD"
     },
     {
@@ -465,10 +465,10 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        1872,
-        -576
+        3120,
+        448
       ],
-      "id": "3a95b348-5d83-447a-8586-8b1800792045",
+      "id": "418603de-19c2-4189-a37e-166de07a0632",
       "name": "RSVP"
     },
     {
@@ -488,10 +488,10 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        1872,
-        -384
+        3120,
+        640
       ],
-      "id": "fc356cf4-7af5-454b-b185-01738371f254",
+      "id": "9e197825-3a22-410f-9b02-026247eeb7dd",
       "name": "PRINCIPAL"
     },
     {
@@ -546,10 +546,10 @@
       "type": "@n8n/n8n-nodes-langchain.informationExtractor",
       "typeVersion": 1.2,
       "position": [
-        4912,
-        -576
+        6384,
+        448
       ],
-      "id": "376f53c0-fc41-4241-9795-5ed86115edc2",
+      "id": "283136e0-d97f-45f2-ade8-ac60611aeefb",
       "name": "Quality Auditor"
     },
     {
@@ -568,10 +568,10 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "typeVersion": 1.3,
       "position": [
-        4992,
-        -352
+        6456,
+        672
       ],
-      "id": "1076b4dc-a83c-4db6-bf23-013d676330a0",
+      "id": "a5b166f3-173a-4a07-b833-b376a03f1297",
       "name": "OpenAI Quality Model",
       "credentials": {
         "openAiApi": {
@@ -587,10 +587,10 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        5264,
-        -576
+        6736,
+        448
       ],
-      "id": "868f3e6f-a5d7-4d8d-93a4-490b6b9d7907",
+      "id": "b63d3584-2c41-4754-9749-0b6e457c97e6",
       "name": "Build Quality Log"
     },
     {
@@ -605,10 +605,10 @@
       "type": "n8n-nodes-base.mongoDb",
       "typeVersion": 1.2,
       "position": [
-        5488,
-        -576
+        6960,
+        448
       ],
-      "id": "9f18ca16-7516-4f19-8b4d-1348a1dccb5e",
+      "id": "910fca21-328e-45c6-ba53-d9e1baed5611",
       "name": "Insert quality_logs",
       "credentials": {
         "mongoDb": {
@@ -628,10 +628,10 @@
       "type": "n8n-nodes-base.mongoDb",
       "typeVersion": 1.2,
       "position": [
-        4688,
-        -576
+        6160,
+        448
       ],
-      "id": "dfff4e07-517e-47d6-90e1-2861487e8e0f",
+      "id": "c97b7511-deb5-4074-8b2f-c95e5de70eaa",
       "name": "Update Conversation Analysis",
       "credentials": {
         "mongoDb": {
@@ -649,36 +649,87 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        4464,
-        -576
+        5936,
+        448
       ],
-      "id": "f5ae1b05-a153-4ceb-89ee-83fe8e40e660",
+      "id": "e06da6e3-cc9e-4408-b97b-d1f3d4f1d602",
       "name": "DATA to UPDATE"
     },
     {
       "parameters": {
-        "resource": "subscriber",
-        "operation": "setCustomField",
-        "subscriber_id": "={{ $('Manychat User ID').item.json.manychat_user_id }}",
-        "identifierType": "name",
-        "value": "proyecto_interes",
-        "fieldValue": "={{ $('Loop Over Users').item.json.CRM_Data._Proyecto }}",
-        "requestOptions": {}
+        "collection": "manychat_settings",
+        "options": {},
+        "query": "={ \"page_id\": \"{{ $json.page_id }}\" }"
       },
-      "type": "n8n-nodes-manychat.manyChat",
-      "typeVersion": 1,
+      "type": "n8n-nodes-base.mongoDb",
+      "typeVersion": 1.2,
       "position": [
-        4240,
-        -576
+        2224,
+        396
       ],
-      "id": "78799e8e-45e5-464a-b6b4-6e45699a32c1",
-      "name": "UPDATE - Proyecto Interes Manychat",
+      "id": "4b6f6f38-8359-4b47-9a5b-ec8b0b569687",
+      "name": "Find User Credentials",
+      "alwaysOutputData": true,
       "credentials": {
-        "manyChatApi": {
-          "id": "aEvHbFXnmwofChqs",
-          "name": "ManyChat Garoo"
+        "mongoDb": {
+          "id": "UzcANqeDFO1QLbfd",
+          "name": "SPECTRUM - CENTRALIZADO"
         }
       }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.manychat.com/fb/subscriber/setCustomField",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{ $('Find User Credentials').item.json.api_key }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"subscriber_id\": \"{{ $('Manychat User ID').item.json.manychat_user_id }}\",\n  \"field_id\": {{ $json.data.find(f => f.name === 'proyecto_interes')?.id }},\n  \"field_value\": \"{{ $('Loop Over Users').item.json.proyecto || '' }}\"\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        5712,
+        448
+      ],
+      "id": "f7587206-c2eb-4b14-8b79-c16c532a98d6",
+      "name": "UPDATE - Proyecto Interes Manychat"
+    },
+    {
+      "parameters": {
+        "url": "https://api.manychat.com/fb/page/getCustomFields",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{ $('Find User Credentials').item.json.api_key }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        5488,
+        448
+      ],
+      "id": "a4434c8b-8774-4429-a16b-3cebd233fb6b",
+      "name": "Campos Usuario"
     }
   ],
   "connections": {
@@ -698,7 +749,7 @@
         [],
         [
           {
-            "node": "Find Appointment",
+            "node": "Find User Credentials",
             "type": "main",
             "index": 0
           }
@@ -818,7 +869,7 @@
       "main": [
         [
           {
-            "node": "UPDATE - Proyecto Interes Manychat",
+            "node": "Campos Usuario",
             "type": "main",
             "index": 0
           }
@@ -1012,11 +1063,33 @@
         ]
       ]
     },
+    "Find User Credentials": {
+      "main": [
+        [
+          {
+            "node": "Find Appointment",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
     "UPDATE - Proyecto Interes Manychat": {
       "main": [
         [
           {
             "node": "DATA to UPDATE",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Campos Usuario": {
+      "main": [
+        [
+          {
+            "node": "UPDATE - Proyecto Interes Manychat",
             "type": "main",
             "index": 0
           }

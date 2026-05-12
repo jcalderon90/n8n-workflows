@@ -75,7 +75,7 @@
       "typeVersion": 1,
       "position": [
         1472,
-        -948
+        -944
       ],
       "id": "3c3d7c91-bf64-4f5d-ac20-513a7928bdca",
       "name": "No Operation, do nothing"
@@ -130,7 +130,7 @@
       "typeVersion": 1.2,
       "position": [
         1408,
-        -652
+        -656
       ],
       "id": "799deecc-0160-4b6e-ab81-5304b1aa64c0",
       "name": "Proyecto"
@@ -180,8 +180,8 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "typeVersion": 1.3,
       "position": [
-        1480,
-        -428
+        1488,
+        -432
       ],
       "id": "e87fe725-ea68-438a-89b2-b4fe93ab1aae",
       "name": "OpenAI Chat Model2",
@@ -815,13 +815,13 @@
             {
               "id": "ea8c9284-e11f-4e87-a742-4392a692da2a",
               "name": "mensaje",
-              "value": "={{ $json.current_body.last_input_text }}",
+              "value": "={{ $('PARSE BODY').item.json.current_body.last_input_text }}",
               "type": "string"
             },
             {
               "id": "1f2fe528-cff0-4713-9dcb-4221b508c597",
               "name": "hora_llegada",
-              "value": "={{ $json.timestamp }}",
+              "value": "={{ $('PARSE BODY').item.json.timestamp }}",
               "type": "string"
             }
           ]
@@ -896,7 +896,7 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "typeVersion": 1.3,
       "position": [
-        904,
+        912,
         -576
       ],
       "id": "9e9cf80d-2e28-450a-bde3-e33edf717531",
@@ -1026,7 +1026,7 @@
     },
     {
       "parameters": {
-        "url": "={{ $json.current_body.last_input_text }}",
+        "url": "={{ $('PARSE BODY').item.json.current_body.last_input_text }}",
         "options": {}
       },
       "type": "n8n-nodes-base.httpRequest",
@@ -1171,7 +1171,7 @@
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 3.1,
       "position": [
-        4920,
+        4928,
         -800
       ],
       "id": "147286cd-b18c-49cb-a012-8be7769d0eed",
@@ -2017,7 +2017,7 @@
       "typeVersion": 1.2,
       "position": [
         2208,
-        -728
+        -736
       ],
       "id": "c5d48d6a-6fd9-4ac2-8354-a133cca8831a",
       "name": "Find user by Phone",
@@ -2092,7 +2092,7 @@
       "typeVersion": 2.3,
       "position": [
         2432,
-        -728
+        -736
       ],
       "id": "16113268-0b8a-4dcb-a488-f2028cd77b4e",
       "name": "If NOT EXIST"
@@ -2193,56 +2193,6 @@
     },
     {
       "parameters": {
-        "resource": "subscriber",
-        "operation": "setCustomField",
-        "subscriber_id": "={{ $('PARSE BODY').item.json.current_body.id }}",
-        "identifierType": "name",
-        "value": "proyecto_interes",
-        "fieldValue": "={{ $json.proyecto }}",
-        "requestOptions": {}
-      },
-      "type": "n8n-nodes-manychat.manyChat",
-      "typeVersion": 1,
-      "position": [
-        5744,
-        -608
-      ],
-      "id": "ad0d593a-0c10-4c38-8073-881a7f2438e1",
-      "name": "UPDATE - Proyecto Interes",
-      "credentials": {
-        "manyChatApi": {
-          "id": "aEvHbFXnmwofChqs",
-          "name": "ManyChat Garoo"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "resource": "subscriber",
-        "operation": "setCustomField",
-        "subscriber_id": "={{ $('PARSE BODY').item.json.current_body.id }}",
-        "identifierType": "name",
-        "value": "proyecto_utm_source",
-        "fieldValue": "={{ $json.proyecto }}",
-        "requestOptions": {}
-      },
-      "type": "n8n-nodes-manychat.manyChat",
-      "typeVersion": 1,
-      "position": [
-        5968,
-        -608
-      ],
-      "id": "8b643c8c-948c-40ce-bdd8-1cd3cb15e574",
-      "name": "UPDATE - UTM Source",
-      "credentials": {
-        "manyChatApi": {
-          "id": "aEvHbFXnmwofChqs",
-          "name": "ManyChat Garoo"
-        }
-      }
-    },
-    {
-      "parameters": {
         "collection": "manychat_settings",
         "options": {},
         "query": "={ \"page_id\": \"{{ $json.current_body.page_id }}\" }"
@@ -2263,6 +2213,68 @@
           "name": "SPECTRUM - CENTRALIZADO"
         }
       }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.manychat.com/fb/subscriber/setCustomField",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{ $('Get Account Credentials').item.json.api_key }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"subscriber_id\": \"{{ $('PARSE BODY').item.json.current_body.id }}\",\n  \"field_name\": \"proyecto_interes\",\n  \"field_value\": \"{{ $json.proyecto }}\"\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        5744,
+        -608
+      ],
+      "id": "10d6b52e-2d5d-4299-8f59-733e9a626a1d",
+      "name": "UPDATE - Proyecto Interes"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.manychat.com/fb/subscriber/setCustomField",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{ $('Get Account Credentials').item.json.api_key }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"subscriber_id\": \"{{ $('PARSE BODY').item.json.current_body.id }}\",\n  \"field_name\": \"utm_source_crm\", \n  \"field_value\": \"{{ $('Extraer CAMPAIGN DATA').item.json.extracted_campaign_data.utm_source_crm }}\"\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        5968,
+        -608
+      ],
+      "id": "0122321d-8f7c-4802-9741-e18cebbfdd6c",
+      "name": "UPDATE - UTM Source"
     }
   ],
   "connections": {
@@ -3047,22 +3059,22 @@
         ]
       ]
     },
-    "UPDATE - Proyecto Interes": {
+    "Get Account Credentials": {
       "main": [
         [
           {
-            "node": "UPDATE - UTM Source",
+            "node": "Extraer CAMPAIGN DATA",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Get Account Credentials": {
+    "UPDATE - Proyecto Interes": {
       "main": [
         [
           {
-            "node": "Extraer CAMPAIGN DATA",
+            "node": "UPDATE - UTM Source",
             "type": "main",
             "index": 0
           }
@@ -3076,39 +3088,39 @@
         "headers": {
           "host": "agentsprod.redtec.ai",
           "user-agent": "ManyChat",
-          "content-length": "1597",
+          "content-length": "946",
           "content-type": "application/json; charset=utf-8",
-          "x-forwarded-for": "3.64.54.57",
+          "x-forwarded-for": "3.124.242.138",
           "x-forwarded-host": "agentsprod.redtec.ai",
           "x-forwarded-port": "443",
           "x-forwarded-proto": "https",
-          "x-forwarded-server": "c3c333a532ee",
-          "x-real-ip": "3.64.54.57",
+          "x-forwarded-server": "2a862d2f5b19",
+          "x-real-ip": "3.124.242.138",
           "accept-encoding": "gzip"
         },
         "params": {},
         "query": {},
         "body": {
-          "key": "user:1623941319",
-          "id": "1623941319",
-          "page_id": "962079940550460",
+          "key": "user:233720490",
+          "id": "233720490",
+          "page_id": "113631858496836",
           "user_refs": [],
           "status": "active",
-          "first_name": "Jorge",
-          "last_name": "Calderon",
-          "name": "Jorge Calderon",
-          "gender": "unknown",
+          "first_name": "Pruebas",
+          "last_name": "De ManyChat",
+          "name": "Pruebas De ManyChat",
+          "gender": null,
           "profile_pic": null,
           "locale": null,
           "language": null,
           "timezone": "UTC±00",
-          "live_chat_url": "https://app.manychat.com/fb962079940550460/chat/1623941319",
-          "last_input_text": "Hola, vi la información en un anuncio, estoy interesado en Parque Mariscal",
-          "optin_phone": true,
-          "phone": "+13322311881",
+          "live_chat_url": "https://app.manychat.com/fb113631858496836/chat/233720490",
+          "last_input_text": "quiero info",
+          "optin_phone": false,
+          "phone": null,
           "optin_email": false,
           "email": null,
-          "subscribed": "2026-02-04T13:17:27-06:00",
+          "subscribed": "2026-01-05T14:48:06-06:00",
           "last_interaction": null,
           "ig_last_interaction": null,
           "last_seen": null,
@@ -3117,41 +3129,18 @@
           "ig_username": null,
           "ig_id": null,
           "whatsapp_phone": "+13322311881",
+          "whatsapp_bsuid": null,
+          "whatsapp_username": null,
           "optin_whatsapp": true,
-          "phone_country_code": "US",
+          "phone_country_code": null,
           "last_growth_tool": null,
           "custom_fields": {
             "canal_ingreso": "WhatsApp",
-            "Celular": null,
-            "ChatGPT's response": null,
-            "ChatGPT's response (2024-08-13 21:18:56)": null,
-            "Conversation": null,
-            "Conversation (2024-08-13 21:18:56)": null,
-            "debugging": null,
-            "Fecha Evento": null,
-            "Fecha Evento 2": null,
-            "Fecha Evento 3": null,
-            "Fecha Reserva": null,
-            "First name for prompt": null,
-            "First name for prompt (2024-08-13 21:18:56)": null,
-            "image_descriptioin": null,
             "Input from Template": null,
-            "Last Input": null,
-            "last_interaction_timestamp": null,
-            "Nombre Cotizacion": null,
-            "Nombre Reserva": null,
-            "Numero Personas": null,
-            "Ocasion": null,
-            "Panelista": null,
-            "Pregunta": null,
-            "proyecto": "PVV",
-            "proyecto_interes": "PPOL",
-            "proyecto_utm_source": null,
-            "Respuesta de image-n8n via Webhook": null,
-            "Respuesta de n8n via Webhook": null,
-            "user's question fallback": null,
-            "user's question fallback (2024-08-13 21:18:56)": null,
-            "voice_note_transcription": null
+            "First_Name": null,
+            "whatsapp_id": "13322311881",
+            "proyecto_interes": null,
+            "proyecto_utm_source": null
           }
         },
         "webhookUrl": "https://agentsprod.redtec.ai/webhook/spectrum-agent",
