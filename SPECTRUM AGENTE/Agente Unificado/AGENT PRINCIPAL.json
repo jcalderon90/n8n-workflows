@@ -292,7 +292,7 @@
             {
               "id": "e7c18ee2-ce70-40e2-9dfd-637ec3a5f5e8",
               "name": "proyecto",
-              "value": "={{\n  $('Proyecto').isExecuted\n    ? $json.output.proyecto\n    : ''\n}}",
+              "value": "={{\n  $('PARSE BODY').item.json.current_body.custom_fields.canal_ingreso.toLowerCase() !== 'whatsapp'\n    ? ($('Get Account Credentials').item.json.proyecto || '')\n    : ($('Proyecto').isExecuted ? $json.output.proyecto : '')\n}}",
               "type": "string"
             }
           ]
@@ -327,7 +327,7 @@
             {
               "id": "689aa6e6-0e3f-4aba-8834-1b8f675acaf4",
               "name": "proyecto",
-              "value": "={{ $('Extraer CAMPAIGN DATA').item.json.extracted_campaign_data.proyecto_detectado|| $('CONTEXT 1').item.json.proyecto }}",
+              "value": "={{ $('CONTEXT 1').item.json.proyecto || $('Extraer CAMPAIGN DATA').item.json.extracted_campaign_data.proyecto_detectado || '' }}",
               "type": "string"
             },
             {
@@ -1197,6 +1197,7 @@
             "nombre": "={{ $('User Data').item.json.nombre || '' }}",
             "correo": "={{ $('User Data').item.json.correo || '' }}",
             "telefono": "={{ $('User Data').item.json.telefono || '' }}",
+            "proyecto": "={{ $('CONTEXT 1').item.json.proyecto || $('User Data').item.json.proyecto || $('Extraer CAMPAIGN DATA').item.json.extracted_campaign_data.proyecto_detectado || '' }}",
             "mongo_id": "={{ $json._id.toJsonString().replace(/^\"(.*)\"$/, '$1') }}",
             "page_id": "={{ $('PARSE BODY').item.json.current_body.page_id }}",
             "atribucion_tag": "={{ $('Extraer CAMPAIGN DATA').item.json.extracted_campaign_data.atribucion_tag }}",
@@ -1813,7 +1814,7 @@
           "mappingMode": "defineBelow",
           "value": {
             "tipo_alerta": "nuevo_lead",
-            "datos": "={{ \n  {\n    \"proyecto\": $('User Data').item.json.proyecto || 'Parque Vista Verde',\n    \"nombre_lead\": $('User Data').item.json.nombre || 'No registrado',\n    \"telefono_lead\": $('User Data').item.json.telefono || $('Parse response').item.json.lead_telefono,\n    \"correo_lead\": $('User Data').item.json.correo || 'No registrado',\n    \"canal\": $('User Data').item.json.input_channel\n  }\n}}"
+            "datos": "={{ \n  {\n    \"proyecto\": $('User Data').item.json.proyecto || 'Parque Vista Verde',\n    \"nombre_lead\": $json.nombre || 'No registrado',\n    \"telefono_lead\": $json.telefono || $('Parse response').item.json.lead_telefono,\n    \"correo_lead\": $json.correo || 'No registrado',\n    \"canal\": $('User Data').item.json.input_channel\n  }\n}}"
           },
           "matchingColumns": [],
           "schema": [
@@ -2250,7 +2251,7 @@
     {
       "parameters": {
         "method": "POST",
-        "url": "https://api.manychat.com/fb/subscriber/setCustomFieldByName",
+        "url": "=https://api.manychat.com/fb/subscriber/setCustomFieldByName",
         "sendHeaders": true,
         "headerParameters": {
           "parameters": [
@@ -2315,7 +2316,7 @@
     {
       "parameters": {
         "method": "POST",
-        "url": "https://api.manychat.com/fb/subscriber/setCustomFieldByName",
+        "url": "=https://api.manychat.com/fb/subscriber/setCustomFieldByName",
         "sendHeaders": true,
         "headerParameters": {
           "parameters": [

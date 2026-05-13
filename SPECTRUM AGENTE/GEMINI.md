@@ -76,7 +76,7 @@ Los archivos en `/KBs` se cargan en MongoDB Atlas (colección `documents`) para 
 
 ### Typos obligatorios en el XML (así está definido en la API — no corregir)
 - Email: `<_CorreEletronico>` (sin "o" en *Correo*, sin "c" en *Electrónico*)
-- Campaña UTM: `<_UTMCampaing>` (sin "i" en *Campaign*)
+- Campaña UTM: `<_UTMCampaing>` (sin "i" en *Campaign*) -> **FORMATO ESTRICTO:** `"Chatbot - [medio]"` (ej: `"Chatbot - Web"`, `"Chatbot - Redes Sociales"`).
 
 ### Etiquetas opcionales
 Omitir la etiqueta completa si el valor es nulo. Solo `_Comentarios` puede enviarse vacío:
@@ -106,11 +106,45 @@ Ver `spectrum-soap-api.md` para los códigos completos. Valores más usados:
 - **`conversation_analysis` flag:** El orquestador lo resetea a `false` con cada mensaje nuevo. `Sync_CRM.json` lo marca `true` tras sincronizar.
 - **Anti-duplicados:** Verificar existencia en MongoDB antes de crear un nuevo documento de lead.
 - **Sync_CRM trigger:** Schedule cada 10-15 min. Filtra leads con `last_interaction` < 15 min atrás y `conversation_analysis != true`.
+- **Auditoría (QA):** Diariamente (por Andy) para verificar que los datos críticos (presupuesto, unidades) viajan al CRM y que `_UTMCampaing` va bien mapeado.
+- **Alternativas de Integración (Investigación Activa):** El equipo está investigando sustituir el Web Service SOAP actual por una integración Zapier directa al CRM para permitir creación de campos custom por el equipo administrativo.
 
 ---
 
 ## Referencia de documentos del proyecto
 
-- `estado_proyecto.md` — Estado actual de cada módulo y acciones pendientes
-- `spectrum-soap-api.md` — Catálogo completo de códigos de la API SOAP
-- `flujos de muestra/` — Flujos de referencia para entender patrones aplicados
+- `docs/estado_proyecto.md` — Estado actual de cada módulo y acciones pendientes
+- `docs/spectrum-soap-api.md` — Catálogo completo de códigos de la API SOAP
+- `docs/estrategia_captacion_whatsapp.md` — Estrategia general
+- `docs/reporte_agente_sofia.md` — Reporte de orquestador
+- `flujos de muestra Version anterior/` — Flujos de referencia antiguos para entender patrones aplicados
+
+---
+
+## 🔌 Integración MCP (MongoDB & n8n)
+
+Para auditar, inspeccionar o modificar la base de datos y los flujos remotamente, cualquier IA debe utilizar las siguientes configuraciones MCP locales.
+
+**1. MongoDB MCP (spectrum-mongodb-mcp-server)**
+- Se encuentra configurado localmente en el archivo `mcp_config.json` de la IA.
+- *Tip de conexión:* Si estás ejecutando en local y encuentras errores `ECONNREFUSED` hacia Atlas, debes sobrescribir temporalmente el DNS en tu script usando `dns.setServers(['8.8.8.8', '8.8.4.4'])` para evitar el bloqueo de VPN/ISP locales, o simplemente conectarte usando `mcp_spectrum-mongodb-mcp-server_...`.
+
+**2. n8n MCP Server**
+- URL de n8n: `https://agentsprod.redtec.ai`
+- Comando configurado en el `mcp_config.json`: `npx -y @n8n/mcp-remote agentsprod.redtec.ai`
+- Puedes invocar la herramienta `mcp_n8n-mcp-server_get_workflow_details` y proporcionarle el ID exacto del flujo remoto (ver abajo) para obtener o modificar el JSON actual en producción.
+
+### 🆔 Directorio de Workflow IDs en n8n
+
+Para interactuar rápidamente con los flujos de "SPECTRUM AGENTE" en el servidor remoto, utiliza estos IDs en tus llamadas a MCP:
+
+| Flujo Local | ID en n8n Servidor | Descripción |
+|---|---|---|
+| `AGENT PRINCIPAL.json` | `iXaptKTUXaXrP7aF` | Orquestador principal |
+| `Sync_CRM.json` | `TTVNRX38pPoPmK2X` | Cronjob para la sincronización SOAP |
+| `Lead Collector.json` | `SHPFhvoal7k1Rqf9` | Extractor de datos del lead |
+| `KB SEARCH.json` | `D3LKuNi6CmMIdvzg` | Motor de búsqueda RAG |
+| `RSVP.json` | `TjFPzHs5aimxILH7` | Agendamiento de citas |
+| `Send Media.json` | `NtTiyrNy2LHimE7u` | Envío de adjuntos |
+| `Notifications Master.json` | `r1Jf5vwrkBrT4dEu` | Manejo de correos internos |
+| `Vectorizar los KBs.json` | `LLiVnT0M6xvDKive` | Flujo interno para ingesta vectorial |

@@ -91,7 +91,9 @@
           "cachedResultName": "gpt-4o-mini"
         },
         "responsesApiEnabled": false,
-        "options": {}
+        "options": {
+          "temperature": 0.3
+        }
       },
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "typeVersion": 1.3,
