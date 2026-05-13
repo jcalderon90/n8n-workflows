@@ -1,4 +1,4 @@
-{
+﻿{
   "nodes": [
     {
       "parameters": {
@@ -170,7 +170,7 @@
     },
     {
       "parameters": {
-        "text": "=DATOS ACTUALES EN SISTEMA:\n- Proyecto: {{ $('Loop Over Users').item.json.proyecto }}\n- Habitaciones: {{ $('Find Appointment').item.json.habitaciones || 'No especificado' }}\n- Intención: {{ $('Find Appointment').item.json.intencion || 'No especificada' }}\n- Cita: {{ $('Find Appointment').item.json.fecha_hora ? 'Agendada para ' + $('Find Appointment').item.json.fecha_hora : 'No agendada' }}\n\nHISTORIAL DE CONVERSACIÓN COMPLETO:\n\nHistorial del lead agent:{{ Array.isArray($json.lead_messages) ? $json.lead_messages.map(m => m.role + ': ' + m.content).join('\\\\n') : $json.lead_messages }} \n\nHistorial del rsvp agent: \n{{ Array.isArray($json.rsvp_messages) ? $json.rsvp_messages.map(m => m.role + ': ' + m.content).join('\\\\n') : $json.rsvp_messages }}\n\nHistorial del principal agent: \n{{ Array.isArray($json.principal_messages) ? $json.principal_messages.map(m => m.role + ': ' + m.content).join('\\\\n') : $json.principal_messages }}",
+        "text": "=DATOS ACTUALES EN SISTEMA:\n- Proyecto: {{ $('Loop Over Users').item.json.proyecto }}\n- Habitaciones: {{ $('Find Appointment').item.json.habitaciones || 'No especificado' }}\n- IntenciÃ³n: {{ $('Find Appointment').item.json.intencion || 'No especificada' }}\n- Cita: {{ $('Find Appointment').item.json.fecha_hora ? 'Agendada para ' + $('Find Appointment').item.json.fecha_hora : 'No agendada' }}\n\nHISTORIAL DE CONVERSACIÃ“N COMPLETO:\n\nHistorial del lead agent:{{ Array.isArray($json.lead_messages) ? $json.lead_messages.map(m => m.role + ': ' + m.content).join('\\\\n') : $json.lead_messages }} \n\nHistorial del rsvp agent: \n{{ Array.isArray($json.rsvp_messages) ? $json.rsvp_messages.map(m => m.role + ': ' + m.content).join('\\\\n') : $json.rsvp_messages }}\n\nHistorial del principal agent: \n{{ Array.isArray($json.principal_messages) ? $json.principal_messages.map(m => m.role + ': ' + m.content).join('\\\\n') : $json.principal_messages }}",
         "attributes": {
           "attributes": [
             {
@@ -180,22 +180,22 @@
             },
             {
               "name": "Dormitorios",
-              "description": "Número de habitaciones o tipo de unidad que busca.",
+              "description": "NÃºmero de habitaciones o tipo de unidad que busca.",
               "required": true
             },
             {
               "name": "Requisitos",
-              "description": "Requisitos específicos o amenidades de interés (ej: 'piso alto', 'con balcón', 'cerca de amenidades').",
+              "description": "Requisitos especÃ­ficos o amenidades de interÃ©s (ej: 'piso alto', 'con balcÃ³n', 'cerca de amenidades').",
               "required": true
             },
             {
               "name": "Resumen",
-              "description": "Resumen narrativo de la conversación, qué información se le dio y en qué punto quedó.",
+              "description": "Resumen narrativo de la conversaciÃ³n, quÃ© informaciÃ³n se le dio y en quÃ© punto quedÃ³.",
               "required": true
             },
             {
               "name": "Dudas",
-              "description": "Lista numerada de todas las preguntas o dudas que expresó el cliente durante la conversación. Si no hay dudas explícitas, escribe 'Ninguna'. Formato: 1. ... 2. ... 3. ...",
+              "description": "Lista numerada de todas las preguntas o dudas que expresÃ³ el cliente durante la conversaciÃ³n. Si no hay dudas explÃ­citas, escribe 'Ninguna'. Formato: 1. ... 2. ... 3. ...",
               "required": true
             }
           ]
@@ -298,7 +298,7 @@
             {
               "id": "29bc8a2a-9b6e-4b09-ae6d-30b74ab45b94",
               "name": "body",
-      "value": "=<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<soap:Envelope xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\">\n<soap:Body>\n<CreacionClientePotencialBot xmlns=\"http://tempuri.org/\">\n<_OrigenCliente>{{ $('Loop Over Users').item.json.CRM_Data?._OrigenCliente || 100000001 }}</_OrigenCliente>\n<_Proyecto>{{ $('Loop Over Users').item.json.proyecto }}</_Proyecto>\n<_Nombre>{{ $('Loop Over Users').item.json.primer_nombre || $('Loop Over Users').item.json.nombre?.split(' ')[0] || 'Cliente' }}</_Nombre>\n<_Apellido>{{ $('Loop Over Users').item.json.apellidos || $('Loop Over Users').item.json.nombre?.split(' ').slice(1).join(' ') || 'N/A' }}</_Apellido>\n<_TelefonoMovil>{{ $('Loop Over Users').item.json.telefono || \"\" }}</_TelefonoMovil>\n<_CorreEletronico>{{ $('Loop Over Users').item.json.correo || \"\" }}</_CorreEletronico>\n{{ $('Loop Over Users').item.json.correo_secundario ? '<_CorreoSecundario>' + $('Loop Over Users').item.json.correo_secundario + '</_CorreoSecundario>' : '' }}\n<_UTMSource>{{ $('Loop Over Users').item.json.utm_source_crm || 100000004 }}</_UTMSource>\n<_UTMCampaing>{{ ({\"Web\":\"Cliente atendido desde chatbot a través de web\",\"City Core\":\"Cliente atendido desde chatbot a través de anuncios\",\"Social Media\":\"Cliente atendido desde chatbot a través de redes sociales\",\"Fan Page\":\"Cliente atendido desde chatbot a través de fan page\",\"Mail\":\"Cliente atendido desde chatbot a través de email\",\"Banco\":\"Cliente atendido desde chatbot a través de banco\"})[$('Loop Over Users').item.json.atribucion_tag] || \"Cliente atendido desde chatbot a través de web\" }}</_UTMCampaing>\n<_MetodocontactoPref>{{ \n  ($('Find Appointment').item.json?.contacto_pref == \"correo\" ? 2 : \n   $('Find Appointment').item.json?.contacto_pref == \"llamada\" ? 3 : \n   $('Find Appointment').item.json?.contacto_pref == \"whatsapp\" ? 4 : \n   $('Find Appointment').item.json?.contacto_pref == \"cualquier_forma\" ? 5 : \n   Number($('Loop Over Users').item.json.CRM_Data?._MetodocontactoPref || 5)) \n}}</_MetodocontactoPref>\n<_Comentarios>{{ $('Loop Over Users').item.json.atribucion_contacto || \"Chatbot\" }}</_Comentarios>\n{{ \n  ($('Find Appointment').item.json?.habitaciones == \"1\" ? '<_NumeroHabitaciones>100000000</_NumeroHabitaciones>' : \n   $('Find Appointment').item.json?.habitaciones == \"2\" ? '<_NumeroHabitaciones>100000001</_NumeroHabitaciones>' : \n   $('Find Appointment').item.json?.habitaciones == \"3\" ? '<_NumeroHabitaciones>100000002</_NumeroHabitaciones>' : \n   ($('Loop Over Users').item.json.CRM_Data?._NumeroHabitaciones ? '<_NumeroHabitaciones>' + $('Loop Over Users').item.json.CRM_Data._NumeroHabitaciones + '</_NumeroHabitaciones>' : '')) \n}}\n{{ \n  ($('Find Appointment').item.json?.estado_civil == \"soltero\" ? '<_EstadoCivil>100000000</_EstadoCivil>' : \n   $('Find Appointment').item.json?.estado_civil == \"casado\" ? '<_EstadoCivil>100000001</_EstadoCivil>' : \n   $('Find Appointment').item.json?.estado_civil == \"divorciado\" ? '<_EstadoCivil>100000002</_EstadoCivil>' : \n   $('Find Appointment').item.json?.estado_civil == \"union_libre\" ? '<_EstadoCivil>100000003</_EstadoCivil>' : \n   ($('Loop Over Users').item.json.CRM_Data?._EstadoCivil ? '<_EstadoCivil>' + $('Loop Over Users').item.json.CRM_Data._EstadoCivil + '</_EstadoCivil>' : '')) \n}}\n{{ \n  ($('Find Appointment').item.json?.intencion == \"I\" ? '<_MotivoInteres>100000001</_MotivoInteres>' : \n   $('Find Appointment').item.json?.intencion == \"V\" ? '<_MotivoInteres>100000003</_MotivoInteres>' : \n   ($('Loop Over Users').item.json.CRM_Data?._MotivoInteres ? '<_MotivoInteres>' + $('Loop Over Users').item.json.CRM_Data._MotivoInteres + '</_MotivoInteres>' : '')) \n}}\n{{ \n  $('Find Appointment').item.json?.fecha_hora ? '<_FechaCita>' + new Date($('Find Appointment').item.json.fecha_hora).toISOString() + '</_FechaCita>' : \n  ($('Loop Over Users').item.json.CRM_Data?._FechaCita ? '<_FechaCita>' + $('Loop Over Users').item.json.CRM_Data._FechaCita + '</_FechaCita>' : '') \n}}\n{{ \n  ($('Find Appointment').item.json?.tipo == \"cita_presencial\" ? '<_TipoCita>100000000</_TipoCita>' : \n   ['cita_virtual', 'llamada'].includes($('Find Appointment').item.json?.tipo) ? '<_TipoCita>100000001</_TipoCita>' : \n   ($('Loop Over Users').item.json.CRM_Data?._TipoCita ? '<_TipoCita>' + $('Loop Over Users').item.json.CRM_Data._TipoCita + '</_TipoCita>' : '')) \n}}\n<_ResumenConversacion>{{ \n  'PRESUPUESTO: ' + ($json.conversation_ressume?.Presupuesto || 'No mencionado') + '\\n' + \n  'DORMITORIOS: ' + ($json.conversation_ressume?.Dormitorios || 'No mencionado') + '\\n' + \n  'REQUISITOS: ' + ($json.conversation_ressume?.Requisitos || 'Ninguno') + '\\n\\n' + \n  'RESUMEN:\\n' + ($json.conversation_ressume?.Resumen || '') \n}}</_ResumenConversacion>\n<_DudasCliente>{{ $json.conversation_ressume?.Dudas || \"\" }}</_DudasCliente>\n</CreacionClientePotencialBot>\n</soap:Body>\n</soap:Envelope>",
+      "value": "=<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<soap:Envelope xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\">\n<soap:Body>\n<CreacionClientePotencialBot xmlns=\"http://tempuri.org/\">\n<_OrigenCliente>{{ $('Loop Over Users').item.json.CRM_Data?._OrigenCliente || 100000001 }}</_OrigenCliente>\n<_Proyecto>{{ $('Loop Over Users').item.json.proyecto }}</_Proyecto>\n<_Nombre>{{ $('Loop Over Users').item.json.nombre?.split(\" \")[0] || \"Cliente\" }}</_Nombre>\n<_Apellido>{{ $('Loop Over Users').item.json.nombre?.split(\" \").slice(1).join(\" \") || \"N/A\" }}</_Apellido>\n<_TelefonoMovil>{{ $('Loop Over Users').item.json.telefono || \"\" }}</_TelefonoMovil>\n<_CorreEletronico>{{ $('Loop Over Users').item.json.correo || \"\" }}</_CorreEletronico>\n{{ $('Loop Over Users').item.json.correo_secundario ? '<_CorreoSecundario>' + $('Loop Over Users').item.json.correo_secundario + '</_CorreoSecundario>' : '' }}\n<_UTMSource>{{ $('Loop Over Users').item.json.utm_source_crm || 100000004 }}</_UTMSource>\n<_UTMCampaing>{{ ({\"Web\":\"Cliente atendido desde chatbot a travÃ©s de web\",\"City Core\":\"Cliente atendido desde chatbot a travÃ©s de anuncios\",\"Social Media\":\"Cliente atendido desde chatbot a travÃ©s de redes sociales\",\"Fan Page\":\"Cliente atendido desde chatbot a travÃ©s de fan page\",\"Mail\":\"Cliente atendido desde chatbot a travÃ©s de email\",\"Banco\":\"Cliente atendido desde chatbot a travÃ©s de banco\"})[$('Loop Over Users').item.json.atribucion_tag] || \"Cliente atendido desde chatbot a travÃ©s de web\" }}</_UTMCampaing>\n<_MetodocontactoPref>{{ \n  ($('Find Appointment').item.json?.contacto_pref == \"correo\" ? 2 : \n   $('Find Appointment').item.json?.contacto_pref == \"llamada\" ? 3 : \n   $('Find Appointment').item.json?.contacto_pref == \"whatsapp\" ? 4 : \n   $('Find Appointment').item.json?.contacto_pref == \"cualquier_forma\" ? 5 : \n   Number($('Loop Over Users').item.json.CRM_Data?._MetodocontactoPref || 5)) \n}}</_MetodocontactoPref>\n<_Comentarios>{{ $('Loop Over Users').item.json.atribucion_contacto || \"Chatbot\" }}</_Comentarios>\n{{ \n  ($('Find Appointment').item.json?.habitaciones == \"1\" ? '<_NumeroHabitaciones>100000000</_NumeroHabitaciones>' : \n   $('Find Appointment').item.json?.habitaciones == \"2\" ? '<_NumeroHabitaciones>100000001</_NumeroHabitaciones>' : \n   $('Find Appointment').item.json?.habitaciones == \"3\" ? '<_NumeroHabitaciones>100000002</_NumeroHabitaciones>' : \n   ($('Loop Over Users').item.json.CRM_Data?._NumeroHabitaciones ? '<_NumeroHabitaciones>' + $('Loop Over Users').item.json.CRM_Data._NumeroHabitaciones + '</_NumeroHabitaciones>' : '')) \n}}\n{{ \n  ($('Find Appointment').item.json?.estado_civil == \"soltero\" ? '<_EstadoCivil>100000000</_EstadoCivil>' : \n   $('Find Appointment').item.json?.estado_civil == \"casado\" ? '<_EstadoCivil>100000001</_EstadoCivil>' : \n   $('Find Appointment').item.json?.estado_civil == \"divorciado\" ? '<_EstadoCivil>100000002</_EstadoCivil>' : \n   $('Find Appointment').item.json?.estado_civil == \"union_libre\" ? '<_EstadoCivil>100000003</_EstadoCivil>' : \n   ($('Loop Over Users').item.json.CRM_Data?._EstadoCivil ? '<_EstadoCivil>' + $('Loop Over Users').item.json.CRM_Data._EstadoCivil + '</_EstadoCivil>' : '')) \n}}\n{{ \n  ($('Find Appointment').item.json?.intencion == \"I\" ? '<_MotivoInteres>100000001</_MotivoInteres>' : \n   $('Find Appointment').item.json?.intencion == \"V\" ? '<_MotivoInteres>100000003</_MotivoInteres>' : \n   ($('Loop Over Users').item.json.CRM_Data?._MotivoInteres ? '<_MotivoInteres>' + $('Loop Over Users').item.json.CRM_Data._MotivoInteres + '</_MotivoInteres>' : '')) \n}}\n{{ \n  $('Find Appointment').item.json?.fecha_hora ? '<_FechaCita>' + new Date($('Find Appointment').item.json.fecha_hora).toISOString() + '</_FechaCita>' : \n  ($('Loop Over Users').item.json.CRM_Data?._FechaCita ? '<_FechaCita>' + $('Loop Over Users').item.json.CRM_Data._FechaCita + '</_FechaCita>' : '') \n}}\n{{ \n  ($('Find Appointment').item.json?.tipo == \"cita_presencial\" ? '<_TipoCita>100000000</_TipoCita>' : \n   ['cita_virtual', 'llamada'].includes($('Find Appointment').item.json?.tipo) ? '<_TipoCita>100000001</_TipoCita>' : \n   ($('Loop Over Users').item.json.CRM_Data?._TipoCita ? '<_TipoCita>' + $('Loop Over Users').item.json.CRM_Data._TipoCita + '</_TipoCita>' : '')) \n}}\n<_ResumenConversacion>{{ \n  'PRESUPUESTO: ' + ($json.conversation_ressume?.Presupuesto || 'No mencionado') + '\\n' + \n  'DORMITORIOS: ' + ($json.conversation_ressume?.Dormitorios || 'No mencionado') + '\\n' + \n  'REQUISITOS: ' + ($json.conversation_ressume?.Requisitos || 'Ninguno') + '\\n\\n' + \n  'RESUMEN:\\n' + ($json.conversation_ressume?.Resumen || '') \n}}</_ResumenConversacion>\n<_DudasCliente>{{ $json.conversation_ressume?.Dudas || \"\" }}</_DudasCliente>\n</CreacionClientePotencialBot>\n</soap:Body>\n</soap:Envelope>",
               "type": "string"
             }
           ]
@@ -518,22 +518,22 @@
           "attributes": [
             {
               "name": "funnel_stage",
-              "description": "=Etapa del funnel: 'nuevo' (solo saludó), 'identificado' (dio datos), 'proyecto_activo' (eligió proyecto), 'consultando' (hizo preguntas), 'en_rsvp' (inició agendamiento), 'cita_confirmada' (confirmó cita), 'escalado' (pidió humano)",
+              "description": "=Etapa del funnel: 'nuevo' (solo saludÃ³), 'identificado' (dio datos), 'proyecto_activo' (eligiÃ³ proyecto), 'consultando' (hizo preguntas), 'en_rsvp' (iniciÃ³ agendamiento), 'cita_confirmada' (confirmÃ³ cita), 'escalado' (pidiÃ³ humano)",
               "required": true
             },
             {
               "name": "intencion_detectada",
-              "description": "=En una frase corta, qué buscaba el usuario en esta conversación",
+              "description": "=En una frase corta, quÃ© buscaba el usuario en esta conversaciÃ³n",
               "required": true
             },
             {
               "name": "tools_correctas",
-              "description": "=¿El agente usó las tools correctas en el momento correcto? Describe brevemente si lead_collector, kb_search, rsvp y send_media se usaron apropiadamente. Si no se usó alguna tool necesaria, indícalo.",
+              "description": "=Â¿El agente usÃ³ las tools correctas en el momento correcto? Describe brevemente si lead_collector, kb_search, rsvp y send_media se usaron apropiadamente. Si no se usÃ³ alguna tool necesaria, indÃ­calo.",
               "required": true
             },
             {
               "name": "errores_detectados",
-              "description": "=Lista numerada de errores en la lógica del agente: respuestas incorrectas, loops, confusión de contexto, preguntas innecesarias. Escribe 'Ninguno' si no hay errores.",
+              "description": "=Lista numerada de errores en la lÃ³gica del agente: respuestas incorrectas, loops, confusiÃ³n de contexto, preguntas innecesarias. Escribe 'Ninguno' si no hay errores.",
               "required": true
             },
             {
@@ -543,17 +543,17 @@
             },
             {
               "name": "tono_agente",
-              "description": "=Evaluación del tono: 'natural y correcto', 'muy formal', 'robotico', 'confuso', 'repetitivo'",
+              "description": "=EvaluaciÃ³n del tono: 'natural y correcto', 'muy formal', 'robotico', 'confuso', 'repetitivo'",
               "required": true
             },
             {
               "name": "puntuacion",
-              "description": "=Puntuación del 1 al 10. Criterios: correcta identificación de intención (20%), uso apropiado de tools (20%), tono natural (20%), avance en el funnel (20%), ausencia de errores (20%).",
+              "description": "=PuntuaciÃ³n del 1 al 10. Criterios: correcta identificaciÃ³n de intenciÃ³n (20%), uso apropiado de tools (20%), tono natural (20%), avance en el funnel (20%), ausencia de errores (20%).",
               "required": true
             },
             {
               "name": "recomendacion",
-              "description": "=Una recomendación concreta y accionable para el desarrollador sobre cómo mejorar el comportamiento del agente en conversaciones similares a esta.",
+              "description": "=Una recomendaciÃ³n concreta y accionable para el desarrollador sobre cÃ³mo mejorar el comportamiento del agente en conversaciones similares a esta.",
               "required": true
             }
           ]

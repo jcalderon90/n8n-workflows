@@ -76,7 +76,7 @@ Los archivos en `/KBs` se cargan en MongoDB Atlas (colección `documents`) para 
 
 ### Typos obligatorios en el XML (así está definido en la API — no corregir)
 - Email: `<_CorreEletronico>` (sin "o" en *Correo*, sin "c" en *Electrónico*)
-- Campaña UTM: `<_UTMCampaing>` (sin "i" en *Campaign*) -> **FORMATO ESTRICTO:** `"Chatbot - [medio]"` (ej: `"Chatbot - Web"`, `"Chatbot - Redes Sociales"`).
+- Campaña UTM: `<_UTMCampaing>` (sin "i" en *Campaign*) -> **FORMATO ESTRICTO:** `"Cliente atendido desde chatbot a través de [medio]"` (ej: `"Cliente atendido desde chatbot a través de web"`, `"Cliente atendido desde chatbot a través de redes sociales"`).
 
 ### Etiquetas opcionales
 Omitir la etiqueta completa si el valor es nulo. Solo `_Comentarios` puede enviarse vacío:

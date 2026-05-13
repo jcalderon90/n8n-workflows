@@ -123,7 +123,7 @@
 
 ## _EstadoCivil
 
-> 🐛 **BUG conocido en nodo n8n BODY:** el mapping actual usa valores `100000001–100000005`. Los valores correctos según el CRM son los de esta tabla (`100000000–100000003`). Corregir antes de usar en producción.
+
 
 | Label | Value |
 |---|---|

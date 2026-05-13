@@ -26,6 +26,12 @@
               "name": "nombre"
             },
             {
+              "name": "primer_nombre"
+            },
+            {
+              "name": "apellidos"
+            },
+            {
               "name": "correo"
             },
             {
@@ -102,6 +108,18 @@
               "type": "string"
             },
             {
+              "id": "primer_nombre-set-001",
+              "name": "primer_nombre",
+              "value": "={{ $json.primer_nombre || '' }}",
+              "type": "string"
+            },
+            {
+              "id": "apellidos-set-001",
+              "name": "apellidos",
+              "value": "={{ $json.apellidos || '' }}",
+              "type": "string"
+            },
+            {
               "id": "22b27e42-4ca7-4c3b-b9cb-91f48e38cc16",
               "name": "correo",
               "value": "={{ $json.correo || '' }}",
@@ -141,9 +159,9 @@
     {
       "parameters": {
         "promptType": "define",
-        "text": "=canal: {{ $json.canal }}\ntel_sistema: {{ $json.tel_sistema }}\nmanychat_id: {{ $json.manychat_id }}\nusuario_input: {{ $json.usuario_input }}\nnombre: {{ $json.nombre || \"no aparece\" }}\napellido: {{ $json.apellido || \"no aparece\" }}\ncorreo: {{ $json.correo || \"no aparece\" }}\ntelefono: {{ $json.telefono || \"no aparece\" }}\nproyecto: {{ $json.proyecto || \"no aparece\" }}",
+        "text": "=canal: {{ $json.canal }}\ntel_sistema: {{ $json.tel_sistema }}\nmanychat_id: {{ $json.manychat_id }}\nusuario_input: {{ $json.usuario_input }}\nnombre: {{ $json.nombre || \"no aparece\" }}\napellido: {{ $json.apellido || \"no aparece\" }}\nprimer_nombre: {{ $json.primer_nombre || \"no aparece\" }}\napellidos: {{ $json.apellidos || \"no aparece\" }}\ncorreo: {{ $json.correo || \"no aparece\" }}\ntelefono: {{ $json.telefono || \"no aparece\" }}\nproyecto: {{ $json.proyecto || \"no aparece\" }}",
         "options": {
-          "systemMessage": "=### ROL ###\nEres un extractor de datos de contacto del lead para SPECTRUM VIVIENDA.\nNO eres un chatbot conversacional. NO saludas. NO te presentas. NO ofreces ayuda.\nTu única función: pedir y recibir Nombre, Correo y Teléfono.\n\n### CONTEXTO ###\n- CANAL: {{ $('SET CONTEXT').item.json.canal }}\n- TEL_SISTEMA: {{ $('SET CONTEXT').item.json.tel_sistema }}\n- Nombre actual: {{ $('SET CONTEXT').item.json.nombre }}\n- Correo actual: {{ $('SET CONTEXT').item.json.correo }}\n- Teléfono actual: {{ $('SET CONTEXT').item.json.telefono }}\n\n### REGLAS DE LÓGICA ###\n\n1. EXTRACCIÓN: Identificá nombre, correo y teléfono en el mensaje actual del usuario.\n   - VALIDACIÓN DE CORREO: válido solo si tiene \"@\", nombre antes del \"@\" y dominio con punto después.\n   - Si el correo no cumple ese formato, tratalo como dato FALTANTE.\n\n2. LÓGICA POR CANAL:\n   - CANAL == 'whatsapp': NO pidas el número. Usá TEL_SISTEMA. Confirmalo después de tener Nombre y Correo válidos.\n   - CANAL != 'whatsapp': Solicitá número junto con Nombre y Correo.\n\n3. CONTEO DE INTENTOS: Cada solicitud de datos en el historial = 1 intento.\n   Al 3er intento o negativa explícita → transferir_agente: 1.\n\n4. DATOS YA CONOCIDOS: Si algún campo tiene valor en el CONTEXTO, no lo volvás a pedir.\n   Mantenelo en el output aunque el usuario no lo repita.\n\n### ESCENARIOS ###\n\nESCENARIO 1 — Faltan nombre o correo:\n- WhatsApp: \"Para brindarte información, ¿podrías indicarme por favor?:\\n\\n- tu nombre\\n- tu correo electrónico\"\n- Otro canal: agregar \"\\n- tu número de teléfono\" después del correo.\n\nESCENARIO 2 — Correo con formato inválido:\n\"Parece que hubo un problema con tu correo. ¿Podrías verificarlo e ingresarlo nuevamente? (Ejemplo: nombre@dominio.com) 😊\"\n\nESCENARIO 3 — WhatsApp + nombre y correo listos + teléfono sin confirmar:\n  - Si TEL_SISTEMA tiene un número real (no vacío, no es \"No tiene\"):\n    \"¡Gracias! Un último detalle. ¿Este es tu número [TEL_SISTEMA]? 😊\"\n  - Si TEL_SISTEMA está vacío o es \"No tiene\":\n    \"¡Gracias! Un último detalle. ¿Cuál es tu número de teléfono para contactarte? 😊\"\n\nCONFIRMACIONES VÁLIDAS para el teléfono — tratar como \"sí\":\n  \"sí\", \"si\", \"yes\", \"correcto\", \"dale\", \"ok\", \"va\", \"ya\", \"simon\", \"simón\",\n  \"sip\", \"mero\", \"chiva\", \"claro\", \"ajá\", \"perfecto\", \"así es\"\n  → Cuando el usuario responda con cualquiera de estas, aplicar ESCENARIO 5.\n\nESCENARIO 4 — WhatsApp + usuario niega el número:\n\"Entiendo. ¿Cuál es el número correcto para contactarte?\"\nSi tampoco provee alternativa: aplica ESCENARIO 6.\n\nESCENARIO 5 — Datos completos + teléfono confirmado:\n\"¡Muchas gracias, {nombre}! Ya recibimos tus datos 😊.\"\n→ transferir_agente: 1\n\nESCENARIO 6 — Intentos >= 3 o negativa explícita:\n\"Entiendo. Déjame revisar esa información para ti un momento 😊.\"\n→ transferir_agente: 1\n\n### PROHIBICIONES ABSOLUTAS ###\n- NUNCA digas \"Hola\", \"Soy Sof-IA\" ni ninguna variante de saludo o presentación.\n- NUNCA preguntes \"¿en qué te puedo ayudar?\".\n- NUNCA ofrezcas información del proyecto, precios, ubicación ni nada externo a los datos de contacto.\n- NUNCA respondas preguntas del usuario. Tu único output son los escenarios de arriba.\n\n### RESTRICCIÓN DE SALIDA ###\nResponde ÚNICAMENTE con un objeto JSON en una sola línea, sin bloques de código:\n\n{\"nombre\": \"string|null\", \"telefono\": \"string|null\", \"correo\": \"string|null\", \"transferir_agente\": 0|1, \"response\": \"tu_respuesta_aqui\"}\n\nREGLAS DE CAMPOS JSON:\n- \"correo\": null si el formato es inválido.\n- \"telefono\" en WhatsApp:\n    - Si TEL_SISTEMA es válido (no vacío, no \"No tiene\") y el usuario confirma → usá TEL_SISTEMA.\n    - Si TEL_SISTEMA es inválido, vacío o \"No tiene\" → solicitá al usuario y usá lo que provea.\n- \"telefono\" en otro canal: solo cuando el usuario lo escriba.\n- Campos con valor del CONTEXTO: mantenelos aunque el usuario no los repita."
+          "systemMessage": "=### ROL ###\nEres un extractor de datos de contacto del lead para SPECTRUM VIVIENDA.\nNO eres un chatbot conversacional extenso, pero debes ser EMPÁTICO si el lead es \"caliente\".\nTu única función: pedir y recibir Nombre, Correo y Teléfono.\n\n### CONTEXTO ###\n- CANAL: {{ $('SET CONTEXT').item.json.canal }}\n- TEL_SISTEMA: {{ $('SET CONTEXT').item.json.tel_sistema }}\n- Nombre actual: {{ $('SET CONTEXT').item.json.nombre || 'No disponible' }}\n- Correo actual: {{ $('SET CONTEXT').item.json.correo || 'No disponible' }}\n- Teléfono actual: {{ $('SET CONTEXT').item.json.telefono || 'No disponible' }}\n\n### REGLA DE EMPATÍA (LEAD CALIENTE) ###\nSi el mensaje del usuario indica que ya está en un proceso avanzado (ej: \"ya compré\", \"estoy por comprar\", \"mi asesor no me atiende\", \"quiero reservar\") o tiene una urgencia:\n- NO uses el texto genérico del ESCENARIO 1.\n- ADAPTA la respuesta: Reconoce su situación brevemente y explica que pides los datos para ACELERAR la solución o el proceso.\n- Ejemplo: \"Entiendo que ya estás en proceso con nosotros y lamento el inconveniente con tu asesoría. Para escalar esto de inmediato y asignarte a alguien que te apoye hoy mismo, ¿podrías confirmarme tu nombre y correo?\"\n\n### REGLAS DE LÓGICA ###\n\n1. EXTRACCIÓN: Identificá nombre, correo y teléfono en el mensaje actual del usuario.\n   - VALIDACIÓN DE CORREO: válido solo si tiene \"@\", nombre antes del \"@\" y dominio con punto después.\n   - Si el correo no cumple ese formato, tratalo como dato FALTANTE.\n   - SEPARACIÓN DE NOMBRE: cuando identifiques el nombre completo, extraé también:\n     - primer_nombre: nombre(s) de pila (todo lo que precede a los apellidos).\n     - apellidos: apellido(s) completo(s).\n     Ejemplo: \"Juan Carlos García López\" → primer_nombre: \"Juan Carlos\", apellidos: \"García López\".\n     Ejemplo: \"María García\" → primer_nombre: \"María\", apellidos: \"García\".\n     Si solo hay un token (ej: \"Juan\"), ponelo en primer_nombre y dejá apellidos en null.\n     Si no podés determinar el corte con certeza, usá el primer token como primer_nombre y el resto como apellidos.\n\n2. LÓGICA POR CANAL:\n   - CANAL == 'whatsapp': NO pidas el número. Usá TEL_SISTEMA. Confirmalo después de tener Nombre y Correo válidos.\n   - CANAL != 'whatsapp': Solicitá número junto con Nombre y Correo.\n\n3. CONTEO DE INTENTOS: Cada solicitud de datos en el historial = 1 intento.\n   Al 3er intento o negativa explícita → transferir_agente: 1.\n\n4. DATOS YA CONOCIDOS: Si algún campo tiene valor en el CONTEXTO, no lo volvás a pedir.\n   Mantenelo en el output aunque el usuario no lo repita.\n\n### ESCENARIOS ###\n\nESCENARIO 1 — Faltan nombre o correo (Lead Estándar):\n- WhatsApp: \"Para brindarte información, ¿podrías indicarme por favor?:\\n\\n- tu nombre\\n- tu correo electrónico\"\n- Otro canal: agregar \"\\n- tu número de teléfono\" después del correo.\n*Nota: Si aplica la REGLA DE EMPATÍA, ignora este texto genérico y genera uno personalizado.*\n\nESCENARIO 2 — Correo con formato inválido:\n\"Parece que hubo un problema con tu correo. ¿Podrías verificarlo e ingresarlo nuevamente? (Ejemplo: nombre@dominio.com) 😊\"\n\nESCENARIO 3 — WhatsApp + nombre y correo listos + teléfono sin confirmar:\n  - Si TEL_SISTEMA tiene un número real (no vacío, no es \"No tiene\"):\n    \"¡Gracias! Un último detalle. ¿Este es tu número [TEL_SISTEMA]? 😊\"\n  - Si TEL_SISTEMA está vacío o es \"No tiene\":\n    \"¡Gracias! Un último detalle. ¿Cuál es tu número de teléfono para contactarte? 😊\"\n\nCONFIRMACIONES VÁLIDAS para el teléfono — tratar como \"sí\":\n  \"sí\", \"si\", \"yes\", \"correcto\", \"dale\", \"ok\", \"va\", \"ya\", \"simon\", \"simón\",\n  \"sip\", \"mero\", \"chiva\", \"claro\", \"ajá\", \"perfecto\", \"así es\"\n  → Cuando el usuario responda con cualquiera de estas, aplicar ESCENARIO 5.\n\nESCENARIO 4 — WhatsApp + usuario niega el número:\n\"Entiendo. ¿Cuál es el número correcto para contactarte?\"\nSi tampoco provee alternativa: aplica ESCENARIO 6.\n\nESCENARIO 5 — Datos completos + teléfono confirmado:\n\"¡Muchas gracias, {nombre}! Ya recibimos tus datos 😊.\"\n→ transferir_agente: 1\n\nESCENARIO 6 — Intentos >= 3 o negativa explícita:\n\"Entiendo. Déjame revisar esa información para ti un momento 😊.\"\n→ transferir_agente: 1\n\n### PROHIBICIONES ABSOLUTAS ###\n- NUNCA digas \"Hola\", \"Soy Sof-IA\" ni ninguna variante de saludo o presentación (esto lo maneja el Agente Principal).\n- NUNCA preguntes \"¿en qué te puedo ayudar?\".\n- NUNCA ofrezcas información del proyecto, precios, ubicación ni nada externo a los datos de contacto.\n- NUNCA respondas preguntas del usuario. Tu único output es pedir los datos o confirmar.\n\n### RESTRICCIÓN DE SALIDA ###\nResponde ÚNICAMENTE con un objeto JSON en una sola línea, sin bloques de código:\n\n{\"nombre\": \"string|null\", \"primer_nombre\": \"string|null\", \"apellidos\": \"string|null\", \"telefono\": \"string|null\", \"correo\": \"string|null\", \"transferir_agente\": 0|1, \"response\": \"tu_respuesta_aqui\"}\n\nREGLAS DE CAMPOS JSON:\n- \"primer_nombre\": nombre(s) de pila. null si no se conoce aún el nombre.\n- \"apellidos\": apellido(s) completo(s). null si no se puede determinar o el nombre tiene un solo token.\n- \"correo\": null si el formato es inválido.\n- \"telefono\" en WhatsApp:\n    - Si TEL_SISTEMA es válido (no vacío, no \"No tiene\") y el usuario confirma → usá TEL_SISTEMA.\n    - Si TEL_SISTEMA es inválido, vacío o \"No tiene\" → solicitá al usuario y usá lo que provea.\n- \"telefono\" en otro canal: solo cuando el usuario lo escriba.\n- Campos con valor del CONTEXTO: mantenelos aunque el usuario no los repita."
         }
       },
       "type": "@n8n/n8n-nodes-langchain.agent",
@@ -208,7 +226,7 @@
     },
     {
       "parameters": {
-        "jsCode": "const raw = $input.first().json.output || '';\n\ntry {\n  const inicio = raw.indexOf('{');\n  const fin = raw.lastIndexOf('}') + 1;\n  if (inicio === -1 || fin === 0) throw new Error('No JSON');\n\n  const parsed = JSON.parse(\n    raw.substring(inicio, fin).replace(/[\\n\\r]/g, ' ')\n  );\n\n  return [{\n    json: {\n      nombre: parsed.nombre || null,\n      correo: parsed.correo || null,\n      telefono: parsed.telefono || null,\n      transferir_agente: parsed.transferir_agente ?? 0,\n      response: parsed.response || ''\n    }\n  }];\n} catch(e) {\n  return [{\n    json: {\n      nombre: null,\n      correo: null,\n      telefono: null,\n      transferir_agente: 1,\n      response: raw\n    }\n  }];\n}"
+        "jsCode": "const raw = $input.first().json.output || '';\n\ntry {\n  const inicio = raw.indexOf('{');\n  const fin = raw.lastIndexOf('}') + 1;\n  if (inicio === -1 || fin === 0) throw new Error('No JSON');\n\n  const parsed = JSON.parse(\n    raw.substring(inicio, fin).replace(/[\\n\\r]/g, ' ')\n  );\n\n  return [{\n    json: {\n      nombre: parsed.nombre || null,\n      primer_nombre: parsed.primer_nombre || null,\n      apellidos: parsed.apellidos || null,\n      correo: parsed.correo || null,\n      telefono: parsed.telefono || null,\n      transferir_agente: parsed.transferir_agente ?? 0,\n      response: parsed.response || ''\n    }\n  }];\n} catch(e) {\n  return [{\n    json: {\n      nombre: null,\n      correo: null,\n      telefono: null,\n      transferir_agente: 1,\n      response: raw\n    }\n  }];\n}"
       },
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -326,6 +344,18 @@
               "type": "string"
             },
             {
+              "id": "primer_nombre-lead-001",
+              "name": "primer_nombre",
+              "value": "={{ $json.primer_nombre }}",
+              "type": "string"
+            },
+            {
+              "id": "apellidos-lead-001",
+              "name": "apellidos",
+              "value": "={{ $json.apellidos }}",
+              "type": "string"
+            },
+            {
               "id": "4860ba1b-1522-44b2-8fc3-9b8a48123c88",
               "name": "correo",
               "value": "={{ $json.correo }}",
@@ -417,7 +447,7 @@
             {
               "id": "29bc8a2a-9b6e-4b09-ae6d-30b74ab45b94",
               "name": "body",
-              "value": "=<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<soap:Envelope xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\">\n  <soap:Body>\n    <CreacionClientePotencialBot xmlns=\"http://tempuri.org/\">\n      <_OrigenCliente>100000001</_OrigenCliente>\n      <_Proyecto>{{ $('SET CONTEXT').item.json.proyecto }}</_Proyecto>\n      <_Comentarios>{{ $('START').item.json.atribucion_medio }} | {{ $('START').item.json.atribucion_contacto\n     }}</_Comentarios>\n      <_UTMSource>{{ $('SET CONTEXT').item.json.canal.toLowerCase() == 'whatsapp' ? 100000004 : $('SET CONTEXT').item.json.canal.toLowerCase() == 'instagram' ? 100000012 : 100000005 }}</_UTMSource>\n      <_UTMCampaing>{{ $('START').item.json.atribucion_tag || \"Web\" }}</_UTMCampaing>\n      <_Nombre>{{ ($json.nombre || '').split(\" \")[0] || 'Cliente' }}</_Nombre>\n      <_Apellido>{{ ($json.nombre || '').split(\" \")[1] || \"N/A\" }}</_Apellido>\n      <_TelefonoMovil>{{ $json.telefono }}</_TelefonoMovil>\n      <_CorreEletronico>{{ $('LEAD DATA').item.json.correo }}</_CorreEletronico>\n      <_MetodocontactoPref>{{ $('SET CONTEXT').item.json.canal.toLowerCase() == 'whatsapp' ? 4 : 5 }}</_MetodocontactoPref>\n    </CreacionClientePotencialBot>\n  </soap:Body>\n</soap:Envelope>",
+              "value": "=<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<soap:Envelope xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\">\n  <soap:Body>\n    <CreacionClientePotencialBot xmlns=\"http://tempuri.org/\">\n      <_OrigenCliente>100000001</_OrigenCliente>\n      <_Proyecto>{{ $('SET CONTEXT').item.json.proyecto }}</_Proyecto>\n      <_Comentarios>{{ $('START').item.json.atribucion_medio }} | {{ $('START').item.json.atribucion_contacto\n     }}</_Comentarios>\n      <_UTMSource>{{ $('SET CONTEXT').item.json.canal.toLowerCase() == 'whatsapp' ? 100000004 : $('SET CONTEXT').item.json.canal.toLowerCase() == 'instagram' ? 100000012 : 100000005 }}</_UTMSource>\n      <_UTMCampaing>{{ ({\"Web\":\"Cliente atendido desde chatbot a través de web\",\"City Core\":\"Cliente atendido desde chatbot a través de anuncios\",\"Social Media\":\"Cliente atendido desde chatbot a través de redes sociales\",\"Fan Page\":\"Cliente atendido desde chatbot a través de fan page\",\"Mail\":\"Cliente atendido desde chatbot a través de email\",\"Banco\":\"Cliente atendido desde chatbot a través de banco\"})[$('START').item.json.atribucion_tag] || \"Cliente atendido desde chatbot a través de web\" }}</_UTMCampaing>\n      <_Nombre>{{ $json.primer_nombre || ($json.nombre || '').split(' ')[0] || 'Cliente' }}</_Nombre>\n      <_Apellido>{{ $json.apellidos || ($json.nombre || '').split(' ').slice(1).join(' ') || 'N/A' }}</_Apellido>\n      <_TelefonoMovil>{{ $json.telefono }}</_TelefonoMovil>\n      <_CorreEletronico>{{ $('LEAD DATA').item.json.correo }}</_CorreEletronico>\n      <_MetodocontactoPref>{{ $('SET CONTEXT').item.json.canal.toLowerCase() == 'whatsapp' ? 4 : 5 }}</_MetodocontactoPref>\n    </CreacionClientePotencialBot>\n  </soap:Body>\n</soap:Envelope>",
               "type": "string"
             }
           ]
@@ -471,7 +501,7 @@
         "operation": "update",
         "collection": "users",
         "updateKey": "_id",
-        "fields": "=CRM_Data,page_id,atribucion_tag,atribucion_medio,atribucion_contacto",
+        "fields": "=CRM_Data,page_id,atribucion_tag,atribucion_medio,atribucion_contacto,primer_nombre,apellidos",
         "options": {}
       },
       "type": "n8n-nodes-base.mongoDb",
@@ -527,6 +557,18 @@
               "id": "81fa2720-a7c4-455f-ae93-fd30f27f3a74",
               "name": "atribucion_contacto",
               "value": "={{ $('START').item.json.atribucion_contacto }}",
+              "type": "string"
+            },
+            {
+              "id": "primer_nombre-crm-001",
+              "name": "primer_nombre",
+              "value": "={{ $('LEAD DATA').item.json.primer_nombre }}",
+              "type": "string"
+            },
+            {
+              "id": "apellidos-crm-001",
+              "name": "apellidos",
+              "value": "={{ $('LEAD DATA').item.json.apellidos }}",
               "type": "string"
             }
           ]

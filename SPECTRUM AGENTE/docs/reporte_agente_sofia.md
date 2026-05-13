@@ -37,6 +37,7 @@ Tras las optimizaciones recientes, el sistema presenta el siguiente estatus téc
 
 *   **Infraestructura Multitenant:** 100% Funcional. Enrutamiento dinámico por canal activado.
 *   **Gestión de Canales:** Los leads de Instagram y Messenger son asignados a su proyecto automáticamente por `page_id`. WhatsApp mantiene calificación manual.
+*   **Optimización de Conversión:** Implementado bypass de saludo para "Hot Leads". El bot identifica mensajes de alta intención y salta directamente a la captura de datos, eliminando fricción innecesaria.
 *   **Sincronización CRM:** Lógica de UTMs afinada para priorizar datos de campaña sobre datos históricos.
 *   **Paridad Servidor/Local:** Verificada vía MCP. El orquestador y los sub-flujos locales reflejan 100% la lógica en producción.
 
@@ -44,7 +45,7 @@ Tras las optimizaciones recientes, el sistema presenta el siguiente estatus téc
 
 ## 🚀 Próximos Pasos (Iniciativas Estratégicas Activas)
 1.  **Mejoras en Sync_CRM (P1):** Enriquecer el resumen de conversación que viaja al CRM, extrayendo explícitamente presupuesto, tipo de unidad e intención del lead para que los asesores tengan contexto completo.
-2.  **Tracking UTMs (P1):** Consolidar la captura del medio de captación y poblar el campo `_UTMCampaing` con el formato `"Chatbot - [medio]"`.
+2.  **Tracking UTMs (P1):** Consolidar la captura del medio de captación y poblar el campo `_UTMCampaing` con el formato `"Cliente atendido desde chatbot a través de [medio]"`.
 3.  **Integración de Citas Web (P2):** Recibir los leads del nuevo formulario de citas de Tribal vía Webhook en lugar de un mensaje pre-llenado de WhatsApp.
 4.  **Expansión de Tráfico (P2):** Finalizar configuraciones para recibir tráfico de Sotobosque y Polanco una vez aprobados.
 5.  **Investigación Zapier (P3):** Evaluar migrar del Web Service SOAP actual a una integración Zapier directa al CRM para mayor agilidad en la gestión de campos.
