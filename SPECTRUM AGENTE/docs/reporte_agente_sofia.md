@@ -1,5 +1,5 @@
 # 🤖 Informe Ejecutivo: Agente Unificado "Sof-IA"
-> **Estatus:** Producción Activa (Routing Dinámico) | **Fecha:** 2026-05-13
+> **Estatus:** Producción Final (Integridad Validada) | **Fecha:** 2026-05-14
 
 ## 1. 🧠 Filosofía del Sistema (Sof-IA)
 Sof-IA no es un chatbot tradicional de árbol de decisiones; es un **Orquestador de Inteligencia Artificial**. Su función principal es actuar como la puerta de entrada única para todos los canales de Spectrum (WhatsApp, Messenger, Instagram), clasificando la intención del usuario y delegando la conversación a "herramientas" o sub-workflows especializados.
@@ -36,10 +36,9 @@ El sistema está diseñado para que la operación humana sea mínima y la calida
 Tras las optimizaciones recientes, el sistema presenta el siguiente estatus técnico:
 
 *   **Infraestructura Multitenant:** 100% Funcional. Enrutamiento dinámico por canal activado.
-*   **Gestión de Canales:** Los leads de Instagram y Messenger son asignados a su proyecto automáticamente por `page_id`. WhatsApp mantiene calificación manual.
-*   **Optimización de Conversión:** Implementado bypass de saludo para "Hot Leads". El bot identifica mensajes de alta intención y salta directamente a la captura de datos, eliminando fricción innecesaria.
-*   **Sincronización CRM:** Lógica de UTMs afinada para priorizar datos de campaña sobre datos históricos.
-*   **Paridad Servidor/Local:** Verificada vía MCP. El orquestador y los sub-flujos locales reflejan 100% la lógica en producción.
+*   **Fix Integridad Notificaciones:** Se resolvió el bug de correos faltantes y se implementó un sistema de fallback (coalesce) que asegura que el equipo comercial reciba siempre la información más reciente del lead.
+*   **Sincronización CRM Enriquecida:** Los resúmenes de Sync_CRM ahora incluyen presupuesto, intención y tipo de unidad de forma explícita.
+*   **Paridad Total:** Local ↔ Servidor sincronizados al 100% tras la auditoría final.
 
 ---
 

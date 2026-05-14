@@ -25,10 +25,10 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        7312,
-        -992
+        -14256,
+        2400
       ],
-      "id": "3d8d6e03-d0ed-4ef5-b5f8-9560f199cddb",
+      "id": "7e3219b6-6d30-41bd-b785-28279e33b178",
       "name": "RESPOND TO MANYCHAT"
     },
     {
@@ -48,10 +48,10 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        7088,
-        -992
+        -14480,
+        2400
       ],
-      "id": "8b1b00b7-d3da-48d9-8cbf-b5fc3e0b52fb",
+      "id": "b905d85a-9fa4-4122-a650-f19e3bbd6116",
       "name": "Parameter Type"
     },
     {
@@ -63,10 +63,10 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        4448,
-        -704
+        -17120,
+        2688
       ],
-      "id": "77a79ded-7be9-4225-a89e-fc861d83d8dc",
+      "id": "2314811f-c1ee-4fb3-9d84-0bd0d91efcf3",
       "name": "User Data"
     },
     {
@@ -74,10 +74,10 @@
       "type": "n8n-nodes-base.noOp",
       "typeVersion": 1,
       "position": [
-        1472,
-        -848
+        -20096,
+        2540
       ],
-      "id": "3c3d7c91-bf64-4f5d-ac20-513a7928bdca",
+      "id": "8f9c5b94-e9eb-4375-b55a-cff3e6a5d02b",
       "name": "No Operation, do nothing"
     },
     {
@@ -107,10 +107,10 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
       "position": [
-        1184,
-        -704
+        -20384,
+        2688
       ],
-      "id": "356a1dde-049b-43fb-bb37-c27f64fb05b4",
+      "id": "461ad2d0-027d-4fae-bc4a-1c60c3a409b4",
       "name": "If NO WHATSAPP"
     },
     {
@@ -129,10 +129,10 @@
       "type": "@n8n/n8n-nodes-langchain.informationExtractor",
       "typeVersion": 1.2,
       "position": [
-        1408,
-        -560
+        -20160,
+        2836
       ],
-      "id": "799deecc-0160-4b6e-ab81-5304b1aa64c0",
+      "id": "b9c6f5ff-bfa5-460b-b5ee-b49987773150",
       "name": "Proyecto"
     },
     {
@@ -150,6 +150,12 @@
               "type": "boolean",
               "description": "=Devuelve true si en el texto se solicita un asesor",
               "required": true
+            },
+            {
+              "name": "interes_precios",
+              "type": "boolean",
+              "description": "=Devuelve true SOLO si el usuario pregunta EXPLÍCITAMENTE por un precio, costo, valor numérico, cuota, mensualidad o plan de pago de un apartamento. Devuelve false para preguntas generales sobre el proyecto, ubicación, amenidades o características.",
+              "required": true
             }
           ]
         },
@@ -158,10 +164,10 @@
       "type": "@n8n/n8n-nodes-langchain.informationExtractor",
       "typeVersion": 1.2,
       "position": [
-        832,
-        -704
+        -20736,
+        2688
       ],
-      "id": "a1a8c496-d10f-4278-a1ea-fc351bd0e9b8",
+      "id": "5953c63f-1837-4b9b-ba33-ddad015e943e",
       "name": "Lenguaje & Asesoria"
     },
     {
@@ -180,10 +186,10 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "typeVersion": 1.3,
       "position": [
-        1488,
-        -336
+        -20088,
+        3060
       ],
-      "id": "e87fe725-ea68-438a-89b2-b4fe93ab1aae",
+      "id": "458960f1-0c64-4707-b830-25a3eae76776",
       "name": "OpenAI Chat Model2",
       "credentials": {
         "openAiApi": {
@@ -205,10 +211,10 @@
       "type": "n8n-nodes-base.mongoDb",
       "typeVersion": 1.2,
       "position": [
-        4224,
-        -608
+        -17344,
+        2784
       ],
-      "id": "8f11dfe5-fc16-4624-b9b7-629553076bca",
+      "id": "b603ed6c-ac5d-4a8b-b0e9-189f48167ffa",
       "name": "Update User",
       "credentials": {
         "mongoDb": {
@@ -227,10 +233,10 @@
       "type": "n8n-nodes-base.mongoDb",
       "typeVersion": 1.2,
       "position": [
-        4224,
-        -800
+        -17344,
+        2592
       ],
-      "id": "616c2792-964e-45cd-9173-b4f967fe8574",
+      "id": "2affca38-b2b7-4b51-9397-81c218c67e98",
       "name": "Insert User",
       "credentials": {
         "mongoDb": {
@@ -248,10 +254,10 @@
       "type": "n8n-nodes-base.mongoDb",
       "typeVersion": 1.2,
       "position": [
-        3552,
-        -704
+        -18016,
+        2688
       ],
-      "id": "cd820791-820b-47af-bad3-142135c93752",
+      "id": "8b564da2-b6e7-4a0e-94de-2c5471761e15",
       "name": "Find User",
       "alwaysOutputData": true,
       "credentials": {
@@ -294,6 +300,12 @@
               "name": "proyecto",
               "value": "={{\n  $('PARSE BODY').item.json.current_body.custom_fields.canal_ingreso.toLowerCase() !== 'whatsapp'\n    ? ($('Get Account Credentials').item.json.proyecto || '')\n    : ($('Proyecto').isExecuted ? $json.output.proyecto : '')\n}}",
               "type": "string"
+            },
+            {
+              "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567810",
+              "name": "interes_precios",
+              "value": "={{ $('Lenguaje & Asesoria').item.json.output.interes_precios }}",
+              "type": "boolean"
             }
           ]
         },
@@ -302,10 +314,10 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        1760,
-        -704
+        -19808,
+        2688
       ],
-      "id": "fba7159e-5f80-474d-8754-eb6c17f7351f",
+      "id": "430f50e5-ac44-43f0-9437-e5d9c9af3b42",
       "name": "CONTEXT 1"
     },
     {
@@ -327,7 +339,7 @@
             {
               "id": "689aa6e6-0e3f-4aba-8834-1b8f675acaf4",
               "name": "proyecto",
-              "value": "={{ $('CONTEXT 1').item.json.proyecto || $('Extraer CAMPAIGN DATA').item.json.extracted_campaign_data.proyecto_detectado || '' }}",
+              "value": "={{ $('CONTEXT 1').item.json.proyecto || ($('CONTEXT 1').item.json.canal !== 'whatsapp' ? $('Extraer CAMPAIGN DATA').item.json.extracted_campaign_data.proyecto_detectado : '') }}",
               "type": "string"
             },
             {
@@ -404,9 +416,15 @@
             },
             {
               "id": "e8351fed-a911-42e7-bd38-298ad71242e3",
-              "name": "tag_medio",
-              "value": "={{ $('Extraer CAMPAIGN DATA').item.json.extracted_campaign_data.tag_medio }}",
+              "name": "atribucion_tag",
+              "value": "={{ $('Extraer CAMPAIGN DATA').item.json.extracted_campaign_data.atribucion_tag }}",
               "type": "string"
+            },
+            {
+              "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567811",
+              "name": "interes_precios",
+              "value": "={{ $('CONTEXT 1').item.json.interes_precios }}",
+              "type": "boolean"
             }
           ]
         },
@@ -415,10 +433,10 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        4000,
-        -800
+        -17568,
+        2592
       ],
-      "id": "1e790870-f00a-4224-b7f9-85705ad9a1c1",
+      "id": "5452cb14-286b-4889-a3e5-a52a3cbfe33a",
       "name": "DATA to CREATE"
     },
     {
@@ -446,7 +464,7 @@
             {
               "id": "689aa6e6-0e3f-4aba-8834-1b8f675acaf4",
               "name": "proyecto",
-              "value": "={{ $('CONTEXT 1').item.json.proyecto || $('Find User').item.json.proyecto || $('Extraer CAMPAIGN DATA').item.json.extracted_campaign_data.proyecto_detectado || null }}",
+              "value": "={{ $('CONTEXT 1').item.json.proyecto || $('Find User').item.json.proyecto || ($('CONTEXT 1').item.json.canal !== 'whatsapp' ? $('Extraer CAMPAIGN DATA').item.json.extracted_campaign_data.proyecto_detectado : null) }}",
               "type": "string"
             },
             {
@@ -502,6 +520,42 @@
               "name": "conversation_analysis",
               "value": false,
               "type": "boolean"
+            },
+            {
+              "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567801",
+              "name": "atribucion_tag",
+              "value": "={{ $('Extraer CAMPAIGN DATA').item.json.extracted_campaign_data.atribucion_tag || null }}",
+              "type": "string"
+            },
+            {
+              "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567802",
+              "name": "atribucion_medio",
+              "value": "={{ $('Extraer CAMPAIGN DATA').item.json.extracted_campaign_data.atribucion_medio || null }}",
+              "type": "string"
+            },
+            {
+              "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567803",
+              "name": "atribucion_contacto",
+              "value": "={{ $('Extraer CAMPAIGN DATA').item.json.extracted_campaign_data.atribucion_contacto || null }}",
+              "type": "string"
+            },
+            {
+              "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567804",
+              "name": "utm_source_crm",
+              "value": "={{ $('Extraer CAMPAIGN DATA').item.json.extracted_campaign_data.utm_source_crm || null }}",
+              "type": "string"
+            },
+            {
+              "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567812",
+              "name": "interes_precios",
+              "value": "={{ $('CONTEXT 1').item.json.interes_precios }}",
+              "type": "boolean"
+            },
+            {
+              "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567813",
+              "name": "datos_completos",
+              "value": "={{ $('Find User').item.json.datos_completos && $('User Data').item.json.email && $('User Data').item.json.phone }}",
+              "type": "boolean"
             }
           ]
         },
@@ -510,10 +564,10 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        4000,
-        -608
+        -17568,
+        2784
       ],
-      "id": "c5378c88-cbca-4480-bdc1-cfdeebff099f",
+      "id": "a9f7b87a-e2c8-426e-b458-34626d3f99dc",
       "name": "DATA to UPDATE"
     },
     {
@@ -544,10 +598,10 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
       "position": [
-        3776,
-        -704
+        -17792,
+        2688
       ],
-      "id": "878bb76f-8916-4f08-a98f-0416c5f29110",
+      "id": "031a6235-c00c-48b4-bd7d-0c23b31238fe",
       "name": "If USER NOT EXIST"
     },
     {
@@ -559,10 +613,10 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        -3648,
-        -704
+        -25216,
+        2688
       ],
-      "id": "747cfee0-6f34-4605-bbcb-8fddcf2a8ad8",
+      "id": "09ebcb9b-a2ce-4e43-b40b-075980354e73",
       "name": "PARSE BODY"
     },
     {
@@ -582,10 +636,10 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        160,
-        -704
+        -21408,
+        2688
       ],
-      "id": "c53b7d16-106e-4e69-a045-5db272f7785c",
+      "id": "ef6b9027-c1c0-4443-b5b7-d2437551cae5",
       "name": "JOINNING MESSAGE"
     },
     {
@@ -611,10 +665,10 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        608,
-        -704
+        -20960,
+        2688
       ],
-      "id": "c180bde7-b9bf-4c0b-b1f7-f690b1873f3c",
+      "id": "315f99f2-ff2e-45e4-be20-1e609d5dd763",
       "name": "PROJECT LIST"
     },
     {
@@ -644,10 +698,10 @@
       "type": "n8n-nodes-base.filter",
       "typeVersion": 2.3,
       "position": [
-        -64,
-        -704
+        -21632,
+        2688
       ],
-      "id": "9c21d0cc-e353-4c40-ab60-f6e72620075a",
+      "id": "cc0959a4-ddfd-40ad-8b8d-1c564e380ff9",
       "name": "Filter1"
     },
     {
@@ -658,10 +712,10 @@
       "type": "n8n-nodes-base.redis",
       "typeVersion": 1,
       "position": [
-        384,
-        -704
+        -21184,
+        2688
       ],
-      "id": "fd67da5f-0055-4b93-9f62-6483285dffe8",
+      "id": "3901795a-0ef5-4cf5-840e-49a155189479",
       "name": "DELETE MESSAGES",
       "credentials": {
         "redis": {
@@ -677,10 +731,10 @@
       "type": "n8n-nodes-base.wait",
       "typeVersion": 1.1,
       "position": [
-        -512,
-        -704
+        -22080,
+        2688
       ],
-      "id": "beb5e11f-83cb-4992-8d11-8aac936712a9",
+      "id": "0dd2f9dd-41f7-4d44-b9ad-9efb941ba848",
       "name": "Wait",
       "webhookId": "50ed2939-b8ec-48f7-8c6b-3bf14c2efc58"
     },
@@ -693,10 +747,10 @@
       "type": "n8n-nodes-base.redis",
       "typeVersion": 1,
       "position": [
-        -288,
-        -704
+        -21856,
+        2688
       ],
-      "id": "68a29a71-47b6-4816-abbc-627ce6749849",
+      "id": "5e4d4d1f-7705-418c-8393-380da8313c3f",
       "name": "GET MESSAGE",
       "credentials": {
         "redis": {
@@ -715,10 +769,10 @@
       "type": "n8n-nodes-base.redis",
       "typeVersion": 1,
       "position": [
-        -736,
-        -704
+        -22304,
+        2688
       ],
-      "id": "fd1d4651-aa03-4d94-a395-43c06f0d1dd6",
+      "id": "8ead1389-f3e8-43c4-b089-377d0fe40494",
       "name": "SAVE MESSAGE",
       "credentials": {
         "redis": {
@@ -744,10 +798,10 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        -960,
-        -704
+        -22528,
+        2688
       ],
-      "id": "49fbeb87-35d9-4374-a81b-5332c0642da4",
+      "id": "30d777e6-0e6a-4af2-a935-415dd29c622e",
       "name": "INPUT FINAL"
     },
     {
@@ -773,10 +827,10 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        -1856,
-        -896
+        -23424,
+        2496
       ],
-      "id": "f57b64d2-8111-4473-9491-cf8e337e6c5d",
+      "id": "03217084-11b7-4647-99b1-5c32028d56c9",
       "name": "audio input"
     },
     {
@@ -802,10 +856,10 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        -1856,
-        -704
+        -23424,
+        2688
       ],
-      "id": "62d66c2e-b536-4950-81f2-28c7226f1ef0",
+      "id": "7fda8fd2-38dd-4dbb-80f7-213d6fee23e4",
       "name": "image input"
     },
     {
@@ -831,10 +885,10 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        -1856,
-        -512
+        -23424,
+        2880
       ],
-      "id": "1586fe33-4724-4602-a843-9a7546766d42",
+      "id": "42b50527-1f7f-45ed-b184-2cc066b9fa44",
       "name": "text input"
     },
     {
@@ -845,10 +899,10 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        -2304,
-        -896
+        -23872,
+        2496
       ],
-      "id": "c62df0ed-bda8-4b5e-8e32-5e4d61d52199",
+      "id": "bf4e92cd-fbce-47a1-8501-f88596033cf4",
       "name": "HTTP IF AUDIO"
     },
     {
@@ -868,10 +922,10 @@
       "type": "@n8n/n8n-nodes-langchain.openAi",
       "typeVersion": 1.8,
       "position": [
-        -2080,
-        -704
+        -23648,
+        2688
       ],
-      "id": "79a9b33a-e2c6-460d-a8a9-bc8046ff99e4",
+      "id": "69c16669-c70a-474f-b1ac-9d38c0bdf230",
       "name": "ANALIZA IMAGEN",
       "credentials": {
         "openAiApi": {
@@ -896,10 +950,10 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "typeVersion": 1.3,
       "position": [
-        912,
-        -480
+        -20664,
+        2912
       ],
-      "id": "9e9cf80d-2e28-450a-bde3-e33edf717531",
+      "id": "ad6f9064-79c2-4146-ba2c-0816c06c1cc0",
       "name": "OpenAI Chat Model1",
       "credentials": {
         "openAiApi": {
@@ -922,10 +976,10 @@
       "type": "n8n-nodes-base.aggregate",
       "typeVersion": 1,
       "position": [
-        -1184,
-        -704
+        -22752,
+        2688
       ],
-      "id": "a4daeed1-7c71-44b8-874b-116c69164a5c",
+      "id": "c446f34e-75ff-463a-9cc5-efd6b927d571",
       "name": "Aggregate"
     },
     {
@@ -942,10 +996,10 @@
       "type": "n8n-nodes-base.sort",
       "typeVersion": 1,
       "position": [
-        -1408,
-        -704
+        -22976,
+        2688
       ],
-      "id": "48710757-cbf1-4785-a37f-5765fb192f9e",
+      "id": "6763a6bf-6286-4b82-b0df-0b8fda60294b",
       "name": "Sort"
     },
     {
@@ -955,10 +1009,10 @@
       "type": "n8n-nodes-base.merge",
       "typeVersion": 3.2,
       "position": [
-        -1632,
-        -720
+        -23200,
+        2672
       ],
-      "id": "72f365ec-9948-45a8-8f2b-6f984695204a",
+      "id": "86ced3d1-c4f0-4a89-9ff3-2e2280895031",
       "name": "Merge"
     },
     {
@@ -970,10 +1024,10 @@
       "type": "@n8n/n8n-nodes-langchain.openAi",
       "typeVersion": 1.8,
       "position": [
-        -2080,
-        -896
+        -23648,
+        2496
       ],
-      "id": "c88157f4-50eb-427a-af1f-0cdf3f6e033e",
+      "id": "9b916424-1d31-4a2e-bad4-1543918b80f0",
       "name": "TRANSCRIBE AUDIO",
       "credentials": {
         "openAiApi": {
@@ -1018,10 +1072,10 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.2,
       "position": [
-        -2528,
-        -800
+        -24096,
+        2592
       ],
-      "id": "917a2587-a210-4c2f-a132-8a7b2526060b",
+      "id": "51d7c849-67aa-4007-b3b6-15d3527d774a",
       "name": "ES AUDIO / IMAGEN"
     },
     {
@@ -1032,10 +1086,10 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        -2752,
-        -800
+        -24320,
+        2592
       ],
-      "id": "0c73c401-d23c-43e9-9cab-76912dbf80d3",
+      "id": "18bca63d-307a-4ce2-a0f4-4966611e8293",
       "name": "HTTP Request"
     },
     {
@@ -1074,10 +1128,10 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.2,
       "position": [
-        -2976,
-        -704
+        -24544,
+        2688
       ],
-      "id": "a7005547-b41a-4bc3-b5cc-111b4aff7be5",
+      "id": "3fe9cf86-aa84-4ed6-b456-84bdeba3938e",
       "name": "ES ARCHIVO"
     },
     {
@@ -1087,10 +1141,10 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        -3872,
-        -704
+        -25440,
+        2688
       ],
-      "id": "ec90ce39-3e1d-40d2-9b15-6bbfe3c01fdb",
+      "id": "f58b7ac2-2bfa-4c75-9537-469159f99ba2",
       "name": "Create Body"
     },
     {
@@ -1104,10 +1158,10 @@
       "type": "n8n-nodes-base.webhook",
       "typeVersion": 2.1,
       "position": [
-        -4096,
-        -704
+        -25664,
+        2688
       ],
-      "id": "8b71d4f2-d42e-47c3-9884-0f10e4007c40",
+      "id": "c2c0c642-d2ba-4193-9adf-af43abbcfdec",
       "name": "Webhook",
       "webhookId": "bbe94977-7886-4071-a874-e370d3b20c97"
     },
@@ -1122,10 +1176,10 @@
       "type": "@n8n/n8n-nodes-langchain.memoryMongoDbChat",
       "typeVersion": 1,
       "position": [
-        4800,
-        -480
+        -16768,
+        2912
       ],
-      "id": "2e9d2ef3-36fa-4e3d-81d7-dc310f7e750b",
+      "id": "e52aa9ca-6d90-4369-adc1-a43e1d1b3458",
       "name": "MongoDB Chat Memory",
       "credentials": {
         "mongoDb": {
@@ -1148,10 +1202,10 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "typeVersion": 1.3,
       "position": [
-        4672,
-        -480
+        -16896,
+        2912
       ],
-      "id": "1577a690-d899-4d00-a989-9916e5593e15",
+      "id": "0828e0c7-6e79-4aa5-ac8b-038d35cd11ec",
       "name": "OpenAI Chat Model",
       "credentials": {
         "openAiApi": {
@@ -1171,10 +1225,10 @@
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 3.1,
       "position": [
-        4928,
-        -704
+        -16648,
+        2688
       ],
-      "id": "147286cd-b18c-49cb-a012-8be7769d0eed",
+      "id": "f83188da-7051-4589-b94d-14fa956aeed3",
       "name": "PRINCIPAL"
     },
     {
@@ -1199,7 +1253,7 @@
             "apellidos": "={{ $('User Data').item.json.apellidos || '' }}",
             "correo": "={{ $('User Data').item.json.correo || '' }}",
             "telefono": "={{ $('User Data').item.json.telefono || '' }}",
-            "proyecto": "={{ $('CONTEXT 1').item.json.proyecto || $('User Data').item.json.proyecto || $('Extraer CAMPAIGN DATA').item.json.extracted_campaign_data.proyecto_detectado || '' }}",
+            "proyecto": "={{ $('CONTEXT 1').item.json.proyecto || $('User Data').item.json.proyecto || ($('CONTEXT 1').item.json.canal !== 'whatsapp' ? $('Extraer CAMPAIGN DATA').item.json.extracted_campaign_data.proyecto_detectado : '') }}",
             "mongo_id": "={{ $json._id.toJsonString().replace(/^\"(.*)\"$/, '$1') }}",
             "page_id": "={{ $('PARSE BODY').item.json.current_body.page_id }}",
             "atribucion_tag": "={{ $('Extraer CAMPAIGN DATA').item.json.extracted_campaign_data.atribucion_tag }}",
@@ -1366,10 +1420,10 @@
       "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
       "typeVersion": 2.2,
       "position": [
-        4928,
-        -480
+        -16640,
+        2912
       ],
-      "id": "aefb6a26-ec49-4353-840c-d715ca915597",
+      "id": "afa125fb-b410-4e22-953c-d97b1c0ed8b6",
       "name": "lead_collector"
     },
     {
@@ -1379,10 +1433,10 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        5520,
-        -704
+        -16048,
+        2688
       ],
-      "id": "b2275914-b2f3-4b30-ae7c-efd0f081c606",
+      "id": "65174940-499c-4586-9911-3f9bc225a62a",
       "name": "Parse response"
     },
     {
@@ -1413,10 +1467,10 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
       "position": [
-        5968,
-        -992
+        -15600,
+        2400
       ],
-      "id": "12f15fc5-7eb2-4c66-a831-90cf3d809108",
+      "id": "311a8a49-ebc4-4fe8-909b-f15697aec0ef",
       "name": "If TIENE DATOS NUEVOS"
     },
     {
@@ -1502,10 +1556,10 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        6192,
-        -1088
+        -15376,
+        2304
       ],
-      "id": "e552935f-2efd-49d5-81c3-996b09a5e45a",
+      "id": "6117acba-8e84-4045-a9c4-838ddde01531",
       "name": "Prepare Update"
     },
     {
@@ -1525,10 +1579,10 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        5744,
-        -992
+        -15824,
+        2400
       ],
-      "id": "44f18308-0d0a-432c-831d-c5138fdf69fb",
+      "id": "4169def5-e6b0-45e9-b798-dab356826a0c",
       "name": "Hay Cambios?"
     },
     {
@@ -1542,10 +1596,10 @@
       "type": "n8n-nodes-base.mongoDb",
       "typeVersion": 1.2,
       "position": [
-        6416,
-        -1088
+        -15152,
+        2304
       ],
-      "id": "dd0ab8cf-7e2b-4c96-b08d-58ca86dbe7ce",
+      "id": "732e8de5-9f80-4ee1-857b-dd9867219570",
       "name": "Update User Lead",
       "credentials": {
         "mongoDb": {
@@ -1559,10 +1613,10 @@
       "type": "n8n-nodes-base.noOp",
       "typeVersion": 1,
       "position": [
-        6864,
-        -800
+        -14704,
+        2592
       ],
-      "id": "e8940b61-d588-40b0-8403-a93b3aa60340",
+      "id": "d55b309e-522e-4771-9e5f-0e598df64f07",
       "name": "No Operation, do nothing1"
     },
     {
@@ -1620,10 +1674,10 @@
       "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
       "typeVersion": 2.2,
       "position": [
-        5056,
-        -480
+        -16512,
+        2912
       ],
-      "id": "cd3c094b-2e83-4ad8-a2be-91b8b834c5a8",
+      "id": "f4da7ed3-8cac-4130-8fd7-cada1dffc442",
       "name": "kb_search"
     },
     {
@@ -1727,10 +1781,10 @@
       "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
       "typeVersion": 2.2,
       "position": [
-        5184,
-        -480
+        -16384,
+        2912
       ],
-      "id": "d7a2f45b-88fb-4aac-8602-34a83e9b23d4",
+      "id": "9fa431d6-5df9-416c-937b-a7d1c7eb783c",
       "name": "rsvp"
     },
     {
@@ -1760,10 +1814,10 @@
       "type": "n8n-nodes-base.filter",
       "typeVersion": 2.3,
       "position": [
-        5744,
-        -800
+        -15824,
+        2592
       ],
-      "id": "adf235ee-2a04-492d-bf09-32e572519d81",
+      "id": "f4b937f3-7434-45b1-8acb-dd18fc56aefd",
       "name": "Filter IF TRANSFER"
     },
     {
@@ -1776,10 +1830,10 @@
       "type": "n8n-nodes-base.mongoDb",
       "typeVersion": 1.2,
       "position": [
-        7760,
-        -992
+        -13808,
+        2400
       ],
-      "id": "5e880e7b-37c3-42fb-a586-929aedb2b1f7",
+      "id": "b33a117c-69d6-4356-8afb-e353dd460e46",
       "name": "Insert Analytics",
       "credentials": {
         "mongoDb": {
@@ -1829,10 +1883,10 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        7536,
-        -992
+        -14032,
+        2400
       ],
-      "id": "091d9a1f-027c-4d5f-b49d-7d3bd4d2de13",
+      "id": "e4d8d901-9990-4e27-9456-1b2fd1b31a5e",
       "name": "Calculate Respond Time"
     },
     {
@@ -1848,7 +1902,7 @@
           "mappingMode": "defineBelow",
           "value": {
             "tipo_alerta": "nuevo_lead",
-            "datos": "={{ \n  {\n    \"proyecto\": $('User Data').item.json.proyecto || 'Parque Vista Verde',\n    \"nombre_lead\": $json.nombre || 'No registrado',\n    \"telefono_lead\": $json.telefono || $('Parse response').item.json.lead_telefono,\n    \"correo_lead\": $json.correo || 'No registrado',\n    \"canal\": $('User Data').item.json.input_channel\n  }\n}}"
+            "datos": "={{ \n  {\n    \"proyecto\": $('User Data').item.json.proyecto || 'Parque Vista Verde',\n    \"nombre_lead\": $json.nombre || $('Parse response').item.json.lead_nombre || $('User Data').item.json.nombre || 'No registrado',\n    \"telefono_lead\": $json.telefono || $('Parse response').item.json.lead_telefono || $('User Data').item.json.telefono || 'No registrado',\n    \"correo_lead\": $json.correo || $('Parse response').item.json.lead_correo || $('User Data').item.json.correo || 'No registrado',\n    \"canal\": $('User Data').item.json.input_channel\n  }\n}}"
           },
           "matchingColumns": [],
           "schema": [
@@ -1881,10 +1935,10 @@
       "type": "n8n-nodes-base.executeWorkflow",
       "typeVersion": 1.3,
       "position": [
-        6864,
-        -1184
+        -14704,
+        2208
       ],
-      "id": "d827c8b8-49ae-47cc-9dbb-8bdcb4d38521",
+      "id": "044b832d-ad4c-4143-a6cd-a0226f5b0957",
       "name": "'Notifications Master' Nuevos Leads"
     },
     {
@@ -1900,7 +1954,7 @@
           "mappingMode": "defineBelow",
           "value": {
             "tipo_alerta": "escalacion",
-            "datos": "={{ \n  {\n    \"proyecto\": $('User Data').item.json.proyecto || 'Parque Vista Verde',\n    \"nombre_lead\": $('User Data').item.json.nombre || 'No registrado',\n    \"telefono_lead\": $('User Data').item.json.telefono,\n    \"correo_lead\": $('User Data').item.json.correo || 'No registrado',\n    \"canal\": $('User Data').item.json.input_channel,\n    \"ultima_consulta\": $('CONTEXT 1').item.json.entrada_usuario\n  }\n}}"
+            "datos": "={{ \n  {\n    \"proyecto\": $('User Data').item.json.proyecto || 'Parque Vista Verde',\n    \"nombre_lead\": $('Parse response').item.json.lead_nombre || $('User Data').item.json.nombre || 'No registrado',\n    \"telefono_lead\": $('Parse response').item.json.lead_telefono || $('User Data').item.json.telefono || 'No registrado',\n    \"correo_lead\": $('Parse response').item.json.lead_correo || $('User Data').item.json.correo || 'No registrado',\n    \"canal\": $('User Data').item.json.input_channel,\n    \"ultima_consulta\": $('CONTEXT 1').item.json.entrada_usuario\n  }\n}}"
           },
           "matchingColumns": [],
           "schema": [
@@ -1933,10 +1987,10 @@
       "type": "n8n-nodes-base.executeWorkflow",
       "typeVersion": 1.3,
       "position": [
-        5968,
-        -800
+        -15600,
+        2592
       ],
-      "id": "7ea33ba5-cc10-4ad7-b38a-5d653787a43c",
+      "id": "4ab9634f-5556-46e5-8b4a-c7d065151af3",
       "name": "'Notifications Master' Escalation"
     },
     {
@@ -2014,10 +2068,10 @@
       "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
       "typeVersion": 2.2,
       "position": [
-        5312,
-        -480
+        -16256,
+        2912
       ],
-      "id": "448769c7-27f7-4efb-960a-b5f491b2de39",
+      "id": "e6821013-3a83-4fc7-8074-d777bfa126a4",
       "name": "send_media"
     },
     {
@@ -2025,10 +2079,10 @@
       "type": "n8n-nodes-base.noOp",
       "typeVersion": 1,
       "position": [
-        6864,
-        -992
+        -14704,
+        2400
       ],
-      "id": "9253efb0-de3a-4803-9796-a6b788a7ce43",
+      "id": "708eb40b-3dd0-4cc6-85d0-0e7c9f943bf0",
       "name": "No Operation, do nothing2"
     },
     {
@@ -2069,10 +2123,10 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
       "position": [
-        6640,
-        -1088
+        -14928,
+        2304
       ],
-      "id": "c5ebdbaf-94dd-4fb1-b3f5-ada8180c21cb",
+      "id": "63b7cd65-7ff2-45b9-9c84-c477adda1138",
       "name": "IF NUEVO LEAD"
     },
     {
@@ -2084,10 +2138,10 @@
       "type": "n8n-nodes-base.mongoDb",
       "typeVersion": 1.2,
       "position": [
-        2208,
-        -640
+        -19360,
+        2760
       ],
-      "id": "c5d48d6a-6fd9-4ac2-8354-a133cca8831a",
+      "id": "16af83aa-1905-422b-aa91-fb35298a0936",
       "name": "Find user by Phone",
       "alwaysOutputData": true,
       "executeOnce": false,
@@ -2125,10 +2179,10 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
       "position": [
-        1984,
-        -704
+        -19584,
+        2688
       ],
-      "id": "667e13f2-692f-4b41-a962-8d5265401847",
+      "id": "6bf4f0b7-ff42-44a3-9e7e-cac6f26b171c",
       "name": "If NOT WHATSAPP"
     },
     {
@@ -2159,10 +2213,10 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
       "position": [
-        2432,
-        -640
+        -19136,
+        2760
       ],
-      "id": "16113268-0b8a-4dcb-a488-f2028cd77b4e",
+      "id": "7715eedd-e829-4f25-a3ff-ea30f2794dac",
       "name": "If NOT EXIST"
     },
     {
@@ -2174,10 +2228,10 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        2656,
-        -560
+        -18912,
+        2832
       ],
-      "id": "8cfb8290-cba5-4d97-b1b9-03a8c684921d",
+      "id": "794afe10-3fcc-4b9c-916b-3e70b2805fcf",
       "name": "DATA to CREATE FASE 2"
     },
     {
@@ -2190,10 +2244,10 @@
       "type": "n8n-nodes-base.mongoDb",
       "typeVersion": 1.2,
       "position": [
-        2880,
-        -560
+        -18688,
+        2832
       ],
-      "id": "fb4b0dbd-05c4-4b6f-a296-d432fad927c7",
+      "id": "c27de941-ca3a-416a-8ad3-3dcb4675c00c",
       "name": "Insert User Fase 2",
       "credentials": {
         "mongoDb": {
@@ -2219,10 +2273,10 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        3104,
-        -560
+        -18464,
+        2832
       ],
-      "id": "a64ee935-a8df-410a-826b-f4fdb425a526",
+      "id": "83461403-9ce5-4178-9c27-e68b43ed446d",
       "name": "ID - Lead en Fase 2 "
     },
     {
@@ -2232,10 +2286,10 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        -3200,
-        -704
+        -24768,
+        2688
       ],
-      "id": "459845c9-25ff-4f46-a342-de5d63c2a9dd",
+      "id": "5093aa82-cc2c-4337-8613-1007f890eb28",
       "name": "Extraer CAMPAIGN DATA"
     },
     {
@@ -2247,10 +2301,10 @@
       "type": "n8n-nodes-base.mongoDb",
       "typeVersion": 1.2,
       "position": [
-        3328,
-        -560
+        -18240,
+        2832
       ],
-      "id": "45fee60f-78db-48bf-8438-d4e65f3eabcb",
+      "id": "f9875443-207d-4732-9704-7bba8b49c229",
       "name": "Delete Lead FASE 2",
       "credentials": {
         "mongoDb": {
@@ -2268,10 +2322,10 @@
       "type": "n8n-nodes-base.mongoDb",
       "typeVersion": 1.2,
       "position": [
-        -3424,
-        -704
+        -24992,
+        2688
       ],
-      "id": "063a1571-77ee-4821-a69f-210eaf54271a",
+      "id": "8571a7c3-fee2-4254-b109-952678503fc3",
       "name": "Get Account Credentials",
       "retryOnFail": false,
       "alwaysOutputData": true,
@@ -2307,10 +2361,10 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.4,
       "position": [
-        5968,
-        -608
+        -15600,
+        2784
       ],
-      "id": "10d6b52e-2d5d-4299-8f59-733e9a626a1d",
+      "id": "fa9a4b5d-ccf8-4227-9ceb-de74dd006d76",
       "name": "UPDATE - Proyecto Interes"
     },
     {
@@ -2341,10 +2395,10 @@
       "type": "n8n-nodes-base.filter",
       "typeVersion": 2.3,
       "position": [
-        5744,
-        -608
+        -15824,
+        2784
       ],
-      "id": "2806d203-97ec-484e-830a-9562a52e21ea",
+      "id": "0758e7a0-b726-4151-b6b3-0206f7a43a13",
       "name": "Filtrar Proyecto Existente"
     },
     {
@@ -2372,11 +2426,97 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.4,
       "position": [
-        5744,
-        -416
+        -15824,
+        2976
       ],
-      "id": "fedc3b21-dc2a-44db-8a3f-73f52838234a",
+      "id": "156e15f8-c07b-4ab6-aa0c-0c03bb900a2a",
       "name": "UPDATE - UTM Source"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "b9c1d2e3-f4a5-6789-bcde-f01234567891",
+              "leftValue": "={{ $('Lenguaje & Asesoria').item.json.output.interes_precios }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        -13584,
+        2400
+      ],
+      "id": "364eb61e-84f8-4ec0-939f-1448dbaaa779",
+      "name": "IF INTERES PRECIOS"
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "r1Jf5vwrkBrT4dEu",
+          "mode": "list",
+          "cachedResultUrl": "/workflow/r1Jf5vwrkBrT4dEu",
+          "cachedResultName": "Notifications Master"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "tipo_alerta": "interes_precios",
+            "datos": "={{ \n  {\n    \"proyecto\": $('User Data').item.json.proyecto || 'No identificado',\n    \"nombre_lead\": $('Parse response').item.json.lead_nombre || $('User Data').item.json.nombre || 'No registrado',\n    \"telefono_lead\": $('Parse response').item.json.lead_telefono || $('User Data').item.json.telefono || 'No registrado',\n    \"correo_lead\": $('Parse response').item.json.lead_correo || $('User Data').item.json.correo || 'No registrado',\n    \"ultima_consulta\": $('CONTEXT 1').item.json.entrada_usuario\n  }\n}}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "tipo_alerta",
+              "displayName": "tipo_alerta",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "datos",
+              "displayName": "datos",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "object",
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.3,
+      "position": [
+        -13360,
+        2400
+      ],
+      "id": "a0aa8b89-9b6e-4534-99bc-3b103aec8a60",
+      "name": "'Notifications Master' Interés Precios"
     }
   ],
   "connections": {
@@ -3002,6 +3142,17 @@
         ]
       ]
     },
+    "Insert Analytics": {
+      "main": [
+        [
+          {
+            "node": "IF INTERES PRECIOS",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
     "Calculate Respond Time": {
       "main": [
         [
@@ -3177,16 +3328,22 @@
         ]
       ]
     },
-    "UPDATE - Proyecto Interes": {
-      "main": [
-        []
-      ]
-    },
     "Filtrar Proyecto Existente": {
       "main": [
         [
           {
             "node": "UPDATE - Proyecto Interes",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "IF INTERES PRECIOS": {
+      "main": [
+        [
+          {
+            "node": "'Notifications Master' Interés Precios",
             "type": "main",
             "index": 0
           }
@@ -3259,7 +3416,8 @@
     ]
   },
   "meta": {
-    "templateCredsSetupCompleted": true,
+    "aiBuilderAssisted": true,
+    "builderVariant": "mcp",
     "instanceId": "d4ab02fb1ef8b6ca2c1c5c1f280ee696b0514d7d92cee5fb0da1784dbe393998"
   }
 }

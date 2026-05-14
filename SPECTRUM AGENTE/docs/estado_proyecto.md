@@ -1,5 +1,5 @@
 # 🏢 SPECTRUM VIVIENDA: Agente Unificado — Estado del Proyecto
-> Última actualización: 2026-05-13 (Sesión de mantenimiento — Split nombre/apellido, URLs rotas Send Media, notificaciones Andy)
+> Última actualización: 2026-05-14 (Producción Final — Fix WhatsApp Project Enforcement + Ruteo de Datos)
 
 ## 🎯 Objetivo General
 Arquitectura de agente conversacional modular para SPECTRUM VIVIENDA. Un orquestador central (*Sof-IA*) delega tareas a sub-workflows especializados (Tools), con persistencia centralizada en MongoDB y sincronización diferida al CRM Dynamics 365 vía SOAP.
@@ -23,7 +23,7 @@ Arquitectura de agente conversacional modular para SPECTRUM VIVIENDA. Un orquest
 ## 📦 Módulos (Workflows)
 
 ### 1. 🧠 Orquestador Central — `AGENT PRINCIPAL.json`
-**Estado: ✅ Activo — Optimización "Hot Lead" implementada** | Última mod: 2026-05-13
+**Estado: ✅ Activo — Auditoría de integridad aplicada** | Última mod: 2026-05-13
 
 - ✅ **Completado**: Sincronización paramétrica con servidor (expresiones =URL y variables de input).
 - ✅ **Completado**: Búsqueda de usuarios segmentada por `manychat_id` + `page_id`.
@@ -33,6 +33,12 @@ Arquitectura de agente conversacional modular para SPECTRUM VIVIENDA. Un orquest
 - ✅ **Completado**: Nodo `CONTEXT 1` prioriza `Get Account Credentials → proyecto` para canales no-WhatsApp.
 - ✅ **Completado**: Fix bug Instagram/Messenger — bot ya no pregunta "¿cuál proyecto?" cuando el canal pre-asigna el proyecto.
 - ✅ **Completado**: **Optimización de Conversión (Hot Leads):** Se eliminó el saludo genérico para mensajes de alta intención, delegando inmediatamente al `lead_collector` para acelerar el embudo.
+- ✅ **Completado**: **Auditoría de atribución:** `DATA to CREATE` corregido — campo renombrado de `tag_medio` → `atribucion_tag` (consistente con `Sync_CRM` y `Lead Collector`).
+- ✅ **Completado**: **Persistencia de atribución en leads recurrentes:** `DATA to UPDATE` ahora incluye `atribucion_tag`, `atribucion_medio`, `atribucion_contacto` y `utm_source_crm`.
+- ✅ **Completado**: **Alerta de interés en precios:** Extractor `Lenguaje & Asesoria` detecta `interes_precios` (boolean). Nodo `IF INTERES PRECIOS` + `'Notifications Master' Interés Precios` cableados tras `Insert Analytics`.
+- ✅ **Completado**: **Fix Integridad Notificaciones:** Corregido bug de correo faltante en alerta de precios y robustez añadida mediante lógica de coalesce (Parse vs DB) en todos los disparadores de alertas.
+- ✅ **Completado**: **Bloqueo de Autodetección en WhatsApp (Final):** Se refactorizaron los nodos `DATA to CREATE` y `DATA to UPDATE` para ignorar la campaña detectada por texto si el canal es WhatsApp. Esto garantiza que el lead sea calificado manualmente por el bot antes de ser asignado a un proyecto.
+- ✅ **Completado**: **Resolución de Error de Ruteo n8n:** Solucionado el error `"No path back to referenced node"` en la rama de creación de usuarios, asegurando que las referencias de nodos en expresiones JSON sean accesibles desde cualquier camino de ejecución.
 
 ### 2. 👤 Captador de Leads — `Lead Collector.json`
 **Estado: ✅ Activo** | Última mod: 2026-05-13
@@ -50,6 +56,7 @@ Arquitectura de agente conversacional modular para SPECTRUM VIVIENDA. Un orquest
 **Estado: ✅ Activo y Auditado al 100%** | Última mod: 2026-05-13
 
 - ✅ **Completado**: Agregado `aduarte@spectrum.com.gt` (Andy Duarte) como destinatario CC en los 4 tipos de alerta: Nuevo Lead, Interés en Precios, Nueva Cita y Escalación.
+- ✅ **Completado**: **Template premium de citas:** `Payload Cita` actualizado con diseño profesional (header oscuro SPECTRUM VIVIENDA, tablas de datos del lead y detalles de cita) — paridad con el template de `RSVP.json`.
 
 ### 5. 🎞️ Envío de Media — `Send Media.json`
 **Estado: ✅ Activo y Auditado al 100%** | Última mod: 2026-05-13
@@ -95,9 +102,14 @@ Arquitectura de agente conversacional modular para SPECTRUM VIVIENDA. Un orquest
 
 ## 🚀 Punto Actual del Proyecto
 
-El sistema es **100% Multitenant**, con **routing dinámico por canal** y ha sido **validado en producción** con paridad total entre local y servidor.
-
-### ✅ Completado recientemente (2026-05-13)
+ Tras las optimizaciones recientes y el fix de integridad del 14 de mayo, el sistema presenta el siguiente estatus técnico:
+- **Infraestructura Multitenant:** 100% Funcional. Enrutamiento dinámico por canal activado.
+- **WhatsApp Project Enforcement:** Se eliminó la herencia automática de proyecto por texto inicial en WhatsApp. Ahora el sistema deja el campo `proyecto` nulo para forzar al Orquestador a disparar el menú interactivo, mejorando la calidad de la atribución final.
+- **Fix Correo Lead:** Todas las notificaciones (`nuevo_lead`, `cita`, `escalacion`, `interes_precios`) ahora incluyen validación de correo lead con fallback robusto.
+  - `DATA to CREATE`: `tag_medio` → `atribucion_tag` (bug de mapeo hacia `Sync_CRM`).
+  - `DATA to UPDATE`: agregados 4 campos de atribución para leads recurrentes.
+  - `Lenguaje & Asesoria` + pipeline `IF INTERES PRECIOS`: notificación de interés comercial activada.
+  - `Payload Cita` en `Notifications Master`: template HTML premium implementado.
 - **Split inteligente de nombre/apellido:** El Lead Agent extrae `primer_nombre` y `apellidos` por separado vía LLM. Propagado en `Lead Collector`, `AGENT PRINCIPAL` y `Sync_CRM`. Resuelve apellidos compuestos (ej. "García López") y combinaciones de 2 nombres + 2 apellidos en el XML SOAP.
 - **Fix URLs rotas Send Media:** URLs placeholder eliminadas, reemplazadas por `null`. IF branching implementado: si no hay archivo disponible, el agente ofrece 3 alternativas al usuario (asesor, cita presencial, llamada).
 - **Notificaciones Andy Duarte:** `aduarte@spectrum.com.gt` agregado como destinatario CC en los 4 tipos de alerta del `Notifications Master`.

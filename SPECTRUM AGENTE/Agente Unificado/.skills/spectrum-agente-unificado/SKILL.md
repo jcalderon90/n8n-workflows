@@ -93,8 +93,8 @@ El sistema es una arquitectura multi-agente orquestada por n8n:
 |---|---|---|
 | `Find User` | 259 | Consulta MongoDB por `manychat_id` |
 | `If USER NOT EXIST` | 525 | Bifurca: crear usuario nuevo vs actualizar existente |
-| `DATA to CREATE` | 402 | Prepara documento completo para usuario nuevo |
-| `DATA to UPDATE` | 491 | Prepara objeto de actualización PRE-agente (extractores) |
+| `DATA to CREATE` | 402 | Prepara documento completo para usuario nuevo. Campo de atribución: `atribucion_tag` (no `tag_medio`) |
+| `DATA to UPDATE` | 491 | Prepara objeto de actualización PRE-agente. Incluye `atribucion_tag`, `atribucion_medio`, `atribucion_contacto`, `utm_source_crm` |
 | `Insert User` | 238 | Crea documento en colección `users` |
 | `Update User` | 216 | Actualiza usuario con datos PRE-agente (extractores) |
 | `User Data` | 74 | **Snapshot PRE-Update** del usuario → `Find User \|\| Insert User` |
@@ -106,7 +106,7 @@ El sistema es una arquitectura multi-agente orquestada por n8n:
 |---|---|---|
 | `If NO WHATSAPP` | 118 | Bifurca WhatsApp (con extractor de proyecto) vs otros canales |
 | `Proyecto` | 140 | `informationExtractor`: detecta proyecto del mensaje (**solo WhatsApp**). `required: false` |
-| `Lenguaje & Asesoria` | 169 | `informationExtractor`: detecta idioma y flag de asesoría |
+| `Lenguaje & Asesoria` | 169 | `informationExtractor`: detecta idioma, flag de asesoría y `interes_precios` (boolean — solo `true` si el usuario pregunta EXPLÍCITAMENTE por precio, cuota, mensualidad o plan de pago; `false` para preguntas generales de proyecto) |
 | `CONTEXT 1` | 313 | Ensambla contexto para el agente: `proyecto`, `consulta_pendiente`, `entrada_usuario`, `canal` |
 | `PROJECT LIST` | 592 | Set con catálogo de proyectos (`proyectos`, `proyectos_nombre`) |
 | `JOINNING MESSAGE` | 563 | Espera a que `Insert User` / `Update User` terminen |
@@ -139,6 +139,8 @@ El sistema es una arquitectura multi-agente orquestada por n8n:
 | `'Notifications Master' Escalation` | 1829 | Notifica escalación a asesor humano |
 | `Calculate Respond Time` | 1725 | Calcula tiempo de respuesta |
 | `Insert Analytics` | 1672 | Graba log en MongoDB (`sessionId`, `response_time`, `proyecto`, `canal`) |
+| `IF INTERES PRECIOS` | — | Evalúa `Lenguaje & Asesoria → output.interes_precios`. Se ejecuta tras `Insert Analytics` (siempre corre) |
+| `'Notifications Master' Interés Precios` | — | Notifica interés comercial. Payload: `proyecto`, `nombre_lead`, `telefono_lead`, `ultima_consulta` |
 | `RESPOND TO MANYCHAT` | 30 | Envía respuesta final a ManyChat |
 
 ---
