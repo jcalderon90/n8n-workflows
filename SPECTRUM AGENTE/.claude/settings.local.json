@@ -117,7 +117,10 @@
       "Bash(./scripts/get-node.sh \"RSVP.json\" \"RSVP Agent\")",
       "Bash(./scripts/get-node.sh \"KB SEARCH.json\" \"GENERAL AGENT\")",
       "Bash(./scripts/search-nodes.sh \"AGENT PRINCIPAL.json\" \"extracted_campaign_data\")",
-      "Bash(powershell *)"
+      "Bash(powershell *)",
+      "Bash(python3 *)",
+      "Read(//Users/jorgecalderon/.claude/**)",
+      "Read(//Users/jorgecalderon/.config/claude/**)"
     ]
   }
 }

@@ -75,7 +75,7 @@
       "typeVersion": 1,
       "position": [
         -20096,
-        2540
+        2544
       ],
       "id": "8f9c5b94-e9eb-4375-b55a-cff3e6a5d02b",
       "name": "No Operation, do nothing"
@@ -130,7 +130,7 @@
       "typeVersion": 1.2,
       "position": [
         -20160,
-        2836
+        2848
       ],
       "id": "b9c6f5ff-bfa5-460b-b5ee-b49987773150",
       "name": "Proyecto"
@@ -186,8 +186,8 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "typeVersion": 1.3,
       "position": [
-        -20088,
-        3060
+        -20096,
+        3072
       ],
       "id": "458960f1-0c64-4707-b830-25a3eae76776",
       "name": "OpenAI Chat Model2",
@@ -554,7 +554,7 @@
             {
               "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567813",
               "name": "datos_completos",
-              "value": "={{ $('Find User').item.json.datos_completos && $('User Data').item.json.email && $('User Data').item.json.phone }}",
+              "value": "={{ $('Find User').item.json.datos_completos }}",
               "type": "boolean"
             }
           ]
@@ -950,7 +950,7 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "typeVersion": 1.3,
       "position": [
-        -20664,
+        -20672,
         2912
       ],
       "id": "ad6f9064-79c2-4146-ba2c-0816c06c1cc0",
@@ -1225,7 +1225,7 @@
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 3.1,
       "position": [
-        -16648,
+        -16656,
         2688
       ],
       "id": "f83188da-7051-4589-b94d-14fa956aeed3",
@@ -1428,7 +1428,7 @@
     },
     {
       "parameters": {
-        "jsCode": "function prepareForHttp(text) {\n  if (text === null || text === undefined) return \"\";\n  return String(text)\n    .replace(/\\\\/g, \"\\\\\\\\\")\n    .replace(/\"/g, '\\\\\"')\n    .replace(/\\r\\n/g, \"\\\\n\")\n    .replace(/\\n/g, \"\\\\n\")\n    .replace(/\\t/g, \"\\\\t\")\n    .replace(/\\*\\*/g, \"*\")\n    .trim();\n}\n\nconst proyectos = $('PROJECT LIST').first().json.proyectos || {};\nconst nombresProyectos = Object.values(proyectos).map(p => p.split('->')[0].trim());\nconst LISTA = \"\\\\n\\\\n• \" + nombresProyectos.join(\"\\\\n• \");\n\nconst raw = $input.first().json.output || \"\";\nconst match = raw.match(/\\{[\\s\\S]*\\}/);\n\nif (!match) {\n  return [{ \n    json: { \n      respuesta: prepareForHttp(raw),\n      accion_tipo: \"error\",\n      error: \"no_json\",\n      raw_output: raw\n    }\n  }];\n}\n\ntry {\n  const parsed = JSON.parse(match[0]);\n\n  const respuesta = parsed.respuesta || \"\";\n  const accionTipo = parsed.accion?.tipo || \"esperar\";\n  const transferir = parsed.estado_proyecto?.transferir ?? 0;\n  const proyecto = parsed.estado_proyecto?.proyecto || null;\n  \n  // Agrega lista solo cuando pide elegir proyecto y no hay proyecto aún\n  const agregarLista = accionTipo === \"aclarar\" && !proyecto;\n  const respuestaFinal = agregarLista \n    ? prepareForHttp(respuesta) + LISTA\n    : prepareForHttp(respuesta);\n\n  return [{\n    json: {\n      respuesta: respuestaFinal,\n      accion_tipo: accionTipo,\n      accion_razon: parsed.accion?.razon || \"\",\n      proyecto: proyecto,\n      transferir: transferir,\n      lead_nombre: parsed.estado_lead?.nombre || null,\n      lead_primer_nombre: parsed.estado_lead?.primer_nombre || null,\n      lead_apellidos: parsed.estado_lead?.apellidos || null,\n      lead_correo: parsed.estado_lead?.correo || null,\n      lead_telefono: parsed.estado_lead?.telefono || null,\n      datos_completos: parsed.estado_lead?.datos_completos ?? false,\n      intencion: parsed.metadatos?.intencion || null,\n      idioma: parsed.metadatos?.idioma || null,\n      confianza: parsed.metadatos?.confianza || null,\n      herramientas_usadas: parsed.depuracion?.herramientas_usadas || [],\n      ruta_decision: parsed.depuracion?.ruta_decision || \"\",\n      advertencias: parsed.depuracion?.advertencias || [],\n      raw: parsed,\n      consulta_pendiente_guardar: parsed.consulta_pendiente?.guardar || null,\n      consulta_pendiente_limpiar: parsed.consulta_pendiente?.limpiar || false,\n      consulta_pendiente_retomar: parsed.consulta_pendiente?.retomar || null,\n    }\n  }];\n\n} catch(e) {\n  return [{ \n    json: { \n      respuesta: prepareForHttp(raw),\n      accion_tipo: \"error\",\n      error: \"parse_failed\",\n      error_message: e.message,\n      raw_output: raw\n    }\n  }];\n}"
+        "jsCode": "function prepareForHttp(text) {\n  if (text === null || text === undefined) return \"\";\n  return String(text)\n    .replace(/\\\\/g, \"\\\\\\\\\")\n    .replace(/\"/g, '\\\\\"')\n    .replace(/\\r\\n/g, \"\\\\n\")\n    .replace(/\\n/g, \"\\\\n\")\n    .replace(/\\t/g, \"\\\\t\")\n    .replace(/\\*\\*/g, \"*\")\n    .trim();\n}\n\nconst proyectos = $('PROJECT LIST').first().json.proyectos || {};\nconst nombresProyectos = Object.values(proyectos).map(p => p.split('->')[0].trim());\nconst LISTA = \"\\\\n\\\\n• \" + nombresProyectos.join(\"\\\\n• \");\n\nconst raw = $input.first().json.output || \"\";\nconst cleanRaw = raw.replace(/```(?:json)?\\n?/g, '').trim();\nconst match = cleanRaw.match(/\\{[\\s\\S]*\\}/);\n\nif (!match) {\n  return [{ \n    json: { \n      respuesta: \"Lo siento, tuve un problema procesando esa respuesta. ¿Puedes repetirlo?\",\n      accion_tipo: \"error\",\n      error: \"no_json\",\n      raw_output: raw\n    }\n  }];\n}\n\ntry {\n  const parsed = JSON.parse(match[0]);\n\n  const respuesta = String(parsed.respuesta || \"\");\n  const accionTipo = parsed.accion?.tipo || \"esperar\";\n  const transferir = parsed.estado_proyecto?.transferir ?? 0;\n  const proyecto = parsed.estado_proyecto?.proyecto || null;\n  \n  // Agrega lista solo cuando pide elegir proyecto y no hay proyecto aún\n  const agregarLista = accionTipo === \"aclarar\" && !proyecto;\n  const respuestaFinal = agregarLista \n    ? prepareForHttp(respuesta) + LISTA\n    : prepareForHttp(respuesta);\n\n  return [{\n    json: {\n      respuesta: respuestaFinal,\n      accion_tipo: accionTipo,\n      accion_razon: parsed.accion?.razon || \"\",\n      proyecto: proyecto,\n      transferir: transferir,\n      lead_nombre: parsed.estado_lead?.nombre || null,\n      lead_primer_nombre: parsed.estado_lead?.primer_nombre || null,\n      lead_apellidos: parsed.estado_lead?.apellidos || null,\n      lead_correo: parsed.estado_lead?.correo || null,\n      lead_telefono: parsed.estado_lead?.telefono || null,\n      datos_completos: parsed.estado_lead?.datos_completos ?? false,\n      intencion: parsed.metadatos?.intencion || null,\n      idioma: parsed.metadatos?.idioma || null,\n      confianza: parsed.metadatos?.confianza || null,\n      herramientas_usadas: parsed.depuracion?.herramientas_usadas || [],\n      ruta_decision: parsed.depuracion?.ruta_decision || \"\",\n      advertencias: parsed.depuracion?.advertencias || [],\n      raw: parsed,\n      consulta_pendiente_guardar: parsed.consulta_pendiente?.guardar || null,\n      consulta_pendiente_limpiar: parsed.consulta_pendiente?.limpiar || false,\n      consulta_pendiente_retomar: parsed.consulta_pendiente?.retomar || null,\n    }\n  }];\n\n} catch(e) {\n  return [{ \n    json: { \n      respuesta: \"Lo siento, tuve un problema procesando esa respuesta. ¿Puedes repetirlo?\",\n      accion_tipo: \"error\",\n      error: \"parse_failed\",\n      error_message: e.message,\n      raw_output: raw\n    }\n  }];\n}"
       },
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -2139,7 +2139,7 @@
       "typeVersion": 1.2,
       "position": [
         -19360,
-        2760
+        2768
       ],
       "id": "16af83aa-1905-422b-aa91-fb35298a0936",
       "name": "Find user by Phone",
@@ -2214,7 +2214,7 @@
       "typeVersion": 2.3,
       "position": [
         -19136,
-        2760
+        2768
       ],
       "id": "7715eedd-e829-4f25-a3ff-ea30f2794dac",
       "name": "If NOT EXIST"
@@ -3351,70 +3351,7 @@
       ]
     }
   },
-  "pinData": {
-    "Webhook": [
-      {
-        "headers": {
-          "host": "agentsprod.redtec.ai",
-          "user-agent": "ManyChat",
-          "content-length": "1044",
-          "content-type": "application/json; charset=utf-8",
-          "x-forwarded-for": "63.179.139.135",
-          "x-forwarded-host": "agentsprod.redtec.ai",
-          "x-forwarded-port": "443",
-          "x-forwarded-proto": "https",
-          "x-forwarded-server": "2a862d2f5b19",
-          "x-real-ip": "63.179.139.135",
-          "accept-encoding": "gzip"
-        },
-        "params": {},
-        "query": {},
-        "body": {
-          "key": "user:1322293733",
-          "id": "1322293733",
-          "page_id": "113179411695050",
-          "user_refs": [],
-          "status": "active",
-          "first_name": "Merari",
-          "last_name": "de Mata",
-          "name": "Merari de Mata",
-          "gender": null,
-          "profile_pic": "https://app.manychat.com/ava/113179411695050/1322293733/9da4902eb52023d77fb667d94c0ed6e2",
-          "locale": null,
-          "language": null,
-          "timezone": "UTC±00",
-          "live_chat_url": "https://app.manychat.com/fb113179411695050/chat/1322293733",
-          "last_input_text": "Ok gracias \nSi me gustaría",
-          "optin_phone": false,
-          "phone": null,
-          "optin_email": false,
-          "email": null,
-          "subscribed": "2026-05-12T09:57:51-06:00",
-          "last_interaction": null,
-          "ig_last_interaction": "2026-05-12T10:24:03-06:00",
-          "last_seen": null,
-          "ig_last_seen": "2026-05-12T10:24:03-06:00",
-          "is_followup_enabled": true,
-          "ig_username": "mery_dmata",
-          "ig_id": 1590114552046851,
-          "whatsapp_phone": null,
-          "whatsapp_bsuid": null,
-          "whatsapp_username": null,
-          "optin_whatsapp": false,
-          "phone_country_code": null,
-          "last_growth_tool": null,
-          "custom_fields": {
-            "canal_ingreso": "Instagram",
-            "proyecto": "PPO",
-            "proyecto_interes": null,
-            "proyecto_utm_source": null
-          }
-        },
-        "webhookUrl": "https://agentsprod.redtec.ai/webhook/spectrum-agent",
-        "executionMode": "production"
-      }
-    ]
-  },
+  "pinData": {},
   "meta": {
     "aiBuilderAssisted": true,
     "builderVariant": "mcp",
